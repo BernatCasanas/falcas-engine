@@ -284,6 +284,11 @@ int CreatingIMgui() {
         SDL_GL_SwapWindow(window);
     }
 
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplSDL2_Shutdown();
+    ImGui::DestroyContext();
+
+
     */
 
 	return 1;

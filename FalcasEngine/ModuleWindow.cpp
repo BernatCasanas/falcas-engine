@@ -38,7 +38,7 @@ bool ModuleWindow::Init()
 		SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 		SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
 		window = SDL_CreateWindow("Falcas Engine", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1280, 720, window_flags);
-		SDL_GLContext gl_context = SDL_GL_CreateContext(window);
+		gl_context = SDL_GL_CreateContext(window);
 		SDL_GL_MakeCurrent(window, gl_context);
 		SDL_GL_SetSwapInterval(1); // Enable vsync
 
@@ -66,6 +66,7 @@ bool ModuleWindow::CleanUp()
 	//Destroy window
 	if(window != NULL)
 	{
+		SDL_GL_DeleteContext(gl_context);
 		SDL_DestroyWindow(window);
 	}
 
