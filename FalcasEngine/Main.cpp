@@ -6,6 +6,8 @@
 #include "ImGui/imgui_impl_opengl3.h"
 
 #include "SDL/include/SDL.h"
+#include "Glew/include/GL/glew.h"
+
 #pragma comment( lib, "SDL/libx86/SDL2.lib" )
 #pragma comment( lib, "SDL/libx86/SDL2main.lib" )
 
