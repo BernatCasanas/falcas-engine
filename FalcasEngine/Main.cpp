@@ -48,6 +48,7 @@ int main(int argc, char ** argv)
 	main_states state = MAIN_CREATION;
 	Application* App = NULL;
 
+
 	while (state != MAIN_EXIT)
 	{
 		switch (state)
@@ -116,15 +117,6 @@ int main(int argc, char ** argv)
 int CreatingIMgui() {
 
 
-    // Setup SDL
-    // (Some versions of SDL before <2.0.10 appears to have performance/stalling issues on a minority of Windows systems,
-    // depending on whether SDL_INIT_GAMECONTROLLER is enabled or disabled.. updating to latest version of SDL is recommended!)
-    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_GAMECONTROLLER) != 0)
-    {
-        printf("Error: %s\n", SDL_GetError());
-        return -1;
-    }
-
     // Decide GL+GLSL versions
 #if __APPLE__
     // GL 3.2 Core + GLSL 150
@@ -143,14 +135,7 @@ int CreatingIMgui() {
 #endif
 
     // Create window with graphics context
-    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-    SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
-    SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
-    SDL_WindowFlags window_flags = (SDL_WindowFlags)(SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI);
-    SDL_Window* window = SDL_CreateWindow("Dear ImGui SDL2+OpenGL3 example", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1280, 720, window_flags);
-    SDL_GLContext gl_context = SDL_GL_CreateContext(window);
-    SDL_GL_MakeCurrent(window, gl_context);
-    SDL_GL_SetSwapInterval(1); // Enable vsync
+   
 
     // Initialize OpenGL loader
 #if defined(IMGUI_IMPL_OPENGL_LOADER_GL3W)
@@ -175,7 +160,7 @@ int CreatingIMgui() {
         fprintf(stderr, "Failed to initialize OpenGL loader!\n");
         return 1;
     }
-
+    /*
 
     //io.ConfigViewportsNoAutoMerge = true;
     //io.ConfigViewportsNoTaskBarIcon = true;
@@ -299,7 +284,7 @@ int CreatingIMgui() {
         SDL_GL_SwapWindow(window);
     }
 
-
+    */
 
 	return 1;
 }
