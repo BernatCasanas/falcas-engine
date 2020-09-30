@@ -29,6 +29,8 @@ public:
 
 
 	SDL_GLContext gl_context;
+
+	const char* glsl_version;
 };
 
 #endif // __ModuleWindow_H__
