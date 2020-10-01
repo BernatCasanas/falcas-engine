@@ -3,7 +3,7 @@
 #include <gl/GL.h>
 #include <gl/GLU.h>
 #include "Primitive.h"
-#include "glut/glut.h"
+#include "External Libraries\glut/glut.h"
 
 
 

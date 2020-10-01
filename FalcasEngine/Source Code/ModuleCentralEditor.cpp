@@ -1,9 +1,9 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleCentralEditor.h"
-#include "ImGui/imgui.h"
-#include "ImGui/imgui_impl_sdl.h"
-#include "ImGui/imgui_impl_opengl3.h"
+#include "External Libraries\ImGui/imgui.h"
+#include "External Libraries\ImGui/imgui_impl_sdl.h"
+#include "External Libraries\ImGui/imgui_impl_opengl3.h"
 
 ModuleCentralEditor::ModuleCentralEditor(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
