@@ -13,6 +13,12 @@
   <ItemGroup>
     <ClCompile Include="Source Code\Application.cpp" />
     <ClCompile Include="Source Code\Color.cpp" />
+    <ClCompile Include="Source Code\External Libraries\ImGui\imgui.cpp" />
+    <ClCompile Include="Source Code\External Libraries\ImGui\imgui_demo.cpp" />
+    <ClCompile Include="Source Code\External Libraries\ImGui\imgui_draw.cpp" />
+    <ClCompile Include="Source Code\External Libraries\ImGui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="Source Code\External Libraries\ImGui\imgui_impl_sdl.cpp" />
+    <ClCompile Include="Source Code\External Libraries\ImGui\imgui_widgets.cpp" />
     <ClCompile Include="Source Code\glmath.cpp" />
     <ClCompile Include="Source Code\Light.cpp" />
     <ClCompile Include="Source Code\log.cpp" />
@@ -31,6 +37,14 @@
   <ItemGroup>
     <ClInclude Include="Source Code\Application.h" />
     <ClInclude Include="Source Code\Color.h" />
+    <ClInclude Include="Source Code\External Libraries\ImGui\imconfig.h" />
+    <ClInclude Include="Source Code\External Libraries\ImGui\imgui.h" />
+    <ClInclude Include="Source Code\External Libraries\ImGui\imgui_impl_opengl3.h" />
+    <ClInclude Include="Source Code\External Libraries\ImGui\imgui_impl_sdl.h" />
+    <ClInclude Include="Source Code\External Libraries\ImGui\imgui_internal.h" />
+    <ClInclude Include="Source Code\External Libraries\ImGui\imstb_rectpack.h" />
+    <ClInclude Include="Source Code\External Libraries\ImGui\imstb_textedit.h" />
+    <ClInclude Include="Source Code\External Libraries\ImGui\imstb_truetype.h" />
     <ClInclude Include="Source Code\glmath.h" />
     <ClInclude Include="Source Code\Globals.h" />
     <ClInclude Include="Source Code\Light.h" />
@@ -78,7 +92,9 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LibraryPath>$(ProjectDir)\External Libraries\SDL\libx86\SDL2.lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -91,6 +107,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+      <AdditionalLibraryDirectories>$(ProjectDir)\Source Code\External Libraries;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

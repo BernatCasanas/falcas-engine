@@ -1,117 +1,165 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Sources">
+    <Filter Include="External Libraries">
+      <UniqueIdentifier>{faa4d03f-367a-4aa7-85f1-2beeccd286a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Code">
       <UniqueIdentifier>{8b7ed093-66ce-4096-96d2-fbb9faa4bf52}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="External Libraries\ImGui">
+      <UniqueIdentifier>{34ed8907-73ad-44b8-9a39-ce3122d60d81}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source Code\Application.cpp">
-      <Filter>Sources</Filter>
+      <Filter>Source Code</Filter>
     </ClCompile>
     <ClCompile Include="Source Code\Color.cpp">
-      <Filter>Sources</Filter>
+      <Filter>Source Code</Filter>
     </ClCompile>
     <ClCompile Include="Source Code\glmath.cpp">
-      <Filter>Sources</Filter>
+      <Filter>Source Code</Filter>
     </ClCompile>
     <ClCompile Include="Source Code\Light.cpp">
-      <Filter>Sources</Filter>
+      <Filter>Source Code</Filter>
     </ClCompile>
     <ClCompile Include="Source Code\log.cpp">
-      <Filter>Sources</Filter>
+      <Filter>Source Code</Filter>
     </ClCompile>
     <ClCompile Include="Source Code\Main.cpp">
-      <Filter>Sources</Filter>
+      <Filter>Source Code</Filter>
     </ClCompile>
     <ClCompile Include="Source Code\ModuleAudio.cpp">
-      <Filter>Sources</Filter>
+      <Filter>Source Code</Filter>
     </ClCompile>
     <ClCompile Include="Source Code\ModuleCamera3D.cpp">
-      <Filter>Sources</Filter>
+      <Filter>Source Code</Filter>
     </ClCompile>
     <ClCompile Include="Source Code\ModuleCentralEditor.cpp">
-      <Filter>Sources</Filter>
+      <Filter>Source Code</Filter>
     </ClCompile>
     <ClCompile Include="Source Code\ModuleInput.cpp">
-      <Filter>Sources</Filter>
+      <Filter>Source Code</Filter>
     </ClCompile>
     <ClCompile Include="Source Code\ModulePhysics3D.cpp">
-      <Filter>Sources</Filter>
+      <Filter>Source Code</Filter>
     </ClCompile>
     <ClCompile Include="Source Code\ModuleRenderer3D.cpp">
-      <Filter>Sources</Filter>
+      <Filter>Source Code</Filter>
     </ClCompile>
     <ClCompile Include="Source Code\ModuleSceneIntro.cpp">
-      <Filter>Sources</Filter>
+      <Filter>Source Code</Filter>
     </ClCompile>
     <ClCompile Include="Source Code\ModuleWindow.cpp">
-      <Filter>Sources</Filter>
+      <Filter>Source Code</Filter>
     </ClCompile>
     <ClCompile Include="Source Code\Primitive.cpp">
-      <Filter>Sources</Filter>
+      <Filter>Source Code</Filter>
     </ClCompile>
     <ClCompile Include="Source Code\Timer.cpp">
-      <Filter>Sources</Filter>
+      <Filter>Source Code</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\External Libraries\ImGui\imgui.cpp">
+      <Filter>External Libraries\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\External Libraries\ImGui\imgui_demo.cpp">
+      <Filter>External Libraries\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\External Libraries\ImGui\imgui_draw.cpp">
+      <Filter>External Libraries\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\External Libraries\ImGui\imgui_impl_opengl3.cpp">
+      <Filter>External Libraries\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\External Libraries\ImGui\imgui_impl_sdl.cpp">
+      <Filter>External Libraries\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\External Libraries\ImGui\imgui_widgets.cpp">
+      <Filter>External Libraries\ImGui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source Code\Application.h">
-      <Filter>Sources</Filter>
+      <Filter>Source Code</Filter>
     </ClInclude>
     <ClInclude Include="Source Code\Color.h">
-      <Filter>Sources</Filter>
+      <Filter>Source Code</Filter>
     </ClInclude>
     <ClInclude Include="Source Code\glmath.h">
-      <Filter>Sources</Filter>
+      <Filter>Source Code</Filter>
     </ClInclude>
     <ClInclude Include="Source Code\Globals.h">
-      <Filter>Sources</Filter>
+      <Filter>Source Code</Filter>
     </ClInclude>
     <ClInclude Include="Source Code\Light.h">
-      <Filter>Sources</Filter>
+      <Filter>Source Code</Filter>
     </ClInclude>
     <ClInclude Include="Source Code\Module.h">
-      <Filter>Sources</Filter>
+      <Filter>Source Code</Filter>
     </ClInclude>
     <ClInclude Include="Source Code\ModuleAudio.h">
-      <Filter>Sources</Filter>
+      <Filter>Source Code</Filter>
     </ClInclude>
     <ClInclude Include="Source Code\ModuleCamera3D.h">
-      <Filter>Sources</Filter>
+      <Filter>Source Code</Filter>
     </ClInclude>
     <ClInclude Include="Source Code\ModuleCentralEditor.h">
-      <Filter>Sources</Filter>
+      <Filter>Source Code</Filter>
     </ClInclude>
     <ClInclude Include="Source Code\ModuleInput.h">
-      <Filter>Sources</Filter>
+      <Filter>Source Code</Filter>
     </ClInclude>
     <ClInclude Include="Source Code\ModulePhysics3D.h">
-      <Filter>Sources</Filter>
+      <Filter>Source Code</Filter>
     </ClInclude>
     <ClInclude Include="Source Code\ModuleRenderer3D.h">
-      <Filter>Sources</Filter>
+      <Filter>Source Code</Filter>
     </ClInclude>
     <ClInclude Include="Source Code\ModuleSceneIntro.h">
-      <Filter>Sources</Filter>
+      <Filter>Source Code</Filter>
     </ClInclude>
     <ClInclude Include="Source Code\ModuleWindow.h">
-      <Filter>Sources</Filter>
+      <Filter>Source Code</Filter>
     </ClInclude>
     <ClInclude Include="Source Code\p2DynArray.h">
-      <Filter>Sources</Filter>
+      <Filter>Source Code</Filter>
     </ClInclude>
     <ClInclude Include="Source Code\p2List.h">
-      <Filter>Sources</Filter>
+      <Filter>Source Code</Filter>
     </ClInclude>
     <ClInclude Include="Source Code\p2Point.h">
-      <Filter>Sources</Filter>
+      <Filter>Source Code</Filter>
     </ClInclude>
     <ClInclude Include="Source Code\Primitive.h">
-      <Filter>Sources</Filter>
+      <Filter>Source Code</Filter>
     </ClInclude>
     <ClInclude Include="Source Code\Timer.h">
-      <Filter>Sources</Filter>
+      <Filter>Source Code</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External Libraries\ImGui\imconfig.h">
+      <Filter>External Libraries\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External Libraries\ImGui\imgui.h">
+      <Filter>External Libraries\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External Libraries\ImGui\imgui_impl_opengl3.h">
+      <Filter>External Libraries\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External Libraries\ImGui\imgui_impl_sdl.h">
+      <Filter>External Libraries\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External Libraries\ImGui\imgui_internal.h">
+      <Filter>External Libraries\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External Libraries\ImGui\imstb_rectpack.h">
+      <Filter>External Libraries\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External Libraries\ImGui\imstb_textedit.h">
+      <Filter>External Libraries\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External Libraries\ImGui\imstb_truetype.h">
+      <Filter>External Libraries\ImGui</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

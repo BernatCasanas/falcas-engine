@@ -4,10 +4,10 @@
 
 
 #include "External Libraries/SDL/include/SDL.h"
-#include "External Libraries\Glew/include/GL/glew.h"
+#include "External Libraries/Glew/include/GL/glew.h"
 
-#pragma comment( lib, "External Libraries/SDL/libx86/SDL2.lib" )
-#pragma comment( lib, "External Libraries/SDL/libx86/SDL2main.lib" )
+#pragma comment( lib, "SDL/libx86/SDL2.lib" )
+#pragma comment( lib, "SDL/libx86/SDL2main.lib" )
 
 
 #if defined(IMGUI_IMPL_OPENGL_LOADER_GL3W)

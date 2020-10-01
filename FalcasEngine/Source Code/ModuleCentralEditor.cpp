@@ -1,9 +1,9 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleCentralEditor.h"
-#include "External Libraries\ImGui/imgui.h"
-#include "External Libraries\ImGui/imgui_impl_sdl.h"
-#include "External Libraries\ImGui/imgui_impl_opengl3.h"
+#include "External Libraries/ImGui/imgui.h"
+#include "External Libraries/ImGui/imgui_impl_sdl.h"
+#include "External Libraries/ImGui/imgui_impl_opengl3.h"
 
 ModuleCentralEditor::ModuleCentralEditor(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -20,10 +20,10 @@ bool ModuleCentralEditor::Init()
 	LOG("Init ImGui stuff related");
 	bool ret = true;
 
-
+    /*
     // Initialize OpenGL loader
 #if defined(IMGUI_IMPL_OPENGL_LOADER_GL3W)
-    bool err = gl3wInit() != 0;
+    bool err = glewInit() != 0;
 #elif defined(IMGUI_IMPL_OPENGL_LOADER_GLEW)
     bool err = glewInit() != GLEW_OK;
 #elif defined(IMGUI_IMPL_OPENGL_LOADER_GLAD)
@@ -44,7 +44,7 @@ bool ModuleCentralEditor::Init()
         fprintf(stderr, "Failed to initialize OpenGL loader!\n");
         return 1;
     }
-
+    */
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
