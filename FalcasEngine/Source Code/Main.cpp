@@ -10,6 +10,7 @@
 #pragma comment( lib, "SDL/libx86/SDL2main.lib" )
 
 
+/*
 #if defined(IMGUI_IMPL_OPENGL_LOADER_GL3W)
 #include <GL/gl3w.h>            // Initialize with gl3wInit()
 #elif defined(IMGUI_IMPL_OPENGL_LOADER_GLEW)
@@ -30,7 +31,7 @@ using namespace gl;
 using namespace gl;
 #else #include IMGUI_IMPL_OPENGL_LOADER_CUSTOM
 #endif
-
+*/
 enum main_states
 {
 	MAIN_CREATION,

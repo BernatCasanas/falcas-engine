@@ -4,9 +4,7 @@
 #include "External Libraries/SDL/include/SDL_opengl.h"
 #include <gl/GL.h>
 #include <gl/GLU.h>
-#include "External Libraries/ImGui/imgui.h"
-#include "External Libraries/ImGui/imgui_impl_sdl.h"
-#include "External Libraries/ImGui/imgui_impl_opengl3.h"
+
 
 
 
