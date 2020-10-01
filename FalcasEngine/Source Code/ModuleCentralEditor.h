@@ -31,6 +31,7 @@ public:
 
 	bool show_demo_window;
 	bool show_another_window;
+	bool show_example;
 	
 };
 
