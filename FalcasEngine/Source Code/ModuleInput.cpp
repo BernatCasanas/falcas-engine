@@ -1,6 +1,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleInput.h"
+#include "ModuleCentralEditor.h"
 
 #define MAX_KEYS 300
 
@@ -87,6 +88,7 @@ update_status ModuleInput::PreUpdate(float dt)
 	SDL_Event e;
 	while(SDL_PollEvent(&e))
 	{
+		App->central_editor->ProcessEvents(e);
 		switch(e.type)
 		{
 			case SDL_MOUSEWHEEL:

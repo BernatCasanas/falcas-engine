@@ -5,6 +5,7 @@
 #include "External Libraries/SDL/include/SDL.h"
 
 class Application;
+class ImVec4;
 
 class ModuleCentralEditor : public Module
 {
@@ -18,8 +19,19 @@ public:
 	bool Init();
 	bool CleanUp();
 
+	update_status PreUpdate(float dt);
+	update_status Update(float dt);
+
+
+	bool ProcessEvents(SDL_Event event);
+
+	void Draw();
+
 
 public:
+
+	bool show_demo_window;
+	bool show_another_window;
 	
 };
 
