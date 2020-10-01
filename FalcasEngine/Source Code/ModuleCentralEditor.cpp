@@ -98,7 +98,7 @@ update_status ModuleCentralEditor::PreUpdate(float dt)
     return UPDATE_CONTINUE;
 }
 
-update_status ModuleCentralEditor::Update(float dt)
+update_status ModuleCentralEditor::PostUpdate(float dt)
 {
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
     // 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
@@ -110,7 +110,7 @@ update_status ModuleCentralEditor::Update(float dt)
         static float f = 0.0f;
         static int counter = 0;
 
-        ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
+        ImGui::Begin("Hello, world!", NULL);                          // Create a window called "Hello, world!" and append into it.
 
         ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
         ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
@@ -138,22 +138,6 @@ update_status ModuleCentralEditor::Update(float dt)
         ImGui::End();
     }
 
-    return UPDATE_CONTINUE;
-}
-
-bool ModuleCentralEditor::ProcessEvents(SDL_Event event)
-{
-    bool done = false;
-    ImGui_ImplSDL2_ProcessEvent(&event);
-    if (event.type == SDL_QUIT)
-        done = true;
-    if (event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_CLOSE && event.window.windowID == SDL_GetWindowID(App->window->window))
-        done = true;
-    return done;
-}
-
-void ModuleCentralEditor::Draw()
-{
     // Rendering
     ImGui::Render();
     //glViewport(0, 0, (int)io.DisplaySize.x, (int)io.DisplaySize.y);
@@ -174,4 +158,17 @@ void ModuleCentralEditor::Draw()
         ImGui::RenderPlatformWindowsDefault();
         SDL_GL_MakeCurrent(backup_current_window, backup_current_context);
     }
+
+    return UPDATE_CONTINUE;
+}
+
+bool ModuleCentralEditor::ProcessEvents(SDL_Event event)
+{
+    bool done = false;
+    ImGui_ImplSDL2_ProcessEvent(&event);
+    if (event.type == SDL_QUIT)
+        done = true;
+    if (event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_CLOSE && event.window.windowID == SDL_GetWindowID(App->window->window))
+        done = true;
+    return done;
 }

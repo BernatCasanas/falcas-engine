@@ -20,12 +20,11 @@ public:
 	bool CleanUp();
 
 	update_status PreUpdate(float dt);
-	update_status Update(float dt);
+	update_status PostUpdate(float dt);
 
 
 	bool ProcessEvents(SDL_Event event);
 
-	void Draw();
 
 
 public:
