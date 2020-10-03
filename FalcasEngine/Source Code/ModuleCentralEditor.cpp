@@ -4,6 +4,7 @@
 #include "External Libraries/ImGui/imgui.h"
 #include "External Libraries/ImGui/imgui_impl_sdl.h"
 #include "External Libraries/ImGui/imgui_impl_opengl3.h"
+#include "External Libraries/MathGeoLib/include/MathGeoLib.h"
 
 ModuleCentralEditor::ModuleCentralEditor(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
