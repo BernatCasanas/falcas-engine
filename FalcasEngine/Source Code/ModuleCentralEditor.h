@@ -3,6 +3,7 @@
 
 #include "Module.h"
 #include "External Libraries/SDL/include/SDL.h"
+#include <list>
 
 class Application;
 class ImVec4;
@@ -40,7 +41,7 @@ public:
 	float progress2;
 	float progress3;
 
-	float ms_arr[];
+	std::list<float> ms_arr;
 };
 
 #endif // __ModuleCentralEditor_H__

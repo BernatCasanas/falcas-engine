@@ -7,6 +7,7 @@
 #include "External Libraries/MathGeoLib/include/MathGeoLib.h"
 #include <Windows.h>
 #include <highlevelmonitorconfigurationapi.h>
+#include <list>
 
 
 ModuleCentralEditor::ModuleCentralEditor(Application* app, bool start_enabled) : Module(app, start_enabled)
@@ -106,8 +107,14 @@ update_status ModuleCentralEditor::PreUpdate(float dt)
     ImGui_ImplSDL2_NewFrame(App->window->window);
     ImGui::NewFrame();
     int i = 0;
-    //for (i; ms_arr != NULL; i++);
-    ms_arr[i] = ImGui::GetIO().Framerate;
+    
+    if (ms_arr.size() >= 200) {
+        ms_arr.pop_front();
+        ms_arr.push_back(ImGui::GetIO().Framerate);
+    }
+    else {
+        ms_arr.push_back(ImGui::GetIO().Framerate);
+    }
 
     return UPDATE_CONTINUE;
 }
@@ -197,9 +204,6 @@ update_status ModuleCentralEditor::PostUpdate(float dt)
             ImGui::End();
         }
     }
-    ImGui::Begin("Maria");
-    ImGui::Text("hol gilipollas");
-    ImGui::End();
     //About
     if (show_about) {
         ImGui::Begin("About Falcas Engine", NULL);
@@ -269,8 +273,14 @@ update_status ModuleCentralEditor::PostUpdate(float dt)
             SDL_SetWindowSize(App->window->window, (int)(progress2*1280/50), (int)(progress3 * 1024 / 50));
         }
         if (ImGui::CollapsingHeader("Application")) {
+            float ms[200];
+            std::copy(ms_arr.begin(), ms_arr.end(), ms);
+            ImGui::Text("Framerate:");
+            ImGui::PlotHistogram("", ms, 200, 0, "Milliseconds", 0.0f, 150.0f, ImVec2(0, 80.0f));
+        }
+        if (ImGui::CollapsingHeader("Input")) {
+        if (ImGui::CollapsingHeader("Input")) {
             
-            ImGui::PlotHistogram("Milliseconds", ms_arr, 20, 0, NULL, 0.0f, 1.0f, ImVec2(0, 80.0f));
         }
         
         ImGui::End();
