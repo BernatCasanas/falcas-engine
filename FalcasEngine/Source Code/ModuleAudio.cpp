@@ -25,6 +25,7 @@ bool ModuleAudio::Init()
 		ret = false;
 	}
 
+	Volume(50);
 
 	return ret;
 }
@@ -71,6 +72,6 @@ bool ModuleAudio::PlayFx(unsigned int id, int repeat)
 
 bool ModuleAudio::Volume(int volume)
 {
-	
+	Mix_Volume(-1, volume * 100 / 128);
 	return true;
 }
