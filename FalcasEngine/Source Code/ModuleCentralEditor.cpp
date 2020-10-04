@@ -276,13 +276,16 @@ update_status ModuleCentralEditor::PostUpdate(float dt)
             float ms[200];
             std::copy(ms_arr.begin(), ms_arr.end(), ms);
             ImGui::Text("Framerate:");
-            ImGui::PlotHistogram("", ms, 200, 0, "Milliseconds", 0.0f, 150.0f, ImVec2(0, 80.0f));
+            ImGui::PlotHistogram("", ms, 200, 0, "Frames per Second", 0.0f, 150.0f, ImVec2(0, 80.0f));
         }
-        if (ImGui::CollapsingHeader("Input")) {
         if (ImGui::CollapsingHeader("Input")) {
             
         }
-        
+        if (ImGui::CollapsingHeader("Audio")) {
+            float progress = 50.f;
+            ImGui::SliderFloat("Width", &progress, 0.0f, 100.0f);
+            
+        }
         ImGui::End();
     }
     //Console

@@ -1,7 +1,9 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleAudio.h"
+#include "External Libraries/SDL_mixer/include/SDL_mixer.h"
 
+#pragma comment( lib, "SDL_mixer/libx86/SDL2_mixer.lib" )
 
 ModuleAudio::ModuleAudio(Application* app, bool start_enabled) : Module(app, start_enabled)
 {}
@@ -65,4 +67,10 @@ bool ModuleAudio::PlayFx(unsigned int id, int repeat)
 	
 
 	return ret;
+}
+
+bool ModuleAudio::Volume(int volume)
+{
+	
+	return true;
 }
