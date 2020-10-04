@@ -283,7 +283,7 @@ update_status ModuleCentralEditor::PostUpdate(float dt)
         }
         if (ImGui::CollapsingHeader("Audio")) {
             float progress = 50.f;
-            ImGui::SliderFloat("Width", &progress, 0.0f, 100.0f);
+            ImGui::SliderFloat("", &progress, 0.0f, 100.0f);
         }
         ImGui::End();
     }
