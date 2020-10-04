@@ -5,6 +5,7 @@
 #include "External Libraries/ImGui/imgui_impl_sdl.h"
 #include "External Libraries/ImGui/imgui_impl_opengl3.h"
 #include "External Libraries/MathGeoLib/include/MathGeoLib.h"
+#include <Windows.h>
 
 ModuleCentralEditor::ModuleCentralEditor(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -75,6 +76,7 @@ bool ModuleCentralEditor::Init()
     show_demo_window = true;
     show_another_window = false;
     show_example = false;
+    show_about = false;
 	return ret;
 }
 
@@ -102,6 +104,44 @@ update_status ModuleCentralEditor::PreUpdate(float dt)
 
 update_status ModuleCentralEditor::PostUpdate(float dt)
 {
+    { // UPSIDE BAR
+        ImGui::BeginMainMenuBar();
+        if (ImGui::BeginMenu("File")) {
+            if (ImGui::MenuItem("Quit", "Esc")) {
+                return update_status::UPDATE_STOP;
+            }
+            ImGui::EndMenu();
+        }
+        if (ImGui::BeginMenu("View")) {
+            if (ImGui::MenuItem("Console", "1")) {
+
+            }
+            if (ImGui::MenuItem("Configuration", "4")) {
+
+            }
+            ImGui::EndMenu();
+        }
+        if (ImGui::BeginMenu("Help")) {
+            if (ImGui::MenuItem("Gui Demo")) {
+                show_example = !show_example;
+            }
+            if (ImGui::MenuItem("Documentation")) {
+                ShellExecute(NULL, NULL, "https://github.com/Falcas-Games/Falcas-Engine", NULL, NULL, SW_SHOWNORMAL);
+            }
+            if (ImGui::MenuItem("Download Latest")) {
+                ShellExecute(NULL, NULL, "https://github.com/Falcas-Games/Falcas-Engine/releases", NULL, NULL, SW_SHOWNORMAL);
+            }
+            if (ImGui::MenuItem("Report a bug")) {
+                ShellExecute(NULL, NULL, "https://github.com/Falcas-Games/Falcas-Engine/issues", NULL, NULL, SW_SHOWNORMAL);
+            }
+            if (ImGui::MenuItem("About")) {
+                show_about = !show_about;
+            }
+            ImGui::EndMenu();
+        }
+        ImGui::EndMainMenuBar();
+    }
+    //Demo Gui
     if (show_example) {
         ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
         if (show_demo_window)
@@ -141,17 +181,56 @@ update_status ModuleCentralEditor::PostUpdate(float dt)
             ImGui::End();
         }
     }
-    {
-        ImGui::BeginMainMenuBar();
-        if (ImGui::MenuItem("Exit")) {
-            return update_status::UPDATE_STOP;
+    //About
+    if (show_about) {
+        ImGui::Begin("About Falcas Engine", NULL);
+        ImGui::TextWrapped("Falcas Engine v0.1\n\n"
+            "This Game Engine is made in the game engines subject in CITM\n\n"
+            "Is made by:");
+        ImGui::Text("\n");
+        if (ImGui::Button("Bernat Casanas")) {
+            ShellExecute(NULL, NULL, "https://github.com/BernatCasanas", NULL, NULL, SW_SHOWNORMAL);
         }
-        if (ImGui::MenuItem("Show Example")) {
-            show_example = !show_example;
+        ImGui::Text("\n");
+        if (ImGui::Button("Arnau Falgueras")) {
+            ShellExecute(NULL, NULL, "https://github.com/Arnau77", NULL, NULL, SW_SHOWNORMAL);
         }
-        ImGui::EndMainMenuBar();
-    }
+        ImGui::Text("\n");
+        ImGui::Text("3rd Party Libraries used:\n");
+        ImGui::BulletText("SDL 2.0");
+        ImGui::BulletText("SDL Mixer 2.0");
+        ImGui::BulletText("Cereal 1.2.2");
+        ImGui::BulletText("Glew 7.0");
+        ImGui::BulletText("ImGui 1.51");
+        ImGui::BulletText("MathGeoLib 1.5");
+        ImGui::BulletText("OpenGL 3.1");
+        ImGui::BulletText("Assimp 3.1.1");
+        ImGui::BulletText("Devil 1.7.8");
+        ImGui::TextWrapped("\n\n"
+            "MIT License\n\n"
 
+            "Copyright(c) 2020 Falcas - Games\n\n"
+
+            "Permission is hereby granted, free of charge, to any person obtaining a copy"
+            "of this softwareand associated documentation files(the Software), to deal"
+            "in the Software without restriction, including without limitation the rights"
+            "to use, copy, modify, merge, publish, distribute, sublicense, and /or sell"
+            "copies of the Software, and to permit persons to whom the Software is"
+            "furnished to do so, subject to the following conditions :\n\n"
+
+            "The above copyright noticeand this permission notice shall be included in all"
+            "copies or substantial portions of the Software.\n\n"
+
+            "THE SOFTWARE IS PROVIDED AS IS, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR"
+            "IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,"
+            "FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.IN NO EVENT SHALL THE"
+            "AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER"
+            "LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,"
+            "OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE"
+            "SOFTWARE.");
+
+        ImGui::End();
+    }
     // Rendering
     ImGui::Render();
     //glViewport(0, 0, (int)io.DisplaySize.x, (int)io.DisplaySize.y);
