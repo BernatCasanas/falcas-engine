@@ -33,7 +33,14 @@ public:
 	bool show_another_window;
 	bool show_example;
 	bool show_about;
-	
+	bool show_configuration;
+	bool show_console;
+
+	float progress;
+	float progress2;
+	float progress3;
+
+	float ms_arr[];
 };
 
 #endif // __ModuleCentralEditor_H__

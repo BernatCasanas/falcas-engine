@@ -452,6 +452,7 @@
     <ClInclude Include="Source Code\External Libraries\MathGeoLib\include\Time\Clock.h">
       <Filter>External Libraries\MathGeoLib\Time</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\um\highlevelmonitorconfigurationapi.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Source Code\External Libraries\MathGeoLib\include\Geometry\KDTree.inl">

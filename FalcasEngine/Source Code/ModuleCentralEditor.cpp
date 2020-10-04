@@ -6,14 +6,20 @@
 #include "External Libraries/ImGui/imgui_impl_opengl3.h"
 #include "External Libraries/MathGeoLib/include/MathGeoLib.h"
 #include <Windows.h>
+#include <highlevelmonitorconfigurationapi.h>
+
 
 ModuleCentralEditor::ModuleCentralEditor(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
+    progress = 0.f;
+    progress2 = 50.f;
+    progress3 = 50.f;
 }
 
 // Destructor
 ModuleCentralEditor::~ModuleCentralEditor()
 {
+
 }
 
 // Called before render is available
@@ -77,6 +83,8 @@ bool ModuleCentralEditor::Init()
     show_another_window = false;
     show_example = false;
     show_about = false;
+    show_configuration = false;
+    show_console = false;
 	return ret;
 }
 
@@ -97,13 +105,22 @@ update_status ModuleCentralEditor::PreUpdate(float dt)
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplSDL2_NewFrame(App->window->window);
     ImGui::NewFrame();
-
+    int i = 0;
+    //for (i; ms_arr != NULL; i++);
+    ms_arr[i] = ImGui::GetIO().Framerate;
 
     return UPDATE_CONTINUE;
 }
 
 update_status ModuleCentralEditor::PostUpdate(float dt)
 {
+    //SHORTCUTS
+    if (App->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN)
+        show_configuration = !show_configuration;
+    if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+        show_console = !show_console;
+
+
     { // UPSIDE BAR
         ImGui::BeginMainMenuBar();
         if (ImGui::BeginMenu("File")) {
@@ -114,10 +131,10 @@ update_status ModuleCentralEditor::PostUpdate(float dt)
         }
         if (ImGui::BeginMenu("View")) {
             if (ImGui::MenuItem("Console", "1")) {
-
+                show_console = !show_console;
             }
             if (ImGui::MenuItem("Configuration", "4")) {
-
+                show_configuration = !show_configuration;
             }
             ImGui::EndMenu();
         }
@@ -170,7 +187,6 @@ update_status ModuleCentralEditor::PostUpdate(float dt)
         }
 
 
-
         // 3. Show another simple window.
         if (show_another_window)
         {
@@ -181,6 +197,9 @@ update_status ModuleCentralEditor::PostUpdate(float dt)
             ImGui::End();
         }
     }
+    ImGui::Begin("Maria");
+    ImGui::Text("hol gilipollas");
+    ImGui::End();
     //About
     if (show_about) {
         ImGui::Begin("About Falcas Engine", NULL);
@@ -231,6 +250,37 @@ update_status ModuleCentralEditor::PostUpdate(float dt)
 
         ImGui::End();
     }
+    //Configuration
+    if (show_configuration) {
+        DWORD bright;
+        HMONITOR monitor;
+        ImGui::Begin("Configuration");
+        ImGui::Text("Options");
+        if(ImGui::CollapsingHeader("Window")) {
+            //BRIGHT
+            ImGui::SliderFloat("Bright", &progress, 0.0f, 100.0f);
+            monitor = MonitorFromPoint({ App->input->GetMouseX(), App->input->GetMouseY() }, MONITOR_DEFAULTTOPRIMARY);
+            bright = progress;
+            //SetMonitorBrightness(monitor, progress);
+
+            //SIZE WINDOW
+            ImGui::SliderFloat("Width", &progress2, 0.0f, 100.0f);
+            ImGui::SliderFloat("Height", &progress3, 0.0f, 100.0f);
+            SDL_SetWindowSize(App->window->window, (int)(progress2*1280/50), (int)(progress3 * 1024 / 50));
+        }
+        if (ImGui::CollapsingHeader("Application")) {
+            
+            ImGui::PlotHistogram("Milliseconds", ms_arr, 20, 0, NULL, 0.0f, 1.0f, ImVec2(0, 80.0f));
+        }
+        
+        ImGui::End();
+    }
+    //Console
+    if (show_console) {
+
+    }
+    
+    
     // Rendering
     ImGui::Render();
     //glViewport(0, 0, (int)io.DisplaySize.x, (int)io.DisplaySize.y);
@@ -265,3 +315,4 @@ bool ModuleCentralEditor::ProcessEvents(SDL_Event event)
         done = true;
     return done;
 }
+
