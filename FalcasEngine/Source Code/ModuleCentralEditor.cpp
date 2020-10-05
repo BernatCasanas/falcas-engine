@@ -88,6 +88,8 @@ bool ModuleCentralEditor::Init()
     show_configuration = false;
     show_console = false;
     progress = 50.f;
+    progress2 = 50.f;
+    progress3 = 50.f;
 	return ret;
 }
 
@@ -281,7 +283,7 @@ update_status ModuleCentralEditor::PostUpdate(float dt)
             //SIZE WINDOW
             ImGui::SliderFloat("Width", &progress2, 0.0f, 100.0f);
             ImGui::SliderFloat("Height", &progress3, 0.0f, 100.0f);
-            SDL_SetWindowSize(App->window->window, (int)(progress2*1280/50), (int)(progress3 * 1024 / 50));
+            SDL_SetWindowSize(App->window->window, (int)(progress2*1280/50) * SCREEN_SIZE, (int)(progress3 * 720 / 50)* SCREEN_SIZE);
         }
         if (ImGui::CollapsingHeader("Application")) {
             float fr[200];
