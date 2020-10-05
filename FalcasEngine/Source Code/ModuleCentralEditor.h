@@ -41,6 +41,7 @@ public:
 	float progress2;
 	float progress3;
 
+	std::list<float> fr_arr;
 	std::list<float> ms_arr;
 };
 
