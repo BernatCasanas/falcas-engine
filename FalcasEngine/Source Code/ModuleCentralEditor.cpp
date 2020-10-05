@@ -296,11 +296,15 @@ update_status ModuleCentralEditor::PostUpdate(float dt)
             ImGui::PlotHistogram("", ms, 200, 0, ms_char, 0.0f, 30.f, ImVec2(0, 80.0f));
         }
         if (ImGui::CollapsingHeader("Input")) {
-            
+            ImGui::TextUnformatted(input_list.begin());
+            if (need_scroll)
+                ImGui::SetScrollHere(1.0f);
+            need_scroll = false;
         }
         if (ImGui::CollapsingHeader("Audio")) {
             float progress = 50.f;
             ImGui::SliderFloat("", &progress, 0.0f, 100.0f);
+            //code goes here
         }
         ImGui::End();
     }

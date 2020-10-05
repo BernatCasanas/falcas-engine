@@ -4,6 +4,7 @@
 #include "Module.h"
 #include "External Libraries/SDL/include/SDL.h"
 #include <list>
+#include "External Libraries/ImGui/imgui.h"
 
 class Application;
 class ImVec4;
@@ -43,6 +44,9 @@ public:
 
 	std::list<float> fr_arr;
 	std::list<float> ms_arr;
+
+	ImGuiTextBuffer  input_list;
+	bool need_scroll = false;
 };
 
 #endif // __ModuleCentralEditor_H__

@@ -2,6 +2,7 @@
 #include "Module.h"
 #include "Globals.h"
 
+
 #define MAX_MOUSE_BUTTONS 5
 
 enum KEY_STATE
@@ -23,10 +24,7 @@ public:
 	update_status PreUpdate(float dt);
 	bool CleanUp();
 
-	KEY_STATE GetKey(int id) const
-	{
-		return keyboard[id];
-	}
+	KEY_STATE GetKey(int id) const;
 
 	KEY_STATE GetMouseButton(int id) const
 	{
