@@ -6,7 +6,6 @@
 #include "External Libraries/ImGui/imgui_impl_opengl3.h"
 #include "External Libraries/MathGeoLib/include/MathGeoLib.h"
 #include <Windows.h>
-#include <highlevelmonitorconfigurationapi.h>
 #include <list>
 #include <stdio.h>
 
@@ -269,16 +268,12 @@ update_status ModuleCentralEditor::PostUpdate(float dt)
     }
     //Configuration
     if (show_configuration) {
-        DWORD bright;
-        HMONITOR monitor;
         ImGui::Begin("Configuration");
         ImGui::Text("Options");
         if(ImGui::CollapsingHeader("Window")) {
             //BRIGHT
             ImGui::SliderFloat("Bright", &progress, 0.0f, 100.0f);
-            monitor = MonitorFromPoint({ App->input->GetMouseX(), App->input->GetMouseY() }, MONITOR_DEFAULTTOPRIMARY);
-            bright = progress;
-            //SetMonitorBrightness(monitor, progress);
+            SDL_SetWindowBrightness(App->window->window, progress);
 
             //SIZE WINDOW
             ImGui::SliderFloat("Width", &progress2, 0.0f, 100.0f);
