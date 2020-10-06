@@ -112,7 +112,7 @@ update_status ModuleCentralEditor::PreUpdate(float dt)
     ImGui::NewFrame();
     int i = 0;
     
-    if (fr_arr.size() >= 200) {
+    if (fr_arr.size() >= 50) {
         fr_arr.pop_front();
         fr_arr.push_back(ImGui::GetIO().Framerate);
     }
@@ -120,7 +120,7 @@ update_status ModuleCentralEditor::PreUpdate(float dt)
         fr_arr.push_back(ImGui::GetIO().Framerate);
     }
     
-    if (ms_arr.size() >= 200) {
+    if (ms_arr.size() >= 50) {
         ms_arr.pop_front();
         ms_arr.push_back(ImGui::GetIO().Framerate/3.6);
     }
@@ -286,16 +286,16 @@ update_status ModuleCentralEditor::PostUpdate(float dt)
             SDL_SetWindowSize(App->window->window, (int)(progress2*1280/50) * SCREEN_SIZE, (int)(progress3 * 720 / 50)* SCREEN_SIZE);
         }
         if (ImGui::CollapsingHeader("Application")) {
-            float fr[200];
-            float ms[200];
+            float fr[50];
+            float ms[50];
             char fr_char[50];
             char ms_char[50];
             std::copy(fr_arr.begin(), fr_arr.end(), fr);
             std::copy(ms_arr.begin(), ms_arr.end(), ms);
             sprintf_s(fr_char,50, "%f Framerate", fr[49]);
             sprintf_s(ms_char,50, "%f Milliseconds", ms[49]);
-            ImGui::PlotHistogram("", fr, 200, 0, fr_char, 0.0f, 150.0f, ImVec2(0, 80.0f));
-            ImGui::PlotHistogram("", ms, 200, 0, ms_char, 0.0f, 30.f, ImVec2(0, 80.0f));
+            ImGui::PlotHistogram("", fr, 50, 0, fr_char, 0.0f, 150.0f, ImVec2(0, 80.0f));
+            ImGui::PlotHistogram("", ms, 50, 0, ms_char, 0.0f, 30.f, ImVec2(0, 80.0f));
         }
         if (ImGui::CollapsingHeader("Input")) {
             ImGui::TextUnformatted(input_list.begin());
