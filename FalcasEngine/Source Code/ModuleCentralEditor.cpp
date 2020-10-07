@@ -89,6 +89,7 @@ bool ModuleCentralEditor::Init()
     progress = 50.f;
     progress2 = 50.f;
     progress3 = 50.f;
+    progress4 = 50.f;
 	return ret;
 }
 
@@ -273,7 +274,7 @@ update_status ModuleCentralEditor::PostUpdate(float dt)
         if(ImGui::CollapsingHeader("Window")) {
             //BRIGHT
             ImGui::SliderFloat("Bright", &progress, 0.0f, 100.0f);
-            SDL_SetWindowBrightness(App->window->window, progress);
+            SDL_SetWindowBrightness(App->window->window, (progress*2)/100);
 
             //SIZE WINDOW
             ImGui::SliderFloat("Width", &progress2, 0.0f, 100.0f);
@@ -299,8 +300,7 @@ update_status ModuleCentralEditor::PostUpdate(float dt)
             need_scroll = false;
         }
         if (ImGui::CollapsingHeader("Audio")) {
-            float progress = 50.f;
-            ImGui::SliderFloat("", &progress, 0.0f, 100.0f);
+            ImGui::SliderFloat("", &progress4, 0.0f, 100.0f);
             //code goes here
         }
         ImGui::End();
