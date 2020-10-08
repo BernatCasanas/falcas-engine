@@ -307,7 +307,9 @@ update_status ModuleCentralEditor::PostUpdate(float dt)
     }
     //Console
     if (show_console) {
-
+        ImGui::Begin("Console");
+        //ImGui::Text()
+        ImGui::End();
     }
     
     
