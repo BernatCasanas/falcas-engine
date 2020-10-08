@@ -8,6 +8,7 @@
 #include <Windows.h>
 #include <list>
 #include <stdio.h>
+#include "Console.h"
 
 
 ModuleCentralEditor::ModuleCentralEditor(Application* app, bool start_enabled) : Module(app, start_enabled)
@@ -308,7 +309,10 @@ update_status ModuleCentralEditor::PostUpdate(float dt)
     //Console
     if (show_console) {
         ImGui::Begin("Console");
-        //ImGui::Text()
+        console_logs = App->console->GetLogs();
+        for (int i = 0; i < console_logs.size(); i++) {
+            ImGui::Text(console_logs.at(i));
+        }
         ImGui::End();
     }
     

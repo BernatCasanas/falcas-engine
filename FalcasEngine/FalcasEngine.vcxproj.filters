@@ -189,7 +189,7 @@
     <ClCompile Include="Source Code\External Libraries\MathGeoLib\include\Time\Clock.cpp">
       <Filter>External Libraries\MathGeoLib\Time</Filter>
     </ClCompile>
-    <ClCompile Include="Console.cpp">
+    <ClCompile Include="Source Code\Console.cpp">
       <Filter>Source Code</Filter>
     </ClCompile>
   </ItemGroup>
@@ -446,7 +446,7 @@
     <ClInclude Include="Source Code\External Libraries\MathGeoLib\include\Time\Clock.h">
       <Filter>External Libraries\MathGeoLib\Time</Filter>
     </ClInclude>
-    <ClInclude Include="Console.h">
+    <ClInclude Include="Source Code\Console.h">
       <Filter>Source Code</Filter>
     </ClInclude>
   </ItemGroup>

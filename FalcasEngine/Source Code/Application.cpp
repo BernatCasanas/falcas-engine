@@ -2,7 +2,7 @@
 
 Application::Application()
 {
-	//console = new Console();
+	console = new Console();
 	window = new ModuleWindow(this);
 	input = new ModuleInput(this);
 	audio = new ModuleAudio(this, true);
@@ -34,7 +34,7 @@ Application::Application()
 
 Application::~Application()
 {
-	//delete console;
+	delete console;
 	Module* item;
 
 	while(list_modules.empty() == false)
