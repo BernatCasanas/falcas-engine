@@ -7,13 +7,12 @@ class Console {
 public:
 	Console();
 	~Console();
-	void AddLog(char*);
+	void AddLog(const char*);
 	std::vector<char*> GetLogs();
-	bool console = true;
-	char* text2;
+
 
 private:
 	std::vector<char*> logs;
 
 };
-#endif //__Console_H__
+#endif //__Console_H__ 

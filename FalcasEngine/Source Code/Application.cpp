@@ -2,6 +2,7 @@
 
 Application::Application()
 {
+	console_active = true;
 	console = new Console();
 	window = new ModuleWindow(this);
 	input = new ModuleInput(this);

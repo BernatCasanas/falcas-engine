@@ -29,6 +29,7 @@ public:
 	ModulePhysics3D* physics;
 	ModuleCentralEditor* central_editor;
 	Console* console;
+	bool console_active;
 
 private:
 

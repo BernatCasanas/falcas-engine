@@ -1,29 +1,28 @@
 #include "Console.h"
+#include "Application.h"
 
 Console::Console()
 {
-	logs.push_back("HELLO");
-	logs.push_back("IT'S ME");
 }
 
 Console::~Console()
 {
+
 	while (logs.empty() == false) {
+		free(logs.back());
 		logs.pop_back();
 	}
+	App->console_active = false;
 }
 
-void Console::AddLog(char* text)
+void Console::AddLog(const char* text )
 {
-	int total = sizeof(text);
-	if (logs.size() < 3) {
-		text2 = text;
-		logs.push_back(text);
-		console = false;
-	}
+	if(App->console_active ==true)
+		logs.push_back(strdup(text));
 }
 
 std::vector<char*> Console::GetLogs()
 {
-	return logs;
+	if (App->console_active == true)
+		return logs;
 }
