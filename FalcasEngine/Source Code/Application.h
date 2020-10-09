@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef __Application_H__
+#define __Application_H__
+
 #include "Globals.h"
 #include "Timer.h"
 #include "Module.h"
@@ -42,9 +45,15 @@ public:
 	update_status Update();
 	bool CleanUp();
 
+
+
 private:
 
 	void AddModule(Module* mod);
 	void PrepareUpdate();
 	void FinishUpdate();
 };
+
+extern Application* App;
+
+#endif //__Application_H__

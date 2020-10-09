@@ -9,7 +9,6 @@ public:
 	~Console();
 	void AddLog(char*);
 	std::vector<char*> GetLogs();
-	int num_logs;
 
 private:
 	std::vector<char*> logs;
