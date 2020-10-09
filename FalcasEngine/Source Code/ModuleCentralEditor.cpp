@@ -308,6 +308,7 @@ update_status ModuleCentralEditor::PostUpdate(float dt)
     }
     //Console
     if (show_console) {
+        App->console->AddLog("HEY");
         ImGui::Begin("Console");
         console_logs = App->console->GetLogs();
         for (int i = 0; i < console_logs.size(); i++) {

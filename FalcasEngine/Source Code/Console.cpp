@@ -15,7 +15,12 @@ Console::~Console()
 
 void Console::AddLog(char* text)
 {
-	logs.push_back(text);
+	int total = sizeof(text);
+	if (logs.size() < 3) {
+		text2 = text;
+		logs.push_back(text);
+		console = false;
+	}
 }
 
 std::vector<char*> Console::GetLogs()

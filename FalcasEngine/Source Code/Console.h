@@ -9,8 +9,11 @@ public:
 	~Console();
 	void AddLog(char*);
 	std::vector<char*> GetLogs();
+	bool console = true;
+	char* text2;
 
 private:
 	std::vector<char*> logs;
+
 };
 #endif //__Console_H__
