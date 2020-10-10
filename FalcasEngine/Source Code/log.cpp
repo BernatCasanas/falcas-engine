@@ -5,6 +5,7 @@ void log(const char file[], int line, const char* format, ...)
 {
 	static char tmp_string[4096];
 	static char tmp_string2[4096];
+	static char tmp_string3[4096];
 	static va_list  ap;
 
 	// Construct the string from variable arguments
@@ -14,7 +15,8 @@ void log(const char file[], int line, const char* format, ...)
 	sprintf_s(tmp_string2, 4096, "\n%s(%d) : %s", file, line, tmp_string);
 	OutputDebugString(tmp_string2);
 	if (App != nullptr) {
-		App->console->AddLog(format);
+		sprintf_s(tmp_string3, 4096, "%s", tmp_string);
+		App->console->AddLog(tmp_string3);
 	}
 	
 }
