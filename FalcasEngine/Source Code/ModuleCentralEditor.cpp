@@ -9,6 +9,7 @@
 #include <list>
 #include <stdio.h>
 #include "External Libraries/SDL/include/SDL.h"
+#include "Console.h"
 
 
 ModuleCentralEditor::ModuleCentralEditor(Application* app, bool start_enabled) : Module(app, start_enabled)
@@ -323,8 +324,12 @@ update_status ModuleCentralEditor::PostUpdate(float dt)
     }
     //Console
     if (show_console) {
+        //App->console->AddLog("HEY");
         ImGui::Begin("Console");
-        
+        console_logs = App->console->GetLogs();
+        for (int i = 0; i < console_logs.size(); i++) {
+            ImGui::Text(console_logs.at(i));
+        }
         ImGui::End();
     }
     

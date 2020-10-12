@@ -13,6 +13,7 @@
   <ItemGroup>
     <ClCompile Include="Source Code\Application.cpp" />
     <ClCompile Include="Source Code\Color.cpp" />
+    <ClCompile Include="Source Code\Console.cpp" />
     <ClCompile Include="Source Code\External Libraries\ImGui\imgui.cpp" />
     <ClCompile Include="Source Code\External Libraries\ImGui\imgui_demo.cpp" />
     <ClCompile Include="Source Code\External Libraries\ImGui\imgui_draw.cpp" />
@@ -69,6 +70,7 @@
   <ItemGroup>
     <ClInclude Include="Source Code\Application.h" />
     <ClInclude Include="Source Code\Color.h" />
+    <ClInclude Include="Source Code\Console.h" />
     <ClInclude Include="Source Code\External Libraries\ImGui\imconfig.h" />
     <ClInclude Include="Source Code\External Libraries\ImGui\imgui.h" />
     <ClInclude Include="Source Code\External Libraries\ImGui\imgui_impl_opengl3.h" />
@@ -149,9 +151,6 @@
     <ClInclude Include="Source Code\ModuleRenderer3D.h" />
     <ClInclude Include="Source Code\ModuleSceneIntro.h" />
     <ClInclude Include="Source Code\ModuleWindow.h" />
-    <ClInclude Include="Source Code\p2DynArray.h" />
-    <ClInclude Include="Source Code\p2List.h" />
-    <ClInclude Include="Source Code\p2Point.h" />
     <ClInclude Include="Source Code\Primitive.h" />
     <ClInclude Include="Source Code\Timer.h" />
   </ItemGroup>

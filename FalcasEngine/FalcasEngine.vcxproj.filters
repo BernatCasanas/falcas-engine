@@ -189,6 +189,9 @@
     <ClCompile Include="Source Code\External Libraries\MathGeoLib\include\Time\Clock.cpp">
       <Filter>External Libraries\MathGeoLib\Time</Filter>
     </ClCompile>
+    <ClCompile Include="Source Code\Console.cpp">
+      <Filter>Source Code</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source Code\Application.h">
@@ -231,15 +234,6 @@
       <Filter>Source Code</Filter>
     </ClInclude>
     <ClInclude Include="Source Code\ModuleWindow.h">
-      <Filter>Source Code</Filter>
-    </ClInclude>
-    <ClInclude Include="Source Code\p2DynArray.h">
-      <Filter>Source Code</Filter>
-    </ClInclude>
-    <ClInclude Include="Source Code\p2List.h">
-      <Filter>Source Code</Filter>
-    </ClInclude>
-    <ClInclude Include="Source Code\p2Point.h">
       <Filter>Source Code</Filter>
     </ClInclude>
     <ClInclude Include="Source Code\Primitive.h">
@@ -451,6 +445,9 @@
     </ClInclude>
     <ClInclude Include="Source Code\External Libraries\MathGeoLib\include\Time\Clock.h">
       <Filter>External Libraries\MathGeoLib\Time</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\Console.h">
+      <Filter>Source Code</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -19,8 +19,13 @@ public:
 
 	void OnResize(int width, int height);
 
-public:
+	uint DrawCube(uint);
+	uint CreateIndices(uint);
 
+public:
+	uint my_id;
+	uint my_id_vertices;
+	bool cube = false;
 	Light lights[MAX_LIGHTS];
 	SDL_GLContext context;
 	mat3x3 NormalMatrix;

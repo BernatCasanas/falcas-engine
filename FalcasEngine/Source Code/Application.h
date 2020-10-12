@@ -1,6 +1,8 @@
 #pragma once
 
-#include "p2List.h"
+#ifndef __Application_H__
+#define __Application_H__
+
 #include "Globals.h"
 #include "Timer.h"
 #include "Module.h"
@@ -12,6 +14,8 @@
 #include "ModuleCamera3D.h"
 #include "ModulePhysics3D.h"
 #include "ModuleCentralEditor.h"
+#include "Console.h"
+#include <vector>
 
 class Application
 {
@@ -24,12 +28,14 @@ public:
 	ModuleCamera3D* camera;
 	ModulePhysics3D* physics;
 	ModuleCentralEditor* central_editor;
+	Console* console;
+	bool console_active;
 
 private:
 
 	Timer	ms_timer;
 	float	dt;
-	p2List<Module*> list_modules;
+	std::vector<Module*> list_modules;
 
 public:
 
@@ -40,9 +46,15 @@ public:
 	update_status Update();
 	bool CleanUp();
 
+
+
 private:
 
 	void AddModule(Module* mod);
 	void PrepareUpdate();
 	void FinishUpdate();
 };
+
+extern Application* App;
+
+#endif //__Application_H__

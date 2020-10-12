@@ -4,6 +4,7 @@
 #include "Module.h"
 #include "External Libraries/SDL/include/SDL.h"
 #include <list>
+#include <vector>
 #include "External Libraries/ImGui/imgui.h"
 
 class Application;
@@ -45,6 +46,8 @@ public:
 
 	std::list<float> fr_arr;
 	std::list<float> ms_arr;
+
+	std::vector<char*> console_logs;
 
 	ImGuiTextBuffer  input_list;
 	bool need_scroll = false;
