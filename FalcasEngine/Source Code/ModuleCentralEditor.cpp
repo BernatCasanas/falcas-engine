@@ -1,16 +1,19 @@
-#include "Globals.h"
+﻿#include "Globals.h"
 #include "Application.h"
 #include "ModuleCentralEditor.h"
+#include "External Libraries/Glew/include/glew.h"
+#include "External Libraries/MathGeoLib/include/MathGeoLib.h"
 #include "External Libraries/ImGui/imgui.h"
 #include "External Libraries/ImGui/imgui_impl_sdl.h"
 #include "External Libraries/ImGui/imgui_impl_opengl3.h"
-#include "External Libraries/MathGeoLib/include/MathGeoLib.h"
+#include "External Libraries/SDL/include/SDL.h"
+#include "External Libraries/SDL/include/SDL_opengl.h"
+#include <gl/GL.h>
+#include <string>
 #include <Windows.h>
 #include <list>
 #include <stdio.h>
-#include "External Libraries/SDL/include/SDL.h"
 #include "Console.h"
-
 
 ModuleCentralEditor::ModuleCentralEditor(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -315,10 +318,33 @@ update_status ModuleCentralEditor::PostUpdate(float dt)
             ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%i", SDL_GetCPUCount());
             ImGui::SameLine();
             ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "(Cache: %i kb)", SDL_GetCPUCacheLineSize());
-            ImGui::Separator();
             ImGui::Text("System RAM: ");
             ImGui::SameLine();
             ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%i Mb", SDL_GetSystemRAM());
+            ImGui::Text("Caps: ");
+            ImGui::SameLine();
+            if(SDL_Has3DNow) ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "3D Now "); ImGui::SameLine();
+            if(SDL_HasAVX) ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "AVX "); ImGui::SameLine();
+            if(SDL_HasAVX2) ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "AVX2 "); ImGui::SameLine();
+            if(SDL_HasAltiVec) ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "AltiVec "); ImGui::SameLine();
+            if(SDL_HasMMX) ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "MMX "); ImGui::SameLine();
+            if(SDL_HasRDTSC) ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "RDTSC "); ImGui::SameLine();
+            if(SDL_HasSSE) ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "SSE "); ImGui::SameLine();
+            if(SDL_HasSSE2) ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "SSE2 "); ImGui::SameLine();
+            if(SDL_HasSSE3) ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "SSE3 "); ImGui::SameLine();
+            if(SDL_HasSSE41) ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "SSE41 "); ImGui::SameLine();
+            if(SDL_HasSSE42) ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "SSE42 "); ImGui::SameLine();
+            ImGui::Separator();
+            //no me detecta la funcion glgetstring
+           /* const GLubyte* vendor = (const char*)glGetString​(GL_VENDOR);
+            const GLubyte* renderer = (const char*)glGetString​(GL_RENDERER);
+            ImGui::Text("GPU: ");
+            ImGui::SameLine();
+            ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%i", vendor);
+            ImGui::Text("Brand: ");
+            ImGui::SameLine();
+            ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%i", vendor);*/
+
         }
         ImGui::End();
     }
