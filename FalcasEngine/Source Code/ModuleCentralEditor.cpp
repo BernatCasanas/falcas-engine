@@ -8,6 +8,7 @@
 #include <Windows.h>
 #include <list>
 #include <stdio.h>
+#include "External Libraries/SDL/include/SDL.h"
 
 
 ModuleCentralEditor::ModuleCentralEditor(Application* app, bool start_enabled) : Module(app, start_enabled)
@@ -303,11 +304,28 @@ update_status ModuleCentralEditor::PostUpdate(float dt)
             ImGui::SliderFloat("", &progress4, 0.0f, 100.0f);
             //code goes here
         }
+        if (ImGui::CollapsingHeader("Hardware")) {
+            ImGui::Text("SDL Version: ");
+            ImGui::SameLine();
+            ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "2.0");
+            ImGui::Separator();
+            ImGui::Text("CPUs: ");
+            ImGui::SameLine();
+            ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%i", SDL_GetCPUCount());
+            ImGui::SameLine();
+            ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "(Cache: %i kb)", SDL_GetCPUCacheLineSize());
+            ImGui::Separator();
+            ImGui::Text("System RAM: ");
+            ImGui::SameLine();
+            ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%i Mb", SDL_GetSystemRAM());
+        }
         ImGui::End();
     }
     //Console
     if (show_console) {
-
+        ImGui::Begin("Console");
+        
+        ImGui::End();
     }
     
     
