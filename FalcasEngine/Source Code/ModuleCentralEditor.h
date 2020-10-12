@@ -38,6 +38,9 @@ public:
 	bool show_about;
 	bool show_configuration;
 	bool show_console;
+	bool show_openglOptions;
+
+	bool depth, cullface, lighting, colorMaterial, texture, ambient, stencil, wireframe;
 
 	float progress;
 	float progress2;

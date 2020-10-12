@@ -1,7 +1,10 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleSceneIntro.h"
+#include "ModuleCentralEditor.h"
 #include "Primitive.h"
+#include <gl/GL.h>
+
 
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -35,6 +38,13 @@ update_status ModuleSceneIntro::Update(float dt)
 	Plane p(0, 1, 0, 0);
 	p.axis = true;
 	p.Render();
+
+	Cube c(1, 1, 1);
+	c.Render();
+
+	if (App->central_editor->wireframe) {
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	}
 
 	return UPDATE_CONTINUE;
 }
