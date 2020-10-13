@@ -43,7 +43,12 @@ update_status ModuleSceneIntro::Update(float dt)
 	c.Render();
 
 	if (App->central_editor->wireframe) {
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		glPolygonMode(GL_FRONT, GL_LINE);
+		glPolygonMode(GL_BACK, GL_LINE);
+	}
+	else {
+		glPolygonMode(GL_FRONT, GL_FILL);
+		glPolygonMode(GL_BACK, GL_FILL);
 	}
 
 	return UPDATE_CONTINUE;
