@@ -152,8 +152,9 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 	if (cube == false) {
 		my_id = 0;
 		my_id_vertices = 0;
-		my_id_vertices = CreateIndices(my_id_vertices);
 		my_id = DrawCube(my_id);
+
+		my_id_vertices = CreateIndices(my_id_vertices);
 		cube = true;
 	}
 	glEnableClientState(GL_VERTEX_ARRAY);
