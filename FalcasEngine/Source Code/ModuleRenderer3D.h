@@ -22,6 +22,7 @@ public:
 	uint DrawCube(uint);
 	uint CreateIndices(uint);
 
+
 public:
 	uint my_id;
 	uint my_id_vertices;
