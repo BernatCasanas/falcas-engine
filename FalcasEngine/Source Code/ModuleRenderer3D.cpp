@@ -118,9 +118,10 @@ bool ModuleRenderer3D::Init()
 
 	// Projection matrix for
 	OnResize(SCREEN_WIDTH, SCREEN_HEIGHT);
-
-
-	cube = new Cube(Shapes::Cube, { 0,0,0 }, 1);
+	//DIFFERENT SHAPES' INITIALIZATION
+	//square_pyramid = new SquarePyramid(Shapes::SquarePyramid, { 0,0,0 }, 1,1);
+	//cube = new Cube(Shapes::Cube, { 0,0,0 }, 1);
+	//rectangular_prism = new RectangularPrism(Shapes::RectangularPrism, { 0,0,0 }, 1, 1, 1);
 
 	return ret;
 }
@@ -140,7 +141,10 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	for(uint i = 0; i < MAX_LIGHTS; ++i)
 		lights[i].Render();
 	glLineWidth(2.0f);
-	cube->Render();
+	//DIFFERENT SHAPES' RENDERIZATION
+	//cube->Render();
+	//square_pyramid->Render();
+	//rectangular_prism->Render();
 	glLineWidth(1.0f);
 	
 	return UPDATE_CONTINUE;
@@ -160,7 +164,10 @@ bool ModuleRenderer3D::CleanUp()
 {
 	LOG("Destroying 3D Renderer");
 
-	delete cube;
+	//DIFFERENT SHAPES' ELIMINATION
+	//delete cube;
+	//delete square_pyramid;
+	//delete rectangular_prism;
 	SDL_GL_DeleteContext(context);
 
 	return true;

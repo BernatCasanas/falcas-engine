@@ -7,6 +7,8 @@
 #define MAX_LIGHTS 8
 
 class Cube;
+class SquarePyramid;
+class RectangularPrism;
 
 class ModuleRenderer3D : public Module
 {
@@ -30,6 +32,8 @@ public:
 
 public:
 	Cube* cube;
+	SquarePyramid* square_pyramid;
+	RectangularPrism* rectangular_prism;
 	Light lights[MAX_LIGHTS];
 	SDL_GLContext context;
 	mat3x3 NormalMatrix;
