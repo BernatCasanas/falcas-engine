@@ -13,12 +13,6 @@
 #pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */
 #pragma comment (lib, "Glew/libx86/glew32.lib")
 
-static const float vertices[] = {
-	0.f, 0.f, 0.f, 0.f, 0.f, 1.f, 0.f, 1.f, 0.f, 0.f, 1.f, 1.f, 1.f, 0.f, 0.f, 1.f, 0.f, 1.f, 1.f, 1.f, 0.f, 1.f, 1.f, 1.f
-};
-
-static const float indices[] = { 1, 5, 3, 5, 7, 3, 4, 2, 6, 4, 0, 2, 5, 4, 7, 4, 6, 7, 1, 3, 0, 0, 3, 2, 3, 7, 2, 7, 6, 2, 1, 0, 5, 5, 0, 4 
-};
 
 ModuleRenderer3D::ModuleRenderer3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -163,7 +157,7 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 
 	glDisableClientState(GL_VERTEX_ARRAY);
 	*/
-	DrawCubeGLDrawArrays();
+	DrawCubeGLDrawElements();
 	glLineWidth(1.0f);
 	
 	return UPDATE_CONTINUE;
@@ -206,7 +200,7 @@ uint ModuleRenderer3D::DrawCube(uint my_id)
 {
 	glGenBuffers(1, (GLuint*)&(my_id));
 	glBindBuffer(GL_ARRAY_BUFFER, my_id);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 24, vertices, GL_STATIC_DRAW);
+	//glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 24, vertices, GL_STATIC_DRAW);
 	return my_id;
 }
 
@@ -214,7 +208,7 @@ uint ModuleRenderer3D::CreateIndices(uint my_indices)
 {
 	glGenBuffers(1, (GLuint*)&(my_indices));
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(float) * 36, indices, GL_STATIC_DRAW);
+	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(float) * 36, indices, GL_STATIC_DRAW);
 	return my_indices;
 }
 
@@ -275,6 +269,41 @@ void ModuleRenderer3D::DrawCubeGLDrawArrays()
 	glBindBuffer(GL_ARRAY_BUFFER, my_id);
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
 	glDrawArrays(GL_TRIANGLES, 0, num_vertices);
+	glDisableClientState(GL_VERTEX_ARRAY);
+}
+
+void ModuleRenderer3D::DrawCubeGLDrawElements()
+{
+	float vertices[] = {0.f, 0.f, 0.f, 0.f, 0.f, 1.f, 0.f, 1.f, 0.f, 0.f, 1.f, 1.f, 1.f, 0.f, 0.f, 1.f, 0.f, 1.f, 1.f, 1.f, 0.f, 1.f, 1.f, 1.f};
+	float num_vertices = sizeof(vertices)/sizeof(float);
+
+
+	int indices[] = { 1, 5, 3, 5, 7, 3, 4, 2, 6, 4, 0, 2, 5, 4, 7, 4, 6, 7, 1, 3, 0, 0, 3, 2, 3, 7, 2, 7, 6, 2, 1, 0, 5, 5, 0, 4};
+	float num_indices = sizeof(indices) / sizeof(int);
+	
+
+	uint my_id_vertices = 0;
+	uint my_id_indices = 0;
+	glGenBuffers(1, (GLuint*)&(my_id_vertices));
+	glBindBuffer(GL_ARRAY_BUFFER, my_id_vertices);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	glGenBuffers(1, (GLuint*)&(my_id_indices));
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_id_indices);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+	
+
+	glEnableClientState(GL_VERTEX_ARRAY);
+
+
+
+	glBindBuffer(GL_ARRAY_BUFFER, my_id_vertices);
+	glVertexPointer(3, GL_FLOAT, 0, NULL);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_id_indices);
+
+
+	glDrawElements(GL_TRIANGLES, num_indices, GL_UNSIGNED_INT, NULL);
+
 	glDisableClientState(GL_VERTEX_ARRAY);
 }
 

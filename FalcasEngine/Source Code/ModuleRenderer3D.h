@@ -23,6 +23,7 @@ public:
 	uint CreateIndices(uint);
 	void DrawCubeDirectMode();
 	void DrawCubeGLDrawArrays();
+	void DrawCubeGLDrawElements();
 
 
 public:
