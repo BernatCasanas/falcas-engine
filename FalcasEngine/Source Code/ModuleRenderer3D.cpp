@@ -122,6 +122,8 @@ bool ModuleRenderer3D::Init()
 	//square_pyramid = new SquarePyramid(Shapes::SquarePyramid, { 0,0,0 }, 1,1);
 	//cube = new Cube(Shapes::Cube, { 0,0,0 }, 1);
 	//rectangular_prism = new RectangularPrism(Shapes::RectangularPrism, { 0,0,0 }, 1, 1, 1);
+	//triangular_pyramid = new TriangularPyramid(Shapes::TriangularPyramid, { 0,0,0 }, 1);
+	//rectangular_pyramid = new RectangularPyramid(Shapes::RectangularPyramid, { 0,0,0 }, 1, 3, 2);
 
 	return ret;
 }
@@ -145,6 +147,8 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	//cube->Render();
 	//square_pyramid->Render();
 	//rectangular_prism->Render();
+	//triangular_pyramid->Render();
+	//rectangular_pyramid->Render();
 	glLineWidth(1.0f);
 	
 	return UPDATE_CONTINUE;
@@ -168,6 +172,8 @@ bool ModuleRenderer3D::CleanUp()
 	//delete cube;
 	//delete square_pyramid;
 	//delete rectangular_prism;
+	//delete triangular_pyramid;
+	//delete rectangular_pyramid;
 	SDL_GL_DeleteContext(context);
 
 	return true;

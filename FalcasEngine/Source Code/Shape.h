@@ -6,7 +6,9 @@ enum class Shapes {
 	Unknown=-1,
 	Cube,
 	RectangularPrism,
+	TriangularPyramid,
 	SquarePyramid,
+	RectangularPyramid,
 };
 
 class Shape {
@@ -39,7 +41,13 @@ private:
 	uint size_height;
 	uint size_width;
 };
-
+class TriangularPyramid : public Shape {
+public:
+	TriangularPyramid(Shapes shape, float3 position, uint size);
+	virtual ~TriangularPyramid() {};
+private:
+	uint size;
+};
 class SquarePyramid : public Shape {
 public:
 	SquarePyramid(Shapes shape, float3 position, uint height, uint size_base);
@@ -47,4 +55,13 @@ public:
 private:
 	uint height;
 	uint size_base;
+};
+class RectangularPyramid : public Shape {
+public:
+	RectangularPyramid(Shapes shape, float3 position, uint height, uint size_length, uint size_width);
+	virtual ~RectangularPyramid() {};
+private:
+	uint height;
+	uint size_length;
+	uint size_width;
 };

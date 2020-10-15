@@ -9,6 +9,8 @@
 class Cube;
 class SquarePyramid;
 class RectangularPrism;
+class TriangularPyramid;
+class RectangularPyramid;
 
 class ModuleRenderer3D : public Module
 {
@@ -34,6 +36,8 @@ public:
 	Cube* cube;
 	SquarePyramid* square_pyramid;
 	RectangularPrism* rectangular_prism;
+	TriangularPyramid* triangular_pyramid;
+	RectangularPyramid* rectangular_pyramid;
 	Light lights[MAX_LIGHTS];
 	SDL_GLContext context;
 	mat3x3 NormalMatrix;
