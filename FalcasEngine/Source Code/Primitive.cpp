@@ -98,7 +98,7 @@ void Primitive::Scale(float x, float y, float z)
 {
 	transform.scale(x, y, z);
 }
-
+/*
 // CUBE ============================================
 Cube::Cube() : Primitive(), size(1.0f, 1.0f, 1.0f)
 {
@@ -156,7 +156,7 @@ void Cube::InnerRender() const
 
 	glEnd();
 }
-
+*/
 // SPHERE ============================================
 Sphere::Sphere() : Primitive(), radius(1.0f)
 {

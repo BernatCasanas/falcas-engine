@@ -37,7 +37,7 @@ protected:
 };
 
 // ============================================
-class Cube : public Primitive
+/*class Cube : public Primitive
 {
 public :
 	Cube();
@@ -46,7 +46,7 @@ public :
 public:
 	vec3 size;
 };
-
+*/
 // ============================================
 class Sphere : public Primitive
 {

@@ -192,6 +192,9 @@
     <ClCompile Include="Source Code\Console.cpp">
       <Filter>Source Code</Filter>
     </ClCompile>
+    <ClCompile Include="Source Code\Shape.cpp">
+      <Filter>Source Code</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source Code\Application.h">
@@ -447,6 +450,9 @@
       <Filter>External Libraries\MathGeoLib\Time</Filter>
     </ClInclude>
     <ClInclude Include="Source Code\Console.h">
+      <Filter>Source Code</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\Shape.h">
       <Filter>Source Code</Filter>
     </ClInclude>
   </ItemGroup>

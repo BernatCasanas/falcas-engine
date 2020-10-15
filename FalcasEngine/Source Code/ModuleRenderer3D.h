@@ -6,6 +6,8 @@
 
 #define MAX_LIGHTS 8
 
+class Cube;
+
 class ModuleRenderer3D : public Module
 {
 public:
@@ -27,9 +29,7 @@ public:
 
 
 public:
-	uint my_id;
-	uint my_id_vertices;
-	bool cube = false;
+	Cube* cube;
 	Light lights[MAX_LIGHTS];
 	SDL_GLContext context;
 	mat3x3 NormalMatrix;

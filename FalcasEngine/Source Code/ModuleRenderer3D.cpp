@@ -1,5 +1,6 @@
 #include "Globals.h"
 #include "Application.h"
+#include "Shape.h"
 #include "ModuleRenderer3D.h"
 #include "External Libraries/Glew/include/glew.h"
 #include "External Libraries/SDL/include/SDL_opengl.h"
@@ -118,6 +119,9 @@ bool ModuleRenderer3D::Init()
 	// Projection matrix for
 	OnResize(SCREEN_WIDTH, SCREEN_HEIGHT);
 
+
+	cube = new Cube(Shapes::Cube, { 0,0,0 }, 1);
+
 	return ret;
 }
 
@@ -135,29 +139,8 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 
 	for(uint i = 0; i < MAX_LIGHTS; ++i)
 		lights[i].Render();
-	glLineWidth(2.0f);/*
-	if (cube == false) {
-		my_id = 0;
-		my_id_vertices = 0;
-		my_id = DrawCube(my_id);
-
-		my_id_vertices = CreateIndices(my_id_vertices);
-		cube = true;
-	}
-	glEnableClientState(GL_VERTEX_ARRAY);
-
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
-	glBindBuffer(GL_ARRAY_BUFFER, my_id);
-	glVertexPointer(3, GL_FLOAT, 0, NULL);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_id_vertices);
-
-
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, NULL);
-
-	glDisableClientState(GL_VERTEX_ARRAY);
-	*/
-	DrawCubeGLDrawElements();
+	glLineWidth(2.0f);
+	cube->Render();
 	glLineWidth(1.0f);
 	
 	return UPDATE_CONTINUE;
@@ -177,6 +160,7 @@ bool ModuleRenderer3D::CleanUp()
 {
 	LOG("Destroying 3D Renderer");
 
+	delete cube;
 	SDL_GL_DeleteContext(context);
 
 	return true;
@@ -305,6 +289,7 @@ void ModuleRenderer3D::DrawCubeGLDrawElements()
 	glDrawElements(GL_TRIANGLES, num_indices, GL_UNSIGNED_INT, NULL);
 
 	glDisableClientState(GL_VERTEX_ARRAY);
+
 }
 
 
