@@ -21,6 +21,8 @@ public:
 
 	uint DrawCube(uint);
 	uint CreateIndices(uint);
+	void DrawCubeDirectMode();
+	void DrawCubeGLDrawArrays();
 
 
 public:

@@ -38,10 +38,7 @@ update_status ModuleSceneIntro::Update(float dt)
 	Plane p(0, 1, 0, 0);
 	p.axis = true;
 	p.Render();
-
-	Cube c(1, 1, 1);
-	c.Render();
-
+	
 	if (App->central_editor->wireframe) {
 		glPolygonMode(GL_FRONT, GL_LINE);
 		glPolygonMode(GL_BACK, GL_LINE);
@@ -50,7 +47,7 @@ update_status ModuleSceneIntro::Update(float dt)
 		glPolygonMode(GL_FRONT, GL_FILL);
 		glPolygonMode(GL_BACK, GL_FILL);
 	}
-
+	
 	return UPDATE_CONTINUE;
 }
 
