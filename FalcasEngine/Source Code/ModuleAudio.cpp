@@ -1,6 +1,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleAudio.h"
+#include "External Libraries/SDL/include/SDL.h"
 
 ModuleAudio::ModuleAudio(Application* app, bool start_enabled) : Module(app, start_enabled)
 {}

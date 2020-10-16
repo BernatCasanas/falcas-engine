@@ -1,4 +1,15 @@
 #include "Application.h"
+#include "Timer.h"
+#include "Module.h"
+#include "ModuleWindow.h"
+#include "ModuleInput.h"
+#include "ModuleAudio.h"
+#include "ModuleSceneIntro.h"
+#include "ModuleRenderer3D.h"
+#include "ModuleCamera3D.h"
+#include "ModulePhysics3D.h"
+#include "ModuleCentralEditor.h"
+#include "Console.h"
 
 Application::Application()
 {

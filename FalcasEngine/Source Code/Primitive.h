@@ -46,7 +46,7 @@ public :
 public:
 	vec3 size;
 };
-*/
+
 // ============================================
 class Sphere : public Primitive
 {
@@ -56,7 +56,7 @@ public:
 	void InnerRender() const;
 public:
 	float radius;
-};
+};*/
 
 // ============================================
 class Cylinder : public Primitive

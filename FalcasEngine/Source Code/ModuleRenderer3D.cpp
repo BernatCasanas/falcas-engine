@@ -2,11 +2,14 @@
 #include "Application.h"
 #include "Shape.h"
 #include "ModuleRenderer3D.h"
+#include "ModuleCamera3D.h"
 #include "External Libraries/Glew/include/glew.h"
 #include "External Libraries/SDL/include/SDL_opengl.h"
 #include <gl/GL.h>
 #include <gl/GLU.h>
 #include "External Libraries/ImGui/imgui.h"
+#include "External Libraries/SDL/include/SDL.h"
+#include "ModuleWindow.h"
 
 
 
@@ -124,6 +127,7 @@ bool ModuleRenderer3D::Init()
 	//rectangular_prism = new RectangularPrism(Shapes::RectangularPrism, { 0,0,0 }, 1, 1, 1);
 	//triangular_pyramid = new TriangularPyramid(Shapes::TriangularPyramid, { 0,0,0 }, 1);
 	//rectangular_pyramid = new RectangularPyramid(Shapes::RectangularPyramid, { 0,0,0 }, 1, 3, 2);
+	solid_sphere = new SolidSphere(Shapes::SolidSphere, { 0,0,0 }, 1, 12, 24);
 
 	return ret;
 }
@@ -149,6 +153,7 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	//rectangular_prism->Render();
 	//triangular_pyramid->Render();
 	//rectangular_pyramid->Render();
+	solid_sphere->Render();
 	glLineWidth(1.0f);
 	
 	return UPDATE_CONTINUE;
@@ -157,8 +162,6 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 // PostUpdate present buffer to screen
 update_status ModuleRenderer3D::PostUpdate(float dt)
 {
-	
-
 	SDL_GL_SwapWindow(App->window->window);
 	return UPDATE_CONTINUE;
 }
@@ -174,6 +177,7 @@ bool ModuleRenderer3D::CleanUp()
 	//delete rectangular_prism;
 	//delete triangular_pyramid;
 	//delete rectangular_pyramid;
+	delete solid_sphere;
 	SDL_GL_DeleteContext(context);
 
 	return true;
@@ -192,117 +196,3 @@ void ModuleRenderer3D::OnResize(int width, int height)
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 }
-
-uint ModuleRenderer3D::DrawCube(uint my_id)
-{
-	glGenBuffers(1, (GLuint*)&(my_id));
-	glBindBuffer(GL_ARRAY_BUFFER, my_id);
-	//glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 24, vertices, GL_STATIC_DRAW);
-	return my_id;
-}
-
-uint ModuleRenderer3D::CreateIndices(uint my_indices)
-{
-	glGenBuffers(1, (GLuint*)&(my_indices));
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices);
-	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(float) * 36, indices, GL_STATIC_DRAW);
-	return my_indices;
-}
-
-void ModuleRenderer3D::DrawCubeDirectMode()
-{
-	glBegin(GL_TRIANGLES);
-	glVertex3f(0.f, 0.f, 1.f);
-	glVertex3f(1.f, 0.f, 1.f);
-	glVertex3f(0.f, 1.f, 1.f);
-	glVertex3f(1.f, 0.f, 1.f);
-	glVertex3f(1.f, 1.f, 1.f);
-	glVertex3f(0.f, 1.f, 1.f);
-	glVertex3f(1.f, 0.f, 0.f);
-	glVertex3f(0.f, 1.f, 0.f);
-	glVertex3f(1.f, 1.f, 0.f);
-	glVertex3f(1.f, 0.f, 0.f);
-	glVertex3f(0.f, 0.f, 0.f);
-	glVertex3f(0.f, 1.f, 0.f);
-	glVertex3f(1.f, 0.f, 1.f);
-	glVertex3f(1.f, 0.f, 0.f);
-	glVertex3f(1.f, 1.f, 1.f);
-	glVertex3f(1.f, 0.f, 0.f);
-	glVertex3f(1.f, 1.f, 0.f);
-	glVertex3f(1.f, 1.f, 1.f);
-	glVertex3f(0.f, 0.f, 1.f);
-	glVertex3f(0.f, 1.f, 1.f);
-	glVertex3f(0.f, 0.f, 0.f);
-	glVertex3f(0.f, 0.f, 0.f);
-	glVertex3f(0.f, 1.f, 1.f);
-	glVertex3f(0.f, 1.f, 0.f);
-	glVertex3f(0.f, 1.f, 1.f);
-	glVertex3f(1.f, 1.f, 1.f);
-	glVertex3f(0.f, 1.f, 0.f);
-	glVertex3f(1.f, 1.f, 1.f);
-	glVertex3f(1.f, 1.f, 0.f);
-	glVertex3f(0.f, 1.f, 0.f);
-	glVertex3f(0.f, 0.f, 1.f);
-	glVertex3f(0.f, 0.f, 0.f);
-	glVertex3f(1.f, 0.f, 1.f);
-	glVertex3f(1.f, 0.f, 1.f);
-	glVertex3f(0.f, 0.f, 0.f);
-	glVertex3f(1.f, 0.f, 0.f);
-
-	glEnd();
-}
-
-void ModuleRenderer3D::DrawCubeGLDrawArrays()
-{
-	float vertices[] = {0.f, 0.f, 1.f, 1.f, 0.f, 1.f, 0.f, 1.f, 1.f, 1.f, 0.f, 1.f, 1.f, 1.f, 1.f, 0.f, 1.f, 1.f, 1.f, 0.f, 0.f, 0.f, 1.f, 0.f, 1.f, 1.f, 0.f, 1.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 1.f, 0.f,
-		1.f, 0.f, 1.f, 1.f, 0.f, 0.f, 1.f, 1.f, 1.f, 1.f, 0.f, 0.f, 1.f, 1.f, 0.f, 1.f, 1.f, 1.f, 0.f, 0.f, 1.f, 0.f, 1.f, 1.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 1.f, 1.f, 0.f, 1.f, 0.f, 0.f, 1.f, 1.f,
-		1.f, 1.f, 1.f, 0.f, 1.f, 0.f, 1.f, 1.f, 1.f, 1.f, 1.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 1.f, 0.f, 1.f, 1.f, 0.f, 1.f, 0.f, 0.f, 0.f, 1.f, 0.f, 0.f};
-	float num_vertices = 108 / 3;
-	uint my_id = 0;
-	glGenBuffers(1, (GLuint*)&(my_id));
-	glBindBuffer(GL_ARRAY_BUFFER, my_id);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * num_vertices * 3, vertices, GL_STATIC_DRAW);
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glBindBuffer(GL_ARRAY_BUFFER, my_id);
-	glVertexPointer(3, GL_FLOAT, 0, NULL);
-	glDrawArrays(GL_TRIANGLES, 0, num_vertices);
-	glDisableClientState(GL_VERTEX_ARRAY);
-}
-
-void ModuleRenderer3D::DrawCubeGLDrawElements()
-{
-	float vertices[] = {0.f, 0.f, 0.f, 0.f, 0.f, 1.f, 0.f, 1.f, 0.f, 0.f, 1.f, 1.f, 1.f, 0.f, 0.f, 1.f, 0.f, 1.f, 1.f, 1.f, 0.f, 1.f, 1.f, 1.f};
-	float num_vertices = sizeof(vertices)/sizeof(float);
-
-
-	int indices[] = { 1, 5, 3, 5, 7, 3, 4, 2, 6, 4, 0, 2, 5, 4, 7, 4, 6, 7, 1, 3, 0, 0, 3, 2, 3, 7, 2, 7, 6, 2, 1, 0, 5, 5, 0, 4};
-	float num_indices = sizeof(indices) / sizeof(int);
-	
-
-	uint my_id_vertices = 0;
-	uint my_id_indices = 0;
-	glGenBuffers(1, (GLuint*)&(my_id_vertices));
-	glBindBuffer(GL_ARRAY_BUFFER, my_id_vertices);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-	glGenBuffers(1, (GLuint*)&(my_id_indices));
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_id_indices);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-	
-
-	glEnableClientState(GL_VERTEX_ARRAY);
-
-
-
-	glBindBuffer(GL_ARRAY_BUFFER, my_id_vertices);
-	glVertexPointer(3, GL_FLOAT, 0, NULL);
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_id_indices);
-
-
-	glDrawElements(GL_TRIANGLES, num_indices, GL_UNSIGNED_INT, NULL);
-
-	glDisableClientState(GL_VERTEX_ARRAY);
-
-}
-
-

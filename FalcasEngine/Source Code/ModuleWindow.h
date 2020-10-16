@@ -2,9 +2,11 @@
 #define __ModuleWindow_H__
 
 #include "Module.h"
-#include "External Libraries/SDL/include/SDL.h"
+#include "External Libraries/SDL/include/SDL_video.h"
 
 class Application;
+class SDL_Window;
+class SDL_Surface;
 
 class ModuleWindow : public Module
 {

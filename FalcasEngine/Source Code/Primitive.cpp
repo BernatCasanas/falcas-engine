@@ -156,7 +156,7 @@ void Cube::InnerRender() const
 
 	glEnd();
 }
-*/
+
 // SPHERE ============================================
 Sphere::Sphere() : Primitive(), radius(1.0f)
 {
@@ -172,7 +172,7 @@ void Sphere::InnerRender() const
 {
 }
 
-
+*/
 // CYLINDER ============================================
 Cylinder::Cylinder() : Primitive(), radius(1.0f), height(1.0f)
 {

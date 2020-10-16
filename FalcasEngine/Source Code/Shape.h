@@ -10,12 +10,13 @@ enum class Shapes {
 	TriangularPyramid,
 	SquarePyramid,
 	RectangularPyramid,
+	SolidSphere,
 };
 
 class Shape {
 public:
 	Shape(Shapes shape, float3 position);
-	virtual ~Shape(){};
+	~Shape();
 	void Render();
 	void Initialization();
 protected:
@@ -33,14 +34,12 @@ private:
 class Cube : public Shape {
 public:
 	Cube(Shapes shape, float3 position, uint size);
-	virtual ~Cube() {};
 private:
 	uint size;
 };
 class RectangularPrism : public Shape {
 public:
 	RectangularPrism(Shapes shape, float3 position, uint size_length, uint size_height, uint size_width);
-	virtual ~RectangularPrism() {};
 private:
 	uint size_length;
 	uint size_height;
@@ -49,14 +48,12 @@ private:
 class TriangularPyramid : public Shape {
 public:
 	TriangularPyramid(Shapes shape, float3 position, uint size);
-	virtual ~TriangularPyramid() {};
 private:
 	uint size;
 };
 class SquarePyramid : public Shape {
 public:
 	SquarePyramid(Shapes shape, float3 position, uint height, uint size_base);
-	virtual ~SquarePyramid() {};
 private:
 	uint height;
 	uint size_base;
@@ -64,9 +61,16 @@ private:
 class RectangularPyramid : public Shape {
 public:
 	RectangularPyramid(Shapes shape, float3 position, uint height, uint size_length, uint size_width);
-	virtual ~RectangularPyramid() {};
 private:
 	uint height;
 	uint size_length;
 	uint size_width;
+};
+class SolidSphere : public Shape {
+public:
+	SolidSphere(Shapes shape, float3 position, uint radius, uint rings, uint sectors);
+private:
+	uint radius;
+	uint rings;
+	uint sectors;
 };

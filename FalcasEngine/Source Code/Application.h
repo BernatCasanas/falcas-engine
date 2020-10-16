@@ -5,17 +5,18 @@
 
 #include "Globals.h"
 #include "Timer.h"
-#include "Module.h"
-#include "ModuleWindow.h"
-#include "ModuleInput.h"
-#include "ModuleAudio.h"
-#include "ModuleSceneIntro.h"
-#include "ModuleRenderer3D.h"
-#include "ModuleCamera3D.h"
-#include "ModulePhysics3D.h"
-#include "ModuleCentralEditor.h"
-#include "Console.h"
 #include <vector>
+
+class ModuleWindow;
+class ModuleInput;
+class ModuleAudio;
+class ModuleSceneIntro;
+class ModuleRenderer3D;
+class ModuleCamera3D;
+class ModulePhysics3D;
+class ModuleCentralEditor;
+class Console;
+class Module;
 
 class Application
 {
