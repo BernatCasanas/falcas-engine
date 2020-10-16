@@ -3,6 +3,7 @@
 #include "ModuleInput.h"
 #include "ModuleCentralEditor.h"
 #include "Application.h"
+#include "ModuleRenderer3D.h"
 
 #define MAX_KEYS 300
 

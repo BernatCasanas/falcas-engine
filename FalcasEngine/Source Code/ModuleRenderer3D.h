@@ -3,6 +3,7 @@
 #include "Globals.h"
 #include "glmath.h"
 #include "Light.h"
+#include "External Libraries/SDL/include/SDL_video.h"
 
 #define MAX_LIGHTS 8
 
