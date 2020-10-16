@@ -4,6 +4,7 @@
 #include "ModuleCentralEditor.h"
 #include "Application.h"
 #include "ModuleRenderer3D.h"
+#include "External Libraries/SDL/include/SDL.h"
 
 #define MAX_KEYS 300
 

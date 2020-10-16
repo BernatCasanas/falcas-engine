@@ -1,7 +1,6 @@
 #pragma once
 #include "Module.h"
 #include "Globals.h"
-#include "glmath.h"
 #include "Light.h"
 #include "External Libraries/SDL/include/SDL_video.h"
 
@@ -27,11 +26,6 @@ public:
 
 	void OnResize(int width, int height);
 
-	uint DrawCube(uint);
-	uint CreateIndices(uint);
-	void DrawCubeDirectMode();
-	void DrawCubeGLDrawArrays();
-	void DrawCubeGLDrawElements();
 
 
 public:

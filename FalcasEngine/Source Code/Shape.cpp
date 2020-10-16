@@ -13,6 +13,11 @@ Shape::Shape(Shapes shape, float3 position)
 	id_indices = id_vertices = num_indices = 0;
 }
 
+Shape::~Shape()
+{
+	//glDeleteBuffers(1,id_indices);
+}
+
 void Shape::Render()
 {
 	if (id_indices > 0 && id_vertices > 0) {
@@ -21,9 +26,9 @@ void Shape::Render()
 		glVertexPointer(3, GL_FLOAT, 0, NULL);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id_indices);
 		glDrawElements(GL_TRIANGLES, num_indices, GL_UNSIGNED_INT, NULL);
-		glDisableClientState(GL_VERTEX_ARRAY);
-		glBindBuffer(GL_ARRAY_BUFFER,0);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+		glDisableClientState(GL_VERTEX_ARRAY);
 	}
 }
 

@@ -4,7 +4,8 @@
 // ----------------------------------------------------
 
 #include "Timer.h"
-
+#include "External Libraries/SDL/include/SDL_stdinc.h"
+#include "External Libraries/SDL/include/SDL_timer.h"
 // ---------------------------------------------
 Timer::Timer()
 {
