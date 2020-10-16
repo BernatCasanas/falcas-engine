@@ -124,6 +124,7 @@ bool ModuleRenderer3D::Init()
 	//rectangular_prism = new RectangularPrism(Shapes::RectangularPrism, { 0,0,0 }, 1, 1, 1);
 	//triangular_pyramid = new TriangularPyramid(Shapes::TriangularPyramid, { 0,0,0 }, 1);
 	//rectangular_pyramid = new RectangularPyramid(Shapes::RectangularPyramid, { 0,0,0 }, 1, 3, 2);
+	solid_sphere = new SolidSphere(Shapes::SolidSphere, { 0,0,0 }, 1, 12, 24);
 
 	return ret;
 }
@@ -149,6 +150,7 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	//rectangular_prism->Render();
 	//triangular_pyramid->Render();
 	//rectangular_pyramid->Render();
+	solid_sphere->Render();
 	glLineWidth(1.0f);
 	
 	return UPDATE_CONTINUE;
@@ -157,8 +159,6 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 // PostUpdate present buffer to screen
 update_status ModuleRenderer3D::PostUpdate(float dt)
 {
-	
-
 	SDL_GL_SwapWindow(App->window->window);
 	return UPDATE_CONTINUE;
 }
@@ -174,6 +174,7 @@ bool ModuleRenderer3D::CleanUp()
 	//delete rectangular_prism;
 	//delete triangular_pyramid;
 	//delete rectangular_pyramid;
+	delete solid_sphere;
 	SDL_GL_DeleteContext(context);
 
 	return true;

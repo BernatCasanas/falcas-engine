@@ -11,6 +11,7 @@ class SquarePyramid;
 class RectangularPrism;
 class TriangularPyramid;
 class RectangularPyramid;
+class SolidSphere;
 
 class ModuleRenderer3D : public Module
 {
@@ -38,6 +39,7 @@ public:
 	RectangularPrism* rectangular_prism;
 	TriangularPyramid* triangular_pyramid;
 	RectangularPyramid* rectangular_pyramid;
+	SolidSphere* solid_sphere;
 	Light lights[MAX_LIGHTS];
 	SDL_GLContext context;
 	mat3x3 NormalMatrix;

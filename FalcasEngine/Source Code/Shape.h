@@ -10,6 +10,7 @@ enum class Shapes {
 	TriangularPyramid,
 	SquarePyramid,
 	RectangularPyramid,
+	SolidSphere,
 };
 
 class Shape {
@@ -69,4 +70,12 @@ private:
 	uint height;
 	uint size_length;
 	uint size_width;
+};
+class SolidSphere : public Shape {
+public:
+	SolidSphere(Shapes shape, float3 position, uint radius, uint rings, uint sectors);
+private:
+	uint radius;
+	uint rings;
+	uint sectors;
 };

@@ -3,6 +3,8 @@
 #include "External Libraries/MathGeoLib/include/Math/MathFunc.h"
 #include <vector>
 
+#define M_PI       3.14159265358979323846
+#define M_PI_2     1.57079632679489661923
 
 Shape::Shape(Shapes shape, float3 position)
 {
@@ -20,6 +22,8 @@ void Shape::Render()
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id_indices);
 		glDrawElements(GL_TRIANGLES, num_indices, GL_UNSIGNED_INT, NULL);
 		glDisableClientState(GL_VERTEX_ARRAY);
+		glBindBuffer(GL_ARRAY_BUFFER,0);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	}
 }
 
@@ -31,6 +35,8 @@ void Shape::Initialization()
 	glGenBuffers(1, (GLuint*)&(id_indices));
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id_indices);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(int) * indices.size(), &indices[0], GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
 
@@ -211,4 +217,37 @@ RectangularPyramid::RectangularPyramid(Shapes shape, float3 position, uint heigh
 	num_indices = indices.size();
 	this->Initialization();
 
+}
+
+SolidSphere::SolidSphere(Shapes shape, float3 position, uint radius, uint rings, uint sectors) :Shape(shape, position)
+{
+	this->radius = radius;
+	this->rings = rings;
+	this->sectors = sectors;
+	float const R = 1. / (float)(rings - 1);
+	float const S = 1. / (float)(sectors - 1);
+	int r, s;
+
+	vertices.resize(rings * sectors * 3);
+	std::vector<float>::iterator v = vertices.begin();
+
+	for (r = 0; r < rings; r++) for (s = 0; s < sectors; s++) {
+		float const y = sin(-M_PI_2 + M_PI * r * R);
+		float const x = cos(2 * M_PI * s * S) * sin(M_PI * r * R);
+		float const z = sin(2 * M_PI * s * S) * sin(M_PI * r * R);
+
+		*v++ = x * radius;
+		*v++ = y * radius;
+		*v++ = z * radius;
+	}
+
+	indices.resize(rings * sectors * 4);
+	std::vector<int>::iterator i = indices.begin();
+	for (r = 0; r < rings; r++) for (s = 0; s < sectors; s++) {
+		*i++ = r * sectors + s;
+		*i++ = r * sectors + (s + 1);
+		*i++ = (r + 1) * sectors + (s + 1);
+		*i++ = (r + 1) * sectors + s;
+	}
+	this->Initialization();
 }
