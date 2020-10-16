@@ -253,6 +253,7 @@ update_status ModuleCentralEditor::PostUpdate(float dt)
         ImGui::BulletText("OpenGL 3.1");
         ImGui::BulletText("Assimp 3.1.1");
         ImGui::BulletText("Devil 1.7.8");
+        ImGui::BulletText("Assimp 5.0.1");
         ImGui::Separator();
         ImGui::TextWrapped("\n\n"
             "MIT License\n\n"

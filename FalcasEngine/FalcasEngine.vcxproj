@@ -69,6 +69,7 @@
     <ClCompile Include="Source Code\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Asap.h" />
     <ClInclude Include="Source Code\Application.h" />
     <ClInclude Include="Source Code\Color.h" />
     <ClInclude Include="Source Code\Console.h" />

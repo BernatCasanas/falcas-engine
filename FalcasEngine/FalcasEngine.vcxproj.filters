@@ -455,6 +455,9 @@
     <ClInclude Include="Source Code\Shape.h">
       <Filter>Source Code</Filter>
     </ClInclude>
+    <ClInclude Include="Asap.h">
+      <Filter>Source Code</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Source Code\External Libraries\MathGeoLib\include\Geometry\KDTree.inl">
