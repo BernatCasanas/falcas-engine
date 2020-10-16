@@ -1,5 +1,6 @@
 #include "Globals.h"
 #include "External Libraries/MathGeoLib/include/Math/float3.h"
+#include <vector>
 
 
 enum class Shapes {
@@ -16,10 +17,14 @@ public:
 	Shape(Shapes shape, float3 position);
 	virtual ~Shape(){};
 	void Render();
+	void Initialization();
 protected:
 	uint id_vertices;
 	uint id_indices;
 	uint num_indices;
+	uint num_vertices;
+	std::vector<float> vertices;
+	std::vector<int> indices;
 	float3 position;
 private:
 	Shapes shape;

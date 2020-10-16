@@ -23,14 +23,24 @@ void Shape::Render()
 	}
 }
 
+void Shape::Initialization()
+{
+	glGenBuffers(1, (GLuint*)&(id_vertices));
+	glBindBuffer(GL_ARRAY_BUFFER, id_vertices);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * vertices.size(), &vertices[0], GL_STATIC_DRAW);
+	glGenBuffers(1, (GLuint*)&(id_indices));
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id_indices);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(int) * indices.size(), &indices[0], GL_STATIC_DRAW);
+}
+
 
 Cube::Cube(Shapes shape, float3 position, uint size) :Shape(shape, position)
 {
 	this->size = size;
 	
 
-	float vertices[] = { 0.f, 0.f, 0.f, 0.f, 0.f, 1.f, 0.f, 1.f, 0.f, 0.f, 1.f, 1.f, 1.f, 0.f, 0.f, 1.f, 0.f, 1.f, 1.f, 1.f, 0.f, 1.f, 1.f, 1.f };
-	uint num_vertices = sizeof(vertices) / sizeof(float);
+	vertices = { 0.f, 0.f, 0.f, 0.f, 0.f, 1.f, 0.f, 1.f, 0.f, 0.f, 1.f, 1.f, 1.f, 0.f, 0.f, 1.f, 0.f, 1.f, 1.f, 1.f, 0.f, 1.f, 1.f, 1.f };
+	num_vertices = vertices.size();
 	for (int i = 0; i < num_vertices; i++) {
 		if (size > 0) {
 			vertices[i] *= size;
@@ -48,15 +58,10 @@ Cube::Cube(Shapes shape, float3 position, uint size) :Shape(shape, position)
 	}
 
 
-	int indices[] = { 1, 5, 3, 5, 7, 3, 4, 2, 6, 4, 0, 2, 5, 4, 7, 4, 6, 7, 1, 3, 0, 0, 3, 2, 3, 7, 2, 7, 6, 2, 1, 0, 5, 5, 0, 4 };
-	num_indices = sizeof(indices) / sizeof(int);
+	indices = { 1, 5, 3, 5, 7, 3, 4, 2, 6, 4, 0, 2, 5, 4, 7, 4, 6, 7, 1, 3, 0, 0, 3, 2, 3, 7, 2, 7, 6, 2, 1, 0, 5, 5, 0, 4 };
+	num_indices = indices.size();
 
-	glGenBuffers(1, (GLuint*)&(id_vertices));
-	glBindBuffer(GL_ARRAY_BUFFER, id_vertices);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-	glGenBuffers(1, (GLuint*)&(id_indices));
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id_indices);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+	this->Initialization();
 	
 }
 
@@ -68,8 +73,8 @@ RectangularPrism::RectangularPrism(Shapes shape, float3 position, uint size_leng
 	this->size_width = size_width;
 
 
-	float vertices[] = { 0.f, 0.f, 0.f, 0.f, 0.f, 1.f, 0.f, 1.f, 0.f, 0.f, 1.f, 1.f, 1.f, 0.f, 0.f, 1.f, 0.f, 1.f, 1.f, 1.f, 0.f, 1.f, 1.f, 1.f };
-	uint num_vertices = sizeof(vertices) / sizeof(float);
+	vertices = { 0.f, 0.f, 0.f, 0.f, 0.f, 1.f, 0.f, 1.f, 0.f, 0.f, 1.f, 1.f, 1.f, 0.f, 0.f, 1.f, 0.f, 1.f, 1.f, 1.f, 0.f, 1.f, 1.f, 1.f };
+	num_vertices = vertices.size();
 	for (int i = 0; i < num_vertices; i++) {
 		
 		int j = i + 1;
@@ -94,15 +99,10 @@ RectangularPrism::RectangularPrism(Shapes shape, float3 position, uint size_leng
 	}
 
 
-	int indices[] = { 1, 5, 3, 5, 7, 3, 4, 2, 6, 4, 0, 2, 5, 4, 7, 4, 6, 7, 1, 3, 0, 0, 3, 2, 3, 7, 2, 7, 6, 2, 1, 0, 5, 5, 0, 4 };
-	num_indices = sizeof(indices) / sizeof(int);
+	indices = { 1, 5, 3, 5, 7, 3, 4, 2, 6, 4, 0, 2, 5, 4, 7, 4, 6, 7, 1, 3, 0, 0, 3, 2, 3, 7, 2, 7, 6, 2, 1, 0, 5, 5, 0, 4 };
+	num_indices = indices.size();
 
-	glGenBuffers(1, (GLuint*)&(id_vertices));
-	glBindBuffer(GL_ARRAY_BUFFER, id_vertices);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-	glGenBuffers(1, (GLuint*)&(id_indices));
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id_indices);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+	this->Initialization();
 
 }
 TriangularPyramid::TriangularPyramid(Shapes shape, float3 position, uint size) :Shape(shape, position)
@@ -110,8 +110,8 @@ TriangularPyramid::TriangularPyramid(Shapes shape, float3 position, uint size) :
 	this->size = size;
 
 	float z_side = Cos(DegToRad(30));
-	float vertices[] = { 0.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.5f, 0.f, z_side, 0.5f,0.816,z_side/2 };
-	uint num_vertices = sizeof(vertices) / sizeof(float);
+	vertices = { 0.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.5f, 0.f, z_side, 0.5f,0.816,z_side/2 };
+	num_vertices = vertices.size();
 	for (int i = 0; i < num_vertices; i++) {
 		if (size > 0) {
 			vertices[i] *= size;
@@ -129,16 +129,11 @@ TriangularPyramid::TriangularPyramid(Shapes shape, float3 position, uint size) :
 	}
 
 
-	int indices[] = { 1, 3, 2, 0, 3, 1, 2, 3, 0, 2, 0, 1 };
-	num_indices = sizeof(indices) / sizeof(int);
+	indices = { 1, 3, 2, 0, 3, 1, 2, 3, 0, 2, 0, 1 };
+	num_indices = indices.size();
 
 
-	glGenBuffers(1, (GLuint*)&(id_vertices));
-	glBindBuffer(GL_ARRAY_BUFFER, id_vertices);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-	glGenBuffers(1, (GLuint*)&(id_indices));
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id_indices);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+	this->Initialization();
 }
 
 
@@ -148,8 +143,8 @@ SquarePyramid::SquarePyramid(Shapes shape, float3 position, uint height, uint si
 	this->size_base = size_base;
 
 
-	float vertices[] = { 0.f, 0.f, 0.f, 0.f, 0.f, 1.f, 1.f, 0.f, 0.f, 1.f, 0.f, 1.f, 0.5f,1.f,0.5f };
-	uint num_vertices = sizeof(vertices) / sizeof(float);
+	vertices = { 0.f, 0.f, 0.f, 0.f, 0.f, 1.f, 1.f, 0.f, 0.f, 1.f, 0.f, 1.f, 0.5f,1.f,0.5f };
+	num_vertices = vertices.size();
 	for (int i = 0; i < num_vertices; i++) {
 		int j = i + 1;
 		if (size_base > 0) {
@@ -174,16 +169,11 @@ SquarePyramid::SquarePyramid(Shapes shape, float3 position, uint height, uint si
 	}
 
 
-	int indices[] = { 3, 4, 1, 2, 4, 3, 0, 4, 2, 1, 4, 0, 3, 1, 0, 0, 2, 3 };
-	num_indices = sizeof(indices) / sizeof(int);
+	indices = { 3, 4, 1, 2, 4, 3, 0, 4, 2, 1, 4, 0, 3, 1, 0, 0, 2, 3 };
+	num_indices = indices.size();
 
 
-	glGenBuffers(1, (GLuint*)&(id_vertices));
-	glBindBuffer(GL_ARRAY_BUFFER, id_vertices);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-	glGenBuffers(1, (GLuint*)&(id_indices));
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id_indices);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+	this->Initialization();
 }
 
 RectangularPyramid::RectangularPyramid(Shapes shape, float3 position, uint height, uint size_length, uint size_width) :Shape(shape, position)
@@ -192,8 +182,8 @@ RectangularPyramid::RectangularPyramid(Shapes shape, float3 position, uint heigh
 	this->size_length = size_length;
 	this->size_width = size_width;
 
-	float vertices[] = { 0.f, 0.f, 0.f, 0.f, 0.f, 1.f, 1.f, 0.f, 0.f, 1.f, 0.f, 1.f, 0.5f,1.f,0.5f };
-	uint num_vertices = sizeof(vertices) / sizeof(float);
+	vertices = { 0.f, 0.f, 0.f, 0.f, 0.f, 1.f, 1.f, 0.f, 0.f, 1.f, 0.f, 1.f, 0.5f,1.f,0.5f };
+	num_vertices = vertices.size();
 	for (int i = 0; i < num_vertices; i++) {
 		int j = i + 1;
 		if (j % 3 == 0) {
@@ -217,14 +207,8 @@ RectangularPyramid::RectangularPyramid(Shapes shape, float3 position, uint heigh
 	}
 
 
-	int indices[] = { 3, 4, 1, 2, 4, 3, 0, 4, 2, 1, 4, 0, 3, 1, 0, 0, 2, 3 };
-	num_indices = sizeof(indices) / sizeof(int);
+	indices = { 3, 4, 1, 2, 4, 3, 0, 4, 2, 1, 4, 0, 3, 1, 0, 0, 2, 3 };
+	num_indices = indices.size();
+	this->Initialization();
 
-
-	glGenBuffers(1, (GLuint*)&(id_vertices));
-	glBindBuffer(GL_ARRAY_BUFFER, id_vertices);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-	glGenBuffers(1, (GLuint*)&(id_indices));
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id_indices);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 }
