@@ -1,7 +1,7 @@
 #include "Asap.h"
-#include "External Libraries/Assimp/include/assimp/cimport.h"
-#include "External Libraries/Assimp/include/assimp/scene.h"
-#include "External Libraries/Assimp/include/assimp/postprocess.h"
+#include "External Libraries/Assimp/Assimp/include/cimport.h"
+#include "External Libraries/Assimp/Assimp/include/scene.h"
+#include "External Libraries/Assimp/Assimp/include/postprocess.h"
 
 
 //#pragma comment (lib, "Source Code/External Libraries/Assimp/libx86/assimp.lib")
