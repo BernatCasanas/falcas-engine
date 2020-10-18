@@ -17,6 +17,7 @@ class ModulePhysics3D;
 class ModuleCentralEditor;
 class Console;
 class Module;
+class Asap;
 
 class Application
 {
@@ -30,6 +31,7 @@ public:
 	ModulePhysics3D* physics;
 	ModuleCentralEditor* central_editor;
 	Console* console;
+	Asap* asap;
 	bool console_active;
 
 private:

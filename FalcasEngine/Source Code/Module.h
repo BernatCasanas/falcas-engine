@@ -1,7 +1,6 @@
 #pragma once
-
 class Application;
-
+#include "Globals.h"
 class Module
 {
 private :

@@ -195,6 +195,7 @@
     <ClCompile Include="Source Code\Shape.cpp">
       <Filter>Source Code</Filter>
     </ClCompile>
+    <ClCompile Include="Source Code\Asap.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source Code\Application.h">
@@ -455,7 +456,7 @@
     <ClInclude Include="Source Code\Shape.h">
       <Filter>Source Code</Filter>
     </ClInclude>
-    <ClInclude Include="Asap.h">
+    <ClInclude Include="Source Code\Asap.h">
       <Filter>Source Code</Filter>
     </ClInclude>
   </ItemGroup>

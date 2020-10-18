@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source Code\Application.cpp" />
+    <ClCompile Include="Source Code\Asap.cpp" />
     <ClCompile Include="Source Code\Color.cpp" />
     <ClCompile Include="Source Code\Console.cpp" />
     <ClCompile Include="Source Code\External Libraries\ImGui\imgui.cpp" />
@@ -69,8 +70,8 @@
     <ClCompile Include="Source Code\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Asap.h" />
     <ClInclude Include="Source Code\Application.h" />
+    <ClInclude Include="Source Code\Asap.h" />
     <ClInclude Include="Source Code\Color.h" />
     <ClInclude Include="Source Code\Console.h" />
     <ClInclude Include="Source Code\External Libraries\ImGui\imconfig.h" />
