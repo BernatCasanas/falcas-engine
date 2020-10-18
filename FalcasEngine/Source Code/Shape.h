@@ -11,6 +11,8 @@ enum class Shapes {
 	SquarePyramid,
 	RectangularPyramid,
 	SolidSphere,
+	Cilinder,
+	SolidCone
 };
 
 class Shape {
@@ -72,5 +74,22 @@ public:
 private:
 	uint radius;
 	uint rings;
+	uint sectors;
+};
+class Cilinder : public Shape {
+public:
+	Cilinder(Shapes shape, float3 position, uint radius, uint height, uint rings, uint sectors);
+private:
+	uint height;
+	uint radius;
+	uint rings;
+	uint sectors;
+};
+class SolidCone : public Shape {
+public:
+	SolidCone(Shapes shape, float3 position, uint radius, uint height, uint sectors);
+private:
+	uint height;
+	uint radius;
 	uint sectors;
 };

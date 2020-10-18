@@ -4,7 +4,6 @@
 #include <vector>
 
 #define M_PI       3.14159265358979323846
-#define M_PI_2     1.57079632679489661923
 
 Shape::Shape(Shapes shape, float3 position)
 {
@@ -15,7 +14,8 @@ Shape::Shape(Shapes shape, float3 position)
 
 Shape::~Shape()
 {
-	//glDeleteBuffers(1,id_indices);
+	glDeleteBuffers(1,&id_indices);
+	glDeleteBuffers(1, &id_vertices);
 }
 
 void Shape::Render()
@@ -229,30 +229,224 @@ SolidSphere::SolidSphere(Shapes shape, float3 position, uint radius, uint rings,
 	this->radius = radius;
 	this->rings = rings;
 	this->sectors = sectors;
-	float const R = 1. / (float)(rings - 1);
-	float const S = 1. / (float)(sectors - 1);
-	int r, s;
+	float sectorCount = rings;
+	float stackCount = sectors;
+	float x, y, z, xy;                              // vertex position
+	float nx, ny, nz, lengthInv = 1.0f / radius;    // vertex normal
+	float s, t;                                     // vertex texCoord
 
-	vertices.resize(rings * sectors * 3);
-	std::vector<float>::iterator v = vertices.begin();
+	float sectorStep = 2 * M_PI / sectorCount;
+	float stackStep = M_PI / stackCount;
+	float sectorAngle, stackAngle;
 
-	for (r = 0; r < rings; r++) for (s = 0; s < sectors; s++) {
-		float const y = sin(-M_PI_2 + M_PI * r * R);
-		float const x = cos(2 * M_PI * s * S) * sin(M_PI * r * R);
-		float const z = sin(2 * M_PI * s * S) * sin(M_PI * r * R);
+	for (int i = 0; i <= stackCount; ++i)
+	{
+		stackAngle = M_PI / 2 - i * stackStep;        // starting from pi/2 to -pi/2
+		xy = radius * cosf(stackAngle);             // r * cos(u)
+		z = radius * sinf(stackAngle);              // r * sin(u)
 
-		*v++ = x * radius;
-		*v++ = y * radius;
-		*v++ = z * radius;
+		// add (sectorCount+1) vertices per stack
+		// the first and last vertices have same position and normal, but different tex coords
+		for (int j = 0; j <= sectorCount; ++j)
+		{
+			sectorAngle = j * sectorStep;           // starting from 0 to 2pi
+
+			// vertex position (x, y, z)
+			x = xy * cosf(sectorAngle);             // r * cos(u) * cos(v)
+			y = xy * sinf(sectorAngle);             // r * cos(u) * sin(v)
+			vertices.push_back(x + position.x);
+			vertices.push_back(y + position.y);
+			vertices.push_back(z + position.z);
+		}
+	}
+	int k1, k2;
+	for (int i = 0; i < stackCount; ++i)
+	{
+		k1 = i * (sectorCount + 1);     // beginning of current stack
+		k2 = k1 + sectorCount + 1;      // beginning of next stack
+
+		for (int j = 0; j < sectorCount; ++j, ++k1, ++k2)
+		{
+			// 2 triangles per sector excluding first and last stacks
+			// k1 => k2 => k1+1
+			if (i != 0)
+			{
+				indices.push_back(k1);
+				indices.push_back(k2);
+				indices.push_back(k1 + 1);
+			}
+
+			// k1+1 => k2 => k2+1
+			if (i != (stackCount - 1))
+			{
+				indices.push_back(k1 + 1);
+				indices.push_back(k2);
+				indices.push_back(k2 + 1);
+			}
+		}
+	}
+	num_indices = indices.size();
+	this->Initialization();
+}
+
+Cilinder::Cilinder(Shapes shape, float3 position, uint radius, uint height, uint rings, uint sectors) :Shape(shape, position)
+{
+	this->radius = radius;
+	this->rings = rings;
+	this->sectors = sectors;
+	this->height = height;
+
+	vertices.clear();
+	float angle = 360 / sectors;
+	float midlength = (float)height / ((float)rings+1);
+	vertices.push_back(0 + position.x);
+	vertices.push_back(0 + position.y);
+	vertices.push_back(0 + position.z);
+	if (rings > 0 && sectors > 0) {
+		for (int j = 0; j <= rings+1; j++) {
+			float length = midlength * j;
+			for (int i = 0; i < sectors; i++) {
+				float theta = angle * i;
+				theta = DegToRad(theta);
+				vertices.push_back((radius * cos(theta))+position.x);
+				vertices.push_back(length + position.y);
+				vertices.push_back((radius* sin(theta)) + position.z);
+
+			}
+		}
+	}
+	vertices.push_back(0 + position.x);
+	vertices.push_back(height + position.y);
+	vertices.push_back(0 + position.z);
+	
+	num_vertices = vertices.size();
+	indices.clear();
+
+	for (int j = 0; j <= rings + 2; j++) {
+		for (int i = 1; i <= sectors; i++) {
+			int i2 = i + sectors * (j - 1);
+			if (j == 0) {
+				indices.push_back(0);
+				indices.push_back(i);
+				if (i != sectors)
+					indices.push_back(i + 1);
+				else
+					indices.push_back(1);
+			}
+			else if (j - 2 != rings) {
+				if (i2 / j != sectors)
+					indices.push_back(i2 + 1);
+				else
+					indices.push_back(i2 - sectors + 1);
+				indices.push_back(i2);
+				indices.push_back(i2 + sectors);
+				if (i2 / j != sectors)
+					indices.push_back(i2 + 1);
+				else
+					indices.push_back(i2 - sectors + 1);
+				indices.push_back(i2 + sectors);
+				if (i2 / j != sectors)
+					indices.push_back(i2 + sectors + 1);
+				else
+					indices.push_back(i2 + 1);
+			}
+			else {
+				indices.push_back((num_vertices/3)-1);
+				if (i2 / j != sectors)
+					indices.push_back(i2 + 1);
+				else
+					indices.push_back(i2 - sectors + 1);
+				indices.push_back(i2);
+			}
+		}
 	}
 
-	indices.resize(rings * sectors * 4);
-	std::vector<int>::iterator i = indices.begin();
-	for (r = 0; r < rings; r++) for (s = 0; s < sectors; s++) {
-		*i++ = r * sectors + s;
-		*i++ = r * sectors + (s + 1);
-		*i++ = (r + 1) * sectors + (s + 1);
-		*i++ = (r + 1) * sectors + s;
+	
+
+	
+
+	num_indices = indices.size();
+	this->Initialization();
+}
+
+SolidCone::SolidCone(Shapes shape, float3 position, uint radius, uint height,  uint sectors) : Shape(shape, position)
+{
+	this->radius = radius;
+	uint rings = 1;
+	this->sectors = sectors;
+	this->height = height;
+	float smallest_radius = (float)radius / 2;
+	float radius2 = radius;
+	vertices.clear();
+	float angle = 360 / sectors;
+	float midlength = (float)height / ((float)rings + 1);
+	vertices.push_back(0 + position.x);
+	vertices.push_back(0 + position.y);
+	vertices.push_back(0 + position.z);
+	if (rings > 0 && sectors > 0) {
+		for (int j = 0; j <= rings + 1; j++) {
+			radius2 = radius - (smallest_radius * (j / rings));
+			float length = midlength * j;
+			for (int i = 0; i < sectors; i++) {
+				float theta = angle * i;
+				theta = DegToRad(theta);
+				vertices.push_back((radius2 * cos(theta)) + position.x);
+				vertices.push_back(length + position.y);
+				vertices.push_back((radius2 * sin(theta)) + position.z);
+
+			}
+		}
 	}
+	vertices.push_back(0 + position.x);
+	vertices.push_back(height + position.y);
+	vertices.push_back(0 + position.z);
+
+	num_vertices = vertices.size();
+	indices.clear();
+
+	for (int j = 0; j <= rings + 2; j++) {
+		for (int i = 1; i <= sectors; i++) {
+			int i2 = i + sectors * (j - 1);
+			if (j == 0) {
+				indices.push_back(0);
+				indices.push_back(i);
+				if (i != sectors)
+					indices.push_back(i + 1);
+				else
+					indices.push_back(1);
+			}
+			else if (j - 2 != rings) {
+				if (i2 / j != sectors)
+					indices.push_back(i2 + 1);
+				else
+					indices.push_back(i2 - sectors + 1);
+				indices.push_back(i2);
+				indices.push_back(i2 + sectors);
+				if (i2 / j != sectors)
+					indices.push_back(i2 + 1);
+				else
+					indices.push_back(i2 - sectors + 1);
+				indices.push_back(i2 + sectors);
+				if (i2 / j != sectors)
+					indices.push_back(i2 + sectors + 1);
+				else
+					indices.push_back(i2 + 1);
+			}
+			else {
+				indices.push_back((num_vertices / 3) - 1);
+				if (i2 / j != sectors)
+					indices.push_back(i2 + 1);
+				else
+					indices.push_back(i2 - sectors + 1);
+				indices.push_back(i2);
+			}
+		}
+	}
+
+
+
+
+
+	num_indices = indices.size();
 	this->Initialization();
 }
