@@ -12,7 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source Code\Application.cpp" />
-    <ClCompile Include="Source Code\Asap.cpp" />
+    <ClCompile Include="Source Code\Mesh.cpp" />
     <ClCompile Include="Source Code\Color.cpp" />
     <ClCompile Include="Source Code\Console.cpp" />
     <ClCompile Include="Source Code\External Libraries\ImGui\imgui.cpp" />
@@ -71,7 +71,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source Code\Application.h" />
-    <ClInclude Include="Source Code\Asap.h" />
+    <ClInclude Include="Source Code\Mesh.h" />
     <ClInclude Include="Source Code\Color.h" />
     <ClInclude Include="Source Code\Console.h" />
     <ClInclude Include="Source Code\External Libraries\Assimp\Assimp\include\ai_assert.h" />

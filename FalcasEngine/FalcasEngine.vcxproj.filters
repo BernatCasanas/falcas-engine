@@ -198,7 +198,9 @@
     <ClCompile Include="Source Code\Shape.cpp">
       <Filter>Source Code</Filter>
     </ClCompile>
-    <ClCompile Include="Source Code\Asap.cpp" />
+    <ClCompile Include="Source Code\Mesh.cpp">
+      <Filter>Source Code</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source Code\Application.h">
@@ -459,9 +461,6 @@
     <ClInclude Include="Source Code\Shape.h">
       <Filter>Source Code</Filter>
     </ClInclude>
-    <ClInclude Include="Source Code\Asap.h">
-      <Filter>Source Code</Filter>
-    </ClInclude>
     <ClInclude Include="Source Code\External Libraries\Assimp\Assimp\include\ai_assert.h">
       <Filter>External Libraries\Assimp</Filter>
     </ClInclude>
@@ -560,6 +559,9 @@
     </ClInclude>
     <ClInclude Include="Source Code\External Libraries\Assimp\Assimp\include\version.h">
       <Filter>External Libraries\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\Mesh.h">
+      <Filter>Source Code</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
