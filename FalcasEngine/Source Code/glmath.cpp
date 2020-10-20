@@ -111,6 +111,14 @@ vec3 rotate(const vec3 &u, float angle, const vec3 &v)
 	return *(vec3*)&(rotate(angle, v) * vec4(u, 1.0f));
 }
 
+bool is_inside(const vec3& u, const vec3& v, const vec3& w)
+{
+	if (((u.x > w.x && v.x < w.x) || (u.x < w.x && v.x>w.x)) && ((u.y > w.y && v.y < w.y) || (u.y < w.y && v.y>w.y)) && ((u.z > w.z && v.z < w.z) || (u.z < w.z && v.z>w.z)))
+		return true;
+	else
+		return false;
+}
+
 // ----------------------------------------------------------------------------------------------------------------------------
 
 mat2x2::mat2x2()

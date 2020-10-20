@@ -284,6 +284,7 @@ vec3 normalize(const vec3 &u);
 vec3 reflect(const vec3 &i, const vec3 &n);
 vec3 refract(const vec3 &i, const vec3 &n, float eta);
 vec3 rotate(const vec3 &u, float angle, const vec3 &v);
+bool is_inside(const vec3& u, const vec3& v, const vec3& w);
 
 // ----------------------------------------------------------------------------------------------------------------------------
 
