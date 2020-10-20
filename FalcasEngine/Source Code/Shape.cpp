@@ -54,15 +54,17 @@ Grid::Grid(Shapes shape, float3 position, uint size) : Shape(shape, position)
 	int size2 = size;
 
 	
-	for (int x = -size; x <= size2; x+=size+size) {
-		for (int z = -size; z <= size2; z++) {
+	
+	for (int z = -size; z <= size2; z++) {
+		for (int x = -size; x <= size2; x += size + size) {
 			vertices.push_back(x);
 			vertices.push_back(0);
 			vertices.push_back(z);
 		}
 	}
-	for (int z = -size; z <= size2; z += size + size) {
-		for (int x = -size; x <= size2; x++) {
+	
+	for (int x = -size; x <= size2; x++) {
+		for (int z = -size; z <= size2; z += size + size) {
 			vertices.push_back(x);
 			vertices.push_back(0);
 			vertices.push_back(z);
@@ -73,10 +75,34 @@ Grid::Grid(Shapes shape, float3 position, uint size) : Shape(shape, position)
 		indices.push_back(i);
 	}
 	num_indices = indices.size();
+	this->Initialization();
+
 }
 
 SolidPlane::SolidPlane(Shapes shape, float3 position, uint size) : Shape(shape, position)
 {
+	this->size = size;
+	vertices = { 0.f,0.f,0.f,1.f,0.f,0.f,1.f,0.f,1.f,0.f,0.f,1.f };
+	num_vertices = vertices.size();
+	for (int i = 0; i < num_vertices; i++) {
+		if (size > 0) {
+			vertices[i] *= size;
+		}
+		int j = i + 1;
+		if (j % 3 == 0) {
+			vertices[i] += position.z;
+		}
+		else if ((j + 1) % 3 == 0) {
+			vertices[i] += position.y;
+		}
+		else {
+			vertices[i] += position.x;
+		}
+	}
+	indices = { 1,0,2,3,2,0 };
+	num_indices = indices.size();
+
+	this->Initialization();
 }
 
 

@@ -15,6 +15,7 @@ class SolidSphere;
 class Cilinder;
 class SolidCone;
 class Grid;
+class SolidPlane;
 class ModuleRenderer3D : public Module
 {
 public:
@@ -40,6 +41,7 @@ public:
 	SolidSphere* solid_sphere;
 	Cilinder* cilinder;
 	SolidCone* solid_cone;
+	SolidPlane* solid_plane;
 	Light lights[MAX_LIGHTS];
 	SDL_GLContext context;
 	mat3x3 NormalMatrix;
