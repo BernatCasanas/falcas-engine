@@ -14,6 +14,7 @@ class RectangularPyramid;
 class SolidSphere;
 class Cilinder;
 class SolidCone;
+class Grid;
 class ModuleRenderer3D : public Module
 {
 public:
@@ -30,6 +31,7 @@ public:
 
 
 public:
+	Grid* grid;
 	Cube* cube;
 	SquarePyramid* square_pyramid;
 	RectangularPrism* rectangular_prism;

@@ -18,14 +18,17 @@ Shape::~Shape()
 	glDeleteBuffers(1, &id_vertices);
 }
 
-void Shape::Render()
+void Shape::Render(bool triangles)
 {
 	if (id_indices > 0 && id_vertices > 0) {
 		glEnableClientState(GL_VERTEX_ARRAY);
 		glBindBuffer(GL_ARRAY_BUFFER, id_vertices);
 		glVertexPointer(3, GL_FLOAT, 0, NULL);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id_indices);
-		glDrawElements(GL_TRIANGLES, num_indices, GL_UNSIGNED_INT, NULL);
+		if(triangles==true)
+			glDrawElements(GL_TRIANGLES, num_indices, GL_UNSIGNED_INT, NULL);
+		else
+			glDrawElements(GL_LINES, num_indices, GL_UNSIGNED_INT, NULL);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 		glDisableClientState(GL_VERTEX_ARRAY);
@@ -43,6 +46,39 @@ void Shape::Initialization()
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
+
+Grid::Grid(Shapes shape, float3 position, uint size) : Shape(shape, position)
+{
+	this->size = size;
+	vertices.clear();
+	int size2 = size;
+
+	
+	for (int x = -size; x <= size2; x+=size+size) {
+		for (int z = -size; z <= size2; z++) {
+			vertices.push_back(x);
+			vertices.push_back(0);
+			vertices.push_back(z);
+		}
+	}
+	for (int z = -size; z <= size2; z += size + size) {
+		for (int x = -size; x <= size2; x++) {
+			vertices.push_back(x);
+			vertices.push_back(0);
+			vertices.push_back(z);
+		}
+	}
+	num_vertices = vertices.size();
+	for (int i = 0; i < num_vertices; i++) {
+		indices.push_back(i);
+	}
+	num_indices = indices.size();
+}
+
+SolidPlane::SolidPlane(Shapes shape, float3 position, uint size) : Shape(shape, position)
+{
+}
+
 
 
 Cube::Cube(Shapes shape, float3 position, uint size) :Shape(shape, position)

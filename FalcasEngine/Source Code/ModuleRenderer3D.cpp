@@ -130,7 +130,7 @@ bool ModuleRenderer3D::Init()
 	//solid_sphere = new SolidSphere(Shapes::SolidSphere, { 0,0,0 }, 1, 12, 24);
 	//cilinder = new Cilinder(Shapes::Cilinder, { 0,0,0 }, 1, 1, 3, 8);
 	//solid_cone = new SolidCone(Shapes::SolidCone, { 0,0,0 }, 1, 3, 16);
-
+	//grid = new Grid(Shapes::Grid, { 0,0,0 }, 500);
 	return ret;
 }
 
@@ -158,6 +158,7 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	//solid_sphere->Render();
 	//cilinder->Render();
 	//solid_cone->Render();
+	//grid->Render(false);
 	glLineWidth(1.0f);
 	
 	return UPDATE_CONTINUE;
@@ -184,6 +185,7 @@ bool ModuleRenderer3D::CleanUp()
 	//delete solid_sphere;
 	//delete cilinder;
 	//delete solid_cone;
+	//delete grid;
 	SDL_GL_DeleteContext(context);
 
 	return true;

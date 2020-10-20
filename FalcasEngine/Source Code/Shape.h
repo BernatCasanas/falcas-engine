@@ -5,6 +5,8 @@
 
 enum class Shapes {
 	Unknown=-1,
+	Grid,
+	SolidPlane,
 	Cube,
 	RectangularPrism,
 	TriangularPyramid,
@@ -19,7 +21,7 @@ class Shape {
 public:
 	Shape(Shapes shape, float3 position);
 	~Shape();
-	void Render();
+	void Render(bool triangles = true);
 	void Initialization();
 protected:
 	uint id_vertices;
@@ -31,6 +33,20 @@ protected:
 	float3 position;
 private:
 	Shapes shape;
+};
+
+class Grid :public Shape {
+public:
+	Grid(Shapes shape, float3 position, uint size);
+private:
+	uint size;
+};
+
+class SolidPlane :public Shape {
+public:
+	SolidPlane(Shapes shape, float3 position, uint size);
+private:
+	uint size;
 };
 
 class Cube : public Shape {
