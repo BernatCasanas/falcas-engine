@@ -32,8 +32,8 @@ protected:
 	uint id_indices;
 	uint num_indices;
 	uint num_vertices;
-	std::vector<float> vertices;
-	std::vector<int> indices;
+	float* vertices;
+	uint* indices;
 	float3 position;
 	std::string name;
 private:

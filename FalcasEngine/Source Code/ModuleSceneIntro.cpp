@@ -126,7 +126,7 @@ void ModuleSceneIntro::CreateGameObject(Shape shape)
 			num = std::to_string(total_prism);
 			name = name + num;
 		}
-		game_object = new RectangularPrism(Shape::RectangularPrism, { 0,0,0 }, name, 1, 1, 1);
+		game_object = new RectangularPrism(Shape::RectangularPrism, { 0,0,0 }, name, 1, 1, 2);
 		total_prism++;
 		break;
 	case Shape::TriangularPyramid:
