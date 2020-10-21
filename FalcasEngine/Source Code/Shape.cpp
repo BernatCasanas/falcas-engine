@@ -11,12 +11,16 @@ GameObject::GameObject(Shape shape, float3 position, std::string name)
 	this->shape = shape;
 	this->name = name;
 	id_indices = id_vertices = num_indices = 0;
+	vertices = nullptr;
+	indices = nullptr;
 }
 
 GameObject::~GameObject()
 {
-	delete[] vertices;
-	delete[] indices;
+	if(vertices!=nullptr)
+		delete[] vertices;
+	if(indices!=nullptr)
+		delete[] indices;
 	glDeleteBuffers(1,&id_indices);
 	glDeleteBuffers(1, &id_vertices);
 }
