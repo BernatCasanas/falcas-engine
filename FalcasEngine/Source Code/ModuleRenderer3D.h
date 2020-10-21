@@ -6,16 +6,6 @@
 
 #define MAX_LIGHTS 8
 
-class Cube;
-class SquarePyramid;
-class RectangularPrism;
-class TriangularPyramid;
-class RectangularPyramid;
-class SolidSphere;
-class Cilinder;
-class SolidCone;
-class Grid;
-class SolidPlane;
 class ModuleRenderer3D : public Module
 {
 public:
@@ -32,16 +22,6 @@ public:
 
 
 public:
-	Grid* grid;
-	Cube* cube;
-	SquarePyramid* square_pyramid;
-	RectangularPrism* rectangular_prism;
-	TriangularPyramid* triangular_pyramid;
-	RectangularPyramid* rectangular_pyramid;
-	SolidSphere* solid_sphere;
-	Cilinder* cilinder;
-	SolidCone* solid_cone;
-	SolidPlane* solid_plane;
 	Light lights[MAX_LIGHTS];
 	SDL_GLContext context;
 	mat3x3 NormalMatrix;

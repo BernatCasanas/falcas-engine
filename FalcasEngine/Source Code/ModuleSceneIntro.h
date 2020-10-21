@@ -3,8 +3,12 @@
 #include "Globals.h"
 #include "External Libraries/Assimp/Assimp/include/scene.h"
 #include "Mesh.h"
+#include <vector>
 
 
+class Grid;
+class GameObject;
+enum class Shape;
 class ModuleSceneIntro : public Module
 {
 public:
@@ -18,7 +22,14 @@ public:
 	update_status Update(float dt);
 	bool CleanUp();
 
+	void CreateGameObject(Shape shape);
+
 	Mesh m;
+	GameObject* game_object_selected;
+	std::vector<GameObject*> game_objects;
+	uint total_game_objects;
+private:
+	Grid* grid;
 
 public:
 };

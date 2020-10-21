@@ -17,6 +17,8 @@
 #include "ModuleWindow.h"
 #include "Console.h"
 #include "ModuleInput.h"
+#include "ModuleSceneIntro.h"
+#include "Shape.h"
 
 
 ModuleCentralEditor::ModuleCentralEditor(Application* app, bool start_enabled) : Module(app, start_enabled)
@@ -168,6 +170,45 @@ update_status ModuleCentralEditor::PostUpdate(float dt)
             }
             if (ImGui::MenuItem("OpenGL Options")) {
                 show_openglOptions = !show_openglOptions;
+            }
+            ImGui::EndMenu();
+        }
+        if (ImGui::BeginMenu("GameObject")) {
+            if (ImGui::MenuItem("Create Empty")) {
+                App->scene_intro->CreateGameObject(Shape::Empty);
+            }
+            if (ImGui::BeginMenu("3D Object")) {
+                if (ImGui::MenuItem("Cube")) {
+                    App->scene_intro->CreateGameObject(Shape::Cube);
+                }
+                if (ImGui::MenuItem("Rectangular Prism")) {
+                    App->scene_intro->CreateGameObject(Shape::RectangularPrism);
+                }
+                if (ImGui::MenuItem("Triangular Pyramid")) {
+                    App->scene_intro->CreateGameObject(Shape::TriangularPyramid);
+                }
+                if (ImGui::MenuItem("Square Pyramid")) {
+                    App->scene_intro->CreateGameObject(Shape::SquarePyramid);
+                }
+                if (ImGui::MenuItem("Rectangular Pyramid")) {
+                    App->scene_intro->CreateGameObject(Shape::RectangularPyramid);
+                }
+                if (ImGui::MenuItem("Cilinder")) {
+                    App->scene_intro->CreateGameObject(Shape::Cilinder);
+                }
+                if (ImGui::MenuItem("Cone")) {
+                    App->scene_intro->CreateGameObject(Shape::SolidCone);
+                }
+                if (ImGui::MenuItem("Sphere")) {
+                    App->scene_intro->CreateGameObject(Shape::SolidSphere);
+                }
+                ImGui::EndMenu();
+            }
+            if(ImGui::BeginMenu("2D Object")) {
+                if (ImGui::MenuItem("Plane")) {
+                    App->scene_intro->CreateGameObject(Shape::SolidPlane);
+                }
+                ImGui::EndMenu();
             }
             ImGui::EndMenu();
         }

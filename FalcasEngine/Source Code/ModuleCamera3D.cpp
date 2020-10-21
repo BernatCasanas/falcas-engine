@@ -4,6 +4,8 @@
 #include "External Libraries/SDL/include/SDL.h"
 #include "External Libraries/MathGeoLib/include/Math/MathFunc.h"
 #include "ModuleInput.h"
+#include "ModuleSceneIntro.h"
+#include "Shape.h"
 
 ModuleCamera3D::ModuleCamera3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -119,7 +121,18 @@ update_status ModuleCamera3D::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN){
 		Reference={0,0,0};
 		LookAt(Reference);
+	}
+	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN) {
+		if (App->scene_intro->game_object_selected == nullptr) {
+			LOG("You must select and object in order to center to it!");
 		}
+		else{
+			float x, y, z;
+			App->scene_intro->game_object_selected->GetPosition(x, y, z);
+			Reference = { x,y,z };
+			LookAt(Reference);
+		}
+	}
 	// Recalculate matrix -------------
 	CalculateViewMatrix();
 

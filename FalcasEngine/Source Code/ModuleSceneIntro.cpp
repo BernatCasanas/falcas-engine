@@ -4,12 +4,12 @@
 #include "ModuleSceneIntro.h"
 #include "ModuleCentralEditor.h"
 #include "ModuleCamera3D.h"
-#include "Primitive.h"
 #include <gl/GL.h>
 #include "External Libraries/Assimp/Assimp/include/cimport.h"
 #include "External Libraries/Assimp/Assimp/include/postprocess.h"
 #include "Console.h"
 #include "Mesh.h"
+#include "Shape.h"
 
 
 
@@ -66,7 +66,9 @@ bool ModuleSceneIntro::Start()
 		const char* error = aiGetErrorString();
 		LOG("Error loading FBX: %s", error)
 	}
-
+	grid = new Grid(Shape::Grid, { 0,0,0 }, 500);
+	game_object_selected = nullptr;
+	total_game_objects = 0;
 	return ret;
 }
 
@@ -74,16 +76,65 @@ bool ModuleSceneIntro::Start()
 bool ModuleSceneIntro::CleanUp()
 {
 	LOG("Unloading Intro scene");
+	for (int i = 0; i < total_game_objects; i++) {
+		delete game_objects.at(i);
+	}
+	game_objects.clear();
+	delete grid;
 
 	return true;
+}
+
+void ModuleSceneIntro::CreateGameObject(Shape shape)
+{
+
+	GameObject* game_object = nullptr;
+	switch (shape)
+	{
+	case Shape::Empty:
+		game_object = new GameObject(Shape::Empty, { 0,0,0, });
+		break;
+	case Shape::SolidPlane:
+		game_object = new SolidPlane(Shape::SolidPlane, { 0,0,0 }, 1);
+		break;
+	case Shape::Cube:
+		game_object = new Cube(Shape::Cube, { 0,0,0 }, 1);
+		break;
+	case Shape::RectangularPrism:
+		game_object = new RectangularPrism(Shape::RectangularPrism, { 0,0,0 }, 1, 1, 1);
+		break;
+	case Shape::TriangularPyramid:
+		game_object = new TriangularPyramid(Shape::TriangularPyramid, { 0,0,0 }, 1);
+		break;
+	case Shape::SquarePyramid:
+		game_object = new SquarePyramid(Shape::SquarePyramid, { 0,0,0 }, 1, 1);
+		break;
+	case Shape::RectangularPyramid:
+		game_object = new RectangularPyramid(Shape::RectangularPyramid, { 0,0,0 }, 1, 3, 2);
+		break;
+	case Shape::SolidSphere:
+		game_object = new SolidSphere(Shape::SolidSphere, { 0,0,0 }, 1, 12, 24);
+		break;
+	case Shape::Cilinder:
+		game_object = new Cilinder(Shape::Cilinder, { 0,0,0 }, 1, 1, 3, 8);
+		break;
+	case Shape::SolidCone:
+		game_object = new SolidCone(Shape::SolidCone, { 0,0,0 }, 1, 3, 16);
+		break;
+	}
+	if (game_object != nullptr) {
+		game_objects.push_back(game_object);
+		total_game_objects++;
+	}
 }
 
 // Update: draw background
 update_status ModuleSceneIntro::Update(float dt)
 {
-	//Plane p(0, 1, 0, 0);
-	//p.axis = true;
-	//p.Render();
+	grid->Render(false);
+	for (int i = 0; i < total_game_objects; i++) {
+		game_objects.at(i)->Render();
+	}
 	
 	if (App->central_editor->wireframe) {
 		glPolygonMode(GL_FRONT, GL_LINE);

@@ -65,7 +65,6 @@
     <ClCompile Include="Source Code\ModuleRenderer3D.cpp" />
     <ClCompile Include="Source Code\ModuleSceneIntro.cpp" />
     <ClCompile Include="Source Code\ModuleWindow.cpp" />
-    <ClCompile Include="Source Code\Primitive.cpp" />
     <ClCompile Include="Source Code\Shape.cpp" />
     <ClCompile Include="Source Code\Timer.cpp" />
   </ItemGroup>
@@ -187,7 +186,6 @@
     <ClInclude Include="Source Code\ModuleRenderer3D.h" />
     <ClInclude Include="Source Code\ModuleSceneIntro.h" />
     <ClInclude Include="Source Code\ModuleWindow.h" />
-    <ClInclude Include="Source Code\Primitive.h" />
     <ClInclude Include="Source Code\Shape.h" />
     <ClInclude Include="Source Code\Timer.h" />
   </ItemGroup>

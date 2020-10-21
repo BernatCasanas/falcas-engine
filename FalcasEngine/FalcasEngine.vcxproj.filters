@@ -72,9 +72,6 @@
     <ClCompile Include="Source Code\ModuleWindow.cpp">
       <Filter>Source Code</Filter>
     </ClCompile>
-    <ClCompile Include="Source Code\Primitive.cpp">
-      <Filter>Source Code</Filter>
-    </ClCompile>
     <ClCompile Include="Source Code\Timer.cpp">
       <Filter>Source Code</Filter>
     </ClCompile>
@@ -243,9 +240,6 @@
       <Filter>Source Code</Filter>
     </ClInclude>
     <ClInclude Include="Source Code\ModuleWindow.h">
-      <Filter>Source Code</Filter>
-    </ClInclude>
-    <ClInclude Include="Source Code\Primitive.h">
       <Filter>Source Code</Filter>
     </ClInclude>
     <ClInclude Include="Source Code\Timer.h">

@@ -1,6 +1,5 @@
 #include "Globals.h"
 #include "Application.h"
-#include "Shape.h"
 #include "ModuleRenderer3D.h"
 #include "ModuleCamera3D.h"
 #include "External Libraries/Glew/include/glew.h"
@@ -122,16 +121,16 @@ bool ModuleRenderer3D::Init()
 	// Projection matrix for
 	OnResize(SCREEN_WIDTH, SCREEN_HEIGHT);
 	//DIFFERENT SHAPES' INITIALIZATION
-	//square_pyramid = new SquarePyramid(Shapes::SquarePyramid, { 0,0,0 }, 1,1);
-	//cube = new Cube(Shapes::Cube, { 0,0,0 }, 1);
-	//rectangular_prism = new RectangularPrism(Shapes::RectangularPrism, { 0,0,0 }, 1, 1, 1);
-	//triangular_pyramid = new TriangularPyramid(Shapes::TriangularPyramid, { 0,0,0 }, 1);
-	//rectangular_pyramid = new RectangularPyramid(Shapes::RectangularPyramid, { 0,0,0 }, 1, 3, 2);
-	//solid_sphere = new SolidSphere(Shapes::SolidSphere, { 0,0,0 }, 1, 12, 24);
-	//cilinder = new Cilinder(Shapes::Cilinder, { 0,0,0 }, 1, 1, 3, 8);
-	//solid_cone = new SolidCone(Shapes::SolidCone, { 0,0,0 }, 1, 3, 16);
-	grid = new Grid(Shapes::Grid, { 0,0,0 }, 500);
-	//solid_plane = new SolidPlane(Shapes::SolidPlane, { 0,0,0 }, 1);
+	//square_pyramid = new SquarePyramid(Shape::SquarePyramid, { 0,0,0 }, 1,1);
+	//cube = new Cube(Shape::Cube, { 0,0,0 }, 1);
+	//rectangular_prism = new RectangularPrism(Shape::RectangularPrism, { 0,0,0 }, 1, 1, 1);
+	//triangular_pyramid = new TriangularPyramid(Shape::TriangularPyramid, { 0,0,0 }, 1);
+	//rectangular_pyramid = new RectangularPyramid(Shape::RectangularPyramid, { 0,0,0 }, 1, 3, 2);
+	//solid_sphere = new SolidSphere(Shape::SolidSphere, { 0,0,0 }, 1, 12, 24);
+	//cilinder = new Cilinder(Shape::Cilinder, { 0,0,0 }, 1, 1, 3, 8);
+	//solid_cone = new SolidCone(Shape::SolidCone, { 0,0,0 }, 1, 3, 16);
+	//grid = new Grid(Shape::Grid, { 0,0,0 }, 500);
+	//solid_plane = new SolidPlane(Shape::SolidPlane, { 0,0,0 }, 1);
 	return ret;
 }
 
@@ -159,7 +158,7 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	//solid_sphere->Render();
 	//cilinder->Render();
 	//solid_cone->Render();
-	grid->Render(false);
+	//grid->Render(false);
 	//solid_plane->Render();
 	glLineWidth(1.0f);
 	
@@ -187,7 +186,7 @@ bool ModuleRenderer3D::CleanUp()
 	//delete solid_sphere;
 	//delete cilinder;
 	//delete solid_cone;
-	delete grid;
+	//delete grid;
 	//delete solid_plane;
 	SDL_GL_DeleteContext(context);
 
