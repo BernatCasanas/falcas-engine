@@ -98,6 +98,7 @@ bool ModuleCentralEditor::Init()
     show_configuration = false;
     show_console = false;
     show_openglOptions = false;
+    show_hierarchy = true;
     depth = cullface = lighting = colorMaterial = texture = ambient = stencil = wireframe = false;
     progress = 50.f;
     progress2 = 50.f;
@@ -151,6 +152,8 @@ update_status ModuleCentralEditor::PostUpdate(float dt)
         show_configuration = !show_configuration;
     if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
         show_console = !show_console;
+    if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
+        show_hierarchy = !show_hierarchy;
 
 
     { // UPSIDE BAR
@@ -164,6 +167,9 @@ update_status ModuleCentralEditor::PostUpdate(float dt)
         if (ImGui::BeginMenu("View")) {
             if (ImGui::MenuItem("Console", "1")) {
                 show_console = !show_console;
+            }
+            if (ImGui::MenuItem("Hierarchy", "2")) {
+                show_hierarchy = !show_hierarchy;
             }
             if (ImGui::MenuItem("Configuration", "4")) {
                 show_configuration = !show_configuration;
@@ -402,7 +408,6 @@ update_status ModuleCentralEditor::PostUpdate(float dt)
     }
     //Console
     if (show_console) {
-        //App->console->AddLog("HEY");
         ImGui::Begin("Console");
         console_logs = App->console->GetLogs();
         for (int i = 0; i < console_logs.size(); i++) {
@@ -410,7 +415,21 @@ update_status ModuleCentralEditor::PostUpdate(float dt)
         }
         ImGui::End();
     }
-    
+
+    //Hierarchy
+    if (show_hierarchy) {
+        ImGui::Begin("Hierarchy");
+        static int selected = -1;
+        for (int i = 0; i < App->scene_intro->total_game_objects; i++) {
+            if (ImGui::Selectable(App->scene_intro->game_objects.at(i)->GetName().c_str(),selected==i)) {
+                App->scene_intro->game_object_selected = App->scene_intro->game_objects[i];
+                selected = i;
+            }
+            ImGui::EndMenuBar;
+        }
+        ImGui::End();
+    }
+
     if (show_openglOptions)
     {     
         ImGui::Begin("OpenGL Options");

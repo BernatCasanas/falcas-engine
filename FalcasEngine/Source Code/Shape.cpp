@@ -5,10 +5,11 @@
 
 #define M_PI       3.14159265358979323846
 
-GameObject::GameObject(Shape shape, float3 position)
+GameObject::GameObject(Shape shape, float3 position, std::string name)
 {
 	this->position = position;
 	this->shape = shape;
+	this->name = name;
 	id_indices = id_vertices = num_indices = 0;
 }
 
@@ -47,7 +48,7 @@ void GameObject::Initialization()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
-Grid::Grid(Shape shape, float3 position, uint size) : GameObject(shape, position)
+Grid::Grid(Shape shape, float3 position, std::string name, uint size) : GameObject(shape, position, name)
 {
 	this->size = size;
 	vertices.clear();
@@ -79,7 +80,7 @@ Grid::Grid(Shape shape, float3 position, uint size) : GameObject(shape, position
 
 }
 
-SolidPlane::SolidPlane(Shape shape, float3 position, uint size) : GameObject(shape, position)
+SolidPlane::SolidPlane(Shape shape, float3 position, std::string name, uint size) : GameObject(shape, position, name)
 {
 	this->size = size;
 	vertices = { 0.f,0.f,0.f,1.f,0.f,0.f,1.f,0.f,1.f,0.f,0.f,1.f };
@@ -107,7 +108,7 @@ SolidPlane::SolidPlane(Shape shape, float3 position, uint size) : GameObject(sha
 
 
 
-Cube::Cube(Shape shape, float3 position, uint size) :GameObject(shape, position)
+Cube::Cube(Shape shape, float3 position, std::string name, uint size) :GameObject(shape, position, name)
 {
 	this->size = size;
 	
@@ -139,7 +140,7 @@ Cube::Cube(Shape shape, float3 position, uint size) :GameObject(shape, position)
 }
 
 
-RectangularPrism::RectangularPrism(Shape shape, float3 position, uint size_length, uint size_height, uint size_width) :GameObject(shape, position)
+RectangularPrism::RectangularPrism(Shape shape, float3 position, std::string name, uint size_length, uint size_height, uint size_width) :GameObject(shape, position, name)
 {
 	this->size_length = size_length;
 	this->size_height = size_height;
@@ -178,7 +179,7 @@ RectangularPrism::RectangularPrism(Shape shape, float3 position, uint size_lengt
 	this->Initialization();
 
 }
-TriangularPyramid::TriangularPyramid(Shape shape, float3 position, uint size) :GameObject(shape, position)
+TriangularPyramid::TriangularPyramid(Shape shape, float3 position, std::string name, uint size) :GameObject(shape, position, name)
 {
 	this->size = size;
 
@@ -210,7 +211,7 @@ TriangularPyramid::TriangularPyramid(Shape shape, float3 position, uint size) :G
 }
 
 
-SquarePyramid::SquarePyramid(Shape shape, float3 position, uint height, uint size_base) :GameObject(shape, position)
+SquarePyramid::SquarePyramid(Shape shape, float3 position, std::string name, uint height, uint size_base) :GameObject(shape, position, name)
 {
 	this->height = height;
 	this->size_base = size_base;
@@ -249,7 +250,7 @@ SquarePyramid::SquarePyramid(Shape shape, float3 position, uint height, uint siz
 	this->Initialization();
 }
 
-RectangularPyramid::RectangularPyramid(Shape shape, float3 position, uint height, uint size_length, uint size_width) :GameObject(shape, position)
+RectangularPyramid::RectangularPyramid(Shape shape, float3 position, std::string name, uint height, uint size_length, uint size_width) :GameObject(shape, position, name)
 {
 	this->height = height;
 	this->size_length = size_length;
@@ -286,7 +287,7 @@ RectangularPyramid::RectangularPyramid(Shape shape, float3 position, uint height
 
 }
 
-SolidSphere::SolidSphere(Shape shape, float3 position, uint radius, uint rings, uint sectors) :GameObject(shape, position)
+SolidSphere::SolidSphere(Shape shape, float3 position, std::string name, uint radius, uint rings, uint sectors) :GameObject(shape, position, name)
 {
 	this->radius = radius;
 	this->rings = rings;
@@ -351,7 +352,7 @@ SolidSphere::SolidSphere(Shape shape, float3 position, uint radius, uint rings, 
 	this->Initialization();
 }
 
-Cilinder::Cilinder(Shape shape, float3 position, uint radius, uint height, uint rings, uint sectors) :GameObject(shape, position)
+Cilinder::Cilinder(Shape shape, float3 position, std::string name, uint radius, uint height, uint rings, uint sectors) :GameObject(shape, position, name)
 {
 	this->radius = radius;
 	this->rings = rings;
@@ -431,7 +432,7 @@ Cilinder::Cilinder(Shape shape, float3 position, uint radius, uint height, uint 
 	this->Initialization();
 }
 
-SolidCone::SolidCone(Shape shape, float3 position, uint radius, uint height,  uint sectors) : GameObject(shape, position)
+SolidCone::SolidCone(Shape shape, float3 position, std::string name, uint radius, uint height,  uint sectors) : GameObject(shape, position, name)
 {
 	this->radius = radius;
 	uint rings = 1;

@@ -66,9 +66,9 @@ bool ModuleSceneIntro::Start()
 		const char* error = aiGetErrorString();
 		LOG("Error loading FBX: %s", error)
 	}
-	grid = new Grid(Shape::Grid, { 0,0,0 }, 500);
+	grid = new Grid(Shape::Grid, { 0,0,0 }, "Grid", 500);
 	game_object_selected = nullptr;
-	total_game_objects = 0;
+	total_game_objects = total_cilinder = total_cone = total_cube = total_empty = total_plane = total_prism = total_rect_pyr = total_sphere = total_sqr_pyr = total_tri_pyr = 0;
 	return ret;
 }
 
@@ -89,37 +89,99 @@ void ModuleSceneIntro::CreateGameObject(Shape shape)
 {
 
 	GameObject* game_object = nullptr;
+	std::string name;
+	std::string num;;
 	switch (shape)
 	{
 	case Shape::Empty:
-		game_object = new GameObject(Shape::Empty, { 0,0,0, });
+		name = "GameObject";
+		if (total_empty != 0) {
+			num = std::to_string(total_empty);
+			name = name + num;
+		}
+		game_object = new GameObject(Shape::Empty, { 0,0,0, }, name);
+		total_empty++;
 		break;
 	case Shape::SolidPlane:
-		game_object = new SolidPlane(Shape::SolidPlane, { 0,0,0 }, 1);
+		name = "Plane";
+		if (total_plane != 0) {
+			num = std::to_string(total_plane);
+			name = name + num;
+		}
+		game_object = new SolidPlane(Shape::SolidPlane, { 0,0,0 }, name, 1);
+		total_plane++;
 		break;
 	case Shape::Cube:
-		game_object = new Cube(Shape::Cube, { 0,0,0 }, 1);
+		name = "Cube";
+		if (total_cube != 0) {
+			num = std::to_string(total_cube);
+			name = name + num;
+		}
+		game_object = new Cube(Shape::Cube, { 0,0,0 }, name, 1);
+		total_cube++;
 		break;
 	case Shape::RectangularPrism:
-		game_object = new RectangularPrism(Shape::RectangularPrism, { 0,0,0 }, 1, 1, 1);
+		name = "RectangularPrism";
+		if (total_prism != 0) {
+			num = std::to_string(total_prism);
+			name = name + num;
+		}
+		game_object = new RectangularPrism(Shape::RectangularPrism, { 0,0,0 }, name, 1, 1, 1);
+		total_prism++;
 		break;
 	case Shape::TriangularPyramid:
-		game_object = new TriangularPyramid(Shape::TriangularPyramid, { 0,0,0 }, 1);
+		name = "TriangularPyramid";
+		if (total_tri_pyr != 0) {
+			num = std::to_string(total_tri_pyr);
+			name = name + num;
+		}
+		game_object = new TriangularPyramid(Shape::TriangularPyramid, { 0,0,0 }, name, 1);
+		total_tri_pyr++;
 		break;
 	case Shape::SquarePyramid:
-		game_object = new SquarePyramid(Shape::SquarePyramid, { 0,0,0 }, 1, 1);
+		name = "SquarePyramid";
+		if (total_sqr_pyr != 0) {
+			num = std::to_string(total_sqr_pyr);
+			name = name + num;
+		}
+		game_object = new SquarePyramid(Shape::SquarePyramid, { 0,0,0 }, name, 1, 1);
+		total_sqr_pyr++;
 		break;
 	case Shape::RectangularPyramid:
-		game_object = new RectangularPyramid(Shape::RectangularPyramid, { 0,0,0 }, 1, 3, 2);
+		name = "RectangularPyramid";
+		if (total_rect_pyr != 0) {
+			num = std::to_string(total_rect_pyr);
+			name = name + num;
+		}
+		game_object = new RectangularPyramid(Shape::RectangularPyramid, { 0,0,0 }, name, 1, 3, 2);
+		total_rect_pyr++;
 		break;
 	case Shape::SolidSphere:
-		game_object = new SolidSphere(Shape::SolidSphere, { 0,0,0 }, 1, 12, 24);
+		name = "Sphere";
+		if (total_sphere != 0) {
+			num = std::to_string(total_sphere);
+			name = name + num;
+		}
+		game_object = new SolidSphere(Shape::SolidSphere, { 0,0,0 }, name, 1, 12, 24);
+		total_sphere++;
 		break;
 	case Shape::Cilinder:
-		game_object = new Cilinder(Shape::Cilinder, { 0,0,0 }, 1, 1, 3, 8);
+		name = "Cilinder";
+		if (total_cilinder != 0) {
+			num = std::to_string(total_cilinder);
+			name = name + num;
+		}
+		game_object = new Cilinder(Shape::Cilinder, { 0,0,0 }, name, 1, 1, 3, 8);
+		total_cilinder++;
 		break;
 	case Shape::SolidCone:
-		game_object = new SolidCone(Shape::SolidCone, { 0,0,0 }, 1, 3, 16);
+		name = "Cone";
+		if (total_cone != 0) {
+			num = std::to_string(total_cone);
+			name = name + num;
+		}
+		game_object = new SolidCone(Shape::SolidCone, { 0,0,0 }, name, 1, 3, 16);
+		total_cone++;
 		break;
 	}
 	if (game_object != nullptr) {
@@ -134,6 +196,7 @@ update_status ModuleSceneIntro::Update(float dt)
 	grid->Render(false);
 	for (int i = 0; i < total_game_objects; i++) {
 		game_objects.at(i)->Render();
+
 	}
 	
 	if (App->central_editor->wireframe) {

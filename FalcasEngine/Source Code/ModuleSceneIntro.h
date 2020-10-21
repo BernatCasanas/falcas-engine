@@ -30,6 +30,16 @@ public:
 	uint total_game_objects;
 private:
 	Grid* grid;
+	uint total_empty;
+	uint total_plane;
+	uint total_cube;
+	uint total_prism;
+	uint total_tri_pyr;
+	uint total_sqr_pyr;
+	uint total_rect_pyr;
+	uint total_sphere;
+	uint total_cilinder;
+	uint total_cone;
 
 public:
 };
