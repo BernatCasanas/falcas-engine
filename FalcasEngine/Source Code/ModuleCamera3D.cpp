@@ -164,6 +164,7 @@ update_status ModuleCamera3D::Update(float dt)
 			float x, y, z;
 			App->scene_intro->game_object_selected->GetPosition(x, y, z);
 			Reference = { x,y,z };
+			Position = Reference+5;
 			LookAt(Reference);
 		}
 	}

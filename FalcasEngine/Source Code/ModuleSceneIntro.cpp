@@ -180,7 +180,7 @@ void ModuleSceneIntro::CreateGameObject(Shape shape)
 			num = std::to_string(total_cone);
 			name = name + num;
 		}
-		game_object = new SolidCone(Shape::SolidCone, { 0,0,0 }, name, 1, 3, 16);
+		game_object = new SolidCone(Shape::SolidCone, { 0,0,0 }, name, 1, 1, 16);
 		total_cone++;
 		break;
 	}
