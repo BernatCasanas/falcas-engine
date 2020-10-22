@@ -83,8 +83,8 @@ update_status ModuleCamera3D::Update(float dt)
 		int dy = -App->input->GetMouseYMotion();
 
 		float Sensitivity = 0.25f;
-
-		Position -= Reference;
+		vec3 Position2 = Position;
+		Position2 -= Reference;
 
 		if (dx != 0)
 		{
@@ -111,7 +111,8 @@ update_status ModuleCamera3D::Update(float dt)
 			}
 		}
 
-		Position = Reference + Z * length(Position);
+		Position2 = Reference + Z * length(Position);
+		Reference += Position - Position2;
 	}
 
 
