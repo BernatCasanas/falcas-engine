@@ -199,8 +199,8 @@ void ModuleCamera3D::LookAt( const vec3 &Spot)
 	Reference = Spot;
 
 	Z = normalize(Position - Reference);
-	X = normalize(cross(vec3(0.0f, 1.0f, 0.0f), Z));
-	Y = cross(Z, X);
+	if (Z.x != 0 || Z.y != 1 || Z.z != 0)
+		X = normalize(cross(vec3(0.0f, 1.0f, 0.0f), Z));	Y = cross(Z, X);
 
 	CalculateViewMatrix();
 }
