@@ -21,13 +21,14 @@ enum class Shape {
 class GameObject {
 public:
 	GameObject(Shape shape, float3 position, std::string name);
+	GameObject() {};
 	~GameObject();
 	void Render(bool triangles = true);
 	void Initialization();
 	float3 GetPosition() { return position; }
 	void GetPosition(float& x, float& y, float& z) { x = position.x, y = position.y, z = position.z; }
 	std::string GetName() { return name; }
-protected:
+public:
 	uint id_vertices;
 	uint id_indices;
 	uint num_indices;

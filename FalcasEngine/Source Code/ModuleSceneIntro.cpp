@@ -26,6 +26,8 @@ bool ModuleSceneIntro::Start()
 	LOG("Loading Intro assets");
 	bool ret = true;
 
+	total_game_objects = total_cilinder = total_cone = total_cube = total_empty = total_plane = total_prism = total_rect_pyr = total_sphere = total_sqr_pyr = total_tri_pyr = 0;
+
 	App->camera->Move(vec3(1.0f, 1.0f, 0.0f));
 	App->camera->LookAt(vec3(0, 0, 0));
 
@@ -34,31 +36,34 @@ bool ModuleSceneIntro::Start()
 	{
 		for (int i = 0; i < scene->mNumMeshes; i++)
 		{
+			GameObject *m = new GameObject;
 			aiMesh* ai_mesh = scene->mMeshes[i];
-			m.num_vertex = ai_mesh->mNumVertices;
-			m.vertex = new float[m.num_vertex * 3];
-			memcpy(m.vertex, ai_mesh->mVertices, sizeof(float) * m.num_vertex * 3);
+			m->num_vertices = ai_mesh->mNumVertices;
+			m->vertices = new float[m->num_vertices * 3];
+			memcpy(m->vertices, ai_mesh->mVertices, sizeof(float) * m->num_vertices * 3);
 			LOG("Loading FBX correctly");
-			LOG("New mesh with %d vertices", m.num_vertex);
+			LOG("New mesh with %d vertices", m->num_vertices);
 			
 			
 
 			if (ai_mesh->HasFaces())
 			{
-				m.num_index = ai_mesh->mNumFaces * 3;
-				m.index = new uint[m.num_index]; // assume each face is a triangle
+				m->num_indices = ai_mesh->mNumFaces * 3;
+				m->indices = new uint[m->num_indices]; // assume each face is a triangle
 				for (uint j = 0; j < ai_mesh->mNumFaces; ++j)
 				{
 					if (ai_mesh->mFaces[j].mNumIndices != 3) {
 						LOG("WARNING, geometry face with != 3 indices!");
 					}
 					else {
-						memcpy(&m.index, ai_mesh->mFaces[j].mIndices, 3 * sizeof(uint));
+						memcpy(&m->indices[j*3], ai_mesh->mFaces[j].mIndices, 3 * sizeof(uint));
 					}
 					
 				}
 			}
-			
+			m->position = { 0,0,0 };
+			game_objects.push_back(m);
+			total_game_objects++;
 			aiReleaseImport(scene);
 		}
 	}
@@ -68,7 +73,6 @@ bool ModuleSceneIntro::Start()
 	}
 	grid = new Grid(Shape::Grid, { 0,0,0 }, "Grid", 500);
 	game_object_selected = nullptr;
-	total_game_objects = total_cilinder = total_cone = total_cube = total_empty = total_plane = total_prism = total_rect_pyr = total_sphere = total_sqr_pyr = total_tri_pyr = 0;
 	return ret;
 }
 

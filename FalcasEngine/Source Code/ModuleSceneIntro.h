@@ -24,7 +24,6 @@ public:
 
 	void CreateGameObject(Shape shape);
 
-	Mesh m;
 	GameObject* game_object_selected;
 	std::vector<GameObject*> game_objects;
 	uint total_game_objects;

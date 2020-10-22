@@ -40,6 +40,14 @@ void GameObject::Render(bool triangles)
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 		glDisableClientState(GL_VERTEX_ARRAY);
 	}
+	//this works
+    glGenBuffers(1, ((GLuint*)&(id_indices)));
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id_indices);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * num_indices, indices, GL_STATIC_DRAW);
+
+    glGenBuffers(1, (GLuint*)&(id_vertices));
+    glBindBuffer(GL_ARRAY_BUFFER, id_vertices);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * num_vertices * 3, vertices, GL_STATIC_DRAW);
 }
 
 void GameObject::Initialization()
