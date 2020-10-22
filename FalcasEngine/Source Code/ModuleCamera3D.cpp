@@ -152,7 +152,7 @@ update_status ModuleCamera3D::Update(float dt)
 
 		Position = Reference + Z * length(Position);
 	}
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN){
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN && App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_IDLE) {
 		Reference={0,0,0};
 		LookAt(Reference);
 	}
