@@ -15,7 +15,8 @@ enum class Shape {
 	RectangularPyramid,
 	SolidSphere,
 	Cilinder,
-	SolidCone
+	SolidCone,
+	Mesh,
 };
 
 class GameObject {

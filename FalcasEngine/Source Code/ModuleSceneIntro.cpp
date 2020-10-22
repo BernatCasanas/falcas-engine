@@ -36,11 +36,11 @@ bool ModuleSceneIntro::Start()
 	{
 		for (int i = 0; i < scene->mNumMeshes; i++)
 		{
-			GameObject *m = new GameObject;
+			GameObject* m = new GameObject(Shape::Mesh, { 0,0,0 },"Warrior");
 			aiMesh* ai_mesh = scene->mMeshes[i];
-			m->num_vertices = ai_mesh->mNumVertices;
-			m->vertices = new float[m->num_vertices * 3];
-			memcpy(m->vertices, ai_mesh->mVertices, sizeof(float) * m->num_vertices * 3);
+			m->num_vertices = ai_mesh->mNumVertices * 3;
+			m->vertices = new float[m->num_vertices];
+			memcpy(m->vertices, ai_mesh->mVertices, sizeof(float) * m->num_vertices);
 			LOG("Loading FBX correctly");
 			LOG("New mesh with %d vertices", m->num_vertices);
 			
@@ -61,7 +61,8 @@ bool ModuleSceneIntro::Start()
 					
 				}
 			}
-			m->position = { 0,0,0 };
+			
+			m->Initialization();
 			game_objects.push_back(m);
 			total_game_objects++;
 			aiReleaseImport(scene);
