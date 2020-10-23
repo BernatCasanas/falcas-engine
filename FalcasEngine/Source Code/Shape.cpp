@@ -40,7 +40,6 @@ void GameObject::Render(bool triangles)
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 		glDisableClientState(GL_VERTEX_ARRAY);
 	}
-	//this works
     
 }
 

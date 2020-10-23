@@ -31,47 +31,7 @@ bool ModuleSceneIntro::Start()
 	App->camera->Move(vec3(1.0f, 1.0f, 0.0f));
 	App->camera->LookAt(vec3(0, 0, 0));
 
-	scene = aiImportFile("Assets/warrior/warrior.fbx", aiProcessPreset_TargetRealtime_MaxQuality);
-	if (scene != nullptr && scene->HasMeshes())
-	{
-		for (int i = 0; i < scene->mNumMeshes; i++)
-		{
-			GameObject* m = new GameObject(Shape::Mesh, { 0,0,0 },"Warrior");
-			aiMesh* ai_mesh = scene->mMeshes[i];
-			m->num_vertices = ai_mesh->mNumVertices * 3;
-			m->vertices = new float[m->num_vertices];
-			memcpy(m->vertices, ai_mesh->mVertices, sizeof(float) * m->num_vertices);
-			LOG("Loading FBX correctly");
-			LOG("New mesh with %d vertices", m->num_vertices);
-			
-			
-
-			if (ai_mesh->HasFaces())
-			{
-				m->num_indices = ai_mesh->mNumFaces * 3;
-				m->indices = new uint[m->num_indices]; // assume each face is a triangle
-				for (uint j = 0; j < ai_mesh->mNumFaces; ++j)
-				{
-					if (ai_mesh->mFaces[j].mNumIndices != 3) {
-						LOG("WARNING, geometry face with != 3 indices!");
-					}
-					else {
-						memcpy(&m->indices[j*3], ai_mesh->mFaces[j].mIndices, 3 * sizeof(uint));
-					}
-					
-				}
-			}
-			
-			m->Initialization();
-			game_objects.push_back(m);
-			total_game_objects++;
-			aiReleaseImport(scene);
-		}
-	}
-	else {
-		const char* error = aiGetErrorString();
-		LOG("Error loading FBX: %s", error)
-	}
+	
 	grid = new Grid(Shape::Grid, { 0,0,0 }, "Grid", 500);
 	game_object_selected = nullptr;
 	return ret;
@@ -192,6 +152,51 @@ void ModuleSceneIntro::CreateGameObject(Shape shape)
 	if (game_object != nullptr) {
 		game_objects.push_back(game_object);
 		total_game_objects++;
+	}
+}
+
+void ModuleSceneIntro::LoadGameObject(float3 position, char* file, char* name)
+{
+	scene = aiImportFile(file, aiProcessPreset_TargetRealtime_MaxQuality);
+	if (scene != nullptr && scene->HasMeshes())
+	{
+		for (int i = 0; i < scene->mNumMeshes; i++)
+		{
+			GameObject* m = new GameObject(Shape::Mesh, position, name);
+			aiMesh* ai_mesh = scene->mMeshes[i];
+			m->num_vertices = ai_mesh->mNumVertices * 3;
+			m->vertices = new float[m->num_vertices];
+			memcpy(m->vertices, ai_mesh->mVertices, sizeof(float) * m->num_vertices);
+			LOG("Loading FBX correctly");
+			LOG("New mesh with %d vertices", m->num_vertices);
+
+
+
+			if (ai_mesh->HasFaces())
+			{
+				m->num_indices = ai_mesh->mNumFaces * 3;
+				m->indices = new uint[m->num_indices]; // assume each face is a triangle
+				for (uint j = 0; j < ai_mesh->mNumFaces; ++j)
+				{
+					if (ai_mesh->mFaces[j].mNumIndices != 3) {
+						LOG("WARNING, geometry face with != 3 indices!");
+					}
+					else {
+						memcpy(&m->indices[j * 3], ai_mesh->mFaces[j].mIndices, 3 * sizeof(uint));
+					}
+
+				}
+			}
+
+			m->Initialization();
+			game_objects.push_back(m);
+			total_game_objects++;
+			aiReleaseImport(scene);
+		}
+	}
+	else {
+		const char* error = aiGetErrorString();
+		LOG("Error loading FBX: %s", error)
 	}
 }
 
