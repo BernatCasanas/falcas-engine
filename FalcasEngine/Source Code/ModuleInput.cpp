@@ -4,6 +4,7 @@
 #include "ModuleCentralEditor.h"
 #include "Application.h"
 #include "ModuleRenderer3D.h"
+#include "ModuleSceneIntro.h"
 #include "External Libraries/SDL/include/SDL.h"
 
 #define MAX_KEYS 300
@@ -126,6 +127,11 @@ update_status ModuleInput::PreUpdate(float dt)
 				if(e.window.event == SDL_WINDOWEVENT_RESIZED)
 					App->renderer3D->OnResize(e.window.data1, e.window.data2);
 			}
+			break;
+
+			case SDL_DROPFILE:
+			App->scene_intro->LoadGameObject({ 0,0,0 }, e.drop.file, GetFileName(e.drop.file));
+			break;
 		}
 	}
 
@@ -146,4 +152,22 @@ bool ModuleInput::CleanUp()
 KEY_STATE ModuleInput::GetKey(int id) const
 {
 	return keyboard[id];
+}
+
+char* ModuleInput::GetFileName(char* file)
+{
+	char* name = new char;
+	int i;
+	for (i = 0; file[i] != '\0'; i++) {}
+	int j = i;
+	for (j; file[j] != '\\'; --j) {}
+
+	int k = 0;
+	for (int z = j+1; z <= i; z++) {
+		if (file[z] == '.') break;
+		name[k] = file[z];
+		++k;
+	}
+
+	return name;
 }
