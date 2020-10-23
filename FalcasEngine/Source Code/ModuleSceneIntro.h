@@ -4,6 +4,8 @@
 #include "External Libraries/Assimp/Assimp/include/scene.h"
 #include "Mesh.h"
 #include <vector>
+#include "External Libraries/MathGeoLib/include/Math/float3.h"
+
 
 
 class Grid;
@@ -23,6 +25,7 @@ public:
 	bool CleanUp();
 
 	void CreateGameObject(Shape shape);
+	void LoadGameObject(float3 position, char* file, char* name);
 
 	GameObject* game_object_selected;
 	std::vector<GameObject*> game_objects;
