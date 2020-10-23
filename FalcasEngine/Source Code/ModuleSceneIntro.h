@@ -1,7 +1,6 @@
 #pragma once
 #include "Module.h"
 #include "Globals.h"
-#include "External Libraries/Assimp/Assimp/include/scene.h"
 #include "Mesh.h"
 #include <vector>
 #include "External Libraries/MathGeoLib/include/Math/float3.h"
@@ -11,6 +10,7 @@
 class Grid;
 class GameObject;
 enum class Shape;
+struct aiScene;
 class ModuleSceneIntro : public Module
 {
 public:

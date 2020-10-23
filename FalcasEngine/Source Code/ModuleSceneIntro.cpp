@@ -7,6 +7,7 @@
 #include <gl/GL.h>
 #include "External Libraries/Assimp/Assimp/include/cimport.h"
 #include "External Libraries/Assimp/Assimp/include/postprocess.h"
+#include "External Libraries/Assimp/Assimp/include/scene.h"
 #include "Console.h"
 #include "Mesh.h"
 #include "Shape.h"
