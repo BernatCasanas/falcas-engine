@@ -8,7 +8,7 @@
 
 
 class Grid;
-class GameObject;
+class GameObjectTemporal;
 enum class Shape;
 struct aiScene;
 class ModuleSceneIntro : public Module
@@ -27,8 +27,8 @@ public:
 	void CreateGameObject(Shape shape);
 	void LoadGameObject(float3 position, char* file, char* name);
 
-	GameObject* game_object_selected;
-	std::vector<GameObject*> game_objects;
+	GameObjectTemporal* game_object_selected;
+	std::vector<GameObjectTemporal*> game_objects;
 	uint total_game_objects;
 private:
 	Grid* grid;

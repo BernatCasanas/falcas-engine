@@ -54,7 +54,7 @@ bool ModuleSceneIntro::CleanUp()
 void ModuleSceneIntro::CreateGameObject(Shape shape)
 {
 
-	GameObject* game_object = nullptr;
+	GameObjectTemporal* game_object = nullptr;
 	std::string name;
 	std::string num;;
 	switch (shape)
@@ -65,7 +65,7 @@ void ModuleSceneIntro::CreateGameObject(Shape shape)
 			num = std::to_string(total_empty);
 			name = name + num;
 		}
-		game_object = new GameObject(Shape::Empty, { 0,0,0, }, name);
+		game_object = new GameObjectTemporal(Shape::Empty, { 0,0,0, }, name);
 		total_empty++;
 		break;
 	case Shape::SolidPlane:
@@ -163,7 +163,7 @@ void ModuleSceneIntro::LoadGameObject(float3 position, char* file, char* name)
 	{
 		for (int i = 0; i < scene->mNumMeshes; i++)
 		{
-			GameObject* m = new GameObject(Shape::Mesh, position, name);
+			GameObjectTemporal* m = new GameObjectTemporal(Shape::Mesh, position, name);
 			aiMesh* ai_mesh = scene->mMeshes[i];
 			m->num_vertices = ai_mesh->mNumVertices * 3;
 			m->vertices = new float[m->num_vertices];

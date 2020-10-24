@@ -5,7 +5,7 @@
 
 #define M_PI       3.14159265358979323846
 
-GameObject::GameObject(Shape shape, float3 position, std::string name)
+GameObjectTemporal::GameObjectTemporal(Shape shape, float3 position, std::string name)
 {
 	this->position = position;
 	this->shape = shape;
@@ -15,7 +15,7 @@ GameObject::GameObject(Shape shape, float3 position, std::string name)
 	indices = nullptr;
 }
 
-GameObject::~GameObject()
+GameObjectTemporal::~GameObjectTemporal()
 {
 	if(vertices!=nullptr)
 		delete[] vertices;
@@ -25,7 +25,7 @@ GameObject::~GameObject()
 	glDeleteBuffers(1, &id_vertices);
 }
 
-void GameObject::Render(bool triangles)
+void GameObjectTemporal::Render(bool triangles)
 {
 	if (id_indices > 0 && id_vertices > 0) {
 		glEnableClientState(GL_VERTEX_ARRAY);
@@ -43,7 +43,7 @@ void GameObject::Render(bool triangles)
     
 }
 
-void GameObject::Initialization()
+void GameObjectTemporal::Initialization()
 {
 	glGenBuffers(1, (GLuint*)&(id_vertices));
 	glBindBuffer(GL_ARRAY_BUFFER, id_vertices);
@@ -55,7 +55,7 @@ void GameObject::Initialization()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
-Grid::Grid(Shape shape, float3 position, std::string name, uint size) : GameObject(shape, position, name)
+Grid::Grid(Shape shape, float3 position, std::string name, uint size) : GameObjectTemporal(shape, position, name)
 {
 	this->size = size;
 	vertices=nullptr;
@@ -92,7 +92,7 @@ Grid::Grid(Shape shape, float3 position, std::string name, uint size) : GameObje
 
 }
 
-SolidPlane::SolidPlane(Shape shape, float3 position, std::string name, uint size) : GameObject(shape, position, name)
+SolidPlane::SolidPlane(Shape shape, float3 position, std::string name, uint size) : GameObjectTemporal(shape, position, name)
 {
 	this->size = size;
 	std::vector<float> vertices2;
@@ -128,7 +128,7 @@ SolidPlane::SolidPlane(Shape shape, float3 position, std::string name, uint size
 
 
 
-Cube::Cube(Shape shape, float3 position, std::string name, uint size) :GameObject(shape, position, name)
+Cube::Cube(Shape shape, float3 position, std::string name, uint size) :GameObjectTemporal(shape, position, name)
 {
 	this->size = size;
 	std::vector<float> vertices2;
@@ -166,7 +166,7 @@ Cube::Cube(Shape shape, float3 position, std::string name, uint size) :GameObjec
 }
 
 
-RectangularPrism::RectangularPrism(Shape shape, float3 position, std::string name, uint size_length, uint size_height, uint size_width) :GameObject(shape, position, name)
+RectangularPrism::RectangularPrism(Shape shape, float3 position, std::string name, uint size_length, uint size_height, uint size_width) :GameObjectTemporal(shape, position, name)
 {
 	this->size_length = size_length;
 	this->size_height = size_height;
@@ -212,7 +212,7 @@ RectangularPrism::RectangularPrism(Shape shape, float3 position, std::string nam
 	this->Initialization();
 
 }
-TriangularPyramid::TriangularPyramid(Shape shape, float3 position, std::string name, uint size) :GameObject(shape, position, name)
+TriangularPyramid::TriangularPyramid(Shape shape, float3 position, std::string name, uint size) :GameObjectTemporal(shape, position, name)
 {
 	this->size = size;
 	std::vector<float> vertices2;
@@ -250,7 +250,7 @@ TriangularPyramid::TriangularPyramid(Shape shape, float3 position, std::string n
 }
 
 
-SquarePyramid::SquarePyramid(Shape shape, float3 position, std::string name, uint height, uint size_base) :GameObject(shape, position, name)
+SquarePyramid::SquarePyramid(Shape shape, float3 position, std::string name, uint height, uint size_base) :GameObjectTemporal(shape, position, name)
 {
 	this->height = height;
 	this->size_base = size_base;
@@ -294,7 +294,7 @@ SquarePyramid::SquarePyramid(Shape shape, float3 position, std::string name, uin
 	this->Initialization();
 }
 
-RectangularPyramid::RectangularPyramid(Shape shape, float3 position, std::string name, uint height, uint size_length, uint size_width) :GameObject(shape, position, name)
+RectangularPyramid::RectangularPyramid(Shape shape, float3 position, std::string name, uint height, uint size_length, uint size_width) :GameObjectTemporal(shape, position, name)
 {
 	this->height = height;
 	this->size_length = size_length;
@@ -338,7 +338,7 @@ RectangularPyramid::RectangularPyramid(Shape shape, float3 position, std::string
 
 }
 
-SolidSphere::SolidSphere(Shape shape, float3 position, std::string name, uint radius, uint rings, uint sectors) :GameObject(shape, position, name)
+SolidSphere::SolidSphere(Shape shape, float3 position, std::string name, uint radius, uint rings, uint sectors) :GameObjectTemporal(shape, position, name)
 {
 	std::vector<float> vertices2;
 	std::vector<float> indices2;
@@ -414,7 +414,7 @@ SolidSphere::SolidSphere(Shape shape, float3 position, std::string name, uint ra
 	this->Initialization();
 }
 
-Cilinder::Cilinder(Shape shape, float3 position, std::string name, uint radius, uint height, uint rings, uint sectors) :GameObject(shape, position, name)
+Cilinder::Cilinder(Shape shape, float3 position, std::string name, uint radius, uint height, uint rings, uint sectors) :GameObjectTemporal(shape, position, name)
 {
 	this->radius = radius;
 	this->rings = rings;
@@ -503,7 +503,7 @@ Cilinder::Cilinder(Shape shape, float3 position, std::string name, uint radius, 
 	this->Initialization();
 }
 
-SolidCone::SolidCone(Shape shape, float3 position, std::string name, uint radius, uint height,  uint sectors) : GameObject(shape, position, name)
+SolidCone::SolidCone(Shape shape, float3 position, std::string name, uint radius, uint height,  uint sectors) : GameObjectTemporal(shape, position, name)
 {
 	this->radius = radius;
 	uint rings = 1;

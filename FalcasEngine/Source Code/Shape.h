@@ -1,6 +1,7 @@
 #include "Globals.h"
 #include "External Libraries/MathGeoLib/include/Math/float3.h"
 #include <vector>
+#include "GameObject.h"
 
 
 enum class Shape {
@@ -19,11 +20,14 @@ enum class Shape {
 	Mesh,
 };
 
-class GameObject {
+class GameObjectTemporal {
 public:
-	GameObject(Shape shape, float3 position, std::string name);
-	GameObject() {};
-	~GameObject();
+	GameObjectTemporal(Shape shape, float3 position, std::string name);
+	inline GameObjectTemporal::GameObjectTemporal(std::string name, GameObjectTemporal* parent, bool active)
+	{
+	}
+	GameObjectTemporal() {};
+	~GameObjectTemporal();
 	void Render(bool triangles = true);
 	void Initialization();
 	float3 GetPosition() { return position; }
@@ -42,27 +46,27 @@ private:
 	Shape shape;
 };
 
-class Grid :public GameObject {
+class Grid :public GameObjectTemporal {
 public:
 	Grid(Shape shape, float3 position, std::string name, uint size);
 private:
 	uint size;
 };
 
-class SolidPlane :public GameObject {
+class SolidPlane :public GameObjectTemporal {
 public:
 	SolidPlane(Shape shape, float3 position, std::string name, uint size);
 private:
 	uint size;
 };
 
-class Cube : public GameObject {
+class Cube : public GameObjectTemporal {
 public:
 	Cube(Shape shape, float3 position, std::string name, uint size);
 private:
 	uint size;
 };
-class RectangularPrism : public GameObject {
+class RectangularPrism : public GameObjectTemporal {
 public:
 	RectangularPrism(Shape shape, float3 position, std::string name, uint size_length, uint size_height, uint size_width);
 private:
@@ -70,20 +74,20 @@ private:
 	uint size_height;
 	uint size_width;
 };
-class TriangularPyramid : public GameObject {
+class TriangularPyramid : public GameObjectTemporal {
 public:
 	TriangularPyramid(Shape shape, float3 position, std::string name, uint size);
 private:
 	uint size;
 };
-class SquarePyramid : public GameObject {
+class SquarePyramid : public GameObjectTemporal {
 public:
 	SquarePyramid(Shape shape, float3 position, std::string name, uint height, uint size_base);
 private:
 	uint height;
 	uint size_base;
 };
-class RectangularPyramid : public GameObject {
+class RectangularPyramid : public GameObjectTemporal {
 public:
 	RectangularPyramid(Shape shape, float3 position, std::string name, uint height, uint size_length, uint size_width);
 private:
@@ -91,7 +95,7 @@ private:
 	uint size_length;
 	uint size_width;
 };
-class SolidSphere : public GameObject {
+class SolidSphere : public GameObjectTemporal {
 public:
 	SolidSphere(Shape shape, float3 position, std::string name, uint radius, uint rings, uint sectors);
 private:
@@ -99,7 +103,7 @@ private:
 	uint rings;
 	uint sectors;
 };
-class Cilinder : public GameObject {
+class Cilinder : public GameObjectTemporal {
 public:
 	Cilinder(Shape shape, float3 position, std::string name, uint radius, uint height, uint rings, uint sectors);
 private:
@@ -108,7 +112,7 @@ private:
 	uint rings;
 	uint sectors;
 };
-class SolidCone : public GameObject {
+class SolidCone : public GameObjectTemporal {
 public:
 	SolidCone(Shape shape, float3 position, std::string name, uint radius, uint height, uint sectors);
 private:

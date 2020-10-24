@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source Code\Application.cpp" />
+    <ClCompile Include="Source Code\GameObject.cpp" />
     <ClCompile Include="Source Code\Mesh.cpp" />
     <ClCompile Include="Source Code\Color.cpp" />
     <ClCompile Include="Source Code\Console.cpp" />
@@ -70,6 +71,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source Code\Application.h" />
+    <ClInclude Include="Source Code\GameObject.h" />
     <ClInclude Include="Source Code\Mesh.h" />
     <ClInclude Include="Source Code\Color.h" />
     <ClInclude Include="Source Code\Console.h" />
