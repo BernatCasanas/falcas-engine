@@ -5,7 +5,8 @@
 #include "External Libraries/MathGeoLib/include/Math/MathFunc.h"
 #include "ModuleInput.h"
 #include "ModuleSceneIntro.h"
-#include "Shape.h"
+#include "GameObject.h"
+#include "ComponentTransform.h"
 
 ModuleCamera3D::ModuleCamera3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -162,9 +163,9 @@ update_status ModuleCamera3D::Update(float dt)
 			LOG("You must select and object in order to center to it!");
 		}
 		else{
-			float x, y, z;
-			App->scene_intro->game_object_selected->GetPosition(x, y, z);
-			Reference = { x,y,z };
+			ComponentTransform* transform = (ComponentTransform*)App->scene_intro->game_object_selected->components.front();
+			float3 position = transform->GetPosition();
+			Reference = { position.x,position.y,position.z };
 			Position = Reference+5;
 			LookAt(Reference);
 		}

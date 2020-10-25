@@ -12,6 +12,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source Code\Application.cpp" />
+    <ClCompile Include="Source Code\Component.cpp" />
+    <ClCompile Include="Source Code\ComponentMesh.cpp" />
+    <ClCompile Include="Source Code\ComponentTransform.cpp" />
     <ClCompile Include="Source Code\GameObject.cpp" />
     <ClCompile Include="Source Code\Mesh.cpp" />
     <ClCompile Include="Source Code\Color.cpp" />
@@ -66,11 +69,13 @@
     <ClCompile Include="Source Code\ModuleRenderer3D.cpp" />
     <ClCompile Include="Source Code\ModuleSceneIntro.cpp" />
     <ClCompile Include="Source Code\ModuleWindow.cpp" />
-    <ClCompile Include="Source Code\Shape.cpp" />
     <ClCompile Include="Source Code\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source Code\Application.h" />
+    <ClInclude Include="Source Code\Component.h" />
+    <ClInclude Include="Source Code\ComponentMesh.h" />
+    <ClInclude Include="Source Code\ComponentTransform.h" />
     <ClInclude Include="Source Code\GameObject.h" />
     <ClInclude Include="Source Code\Mesh.h" />
     <ClInclude Include="Source Code\Color.h" />
@@ -188,7 +193,6 @@
     <ClInclude Include="Source Code\ModuleRenderer3D.h" />
     <ClInclude Include="Source Code\ModuleSceneIntro.h" />
     <ClInclude Include="Source Code\ModuleWindow.h" />
-    <ClInclude Include="Source Code\Shape.h" />
     <ClInclude Include="Source Code\Timer.h" />
   </ItemGroup>
   <ItemGroup>

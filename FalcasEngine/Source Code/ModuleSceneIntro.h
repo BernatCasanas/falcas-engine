@@ -1,15 +1,10 @@
 #pragma once
 #include "Module.h"
-#include "Globals.h"
-#include "Mesh.h"
-#include <vector>
 #include "External Libraries/MathGeoLib/include/Math/float3.h"
 
 
 
-class Grid;
-class GameObjectTemporal;
-enum class Shape;
+class GameObject;
 struct aiScene;
 class ModuleSceneIntro : public Module
 {
@@ -23,25 +18,20 @@ public:
 	bool Start();
 	update_status Update(float dt);
 	bool CleanUp();
+	
 
-	void CreateGameObject(Shape shape);
+	GameObject* CreateGameObject(std::string name = "", GameObject* parent = nullptr);
+	GameObject* CreateGameObject(float3 position, Quat rotation, float3 size, std::string name = "", GameObject* parent = nullptr);
+
 	void LoadGameObject(float3 position, char* file, char* name);
+	std::string CheckNameGameObject(std::string name, bool numbered = false);
 
-	GameObjectTemporal* game_object_selected;
-	std::vector<GameObjectTemporal*> game_objects;
+	GameObject* game_object_selected;
+	std::vector<GameObject*> game_objects;
 	uint total_game_objects;
 private:
-	Grid* grid;
-	uint total_empty;
-	uint total_plane;
-	uint total_cube;
-	uint total_prism;
-	uint total_tri_pyr;
-	uint total_sqr_pyr;
-	uint total_rect_pyr;
-	uint total_sphere;
-	uint total_cilinder;
-	uint total_cone;
+	GameObject* grid;
+	int id_gameobject;
 
 public:
 };
