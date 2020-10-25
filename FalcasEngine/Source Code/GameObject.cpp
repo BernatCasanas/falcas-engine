@@ -40,12 +40,11 @@ GameObject::GameObject(int id, std::string name, GameObject* parent, float3 posi
 GameObject::~GameObject()
 {
 	if (parent != nullptr) {
-		bool stop = false;
 		std::vector<GameObject*>::iterator it = parent->children.begin();
-		for (int i = 0; it != parent->children.end() && stop == false; ++it, i++) {
+		for (int i = 0; it != parent->children.end(); ++it, i++) {
 			if (parent->children.at(i)->id == id) {
 				parent->children.erase(it);
-				stop = true;
+				break;
 			}
 		}
 	}

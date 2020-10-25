@@ -184,46 +184,46 @@ update_status ModuleCentralEditor::PostUpdate(float dt)
         }
         if (ImGui::BeginMenu("GameObject")) {
             if (ImGui::MenuItem("Create Empty")) {
-                App->scene_intro->CreateGameObject("GameObject");
+                App->scene_intro->CreateGameObject("GameObject", App->scene_intro->root);
             }
             if (ImGui::BeginMenu("3D Object")) {
                 if (ImGui::MenuItem("Cube")) {
-                    GameObject* gm = App->scene_intro->CreateGameObject("Cube");
+                    GameObject* gm = App->scene_intro->CreateGameObject("Cube", App->scene_intro->root);
                     ComponentMesh* mesh = (ComponentMesh*)gm->CreateComponent(Component_Type::Mesh);
                     mesh->CreateCube();
                 }
                 if (ImGui::MenuItem("Rectangular Prism")) {
-                    GameObject* gm = App->scene_intro->CreateGameObject("RectangularPrism");
+                    GameObject* gm = App->scene_intro->CreateGameObject("RectangularPrism", App->scene_intro->root);
                     ComponentMesh* mesh = (ComponentMesh*)gm->CreateComponent(Component_Type::Mesh);
                     mesh->CreatePrism();
                 }
                 if (ImGui::MenuItem("Triangular Pyramid")) {
-                    GameObject* gm = App->scene_intro->CreateGameObject("TriangularPyramid");
+                    GameObject* gm = App->scene_intro->CreateGameObject("TriangularPyramid", App->scene_intro->root);
                     ComponentMesh* mesh = (ComponentMesh*)gm->CreateComponent(Component_Type::Mesh);
                     mesh->CreateTriPyramid();
                 }
                 if (ImGui::MenuItem("Square Pyramid")) {
-                    GameObject* gm = App->scene_intro->CreateGameObject("SquarePyramid");
+                    GameObject* gm = App->scene_intro->CreateGameObject("SquarePyramid", App->scene_intro->root);
                     ComponentMesh* mesh = (ComponentMesh*)gm->CreateComponent(Component_Type::Mesh);
                     mesh->CreateSqrPyramid();
                 }
                 if (ImGui::MenuItem("Rectangular Pyramid")) {
-                    GameObject* gm = App->scene_intro->CreateGameObject("RectangularPyramid");
+                    GameObject* gm = App->scene_intro->CreateGameObject("RectangularPyramid", App->scene_intro->root);
                     ComponentMesh* mesh = (ComponentMesh*)gm->CreateComponent(Component_Type::Mesh);
                     mesh->CreateRectPyramid();
                 }
                 if (ImGui::MenuItem("Cilinder")) {
-                    GameObject* gm = App->scene_intro->CreateGameObject("Cilinder");
+                    GameObject* gm = App->scene_intro->CreateGameObject("Cilinder", App->scene_intro->root);
                     ComponentMesh* mesh = (ComponentMesh*)gm->CreateComponent(Component_Type::Mesh);
                     mesh->CreateCilinder();
                 }
                 if (ImGui::MenuItem("Cone")) {
-                    GameObject* gm = App->scene_intro->CreateGameObject("SolidCone");
+                    GameObject* gm = App->scene_intro->CreateGameObject("SolidCone", App->scene_intro->root);
                     ComponentMesh* mesh = (ComponentMesh*)gm->CreateComponent(Component_Type::Mesh);
                     mesh->CreateCone();
                 }
                 if (ImGui::MenuItem("Sphere")) {
-                    GameObject* gm = App->scene_intro->CreateGameObject("SolidSphere");
+                    GameObject* gm = App->scene_intro->CreateGameObject("SolidSphere", App->scene_intro->root);
                     ComponentMesh* mesh = (ComponentMesh*)gm->CreateComponent(Component_Type::Mesh);
                     mesh->CreateSphere();
                 }
@@ -231,7 +231,7 @@ update_status ModuleCentralEditor::PostUpdate(float dt)
             }
             if(ImGui::BeginMenu("2D Object")) {
                 if (ImGui::MenuItem("Plane")) {
-                    GameObject* gm = App->scene_intro->CreateGameObject("SolidPlane");
+                    GameObject* gm = App->scene_intro->CreateGameObject("SolidPlane", App->scene_intro->root);
                     ComponentMesh* mesh = (ComponentMesh*)gm->CreateComponent(Component_Type::Mesh);
                     mesh->CreatePlane();
                 }
@@ -441,9 +441,11 @@ update_status ModuleCentralEditor::PostUpdate(float dt)
     if (show_hierarchy) {
         ImGui::Begin("Hierarchy");
         static int selected = -1;
-        for (int i = 0; i < App->scene_intro->total_game_objects; i++) {
-            if (ImGui::Selectable(App->scene_intro->game_objects.at(i)->name.c_str(),selected==i)) {
-                App->scene_intro->game_object_selected = App->scene_intro->game_objects[i];
+        GameObject* game_object = nullptr;
+        for (int i = 0; i <= App->scene_intro->GetID(); i++) {
+            game_object = App->scene_intro->SearchGameObject(i, App->scene_intro->root);
+            if (game_object != nullptr && ImGui::Selectable(game_object->name.c_str(), selected == i)) {
+                App->scene_intro->game_object_selected = game_object;
                 selected = i;
             }
             ImGui::EndMenuBar;

@@ -22,15 +22,15 @@ public:
 
 	GameObject* CreateGameObject(std::string name = "", GameObject* parent = nullptr);
 	GameObject* CreateGameObject(float3 position, Quat rotation, float3 size, std::string name = "", GameObject* parent = nullptr);
+	GameObject* SearchGameObject(int id, GameObject* game_obj);
 
 	void LoadGameObject(float3 position, char* file, char* name);
 	std::string CheckNameGameObject(std::string name, bool numbered = false);
 
 	GameObject* game_object_selected;
-	std::vector<GameObject*> game_objects;
-	uint total_game_objects;
+	GameObject* root;
+	int GetID();
 private:
-	GameObject* grid;
 	int id_gameobject;
 
 public:
