@@ -184,7 +184,8 @@ update_status ModuleCentralEditor::PostUpdate(float dt)
         }
         if (ImGui::BeginMenu("GameObject")) {
             if (ImGui::MenuItem("Create Empty")) {
-                App->scene_intro->CreateGameObject("GameObject", App->scene_intro->root);
+                for(int i=0;i<10;i++)
+                    App->scene_intro->CreateGameObject("GameObject", App->scene_intro->root);
             }
             if (ImGui::BeginMenu("3D Object")) {
                 if (ImGui::MenuItem("Cube")) {

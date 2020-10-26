@@ -136,7 +136,7 @@ void ModuleSceneIntro::LoadGameObject(float3 position, char* file, char* name)
 	}
 }
 
-std::string ModuleSceneIntro::CheckNameGameObject(std::string name, bool numbered)
+std::string ModuleSceneIntro::CheckNameGameObject(std::string name, bool numbered, int digits)
 {
 	bool stop = false;
 	GameObject* game_object = nullptr;
@@ -149,15 +149,45 @@ std::string ModuleSceneIntro::CheckNameGameObject(std::string name, bool numbere
 	if (stop == true) {
 		if (numbered){
 			int number = name.back() - '0';
-			number++;
-			name.pop_back();
-			name.push_back(number + '0');
+			if (number >= 9)
+				name = NameGameObjectWhenMoreThan2Digits(name, digits);
+			else {
+				number++;
+				name.pop_back();
+				name.push_back(number + '0');
+			}
 		}
 		else {
 			name.push_back('1');
 		}
-		name = CheckNameGameObject(name, true);
+		name = CheckNameGameObject(name, true, digits);
 	}
+	return name;
+}
+
+std::string ModuleSceneIntro::NameGameObjectWhenMoreThan2Digits(std::string name, int &digits)
+{
+	int number = 0;
+	for (int i = 0; i < digits; i++) {
+		number += (name.back() - '0') * (pow(10, i));
+		name.pop_back();
+	}
+	number++;
+	if(pow(10,digits)<=number){
+		digits++;
+	}
+	for (int i = digits - 1; i > 0; i--) {
+		if (number > (pow(10, i)) - 1) {
+			int n = number / pow(10, i);
+			name.push_back(n + '0');
+			number -= n * (pow(10, i));
+		}
+		else {
+			name.push_back(0 + '0');
+		}
+	}
+
+	name.push_back(number + '0');
 	return name;
 }
 
