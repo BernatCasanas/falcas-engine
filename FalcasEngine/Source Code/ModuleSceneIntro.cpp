@@ -59,7 +59,7 @@ GameObject* ModuleSceneIntro::CreateGameObject(std::string name, GameObject* par
 	if (game_object != nullptr) {
 		id_gameobject++;
 		if (parent != nullptr) {
-			SearchGameObject(parent->id, root)->children.push_back(game_object);
+			parent->children.push_back(game_object);
 		}
 
 	}
@@ -74,7 +74,7 @@ GameObject* ModuleSceneIntro::CreateGameObject(float3 position, Quat rotation, f
 	if (game_object != nullptr) {
 		id_gameobject++;
 		if (parent != nullptr) {
-			SearchGameObject(parent->id, root)->children.push_back(game_object);
+			parent->children.push_back(game_object);
 		}
 	}
 	return game_object;
