@@ -1,6 +1,7 @@
 #pragma once
 #include "Module.h"
 #include "External Libraries/MathGeoLib/include/Math/float3.h"
+#include <string>
 
 
 
@@ -23,6 +24,8 @@ public:
 	GameObject* CreateGameObject(std::string name = "", GameObject* parent = nullptr);
 	GameObject* CreateGameObject(float3 position, Quat rotation, float3 size, std::string name = "", GameObject* parent = nullptr);
 	GameObject* SearchGameObject(int id, GameObject* game_obj);
+
+	void LoadTexture(std::string path);
 
 	void LoadGameObject(float3 position, char* file, char* name);
 	std::string CheckNameGameObject(std::string name, bool numbered = false, int digits = 1);

@@ -130,7 +130,13 @@ update_status ModuleInput::PreUpdate(float dt)
 			break;
 
 			case SDL_DROPFILE:
-			App->scene_intro->LoadGameObject({ 0,0,0 }, e.drop.file, GetFileName(e.drop.file));
+			{
+				if (GetTypeFile(e.drop.file) == "FBX") //BERNAT HERE IT SEEMS THE = DOESNT WORK
+					App->scene_intro->LoadGameObject({ 0,0,0 }, e.drop.file, GetFileName(e.drop.file));
+				else if (GetTypeFile(e.drop.file) == "dds") 
+					App->scene_intro->LoadTexture(e.drop.file);
+				
+			}
 			break;
 		}
 	}
@@ -171,3 +177,20 @@ char* ModuleInput::GetFileName(char* file)
 
 	return name;
 }
+
+char* ModuleInput::GetTypeFile(char* file)
+{
+	char* name = new char;
+	int i;
+	for (i = 0; file[i] != '\0'; i++) {}
+	int j = i;
+	for (j; file[j] != '.'; --j) {}
+
+	int k = 0;
+	for (int z = j + 1; z <= i; z++) {
+		name[k] = file[z];
+		++k;
+	}
+	return name;
+}
+

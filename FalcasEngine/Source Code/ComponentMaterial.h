@@ -8,7 +8,9 @@ public:
 	ComponentMaterial(GameObject* parent);
 	~ComponentMaterial();
 
-private:
-
+public:
+	float width;
+	float height;
+	BYTE* pixmap;
 
 };

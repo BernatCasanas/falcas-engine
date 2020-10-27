@@ -13,6 +13,12 @@
 #include "GameObject.h"
 #include "External Libraries/MathGeoLib/include/Math/Quat.h"
 #include "ComponentMesh.h"
+#include "External Libraries/Devil/Include/il.h"
+#include <string>
+#include "ComponentMaterial.h"
+
+#pragma comment( lib, "Devil/lib/ILU.lib" )
+#pragma comment( lib, "Devil/lib/DevIL.lib" )
 
 
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
@@ -90,6 +96,27 @@ GameObject* ModuleSceneIntro::SearchGameObject(int id, GameObject* game_obj)
 		game_object = SearchGameObject(id, game_obj->children.at(i));
 	}
 	return game_object;
+}
+
+void ModuleSceneIntro::LoadTexture(std::string path)
+{
+	//bernat test this. it will probably wont work. ask for pablos help
+	bool textureLoaded = false;
+
+	ILuint imgID = 0;
+	ilGenImages(1, &imgID);
+	ilBindImage(imgID);
+
+	ILboolean success = ilLoadImage(path.c_str());
+
+	if (success == IL_TRUE) {
+		ComponentMaterial* m = (ComponentMaterial*)game_object_selected->CreateComponent(Component_Type::Material);
+		m->width = ilGetInteger(IL_IMAGE_WIDTH);
+		m->height = ilGetInteger(IL_IMAGE_HEIGHT);
+		m->pixmap = new BYTE[m->width * m->height * 3];
+		ilCopyPixels(0, 0, 0, m->width, m->height, 1, IL_RGB,
+			IL_UNSIGNED_BYTE, m->pixmap);
+	}
 }
 
 void ModuleSceneIntro::LoadGameObject(float3 position, char* file, char* name)

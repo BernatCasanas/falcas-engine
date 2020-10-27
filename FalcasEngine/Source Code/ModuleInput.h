@@ -57,6 +57,7 @@ public:
 	}
 
 	char* GetFileName(char* file);
+	char* GetTypeFile(char* file);
 
 private:
 	KEY_STATE* keyboard;
