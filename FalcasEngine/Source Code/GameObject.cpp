@@ -3,6 +3,7 @@
 #include "Component.h"
 #include "ComponentTransform.h"
 #include "ComponentMesh.h"
+#include "ComponentMaterial.h"
 
 GameObject::GameObject(int id)
 {
@@ -69,16 +70,15 @@ Component* GameObject::CreateComponent(Component_Type type)
 		{
 		case Component_Type::Transform:
 			component = new ComponentTransform(this, { 0,0,0 }, Quat::identity, { 1,1,1 });
-			components.push_back(component);
 			break;
 		case Component_Type::Mesh:
 			component = new ComponentMesh(this);
-			components.push_back(component);
 			break;
 		case Component_Type::Material:
+			component = new ComponentMaterial(this);
 			break;
 		}
-		
+		components.push_back(component);
 	}
 	return component;
 }

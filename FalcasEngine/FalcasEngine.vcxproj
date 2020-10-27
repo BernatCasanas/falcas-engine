@@ -13,6 +13,7 @@
   <ItemGroup>
     <ClCompile Include="Source Code\Application.cpp" />
     <ClCompile Include="Source Code\Component.cpp" />
+    <ClCompile Include="Source Code\ComponentMaterial.cpp" />
     <ClCompile Include="Source Code\ComponentMesh.cpp" />
     <ClCompile Include="Source Code\ComponentTransform.cpp" />
     <ClCompile Include="Source Code\GameObject.cpp" />
@@ -74,6 +75,7 @@
   <ItemGroup>
     <ClInclude Include="Source Code\Application.h" />
     <ClInclude Include="Source Code\Component.h" />
+    <ClInclude Include="Source Code\ComponentMaterial.h" />
     <ClInclude Include="Source Code\ComponentMesh.h" />
     <ClInclude Include="Source Code\ComponentTransform.h" />
     <ClInclude Include="Source Code\GameObject.h" />

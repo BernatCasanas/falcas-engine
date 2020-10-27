@@ -207,6 +207,9 @@
     <ClCompile Include="Source Code\ComponentMesh.cpp">
       <Filter>Source Code</Filter>
     </ClCompile>
+    <ClCompile Include="Source Code\ComponentMaterial.cpp">
+      <Filter>Source Code</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source Code\Application.h">
@@ -573,6 +576,9 @@
       <Filter>Source Code</Filter>
     </ClInclude>
     <ClInclude Include="Source Code\ComponentMesh.h">
+      <Filter>Source Code</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\ComponentMaterial.h">
       <Filter>Source Code</Filter>
     </ClInclude>
   </ItemGroup>
