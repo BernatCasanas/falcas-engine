@@ -42,7 +42,7 @@ public:
 	bool show_openglOptions;
 	bool show_hierarchy;
 
-	bool depth, cullface, lighting, colorMaterial, texture, ambient, stencil, wireframe;
+	bool depth, cullface, lighting, colorMaterial, texture, ambient, stencil, wireframe, normals;
 
 	float progress;
 	float progress2;

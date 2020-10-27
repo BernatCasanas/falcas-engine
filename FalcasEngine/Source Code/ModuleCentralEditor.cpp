@@ -102,7 +102,7 @@ bool ModuleCentralEditor::Init()
     show_console = false;
     show_openglOptions = false;
     show_hierarchy = true;
-    depth = cullface = lighting = colorMaterial = texture = ambient = stencil = wireframe = false;
+    depth = cullface = lighting = colorMaterial = texture = ambient = stencil = wireframe = normals = false;
     progress = 50.f;
     progress2 = 50.f;
     progress3 = 50.f;
@@ -460,6 +460,7 @@ update_status ModuleCentralEditor::PostUpdate(float dt)
         ImGui::Checkbox("Ambient", &ambient);
         ImGui::Checkbox("Stencil", &stencil);
         ImGui::Checkbox("Wireframe", &wireframe);
+        ImGui::Checkbox("Normals", &normals);
 
         if (!depth) glEnable(GL_DEPTH_TEST);
         else glDisable(GL_DEPTH_TEST);

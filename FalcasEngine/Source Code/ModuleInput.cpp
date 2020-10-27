@@ -131,11 +131,7 @@ update_status ModuleInput::PreUpdate(float dt)
 
 			case SDL_DROPFILE:
 			{
-				if (GetTypeFile(e.drop.file) == "FBX") //BERNAT HERE IT SEEMS THE = DOESNT WORK
-					App->scene_intro->LoadGameObject({ 0,0,0 }, e.drop.file, GetFileName(e.drop.file));
-				else if (GetTypeFile(e.drop.file) == "dds") 
-					App->scene_intro->LoadTexture(e.drop.file);
-				
+				App->scene_intro->LoadGameObject({ 0,0,0 }, e.drop.file, GetFileName(e.drop.file));
 			}
 			break;
 		}

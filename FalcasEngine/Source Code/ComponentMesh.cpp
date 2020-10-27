@@ -547,6 +547,9 @@ void ComponentMesh::Initialization()
 	glGenBuffers(1, (GLuint*)&(id_indices));
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id_indices);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * num_indices, indices, GL_STATIC_DRAW);
+	glGenBuffers(1, (GLuint*)&(id_normals));
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id_normals);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * num_normals, normals, GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
@@ -556,6 +559,7 @@ void ComponentMesh::Render()
 	if (id_indices > 0 && id_vertices > 0) {
 		glEnableClientState(GL_VERTEX_ARRAY);
 		glBindBuffer(GL_ARRAY_BUFFER, id_vertices);
+		glBindBuffer(GL_ARRAY_BUFFER, id_normals);
 		glVertexPointer(3, GL_FLOAT, 0, NULL);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id_indices);
 		if (grid == false)

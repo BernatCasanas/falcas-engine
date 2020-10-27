@@ -16,6 +16,9 @@
 #include "External Libraries/Devil/Include/il.h"
 #include <string>
 #include "ComponentMaterial.h"
+#include "External Libraries/SDL/include/SDL_opengl.h"
+#include <gl/GL.h>
+#include "External Libraries/Glew/include/glew.h"
 
 #pragma comment( lib, "Devil/lib/ILU.lib" )
 #pragma comment( lib, "Devil/lib/DevIL.lib" )
@@ -100,23 +103,7 @@ GameObject* ModuleSceneIntro::SearchGameObject(int id, GameObject* game_obj)
 
 void ModuleSceneIntro::LoadTexture(std::string path)
 {
-	//bernat test this. it will probably wont work. ask for pablos help
-	bool textureLoaded = false;
 
-	ILuint imgID = 0;
-	ilGenImages(1, &imgID);
-	ilBindImage(imgID);
-
-	ILboolean success = ilLoadImage(path.c_str());
-
-	if (success == IL_TRUE) {
-		ComponentMaterial* m = (ComponentMaterial*)game_object_selected->CreateComponent(Component_Type::Material);
-		m->width = ilGetInteger(IL_IMAGE_WIDTH);
-		m->height = ilGetInteger(IL_IMAGE_HEIGHT);
-		m->pixmap = new BYTE[m->width * m->height * 3];
-		ilCopyPixels(0, 0, 0, m->width, m->height, 1, IL_RGB,
-			IL_UNSIGNED_BYTE, m->pixmap);
-	}
 }
 
 void ModuleSceneIntro::LoadGameObject(float3 position, char* file, char* name)
@@ -136,7 +123,6 @@ void ModuleSceneIntro::LoadGameObject(float3 position, char* file, char* name)
 			LOG("New mesh with %d vertices", m_mesh->num_vertices);
 
 
-
 			if (ai_mesh->HasFaces())
 			{
 				m_mesh->num_indices = ai_mesh->mNumFaces * 3;
@@ -151,6 +137,12 @@ void ModuleSceneIntro::LoadGameObject(float3 position, char* file, char* name)
 					}
 
 				}
+			}
+
+			if (ai_mesh->HasNormals()) {
+				m_mesh->num_normals = ai_mesh->mNumFaces;
+				m_mesh->normals = new float[ai_mesh->mNumFaces];
+				memcpy(m_mesh->normals, ai_mesh->mNormals, sizeof(float) * m_mesh->num_normals);
 			}
 
 			m_mesh->Initialization();

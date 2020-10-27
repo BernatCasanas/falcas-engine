@@ -26,10 +26,13 @@ public:
 
 	uint id_vertices;
 	uint id_indices;
+	uint id_normals;
 	uint num_indices;
 	uint num_vertices;
+	uint num_normals;
 	float* vertices;
 	uint* indices;
+	float* normals;
 private:
 	bool grid;
 };
