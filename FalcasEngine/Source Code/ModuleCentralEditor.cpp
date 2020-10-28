@@ -472,9 +472,9 @@ update_status ModuleCentralEditor::PostUpdate(float dt)
         else glDisable(GL_COLOR_MATERIAL);
         if (!texture) glEnable(GL_TEXTURE_2D);
         else glDisable(GL_TEXTURE_2D);
-        if (!ambient) glEnable(GL_STENCIL_TEST);
+        if (ambient) glEnable(GL_STENCIL_TEST);
         else glDisable(GL_STENCIL_TEST);
-        if (!stencil) glEnable(GL_AMBIENT);
+        if (stencil) glEnable(GL_AMBIENT);
         else glDisable(GL_AMBIENT);
         ImGui::End();
     }
