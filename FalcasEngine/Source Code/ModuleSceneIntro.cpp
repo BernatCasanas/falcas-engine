@@ -104,28 +104,48 @@ void ModuleSceneIntro::LoadTexture(std::string path)
 
 }
 
-void ModuleSceneIntro::LoadGameObject(float3 position, char* file, char* name)
+void ModuleSceneIntro::LoadGameObject(float3 position, const char* file, char* name)
 {
 	loading = true;
+	GameObject* parent;
+	GameObject* m;
+	bool multimesh = false;
+	bool parent_setted = false;
+	const aiScene* scene = nullptr;
 	scene = aiImportFile(file, aiProcessPreset_TargetRealtime_MaxQuality);
 	if (scene != nullptr && scene->HasMeshes())
 	{
+		if (scene->mNumMeshes > 1) {
+			multimesh = true;
+		}
 		for (int i = 0; i < scene->mNumMeshes; i++)
 		{
-			GameObject* m = CreateGameObject(position, Quat::identity, { 1,1,1 }, name, root);
+			if (scene->mMeshes[i] == NULL) continue;
+			if (multimesh) {
+				if (parent_setted) {
+					m = CreateGameObject(position, Quat::identity, { 1,1,1 }, name, parent);
+				}
+				else {
+					parent = CreateGameObject(position, Quat::identity, { 1,1,1 }, name, root);
+					m = CreateGameObject(position, Quat::identity, { 1,1,1 }, name, parent);
+					parent_setted = true;
+				}
+			}
+			else{
+				m = CreateGameObject(position, Quat::identity, { 1,1,1 }, name, root);
+			}
 			ComponentMesh* m_mesh = (ComponentMesh*)m->CreateComponent(Component_Type::Mesh);
 			aiMesh* ai_mesh = scene->mMeshes[i];
-			m_mesh->num_vertices = ai_mesh->mNumVertices * 3;
-			m_mesh->vertices = new float[m_mesh->num_vertices];
+			m_mesh->num_vertices = ai_mesh->mNumVertices;
+			m_mesh->vertices = new float[m_mesh->num_vertices * 3];
 			memcpy(m_mesh->vertices, ai_mesh->mVertices, sizeof(float) * m_mesh->num_vertices);
 			LOG("Loading FBX correctly");
 			LOG("New mesh with %d vertices", m_mesh->num_vertices);
 
-
 			if (ai_mesh->HasFaces())
 			{
 				m_mesh->num_indices = ai_mesh->mNumFaces * 3;
-				m_mesh->indices = new uint[m_mesh->num_indices]; // assume each face is a triangle
+				m_mesh->indices = new uint[m_mesh->num_indices];
 				for (uint j = 0; j < ai_mesh->mNumFaces; ++j)
 				{
 					if (ai_mesh->mFaces[j].mNumIndices != 3) {
@@ -136,6 +156,7 @@ void ModuleSceneIntro::LoadGameObject(float3 position, char* file, char* name)
 					}
 
 				}
+				LOG("New mesh with %d index", m_mesh->num_indices);
 			}
 			m_mesh->num_normals = m_mesh->num_vertices;
 			m_mesh->normals = new float[ai_mesh->mNumVertices * 3];

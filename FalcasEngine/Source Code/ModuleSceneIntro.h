@@ -13,7 +13,6 @@ public:
 	ModuleSceneIntro(Application* app, bool start_enabled = true);
 	~ModuleSceneIntro();
 
-	const aiScene* scene;
 
 
 	bool Start();
@@ -27,7 +26,7 @@ public:
 
 	void LoadTexture(std::string path);
 
-	void LoadGameObject(float3 position, char* file, char* name);
+	void LoadGameObject(float3 position, const char* file, char* name);
 	std::string CheckNameGameObject(std::string name, bool numbered = false, int digits = 1);
 	std::string NameGameObjectWhenMoreThan2Digits(std::string name, int &digits);
 
