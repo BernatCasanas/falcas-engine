@@ -101,7 +101,7 @@ bool ModuleCentralEditor::Init()
     show_configuration = false;
     show_console = false;
     show_openglOptions = false;
-    show_hierarchy = true;
+    show_hierarchy = show_inspector = true;
     depth = cullface = lighting = colorMaterial = texture = ambient = stencil = wireframe = normals = false;
     progress = 50.f;
     progress2 = 50.f;
@@ -157,6 +157,8 @@ update_status ModuleCentralEditor::PostUpdate(float dt)
         show_console = !show_console;
     if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
         show_hierarchy = !show_hierarchy;
+    if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
+        show_inspector = !show_inspector;
 
 
     { // UPSIDE BAR
@@ -174,6 +176,9 @@ update_status ModuleCentralEditor::PostUpdate(float dt)
             if (ImGui::MenuItem("Hierarchy", "2")) {
                 show_hierarchy = !show_hierarchy;
             }
+            if (ImGui::MenuItem("Inspector", "3")) {
+                show_inspector = !show_inspector;
+            }
             if (ImGui::MenuItem("Configuration", "4")) {
                 show_configuration = !show_configuration;
             }
@@ -184,8 +189,7 @@ update_status ModuleCentralEditor::PostUpdate(float dt)
         }
         if (ImGui::BeginMenu("GameObject")) {
             if (ImGui::MenuItem("Create Empty")) {
-                for(int i=0;i<10;i++)
-                    App->scene_intro->CreateGameObject("GameObject", App->scene_intro->root);
+                App->scene_intro->CreateGameObject("GameObject", App->scene_intro->root);
             }
             if (ImGui::BeginMenu("3D Object")) {
                 if (ImGui::MenuItem("Cube")) {
@@ -301,7 +305,7 @@ update_status ModuleCentralEditor::PostUpdate(float dt)
     }
     //About
     if (show_about) {
-        ImGui::Begin("About Falcas Engine", NULL);
+        ImGui::Begin("About Falcas Engine", &show_about);
         ImGui::TextWrapped("Falcas Engine v0.1\n\n"
             "This Game Engine is made in the game engines subject in CITM\n\n"
             "Is made by:");
@@ -353,7 +357,7 @@ update_status ModuleCentralEditor::PostUpdate(float dt)
     }
     //Configuration
     if (show_configuration) {
-        ImGui::Begin("Configuration");
+        ImGui::Begin("Configuration", &show_configuration);
         ImGui::Text("Options");
         if(ImGui::CollapsingHeader("Window")) {
             //BRIGHT
@@ -430,7 +434,7 @@ update_status ModuleCentralEditor::PostUpdate(float dt)
     }
     //Console
     if (show_console) {
-        ImGui::Begin("Console");
+        ImGui::Begin("Console",&show_console);
         console_logs = App->console->GetLogs();
         for (int i = 0; i < console_logs.size(); i++) {
             ImGui::Text(console_logs.at(i));
@@ -440,7 +444,7 @@ update_status ModuleCentralEditor::PostUpdate(float dt)
 
     //Hierarchy
     if (show_hierarchy) {
-        ImGui::Begin("Hierarchy");
+        ImGui::Begin("Hierarchy",&show_hierarchy);
         static int selected = -1;
         static int node_clicked = -2;
         static ImGuiTreeNodeFlags base_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_SpanAvailWidth;
@@ -449,9 +453,39 @@ update_status ModuleCentralEditor::PostUpdate(float dt)
         ImGui::End();
     }
 
+    if (show_inspector) {
+        ImGui::Begin("Inspector",&show_inspector);
+        if (App->scene_intro->game_object_selected != nullptr) {
+            ImGui::Checkbox("", &App->scene_intro->game_object_selected->active);
+            ImGui::SameLine();
+            std::string game_object_name = App->scene_intro->game_object_selected->name;
+            if(ImGui::InputText(" ", &game_object_name, ImGuiInputTextFlags_EnterReturnsTrue)) {
+                if (game_object_name != App->scene_intro->game_object_selected->name) {
+                    App->scene_intro->game_object_selected->name = game_object_name;
+                }
+            }
+            if (App->scene_intro->game_object_selected->CheckComponentType(Component_Type::Transform)) {
+                if (ImGui::CollapsingHeader("Transformation", ImGuiTreeNodeFlags_DefaultOpen)) {
+
+                }
+            }
+            if (App->scene_intro->game_object_selected->CheckComponentType(Component_Type::Mesh)) {
+                if (ImGui::CollapsingHeader("Mesh", ImGuiTreeNodeFlags_DefaultOpen)) {
+
+                }
+            }
+            if (App->scene_intro->game_object_selected->CheckComponentType(Component_Type::Material)) {
+                if (ImGui::CollapsingHeader("Material", ImGuiTreeNodeFlags_DefaultOpen)) {
+
+                }
+            }
+        }
+        ImGui::End();
+    }
+
     if (show_openglOptions)
     {     
-        ImGui::Begin("OpenGL Options");
+        ImGui::Begin("OpenGL Options", &show_openglOptions);
         ImGui::Checkbox("Depth Test", &depth);
         ImGui::Checkbox("Cull Face", &cullface);
         ImGui::Checkbox("Light", &lighting);
@@ -516,7 +550,7 @@ bool ModuleCentralEditor::ProcessEvents(SDL_Event event)
 void ModuleCentralEditor::HierarchyRecursiveTree(GameObject* game_object, static int selected, static ImGuiTreeNodeFlags base_flags, int &node_clicked)
 {
     if (game_object != nullptr) {
-        const bool is_selected = game_object->id == node_clicked;//(selection_mask & (1 << game_object->id)) != 0;
+        const bool is_selected = game_object->id == node_clicked;
         if (is_selected) {
             base_flags |= ImGuiTreeNodeFlags_Selected;
             if (game_object->id >= 0)
@@ -528,7 +562,7 @@ void ModuleCentralEditor::HierarchyRecursiveTree(GameObject* game_object, static
             if(game_object->id<0)
                 ImGui::Unindent(ImGui::GetTreeNodeToLabelSpacing());
             base_flags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen;
-            ImGui::TreeNodeEx((void*)(intptr_t)game_object->id, base_flags, (game_object->id < 0) ? "Scene" : game_object->GetName().c_str());
+            ImGui::TreeNodeEx((void*)(intptr_t)game_object->id, base_flags, (game_object->id < 0) ? "Main" : game_object->GetName().c_str());
             if (is_selected)
                 base_flags -= ImGuiTreeNodeFlags_Selected;
             base_flags -= ImGuiTreeNodeFlags_Leaf - ImGuiTreeNodeFlags_NoTreePushOnOpen;
@@ -538,7 +572,7 @@ void ModuleCentralEditor::HierarchyRecursiveTree(GameObject* game_object, static
                 ImGui::Indent(ImGui::GetTreeNodeToLabelSpacing());
         }
         else {
-            bool node_open = ImGui::TreeNodeEx((void*)(intptr_t)game_object->id, base_flags, (game_object->id < 0) ? "Scene" : game_object->GetName().c_str());
+            bool node_open = ImGui::TreeNodeEx((void*)(intptr_t)game_object->id, base_flags, (game_object->id < 0) ? "Main" : game_object->GetName().c_str());
             if (is_selected)
                 base_flags -= ImGuiTreeNodeFlags_Selected;
             if (ImGui::IsItemClicked())

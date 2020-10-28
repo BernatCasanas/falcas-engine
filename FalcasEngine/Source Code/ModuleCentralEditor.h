@@ -41,6 +41,7 @@ public:
 	bool show_console;
 	bool show_openglOptions;
 	bool show_hierarchy;
+	bool show_inspector;
 
 	bool depth, cullface, lighting, colorMaterial, texture, ambient, stencil, wireframe, normals;
 
