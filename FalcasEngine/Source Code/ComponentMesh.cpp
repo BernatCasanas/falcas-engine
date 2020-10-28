@@ -16,6 +16,7 @@ ComponentMesh::ComponentMesh(GameObject* owner) :Component(Component_Type::Mesh,
 	indices = nullptr;
 	normals = nullptr;
 	id_indices = id_vertices = num_indices = num_vertices = id_normals = num_normals = 0;
+	name = "Mesh";
 }
 
 ComponentMesh::~ComponentMesh()
@@ -608,5 +609,19 @@ void ComponentMesh::Render()
 		glBindBuffer(GL_NORMAL_ARRAY, 0);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 		glDisableClientState(GL_VERTEX_ARRAY);
+	}
+}
+
+bool ComponentMesh::Inspector(Gui_Type& type, int& index, std::string& info, bool*& checked, float*& number, bool& same_line, std::string& info2_for_tooltip, bool& separator_in_column, bool& next_column,
+	int& num_columns)
+{
+	switch (index)
+	{
+	case 0:
+		Component::Inspector(type, index, info, checked, number, same_line, info2_for_tooltip, separator_in_column, next_column, num_columns);
+		return false;
+	default:
+		return false;
+		break;
 	}
 }
