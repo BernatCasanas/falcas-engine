@@ -16,6 +16,9 @@ enum class Gui_Type {
 	CheckBox,
 	SliderFloat,
 	Tooltip,
+	DragFloat,
+	Separator,
+	Column,
 };
 
 class Component {
@@ -25,7 +28,8 @@ public:
 	virtual void Enable();
 	virtual void Update();
 	virtual void Disable();
-	virtual bool Inspector(Gui_Type &type, int &index, std::string &info, bool* &checked, float &number, bool &same_line, std::string &info2_for_tooltip);
+	virtual bool Inspector(Gui_Type &type, int &index, std::string &info, bool* &checked, float* &number, bool &same_line, std::string &info2_for_tooltip, bool& separator_in_column, bool& next_column,
+		int& num_columns);
 
 	Component_Type type;
 	bool active;

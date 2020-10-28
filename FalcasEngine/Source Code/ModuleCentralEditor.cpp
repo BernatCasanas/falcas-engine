@@ -584,17 +584,21 @@ void ModuleCentralEditor::ShowComponentInInspector(Component* component)
 {
     Gui_Type gui_type;
     std::string info, info2;
-    float number;
+    info = info2 = "";
+    float* number;
     int index = 0;
+    int num_columns = 0;
     bool* checked = nullptr;
-   
-    bool same_line;
-    ImGui::PushID(component->name.c_str());
-    component->Inspector(gui_type, index, info, checked, number, same_line, info2);
+    bool same_line, separator_in_column, next_column;
+    same_line = separator_in_column = next_column = false;
+    component->Inspector(gui_type, index, info, checked, number, same_line, info2, separator_in_column, next_column, num_columns);
     do {
+        ImGui::PushID((component->name + std::to_string(index)).c_str());
         if (same_line) {
             ImGui::SameLine();
-            LOG("HELLO");
+        }
+        if (next_column) {
+            ImGui::NextColumn();
         }
         switch (gui_type)
         {
@@ -602,15 +606,29 @@ void ModuleCentralEditor::ShowComponentInInspector(Component* component)
             ImGui::Checkbox(info.c_str(), checked);
             break;
         case Gui_Type::Text:
+            ImGui::AlignTextToFramePadding();
             ImGui::Text(info.c_str());
             break;
         case Gui_Type::SliderFloat:
             ImGui::PushItemWidth(50);
-            ImGui::SliderFloat(info.c_str(), &number, -360,360);
+            ImGui::SliderFloat(info.c_str(), number, 0,360);
             ImGui::PopItemWidth();
             break;
+        case Gui_Type::DragFloat:
+            ImGui::PushItemWidth(50);
+            ImGui::DragFloat(info.c_str(), number, 0.01f);
+            ImGui::PopItemWidth();
+            break;
+        case Gui_Type::Separator:
+            ImGui::Separator();
+            break;
+        case Gui_Type::Column:
+            ImGui::Columns(num_columns, info.c_str(), separator_in_column);
+            break;
         }
-    } while (component->Inspector(gui_type, index, info, checked, number, same_line, info2));
-    ImGui::PopID();
+        ImGui::PopID();
+    } while (component->Inspector(gui_type, index, info, checked, number, same_line, info2, separator_in_column, next_column, num_columns));
+    if (num_columns > 1)
+        ImGui::Columns(1, "", false);
 }
 

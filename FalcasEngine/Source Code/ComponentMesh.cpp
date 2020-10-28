@@ -612,12 +612,13 @@ void ComponentMesh::Render()
 	}
 }
 
-bool ComponentMesh::Inspector(Gui_Type& type, int& index, std::string& info, bool*& checked, float& number, bool& same_line, std::string& info2_for_tooltip)
+bool ComponentMesh::Inspector(Gui_Type& type, int& index, std::string& info, bool*& checked, float*& number, bool& same_line, std::string& info2_for_tooltip, bool& separator_in_column, bool& next_column,
+	int& num_columns)
 {
 	switch (index)
 	{
 	case 0:
-		Component::Inspector(type, index, info, checked, number, same_line, info2_for_tooltip);
+		Component::Inspector(type, index, info, checked, number, same_line, info2_for_tooltip, separator_in_column, next_column, num_columns);
 		return false;
 	default:
 		return false;
