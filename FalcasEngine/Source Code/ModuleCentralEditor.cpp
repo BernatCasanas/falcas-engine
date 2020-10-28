@@ -604,6 +604,11 @@ void ModuleCentralEditor::ShowComponentInInspector(Component* component)
         case Gui_Type::Text:
             ImGui::Text(info.c_str());
             break;
+        case Gui_Type::SliderFloat:
+            ImGui::PushItemWidth(50);
+            ImGui::SliderFloat(info.c_str(), &number, -360,360);
+            ImGui::PopItemWidth();
+            break;
         }
     } while (component->Inspector(gui_type, index, info, checked, number, same_line, info2));
     ImGui::PopID();
