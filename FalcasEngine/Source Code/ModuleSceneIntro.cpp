@@ -172,6 +172,7 @@ std::string ModuleSceneIntro::CheckNameGameObject(std::string name, bool numbere
 	}
 	if (stop == true) {
 		if (numbered){
+			name.pop_back();
 			int number = name.back() - '0';
 			if (number >= 9)
 				name = NameGameObjectWhenMoreThan2Digits(name, digits);
@@ -179,10 +180,14 @@ std::string ModuleSceneIntro::CheckNameGameObject(std::string name, bool numbere
 				number++;
 				name.pop_back();
 				name.push_back(number + '0');
+				name.push_back(')');
 			}
 		}
 		else {
+			name.push_back(' ');
+			name.push_back('(');
 			name.push_back('1');
+			name.push_back(')');
 		}
 		name = CheckNameGameObject(name, true, digits);
 	}
@@ -212,6 +217,7 @@ std::string ModuleSceneIntro::NameGameObjectWhenMoreThan2Digits(std::string name
 	}
 
 	name.push_back(number + '0');
+	name.push_back(')');
 	return name;
 }
 
