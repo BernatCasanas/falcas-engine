@@ -587,7 +587,7 @@ void ComponentMesh::Render()
 
 		//drawing normals
 		if (App->central_editor->normals && normals != nullptr) {
-			float lineLenght = 1.f;
+			float lineLenght = 5.f;
 
 			if (id_normals == -1)
 				return;
@@ -597,7 +597,7 @@ void ComponentMesh::Render()
 			{
 				glColor3f(0.0f, 1.f, 1.f);
 				glVertex3f(vertices[i], vertices[i + 1], vertices[i + 2]);
-				glVertex3f(vertices[i] + (normals[i] * lineLenght), vertices[i + 1] + (normals[i + 1] * lineLenght), vertices[i + 2] + (normals[i + 2]) * lineLenght);
+				glVertex3f(vertices[i] + (-normals[i] * lineLenght), vertices[i + 1] + (-normals[i + 1] * lineLenght), vertices[i + 2] + (-normals[i + 2]) * lineLenght);
 			}
 			glColor3f(1.0f, 1.0f,1.0f); //try to comment this
 			glEnd();
