@@ -16,9 +16,6 @@
 #include "External Libraries/Devil/Include/il.h"
 #include <string>
 #include "ComponentMaterial.h"
-#include "External Libraries/SDL/include/SDL_opengl.h"
-#include <gl/GL.h>
-#include "External Libraries/Glew/include/glew.h"
 
 #pragma comment( lib, "Devil/lib/ILU.lib" )
 #pragma comment( lib, "Devil/lib/DevIL.lib" )
@@ -26,6 +23,7 @@
 
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
+	loading = false;
 }
 
 ModuleSceneIntro::~ModuleSceneIntro()
@@ -108,6 +106,7 @@ void ModuleSceneIntro::LoadTexture(std::string path)
 
 void ModuleSceneIntro::LoadGameObject(float3 position, char* file, char* name)
 {
+	loading = true;
 	scene = aiImportFile(file, aiProcessPreset_TargetRealtime_MaxQuality);
 	if (scene != nullptr && scene->HasMeshes())
 	{
@@ -138,11 +137,16 @@ void ModuleSceneIntro::LoadGameObject(float3 position, char* file, char* name)
 
 				}
 			}
-
-			if (ai_mesh->HasNormals()) {
-				m_mesh->num_normals = ai_mesh->mNumFaces;
-				m_mesh->normals = new float[ai_mesh->mNumFaces];
-				memcpy(m_mesh->normals, ai_mesh->mNormals, sizeof(float) * m_mesh->num_normals);
+			m_mesh->num_normals = m_mesh->num_vertices;
+			m_mesh->normals = new float[ai_mesh->mNumVertices * 3];
+			for (int x = 0, y = 0; x < ai_mesh->mNumVertices; x++, y += 3) {
+				if (ai_mesh->HasNormals())
+				{
+					//normal copying
+					m_mesh->normals[y] = ai_mesh->mNormals[x].x;
+					m_mesh->normals[y + 1] = ai_mesh->mNormals[x].y;
+					m_mesh->normals[y + 2] = ai_mesh->mNormals[x].z;
+				}
 			}
 
 			m_mesh->Initialization();
@@ -153,6 +157,7 @@ void ModuleSceneIntro::LoadGameObject(float3 position, char* file, char* name)
 		const char* error = aiGetErrorString();
 		LOG("Error loading FBX: %s", error)
 	}
+	loading = false;
 }
 
 std::string ModuleSceneIntro::CheckNameGameObject(std::string name, bool numbered, int digits)

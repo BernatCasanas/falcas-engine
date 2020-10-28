@@ -1,8 +1,11 @@
 #pragma once
 #include "ComponentMesh.h"
-#include "External Libraries/Glew/include/glew.h"
+#include "Application.h"
+#include "ModuleCentralEditor.h"
 #include "External Libraries/MathGeoLib/include/Math/MathFunc.h"
 #include <vector>
+#include "ModuleSceneIntro.h"
+#include "External Libraries/Glew/include/glew.h"
 
 #define M_PI       3.14159265358979323846
 
@@ -11,7 +14,8 @@ ComponentMesh::ComponentMesh(GameObject* owner) :Component(Component_Type::Mesh,
 	grid = false;
 	vertices = nullptr;
 	indices = nullptr;
-	id_indices = id_vertices = num_indices = num_vertices = 0;
+	normals = nullptr;
+	id_indices = id_vertices = num_indices = num_vertices = id_normals = num_normals = 0;
 }
 
 ComponentMesh::~ComponentMesh()
@@ -20,8 +24,11 @@ ComponentMesh::~ComponentMesh()
 		delete[] vertices;
 	if (indices != nullptr)
 		delete[] indices;
+	if (normals != nullptr)
+		delete[] normals;
 	glDeleteBuffers(1, &id_indices);
 	glDeleteBuffers(1, &id_vertices);
+	glDeleteBuffers(1, &id_normals);
 }
 
 void ComponentMesh::CreateCube(float3 position, float3 size)
@@ -547,9 +554,11 @@ void ComponentMesh::Initialization()
 	glGenBuffers(1, (GLuint*)&(id_indices));
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id_indices);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * num_indices, indices, GL_STATIC_DRAW);
-	glGenBuffers(1, (GLuint*)&(id_normals));
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id_normals);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * num_normals, normals, GL_STATIC_DRAW);
+	if (App->scene_intro->loading) {
+		glGenBuffers(1, (GLuint*)&(id_normals));
+		glBindBuffer(GL_NORMAL_ARRAY, id_normals);
+		glBufferData(GL_NORMAL_ARRAY, sizeof(float) * num_vertices * 3, normals, GL_STATIC_DRAW);
+	}
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
@@ -557,16 +566,46 @@ void ComponentMesh::Initialization()
 void ComponentMesh::Render()
 {
 	if (id_indices > 0 && id_vertices > 0) {
+		//vertices
 		glEnableClientState(GL_VERTEX_ARRAY);
 		glBindBuffer(GL_ARRAY_BUFFER, id_vertices);
-		glBindBuffer(GL_ARRAY_BUFFER, id_normals);
 		glVertexPointer(3, GL_FLOAT, 0, NULL);
+
+		//normals
+		glEnableClientState(GL_NORMAL_ARRAY);
+		glBindBuffer(GL_NORMAL_ARRAY, id_normals);
+		glNormalPointer(GL_FLOAT, 0, NULL);
+
+		//indices
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id_indices);
+
+		//drawing indices
 		if (grid == false)
 			glDrawElements(GL_TRIANGLES, num_indices, GL_UNSIGNED_INT, NULL);
 		else
 			glDrawElements(GL_LINES, num_indices, GL_UNSIGNED_INT, NULL);
+
+		//drawing normals
+		if (App->central_editor->normals && normals != nullptr) {
+			float lineLenght = 1.f;
+
+			if (id_normals == -1)
+				return;
+
+			glBegin(GL_LINES);
+			for (int i = 0; i < num_vertices * 3; i += 3)
+			{
+				glColor3f(0.0f, 1.f, 1.f);
+				glVertex3f(vertices[i], vertices[i + 1], vertices[i + 2]);
+				glVertex3f(vertices[i] + (normals[i] * lineLenght), vertices[i + 1] + (normals[i + 1] * lineLenght), vertices[i + 2] + (normals[i + 2]) * lineLenght);
+			}
+			glColor3f(1.0f, 1.0f,1.0f); //try to comment this
+			glEnd();
+		}
+
+		//cleaning stuff
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindBuffer(GL_NORMAL_ARRAY, 0);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 		glDisableClientState(GL_VERTEX_ARRAY);
 	}

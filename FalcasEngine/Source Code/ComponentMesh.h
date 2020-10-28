@@ -30,9 +30,9 @@ public:
 	uint num_indices;
 	uint num_vertices;
 	uint num_normals;
-	float* vertices;
-	uint* indices;
-	float* normals;
+	float* vertices = nullptr;
+	float* normals = nullptr;
+	uint* indices = nullptr;
 private:
 	bool grid;
 };

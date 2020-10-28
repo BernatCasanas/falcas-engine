@@ -34,6 +34,7 @@ public:
 	GameObject* game_object_selected;
 	GameObject* root;
 	int GetID();
+	bool loading;
 private:
 	int id_gameobject;
 
