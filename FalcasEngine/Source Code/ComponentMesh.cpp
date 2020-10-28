@@ -16,6 +16,7 @@ ComponentMesh::ComponentMesh(GameObject* owner) :Component(Component_Type::Mesh,
 	indices = nullptr;
 	normals = nullptr;
 	id_indices = id_vertices = num_indices = num_vertices = id_normals = num_normals = 0;
+	name = "Mesh";
 }
 
 ComponentMesh::~ComponentMesh()

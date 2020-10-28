@@ -456,27 +456,19 @@ update_status ModuleCentralEditor::PostUpdate(float dt)
     if (show_inspector) {
         ImGui::Begin("Inspector",&show_inspector);
         if (App->scene_intro->game_object_selected != nullptr) {
-            ImGui::Checkbox("", &App->scene_intro->game_object_selected->active);
+            GameObject* game_object = App->scene_intro->game_object_selected;
+            ImGui::Checkbox("", &game_object->active);
             ImGui::SameLine();
-            std::string game_object_name = App->scene_intro->game_object_selected->name;
+            std::string game_object_name = game_object->name;
             if(ImGui::InputText(" ", &game_object_name, ImGuiInputTextFlags_EnterReturnsTrue)) {
-                if (game_object_name != App->scene_intro->game_object_selected->name) {
-                    App->scene_intro->game_object_selected->name = game_object_name;
+                if (game_object_name != game_object->name) {
+                    game_object->name = game_object_name;
                 }
             }
-            if (App->scene_intro->game_object_selected->CheckComponentType(Component_Type::Transform)) {
-                if (ImGui::CollapsingHeader("Transformation", ImGuiTreeNodeFlags_DefaultOpen)) {
-
-                }
-            }
-            if (App->scene_intro->game_object_selected->CheckComponentType(Component_Type::Mesh)) {
-                if (ImGui::CollapsingHeader("Mesh", ImGuiTreeNodeFlags_DefaultOpen)) {
-
-                }
-            }
-            if (App->scene_intro->game_object_selected->CheckComponentType(Component_Type::Material)) {
-                if (ImGui::CollapsingHeader("Material", ImGuiTreeNodeFlags_DefaultOpen)) {
-
+            for (int i = 0; i < game_object->components.size(); i++) {
+                Component* game_object_component = game_object->components.at(i);
+                if (ImGui::CollapsingHeader(game_object_component->name.c_str(), ImGuiTreeNodeFlags_DefaultOpen)) {
+                    ShowComponentInInspector(game_object_component);
                 }
             }
         }
@@ -586,5 +578,27 @@ void ModuleCentralEditor::HierarchyRecursiveTree(GameObject* game_object, static
         }
     }
  
+}
+
+void ModuleCentralEditor::ShowComponentInInspector(Component* component)
+{
+    Gui_Type gui_type;
+    std::string info, info2;
+    float number;
+    int index = 0;
+    bool* checked = nullptr;
+   
+    bool same_line;
+    component->Inspector(gui_type, index, info, checked, number, same_line, info2);
+    do {
+        ImGui::PushID(component->name.c_str());
+        switch (gui_type)
+        {
+        case Gui_Type::CheckBox:
+            ImGui::Checkbox(info.c_str(), checked);
+            break;
+        }
+    } while (component->Inspector(gui_type, index, info, checked, number, same_line, info2));
+    ImGui::PopID();
 }
 

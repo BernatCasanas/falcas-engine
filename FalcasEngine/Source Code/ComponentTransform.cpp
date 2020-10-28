@@ -6,6 +6,7 @@ ComponentTransform::ComponentTransform(GameObject* owner, float3 position, Quat 
 	this->position = position;
 	this->rotation = rotation;
 	this->size = size;
+	name = "Transform";
 }
 
 ComponentTransform::~ComponentTransform()

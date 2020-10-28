@@ -10,6 +10,7 @@
 class Application;
 class ImVec4;
 class GameObject;
+class Component;
 
 class ModuleCentralEditor : public Module
 {
@@ -30,6 +31,7 @@ public:
 	bool ProcessEvents(SDL_Event event);
 
 	void HierarchyRecursiveTree(GameObject* game_object, static int selected, static ImGuiTreeNodeFlags base_flags, int &node_clicked);
+	void ShowComponentInInspector(Component* component);
 
 public:
 

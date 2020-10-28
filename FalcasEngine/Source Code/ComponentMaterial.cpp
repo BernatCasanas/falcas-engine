@@ -4,7 +4,7 @@
 
 ComponentMaterial::ComponentMaterial(GameObject* parent) : Component(Component_Type::Material, owner)
 {
-
+	name = "Material";
 }
 
 ComponentMaterial::~ComponentMaterial()
