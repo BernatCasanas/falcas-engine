@@ -557,7 +557,7 @@ void ComponentMesh::Initialization()
 	if (App->scene_intro->loading) {
 		glGenBuffers(1, (GLuint*)&(id_normals));
 		glBindBuffer(GL_NORMAL_ARRAY, id_normals);
-		glBufferData(GL_NORMAL_ARRAY, sizeof(float) * num_vertices * 3, normals, GL_STATIC_DRAW);
+		glBufferData(GL_NORMAL_ARRAY, sizeof(float) * num_vertices, normals, GL_STATIC_DRAW);
 	}
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
@@ -593,7 +593,7 @@ void ComponentMesh::Render()
 				return;
 
 			glBegin(GL_LINES);
-			for (int i = 0; i < num_vertices * 3; i += 3)
+			for (int i = 0; i < num_vertices; i += 3)
 			{
 				glColor3f(0.0f, 1.f, 1.f);
 				glVertex3f(vertices[i], vertices[i + 1], vertices[i + 2]);
