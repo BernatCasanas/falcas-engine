@@ -611,3 +611,16 @@ void ComponentMesh::Render()
 		glDisableClientState(GL_VERTEX_ARRAY);
 	}
 }
+
+bool ComponentMesh::Inspector(Gui_Type& type, int& index, std::string& info, bool*& checked, float& number, bool& same_line, std::string& info2_for_tooltip)
+{
+	switch (index)
+	{
+	case 0:
+		Component::Inspector(type, index, info, checked, number, same_line, info2_for_tooltip);
+		return false;
+	default:
+		return false;
+		break;
+	}
+}

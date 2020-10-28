@@ -24,6 +24,9 @@ public:
 	void Initialization();
 	void Render();
 
+	bool Inspector(Gui_Type& type, int& index, std::string& info, bool*& checked, float& number, bool& same_line, std::string& info2_for_tooltip);
+
+
 	uint id_vertices;
 	uint id_indices;
 	uint id_normals;

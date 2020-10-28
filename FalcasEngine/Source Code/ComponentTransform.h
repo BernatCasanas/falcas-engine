@@ -16,6 +16,8 @@ public:
 	Quat GetRotation();
 	float3 GetSize();
 
+	bool Inspector(Gui_Type& type, int& index, std::string& info, bool*& checked, float& number, bool& same_line, std::string& info2_for_tooltip);
+
 private:
 	float3 position;
 	Quat rotation;

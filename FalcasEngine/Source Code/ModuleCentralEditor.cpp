@@ -589,13 +589,20 @@ void ModuleCentralEditor::ShowComponentInInspector(Component* component)
     bool* checked = nullptr;
    
     bool same_line;
+    ImGui::PushID(component->name.c_str());
     component->Inspector(gui_type, index, info, checked, number, same_line, info2);
     do {
-        ImGui::PushID(component->name.c_str());
+        if (same_line) {
+            ImGui::SameLine();
+            LOG("HELLO");
+        }
         switch (gui_type)
         {
         case Gui_Type::CheckBox:
             ImGui::Checkbox(info.c_str(), checked);
+            break;
+        case Gui_Type::Text:
+            ImGui::Text(info.c_str());
             break;
         }
     } while (component->Inspector(gui_type, index, info, checked, number, same_line, info2));

@@ -35,6 +35,7 @@ bool Component::Inspector(Gui_Type& type, int& index, std::string& info, bool* &
 	case 0:
 		type = Gui_Type::CheckBox;
 		checked = &this->active;
+		same_line = false;
 		info = "Active";
 		index++;
 		return false;
