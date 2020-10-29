@@ -107,7 +107,7 @@ void ModuleSceneIntro::LoadTexture(std::string path)
 void ModuleSceneIntro::LoadGameObject(float3 position, const char* file, std::string name)
 {
 	loading = true;
-	GameObject* parent;
+	GameObject* parent = nullptr;
 	GameObject* m;
 	bool multimesh = false;
 	bool parent_setted = false;
@@ -172,8 +172,8 @@ void ModuleSceneIntro::LoadGameObject(float3 position, const char* file, std::st
 			}
 
 			m_mesh->Initialization();
-			aiReleaseImport(scene);
 		}
+			aiReleaseImport(scene);
 	}
 	else {
 		const char* error = aiGetErrorString();
