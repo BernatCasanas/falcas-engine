@@ -144,30 +144,12 @@ bool ComponentTransform::Inspector(Gui_Type& type, int& index, std::string& info
 		index++;
 		same_line = false;
 		break;
-	case 12:
-	case 14:
-	case 16:
-		switch (index)
-		{
-		case 12:
-			number = &euler.x;
-			break;
-		case 14:
-			number = &euler.y;
-			break;
-		case 16:
-			number = &euler.z;
-			break;
-		}
-		type = Gui_Type::SliderFloat;
-		info = "";
-		index++;
-		next_column = false;
-		same_line = true;
-		break;
 	case 5:
 	case 7:
 	case 9:
+	case 12:
+	case 14:
+	case 16:
 	case 19:
 	case 21:
 	case 23:
@@ -181,6 +163,15 @@ bool ComponentTransform::Inspector(Gui_Type& type, int& index, std::string& info
 			break;
 		case 9:
 			number = &position.z;
+			break;
+		case 12:
+			number = &euler.x;
+			break;
+		case 14:
+			number = &euler.y;
+			break;
+		case 16:
+			number = &euler.z;
 			break;
 		case 19:
 			number = &size.x;

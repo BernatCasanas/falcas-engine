@@ -610,12 +610,12 @@ void ModuleCentralEditor::ShowComponentInInspector(Component* component)
             ImGui::Text(info.c_str());
             break;
         case Gui_Type::SliderFloat:
-            ImGui::PushItemWidth(50);
+            ImGui::PushItemWidth(70);
             ImGui::SliderFloat(info.c_str(), number, 0,360);
             ImGui::PopItemWidth();
             break;
         case Gui_Type::DragFloat:
-            ImGui::PushItemWidth(50);
+            ImGui::PushItemWidth(70);
             ImGui::DragFloat(info.c_str(), number, 0.01f);
             ImGui::PopItemWidth();
             break;
