@@ -17,8 +17,8 @@
 #include <string>
 #include "ComponentMaterial.h"
 
-#pragma comment( lib, "Devil/lib/ILU.lib" )
-#pragma comment( lib, "Devil/lib/DevIL.lib" )
+#pragma comment( lib, "Source Code/External Libraries/Devil/lib/ILU.lib" )
+#pragma comment( lib, "Source Code/External Libraries/Devil/lib/DevIL.lib" )
 
 
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
