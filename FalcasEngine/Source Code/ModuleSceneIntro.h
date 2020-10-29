@@ -26,7 +26,7 @@ public:
 
 	void LoadTexture(std::string path);
 
-	void LoadGameObject(float3 position, const char* file, char* name);
+	void LoadGameObject(float3 position, const char* file, std::string name);
 	std::string CheckNameGameObject(std::string name, bool numbered = false, int digits = 1);
 	std::string NameGameObjectWhenMoreThan2Digits(std::string name, int &digits);
 

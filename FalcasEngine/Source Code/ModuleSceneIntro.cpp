@@ -104,7 +104,7 @@ void ModuleSceneIntro::LoadTexture(std::string path)
 
 }
 
-void ModuleSceneIntro::LoadGameObject(float3 position, const char* file, char* name)
+void ModuleSceneIntro::LoadGameObject(float3 position, const char* file, std::string name)
 {
 	loading = true;
 	GameObject* parent;
@@ -123,18 +123,19 @@ void ModuleSceneIntro::LoadGameObject(float3 position, const char* file, char* n
 			if (scene->mMeshes[i] == NULL) continue;
 			if (multimesh) {
 				if (parent_setted) {
-					m = CreateGameObject(position, Quat::identity, { 1,1,1 }, name, parent);
+					m = CreateGameObject(position, Quat::identity, { 1,1,1 }, name.c_str(), parent);
 				}
 				else {
-					parent = CreateGameObject(position, Quat::identity, { 1,1,1 }, name, root);
-					m = CreateGameObject(position, Quat::identity, { 1,1,1 }, name, parent);
+					parent = CreateGameObject(position, Quat::identity, { 1,1,1 }, name.c_str(), root);
+					m = CreateGameObject(position, Quat::identity, { 1,1,1 }, name.c_str(), parent);
 					parent_setted = true;
 				}
 			}
 			else{
-				m = CreateGameObject(position, Quat::identity, { 1,1,1 }, name, root);
+				m = CreateGameObject(position, Quat::identity, { 1,1,1 }, name.c_str(), root);
 			}
 			ComponentMesh* m_mesh = (ComponentMesh*)m->CreateComponent(Component_Type::Mesh);
+			m_mesh->SetFileName(file);
 			aiMesh* ai_mesh = scene->mMeshes[i];
 			m_mesh->num_vertices = ai_mesh->mNumVertices;
 			m_mesh->vertices = new float[m_mesh->num_vertices * 3];

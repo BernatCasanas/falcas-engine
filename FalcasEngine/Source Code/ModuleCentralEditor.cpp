@@ -583,15 +583,16 @@ void ModuleCentralEditor::HierarchyRecursiveTree(GameObject* game_object, static
 void ModuleCentralEditor::ShowComponentInInspector(Component* component)
 {
     Gui_Type gui_type;
-    std::string info, info2;
-    info = info2 = "";
+    float4 color;
+    std::string info = "";
     float* number;
+    float width = 50;
     int index = 0;
     int num_columns = 0;
     bool* checked = nullptr;
     bool same_line, separator_in_column, next_column;
     same_line = separator_in_column = next_column = false;
-    component->Inspector(gui_type, index, info, checked, number, same_line, info2, separator_in_column, next_column, num_columns);
+    component->Inspector(gui_type, index, info, checked, number, same_line, separator_in_column, next_column, num_columns, width, color);
     do {
         ImGui::PushID((component->name + std::to_string(index)).c_str());
         if (same_line) {
@@ -625,9 +626,17 @@ void ModuleCentralEditor::ShowComponentInInspector(Component* component)
         case Gui_Type::Column:
             ImGui::Columns(num_columns, info.c_str(), separator_in_column);
             break;
+        case Gui_Type::TextColored:
+            ImGui::TextColored(ImVec4(color.x, color.y, color.z, color.w), info.c_str());
+            break;
+        case Gui_Type::Tooltip:
+            if (ImGui::IsItemHovered()) {
+                ImGui::SetTooltip(info.c_str());
+            }
+            break;
         }
         ImGui::PopID();
-    } while (component->Inspector(gui_type, index, info, checked, number, same_line, info2, separator_in_column, next_column, num_columns));
+    } while (component->Inspector(gui_type, index, info, checked, number, same_line, separator_in_column, next_column, num_columns, width, color));
     if (num_columns > 1)
         ImGui::Columns(1, "", false);
 }
