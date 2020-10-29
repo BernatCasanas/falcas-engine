@@ -99,10 +99,6 @@ GameObject* ModuleSceneIntro::SearchGameObject(int id, GameObject* game_obj)
 	return game_object;
 }
 
-void ModuleSceneIntro::LoadTexture(std::string path)
-{
-
-}
 
 void ModuleSceneIntro::LoadGameObject(float3 position, const char* file, char* name)
 {
@@ -167,6 +163,15 @@ void ModuleSceneIntro::LoadGameObject(float3 position, const char* file, char* n
 					m_mesh->normals[y] = ai_mesh->mNormals[x].x;
 					m_mesh->normals[y + 1] = ai_mesh->mNormals[x].y;
 					m_mesh->normals[y + 2] = ai_mesh->mNormals[x].z;
+				}
+			}
+
+			if (ai_mesh->HasTextureCoords(0)) {
+				m_mesh->num_textureCoords = ai_mesh->mNumVertices;
+				m_mesh->texCoords = new float[m_mesh->num_textureCoords * 2];
+				for (uint i = 0, j = 0; i < m_mesh->num_textureCoords; i++, j += 2) {
+					m_mesh->texCoords[j] = ai_mesh->mTextureCoords[0][i].x;
+					m_mesh->texCoords[j + 1] = ai_mesh->mTextureCoords[0][i].y;
 				}
 			}
 

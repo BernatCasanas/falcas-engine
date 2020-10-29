@@ -24,7 +24,6 @@ public:
 	GameObject* CreateGameObject(float3 position, Quat rotation, float3 size, std::string name = "", GameObject* parent = nullptr);
 	GameObject* SearchGameObject(int id, GameObject* game_obj);
 
-	void LoadTexture(std::string path);
 
 	void LoadGameObject(float3 position, const char* file, char* name);
 	std::string CheckNameGameObject(std::string name, bool numbered = false, int digits = 1);

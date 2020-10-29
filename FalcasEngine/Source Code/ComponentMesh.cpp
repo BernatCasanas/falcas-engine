@@ -1,11 +1,13 @@
 #pragma once
+#include "External Libraries/Glew/include/glew.h"
 #include "ComponentMesh.h"
 #include "Application.h"
 #include "ModuleCentralEditor.h"
 #include "External Libraries/MathGeoLib/include/Math/MathFunc.h"
 #include <vector>
 #include "ModuleSceneIntro.h"
-#include "External Libraries/Glew/include/glew.h"
+#include "GameObject.h"
+#include "ComponentMaterial.h"
 
 #define M_PI       3.14159265358979323846
 
@@ -17,6 +19,7 @@ ComponentMesh::ComponentMesh(GameObject* owner) :Component(Component_Type::Mesh,
 	normals = nullptr;
 	id_indices = id_vertices = num_indices = num_vertices = id_normals = num_normals = 0;
 	name = "Mesh";
+	//this->parent = owner;
 }
 
 ComponentMesh::~ComponentMesh()
@@ -559,6 +562,10 @@ void ComponentMesh::Initialization()
 		glGenBuffers(1, (GLuint*)&(id_normals));
 		glBindBuffer(GL_NORMAL_ARRAY, id_normals);
 		glBufferData(GL_NORMAL_ARRAY, sizeof(float) * num_vertices, normals, GL_STATIC_DRAW);
+
+		glGenBuffers(1, (GLuint*)&(num_textureCoords));
+		glBindBuffer(GL_NORMAL_ARRAY, id_texCoords);
+		glBufferData(GL_NORMAL_ARRAY, sizeof(float) * num_textureCoords, texCoords, GL_STATIC_DRAW);
 	}
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
@@ -602,7 +609,16 @@ void ComponentMesh::Render()
 			}
 			glColor3f(1.0f, 1.0f,1.0f);
 			glEnd();
+
+
+			//if (material != nullptr) {
+			//	if (material->defaultTex) {
+			//		glBindTexture(GL_TEXTURE_2D, material->defaultTex);
+			//	}
+			//	else glBindTexture(GL_TEXTURE_2D, material->texture_id);
+			//}
 		}
+		//glBindTexture(GL_TEXTURE_2D, material->defaultTex);
 
 		//cleaning stuff
 		glBindBuffer(GL_ARRAY_BUFFER, 0);

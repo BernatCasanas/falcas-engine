@@ -31,12 +31,18 @@ public:
 	uint id_vertices;
 	uint id_indices;
 	uint id_normals;
+	uint id_texCoords;
 	uint num_indices;
 	uint num_vertices;
 	uint num_normals;
+	uint num_textureCoords;
 	float* vertices = nullptr;
 	float* normals = nullptr;
 	uint* indices = nullptr;
+	float* texCoords;
+
+	GameObject* parent;
+
 private:
 	bool grid;
 };
