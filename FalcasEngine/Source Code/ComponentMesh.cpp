@@ -17,9 +17,12 @@ ComponentMesh::ComponentMesh(GameObject* owner) :Component(Component_Type::Mesh,
 	vertices = nullptr;
 	indices = nullptr;
 	normals = nullptr;
+	show_normals = false;
+	length_normals = 1;
 	id_indices = id_vertices = num_indices = num_vertices = id_normals = num_normals = 0;
 	name = "Mesh";
-	//this->parent = owner;
+	full_file_name = "";
+	file_name = "";
 }
 
 ComponentMesh::~ComponentMesh()
@@ -34,6 +37,14 @@ ComponentMesh::~ComponentMesh()
 	glDeleteBuffers(1, &id_vertices);
 	glDeleteBuffers(1, &id_normals);
 }
+
+void ComponentMesh::SetFileName(std::string file)
+{
+	full_file_name = file;
+	int pos = full_file_name.find_last_of('\\');
+	file_name = full_file_name.substr(pos + 1);
+}
+
 
 void ComponentMesh::CreateCube(float3 position, float3 size)
 {
@@ -550,6 +561,8 @@ void ComponentMesh::CreateGrid(float3 position, float3 size)
 	this->Initialization();
 }
 
+
+
 void ComponentMesh::Initialization()
 {
 	glGenBuffers(1, (GLuint*)&(id_vertices));
@@ -569,6 +582,7 @@ void ComponentMesh::Initialization()
 	}
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_NORMAL_ARRAY, 0);
 }
 
 void ComponentMesh::Render()
@@ -594,8 +608,7 @@ void ComponentMesh::Render()
 			glDrawElements(GL_LINES, num_indices, GL_UNSIGNED_INT, NULL);
 
 		//drawing normals
-		if (App->central_editor->normals && normals != nullptr) {
-			float lineLenght = 5.f;
+		if ((App->central_editor->normals || show_normals) && normals != nullptr) {
 
 			if (id_normals == -1)
 				return;
@@ -605,7 +618,7 @@ void ComponentMesh::Render()
 			{
 				glColor3f(0.0f, 1.f, 1.f);
 				glVertex3f(vertices[i], vertices[i + 1], vertices[i + 2]);
-				glVertex3f(vertices[i] + (-normals[i] * lineLenght), vertices[i + 1] + (-normals[i + 1] * lineLenght), vertices[i + 2] + (-normals[i + 2]) * lineLenght);
+				glVertex3f(vertices[i] + (-normals[i] * length_normals), vertices[i + 1] + (-normals[i + 1] * length_normals), vertices[i + 2] + (-normals[i + 2]) * length_normals);
 			}
 			glColor3f(1.0f, 1.0f,1.0f);
 			glEnd();
@@ -628,16 +641,141 @@ void ComponentMesh::Render()
 	}
 }
 
-bool ComponentMesh::Inspector(Gui_Type& type, int& index, std::string& info, bool*& checked, float*& number, bool& same_line, std::string& info2_for_tooltip, bool& separator_in_column, bool& next_column,
-	int& num_columns)
+bool ComponentMesh::Inspector(Gui_Type& type, int& index, std::string& info, bool*& checked, float*& number, bool& same_line, bool& separator_in_column, bool& next_column,
+	int& num_columns, float& width, float4& color)
 {
+	info =  "";
+	same_line = separator_in_column = next_column = false;
+	num_columns = 1;
+	width = 50;
 	switch (index)
 	{
 	case 0:
-		Component::Inspector(type, index, info, checked, number, same_line, info2_for_tooltip, separator_in_column, next_column, num_columns);
-		return false;
+		Component::Inspector(type, index, info, checked, number, same_line, separator_in_column, next_column, num_columns, width, color);
+		break;
+	case 1:
+	case 5:
+		type = Gui_Type::Separator;
+		index++;
+		break;
+	case 2:
+	case 7:
+	case 8:
+	case 9:
+	case 11:
+	case 12:
+	case 14:
+	case 15:
+	case 16:
+	case 17:
+	case 18:
+		switch (index)
+		{
+		case 2:
+		case 7:
+		case 9:
+		case 12:
+		case 15:
+		case 18:
+			switch (index)
+			{
+			case 2:
+				info = "File: ";
+				break;
+			case 7:
+				info = "Show Normals";
+				break;
+			case 9:
+				info = std::to_string(num_indices);
+				same_line = true;
+				break;
+			case 12:
+				info = std::to_string(num_vertices);
+				same_line = true;
+				break;
+			case 15:
+				info = std::to_string(num_normals);
+				same_line = true;
+				break;
+			case 18:
+				info = std::to_string(num_indices / 3);
+				same_line = true;
+				break;
+			}
+			break;
+		case 8:
+		case 11:
+		case 14:
+		case 16:
+		case 17:
+			switch (index)
+			{
+			case 8:
+				info = "Indices: ";
+				break;
+			case 11:
+				info = "Vertices: ";
+				break;
+			case 14:
+				info = "Normals: ";
+				break;
+			case 16:
+				info = "Length Normals";
+				break;
+			case 17:
+				info = "Faces:";
+				break;
+			}
+			next_column = true;
+			break;
+		}
+		type = Gui_Type::Text;
+		index++;
+		break;
+	case 3:
+		info = file_name.c_str();
+		color = { 1.0f,1.0f,0.0f,1.0f };
+		same_line = true;
+		type = Gui_Type::TextColored;
+		index++;
+		break;
+	case 4:
+		info = full_file_name.c_str();
+		type = Gui_Type::Tooltip;
+		index++;
+		break;
+	case 6:
+		num_columns = 2;
+		separator_in_column = true;
+	case 20:
+		type = Gui_Type::Column;
+		index++;
+		break;
+	case 10:
+	case 13:
+		switch (index)
+		{
+		case 10:
+			checked = &show_normals;
+			info = "Per Triangle";
+			break;
+		case 13:
+			info = "Per Face";
+			break;
+		}
+		next_column = true;
+		type = Gui_Type::CheckBox;
+		index++;
+		break;
+	case 19:
+		number = &length_normals;
+		next_column = true;
+		type = Gui_Type::DragFloat;
+		index++;
+		break;
 	default:
 		return false;
 		break;
 	}
+	return true;
 }

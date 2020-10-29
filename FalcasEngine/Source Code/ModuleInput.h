@@ -1,7 +1,7 @@
 #pragma once
 #include "Module.h"
 #include "Globals.h"
-
+#include <string>
 
 #define MAX_MOUSE_BUTTONS 5
 
@@ -56,7 +56,7 @@ public:
 		return mouse_y_motion;
 	}
 
-	char* GetFileName(char* file);
+	std::string GetFileName(char* file);
 	char* GetTypeFile(char* file);
 
 private:

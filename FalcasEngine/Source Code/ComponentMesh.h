@@ -11,6 +11,7 @@ public:
 	ComponentMesh(GameObject* owner);
 	~ComponentMesh();
 	void Update() {};
+	void SetFileName(std::string file);
 	void CreateCube(float3 position = { 0,0,0 }, float3 size = { 1,1,1 });
 	void CreatePrism(float3 position = { 0,0,0 }, float3 size = { 1,1,1 });
 	void CreateTriPyramid(float3 position = { 0,0,0 }, float3 size = { 1,1,1 });
@@ -23,9 +24,10 @@ public:
 	void CreateGrid(float3 position = { 0,0,0 }, float3 size = { 1,1,1 });
 	void Initialization();
 	void Render();
+	std::string GetFileName();
 
-	bool Inspector(Gui_Type& type, int& index, std::string& info, bool*& checked, float*& number, bool& same_line, std::string& info2_for_tooltip, bool& separator_in_column, bool& next_column,
-		int& num_columns);
+	bool Inspector(Gui_Type& type, int& index, std::string& info, bool*& checked, float*& number, bool& same_line, bool& separator_in_column, bool& next_column,
+		int& num_columns, float& width, float4& Color);
 
 
 	uint id_vertices;
@@ -36,13 +38,16 @@ public:
 	uint num_vertices;
 	uint num_normals;
 	uint num_textureCoords;
+
+	std::string full_file_name;
+	std::string file_name;
+	float* texCoords;
 	float* vertices = nullptr;
 	float* normals = nullptr;
 	uint* indices = nullptr;
-	float* texCoords;
-
+	bool show_normals;
+	float length_normals;
 	GameObject* parent;
-
 private:
 	bool grid;
 };

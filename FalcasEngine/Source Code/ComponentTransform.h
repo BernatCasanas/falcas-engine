@@ -19,8 +19,8 @@ public:
 	float3 QuaternionToEuler(Quat q);
 	Quat EulerToQuaternion(float3 eu);
 
-	bool Inspector(Gui_Type& type, int& index, std::string& info, bool*& checked, float*& number, bool& same_line, std::string& info2_for_tooltip, bool& separator_in_column, bool& next_column,
-		int& num_columns);
+	bool Inspector(Gui_Type& type, int& index, std::string& info, bool*& checked, float*& number, bool& same_line, bool& separator_in_column, bool& next_column,
+		int& num_columns, float& width, float4& color);
 
 private:
 	float3 position;

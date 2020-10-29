@@ -1,6 +1,7 @@
 #pragma once
 #include "Globals.h"
 #include <string>
+#include "External Libraries/MathGeoLib/include/Math/float4.h"
 class GameObject;
 
 enum class Component_Type {
@@ -13,6 +14,7 @@ enum class Component_Type {
 enum class Gui_Type {
 	Unknwon=-1,
 	Text,
+	TextColored,
 	CheckBox,
 	SliderFloat,
 	Tooltip,
@@ -28,8 +30,8 @@ public:
 	virtual void Enable();
 	virtual void Update();
 	virtual void Disable();
-	virtual bool Inspector(Gui_Type &type, int &index, std::string &info, bool* &checked, float* &number, bool &same_line, std::string &info2_for_tooltip, bool& separator_in_column, bool& next_column,
-		int& num_columns);
+	virtual bool Inspector(Gui_Type &type, int &index, std::string &info, bool* &checked, float* &number, bool &same_line, bool& separator_in_column, bool& next_column,
+		int& num_columns, float& width, float4& color);
 
 	Component_Type type;
 	bool active;

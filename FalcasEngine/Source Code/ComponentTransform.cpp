@@ -69,13 +69,17 @@ Quat ComponentTransform::EulerToQuaternion(float3 eu)
 	return q;
 }
 
-bool ComponentTransform::Inspector(Gui_Type& type, int& index, std::string& info, bool*& checked, float*& number, bool& same_line, std::string& info2_for_tooltip, bool& separator_in_column, bool& next_column,
-	int& num_columns)
+bool ComponentTransform::Inspector(Gui_Type& type, int& index, std::string& info, bool*& checked, float*& number, bool& same_line, bool& separator_in_column, bool& next_column,
+	int& num_columns, float& width, float4& color)
 {
+	info = "";
+	same_line = separator_in_column = next_column = false;
+	num_columns = 1;
+	width = 50;
 	switch (index)
 	{
 	case 0:
-		Component::Inspector(type,index,info,checked,number,same_line,info2_for_tooltip, separator_in_column, next_column, num_columns);
+		Component::Inspector(type,index,info,checked,number,same_line, separator_in_column, next_column, num_columns, width, color);
 		break;
 	case 3:
 	case 4:
@@ -98,7 +102,6 @@ bool ComponentTransform::Inspector(Gui_Type& type, int& index, std::string& info
 			{
 			case 3:
 				info = "Position";
-				next_column = false;
 				break;
 			case 10:
 				info = "Rotation";
@@ -142,7 +145,6 @@ bool ComponentTransform::Inspector(Gui_Type& type, int& index, std::string& info
 		}
 		type = Gui_Type::Text;
 		index++;
-		same_line = false;
 		break;
 	case 5:
 	case 7:
@@ -184,37 +186,22 @@ bool ComponentTransform::Inspector(Gui_Type& type, int& index, std::string& info
 			break;
 		}
 		type = Gui_Type::DragFloat;
-		info = "";
 		index++;
-		next_column = false;
 		same_line = true;
 		break;
 	case 1:
 		type = Gui_Type::Separator;
 		index++;
-		next_column = false;
-		same_line = false;
 		break;
 	case 2:
-		type = Gui_Type::Column;
 		num_columns = 4;
-		separator_in_column = false;
-		next_column = false;
-		same_line = false;
-		index++;
-		break;
 	case 24:
 		type = Gui_Type::Column;
-		num_columns = 1;
-		separator_in_column = false;
-		next_column = false;
-		same_line = false;
 		index++;
 		break;
 	default:
 		return false;
 		break;
 	}
-	info2_for_tooltip = "";
 	return true;
 }

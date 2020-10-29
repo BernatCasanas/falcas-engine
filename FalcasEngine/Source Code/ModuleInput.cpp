@@ -156,22 +156,17 @@ KEY_STATE ModuleInput::GetKey(int id) const
 	return keyboard[id];
 }
 
-char* ModuleInput::GetFileName(char* file)
+std::string ModuleInput::GetFileName(char* file)
 {
-	char* name = new char;
-	int i;
-	for (i = 0; file[i] != '\0'; i++) {}
-	int j = i;
-	for (j; file[j] != '\\'; --j) {}
+	std::string name = file;
+	do {
+		name.pop_back();
+	} while (name.back() != '.');
+	name.pop_back();
 
-	int k = 0;
-	for (int z = j+1; z <= i; z++) {
-		if (file[z] == '.') break;
-		name[k] = file[z];
-		++k;
-	}
-
-	return name;
+	int pos=name.find_last_of('\\');
+	name = name.substr(pos + 1);
+	return name.c_str();
 }
 
 char* ModuleInput::GetTypeFile(char* file)
