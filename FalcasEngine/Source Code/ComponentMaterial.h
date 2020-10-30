@@ -4,9 +4,9 @@
 #include "External Libraries/Devil/Include/ilut.h"
 #include "Component.h"
 
-#pragma comment (lib, "DevIl/lib/DevIl.lib")
-#pragma comment (lib, "DevIl/lib/ILUT.lib")
-#pragma comment (lib, "DevIl/lib/ILU.lib")
+#pragma comment (lib, "Source Code/External Libraries/Devil/lib/DevIL.lib")
+#pragma comment (lib, "Source Code/External Libraries/Devil/lib/ILUT.lib")
+#pragma comment (lib, "Source Code/External Libraries/Devil/lib/ILU.lib")
 
 class GameObject;
 

@@ -573,6 +573,7 @@ void ComponentMesh::Initialization()
 	glGenBuffers(1, (GLuint*)&(id_vertices));
 	glBindBuffer(GL_ARRAY_BUFFER, id_vertices);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * num_vertices, vertices, GL_STATIC_DRAW);
+
 	glGenBuffers(1, (GLuint*)&(id_indices));
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id_indices);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * num_indices, indices, GL_STATIC_DRAW);
@@ -581,13 +582,14 @@ void ComponentMesh::Initialization()
 		glBindBuffer(GL_NORMAL_ARRAY, id_normals);
 		glBufferData(GL_NORMAL_ARRAY, sizeof(float) * num_vertices, normals, GL_STATIC_DRAW);
 
-		glGenBuffers(1, (GLuint*)&(num_textureCoords));
-		glBindBuffer(GL_NORMAL_ARRAY, id_texCoords);
-		glBufferData(GL_NORMAL_ARRAY, sizeof(float) * num_textureCoords, texCoords, GL_STATIC_DRAW);
+		glGenBuffers(1, (GLuint*)&(id_texCoords));
+		glBindBuffer(GL_TEXTURE_COORD_ARRAY, id_texCoords);
+		glBufferData(GL_TEXTURE_COORD_ARRAY, sizeof(float) * num_textureCoords, texCoords, GL_STATIC_DRAW);
 	}
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_NORMAL_ARRAY, 0);
+	glBindBuffer(GL_TEXTURE_COORD_ARRAY, 0);
 }
 
 void ComponentMesh::Render()
@@ -595,22 +597,37 @@ void ComponentMesh::Render()
 	if (id_indices > 0 && id_vertices > 0) {
 		//vertices
 		glEnableClientState(GL_VERTEX_ARRAY);
+
 		glBindBuffer(GL_ARRAY_BUFFER, id_vertices);
 		glVertexPointer(3, GL_FLOAT, 0, NULL);
 
 		//normals
-		glEnableClientState(GL_NORMAL_ARRAY);
-		glBindBuffer(GL_NORMAL_ARRAY, id_normals);
-		glNormalPointer(GL_FLOAT, 0, NULL);
+		if (num_normals > 0) {
+			glEnableClientState(GL_NORMAL_ARRAY);
+			glBindBuffer(GL_NORMAL_ARRAY, id_normals);
+			glNormalPointer(GL_FLOAT, 0, NULL);
+		}
+
+		if (num_textureCoords > 0) {
+			glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+			glBindBuffer(GL_TEXTURE_COORD_ARRAY, id_texCoords);
+			glTexCoordPointer(2, GL_FLOAT, 0, NULL);
+		}
 
 		//indices
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id_indices);
 
+
 		//drawing indices
-		if (grid == false)
+		if (grid == false) {
+			glBindTexture(GL_TEXTURE_2D, 2);
 			glDrawElements(GL_TRIANGLES, num_indices, GL_UNSIGNED_INT, NULL);
+			glBindTexture(GL_TEXTURE_2D, 0);
+		}
 		else
 			glDrawElements(GL_LINES, num_indices, GL_UNSIGNED_INT, NULL);
+
+
 
 		//drawing normals
 		if ((App->central_editor->normals || show_normals) && normals != nullptr) {
@@ -625,26 +642,25 @@ void ComponentMesh::Render()
 				glVertex3f(vertices[i], vertices[i + 1], vertices[i + 2]);
 				glVertex3f(vertices[i] + (-normals[i] * length_normals), vertices[i + 1] + (-normals[i + 1] * length_normals), vertices[i + 2] + (-normals[i + 2]) * length_normals);
 			}
-			glColor3f(1.0f, 1.0f,1.0f);
+			glColor3f(1.0f, 1.0f, 1.0f);
 			glEnd();
-
-
-
 		}
-		ComponentMaterial* material = parent->material;
-		/*if (material != nullptr) {
-			if (material->wantTex) {
-				glBindTexture(GL_TEXTURE_2D, material->defaultTex);
-			}
-			else glBindTexture(GL_TEXTURE_2D, material->texture_id);
-		}*/
-		//glBindTexture(GL_TEXTURE_2D, material->defaultTex);
 
 		//cleaning stuff
+		if (num_normals > 0) {
+			glBindBuffer(GL_NORMAL_ARRAY, 0);
+			glDisableClientState(GL_NORMAL_ARRAY);
+		}
+		if (num_textureCoords > 0) {
+			glBindBuffer(GL_TEXTURE_COORD_ARRAY, 0);
+			glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+		}
+
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		glBindBuffer(GL_NORMAL_ARRAY, 0);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
 		glDisableClientState(GL_VERTEX_ARRAY);
+		glDisableClientState(GL_ELEMENT_ARRAY_BUFFER);
 	}
 }
 
@@ -689,7 +705,7 @@ void ComponentMesh::Inspector()
 	
 	ImGui::SameLine();
 	ImGui::AlignTextToFramePadding();
-	ImGui::Text(std::to_string(num_vertices).c_str());
+	ImGui::Text(std::to_string(num_vertices / 3).c_str());
 	
 	ImGui::NextColumn();
 	ImGui::Checkbox("Per Face", &show_normals);
@@ -700,7 +716,7 @@ void ComponentMesh::Inspector()
 	
 	ImGui::SameLine();
 	ImGui::AlignTextToFramePadding();
-	ImGui::Text(std::to_string(num_normals).c_str());
+	ImGui::Text(std::to_string(num_normals / 3).c_str());
 	
 	ImGui::NextColumn();
 	ImGui::AlignTextToFramePadding();
@@ -748,11 +764,11 @@ void ComponentMesh::LoadMesh(float3 position, const char* file, std::string name
 			if (scene->mMeshes[i] == NULL) continue;
 			m_mesh->SetFileName(file);
 			aiMesh* ai_mesh = scene->mMeshes[i];
-			m_mesh->num_vertices = ai_mesh->mNumVertices;
-			m_mesh->vertices = new float[m_mesh->num_vertices * 3];
+			m_mesh->num_vertices = ai_mesh->mNumVertices*3;
+			m_mesh->vertices = new float[m_mesh->num_vertices];
 			memcpy(m_mesh->vertices, ai_mesh->mVertices, sizeof(float) * m_mesh->num_vertices);
 			LOG("Loading FBX correctly");
-			LOG("New mesh with %d vertices", m_mesh->num_vertices);
+			LOG("New mesh with %d vertices", m_mesh->num_vertices/3);
 
 			if (ai_mesh->HasFaces())
 			{
@@ -775,7 +791,6 @@ void ComponentMesh::LoadMesh(float3 position, const char* file, std::string name
 			for (int x = 0, y = 0; x < ai_mesh->mNumVertices; x++, y += 3) {
 				if (ai_mesh->HasNormals())
 				{
-					//normal copying
 					m_mesh->normals[y] = ai_mesh->mNormals[x].x;
 					m_mesh->normals[y + 1] = ai_mesh->mNormals[x].y;
 					m_mesh->normals[y + 2] = ai_mesh->mNormals[x].z;

@@ -188,7 +188,7 @@ update_status ModuleSceneIntro::Update(float dt)
 		game_object = SearchGameObject(i, root);
 		if (game_object != nullptr && game_object->active == true&& game_object->CheckComponentType(Component_Type::Mesh)) {
 			mesh = (ComponentMesh*)game_object->GetComponent(Component_Type::Mesh);
-			if (mesh != nullptr && root->active == true) {
+			if (mesh != nullptr && mesh->active == true) {
 				mesh->Render();
 			}
 			mesh = nullptr;
