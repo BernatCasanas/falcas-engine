@@ -24,7 +24,6 @@ public:
 	void CreateGrid(float3 position = { 0,0,0 }, float3 size = { 1,1,1 });
 	void Initialization();
 	void Render();
-	std::string GetFileName();
 
 	void Inspector();
 
