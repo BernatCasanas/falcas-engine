@@ -31,7 +31,6 @@ public:
 	bool ProcessEvents(SDL_Event event);
 
 	void HierarchyRecursiveTree(GameObject* game_object, static int selected, static ImGuiTreeNodeFlags base_flags, int &node_clicked);
-	void ShowComponentInInspector(Component* component);
 
 public:
 

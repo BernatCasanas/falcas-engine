@@ -30,8 +30,7 @@ public:
 	virtual void Enable();
 	virtual void Update();
 	virtual void Disable();
-	virtual bool Inspector(Gui_Type &type, int &index, std::string &info, bool* &checked, float* &number, bool &same_line, bool& separator_in_column, bool& next_column,
-		int& num_columns, float& width, float4& color);
+	virtual void Inspector();
 
 	Component_Type type;
 	bool active;

@@ -1,5 +1,6 @@
 #pragma once
 #include "Component.h"
+#include "External Libraries/ImGui/imgui.h"
 
 
 Component::Component(Component_Type type, GameObject* owner)
@@ -29,24 +30,7 @@ void Component::Disable()
 	active = false;
 }
 
-bool Component::Inspector(Gui_Type& type, int& index, std::string& info, bool*& checked, float*& number, bool& same_line, bool& separator_in_column, bool& next_column,
-	int& num_columns, float& width, float4& color)
+void Component::Inspector()
 {
-	switch (index)
-	{
-	case 0:
-		type = Gui_Type::CheckBox;
-		checked = &active;
-		same_line = separator_in_column = next_column = false;
-		num_columns = 0;
-		width = 50;
-		info = "Active";
-		index++;
-		return false;
-		break;
-	default:
-		return false;
-		break;
-	
-	}
+	ImGui::Checkbox("Active", &active);
 }

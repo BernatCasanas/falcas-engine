@@ -648,143 +648,145 @@ void ComponentMesh::Render()
 	}
 }
 
-bool ComponentMesh::Inspector(Gui_Type& type, int& index, std::string& info, bool*& checked, float*& number, bool& same_line, bool& separator_in_column, bool& next_column,
-	int& num_columns, float& width, float4& color)
+void ComponentMesh::Inspector()
 {
-	info =  "";
-	same_line = separator_in_column = next_column = false;
-	num_columns = 1;
-	width = 50;
-	switch (index)
-	{
-	case 0:
-		Component::Inspector(type, index, info, checked, number, same_line, separator_in_column, next_column, num_columns, width, color);
-		break;
-	case 1:
-	case 5:
-		type = Gui_Type::Separator;
-		index++;
-		break;
-	case 2:
-	case 7:
-	case 8:
-	case 9:
-	case 11:
-	case 12:
-	case 14:
-	case 15:
-	case 16:
-	case 17:
-	case 18:
-		switch (index)
-		{
-		case 2:
-		case 7:
-		case 9:
-		case 12:
-		case 15:
-		case 18:
-			switch (index)
-			{
-			case 2:
-				info = "File: ";
-				break;
-			case 7:
-				info = "Show Normals";
-				break;
-			case 9:
-				info = std::to_string(num_indices);
-				same_line = true;
-				break;
-			case 12:
-				info = std::to_string(num_vertices);
-				same_line = true;
-				break;
-			case 15:
-				info = std::to_string(num_normals);
-				same_line = true;
-				break;
-			case 18:
-				info = std::to_string(num_indices / 3);
-				same_line = true;
-				break;
-			}
-			break;
-		case 8:
-		case 11:
-		case 14:
-		case 16:
-		case 17:
-			switch (index)
-			{
-			case 8:
-				info = "Indices: ";
-				break;
-			case 11:
-				info = "Vertices: ";
-				break;
-			case 14:
-				info = "Normals: ";
-				break;
-			case 16:
-				info = "Length Normals";
-				break;
-			case 17:
-				info = "Faces:";
-				break;
-			}
-			next_column = true;
-			break;
-		}
-		type = Gui_Type::Text;
-		index++;
-		break;
-	case 3:
-		info = file_name.c_str();
-		color = { 1.0f,1.0f,0.0f,1.0f };
-		same_line = true;
-		type = Gui_Type::TextColored;
-		index++;
-		break;
-	case 4:
-		info = full_file_name.c_str();
-		type = Gui_Type::Tooltip;
-		index++;
-		break;
-	case 6:
-		num_columns = 2;
-		separator_in_column = true;
-	case 20:
-		type = Gui_Type::Column;
-		index++;
-		break;
-	case 10:
-	case 13:
-		switch (index)
-		{
-		case 10:
-			checked = &show_normals;
-			info = "Per Triangle";
-			break;
-		case 13:
-			info = "Per Face";
-			break;
-		}
-		next_column = true;
-		type = Gui_Type::CheckBox;
-		index++;
-		break;
-	case 19:
-		number = &length_normals;
-		next_column = true;
-		type = Gui_Type::DragFloat;
-		index++;
-		break;
-	default:
-		return false;
-		break;
+	int index = 0;
+	ImGui::PushID((name + std::to_string(index)).c_str());
+	Component::Inspector();
+	ImGui::PopID();
+	index++;
+
+	ImGui::PushID((name + std::to_string(index)).c_str());
+	ImGui::Separator();
+	ImGui::PopID();
+	index++;
+
+	ImGui::PushID((name + std::to_string(index)).c_str());
+	ImGui::AlignTextToFramePadding();
+	ImGui::Text("File: ");
+	ImGui::PopID();
+	index++;
+
+	ImGui::PushID((name + std::to_string(index)).c_str());
+	ImGui::SameLine();
+	ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), file_name.c_str());
+	ImGui::PopID();
+
+	ImGui::PushID((name + std::to_string(index)).c_str());
+	if (ImGui::IsItemHovered()) {
+		ImGui::SetTooltip(full_file_name.c_str());
 	}
-	return true;
+	ImGui::PopID();
+	index++;
+
+	ImGui::PushID((name + std::to_string(index)).c_str());
+	ImGui::Separator();
+	ImGui::PopID();
+	index++;
+
+	ImGui::PushID((name + std::to_string(index)).c_str());
+	ImGui::Columns(2, "", true);
+	ImGui::PopID();
+	index++;
+
+	ImGui::PushID((name + std::to_string(index)).c_str());
+	ImGui::AlignTextToFramePadding();
+	ImGui::Text("Show Normals");
+	ImGui::PopID();
+	index++;
+
+	ImGui::PushID((name + std::to_string(index)).c_str());
+	ImGui::NextColumn();
+	ImGui::AlignTextToFramePadding();
+	ImGui::Text("Indices: ");
+	ImGui::PopID();
+	index++;
+
+	ImGui::PushID((name + std::to_string(index)).c_str());
+	ImGui::SameLine();
+	ImGui::AlignTextToFramePadding();
+	ImGui::Text(std::to_string(num_indices).c_str());
+	ImGui::PopID();
+	index++;
+
+	ImGui::PushID((name + std::to_string(index)).c_str());
+	ImGui::NextColumn();
+	ImGui::Checkbox("Per Triangle", &show_normals);
+	ImGui::PopID();
+	index++;
+
+	ImGui::PushID((name + std::to_string(index)).c_str());
+	ImGui::NextColumn();
+	ImGui::AlignTextToFramePadding();
+	ImGui::Text("Vertices: ");
+	ImGui::PopID();
+	index++;
+
+	ImGui::PushID((name + std::to_string(index)).c_str());
+	ImGui::SameLine();
+	ImGui::AlignTextToFramePadding();
+	ImGui::Text(std::to_string(num_vertices).c_str());
+	ImGui::PopID();
+	index++;
+
+	ImGui::PushID((name + std::to_string(index)).c_str());
+	ImGui::NextColumn();
+	ImGui::Checkbox("Per Face", &show_normals);
+	ImGui::PopID();
+	index++;
+
+	ImGui::PushID((name + std::to_string(index)).c_str());
+	ImGui::NextColumn();
+	ImGui::AlignTextToFramePadding();
+	ImGui::Text("Normals: ");
+	ImGui::PopID();
+	index++;
+
+	ImGui::PushID((name + std::to_string(index)).c_str());
+	ImGui::SameLine();
+	ImGui::AlignTextToFramePadding();
+	ImGui::Text(std::to_string(num_normals).c_str());
+	ImGui::PopID();
+	index++;
+
+	ImGui::PushID((name + std::to_string(index)).c_str());
+	ImGui::NextColumn();
+	ImGui::AlignTextToFramePadding();
+	ImGui::Text("Length Normals");
+	ImGui::PopID();
+	index++;
+
+	ImGui::PushID((name + std::to_string(index)).c_str());
+	ImGui::NextColumn();
+	ImGui::AlignTextToFramePadding();
+	ImGui::Text("Faces: ");
+	ImGui::PopID();
+	index++;
+
+	ImGui::PushID((name + std::to_string(index)).c_str());
+	ImGui::SameLine();
+	ImGui::AlignTextToFramePadding();
+	ImGui::Text(std::to_string(num_indices / 3).c_str());
+	ImGui::PopID();
+	index++;
+
+	ImGui::PushID((name + std::to_string(index)).c_str());
+	ImGui::NextColumn();
+	ImGui::PushItemWidth(120);
+	ImGui::DragFloat("", &length_normals, 0.1f);
+	ImGui::PopItemWidth();
+	ImGui::PopID();
+	index++;
+	
+	ImGui::PushID((name + std::to_string(index)).c_str());
+
+	ImGui::PopID();
+	index++;
+
+
+	ImGui::PushID((name + std::to_string(index)).c_str());
+	ImGui::Columns(1, "", false);
+	ImGui::PopID();
 }
 
 void ComponentMesh::LoadMesh(float3 position, const char* file, std::string name)

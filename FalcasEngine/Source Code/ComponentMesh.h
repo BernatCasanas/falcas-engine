@@ -26,8 +26,7 @@ public:
 	void Render();
 	std::string GetFileName();
 
-	bool Inspector(Gui_Type& type, int& index, std::string& info, bool*& checked, float*& number, bool& same_line, bool& separator_in_column, bool& next_column,
-		int& num_columns, float& width, float4& Color);
+	void Inspector();
 
 	void LoadMesh(float3 position, const char* file, std::string name);
 

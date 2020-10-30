@@ -1,5 +1,6 @@
 #pragma once
 #include "ComponentTransform.h"
+#include "External Libraries/ImGui/imgui.h"
 
 ComponentTransform::ComponentTransform(GameObject* owner, float3 position, Quat rotation, float3 size) :Component(Component_Type::Transform, owner)
 {
@@ -69,139 +70,180 @@ Quat ComponentTransform::EulerToQuaternion(float3 eu)
 	return q;
 }
 
-bool ComponentTransform::Inspector(Gui_Type& type, int& index, std::string& info, bool*& checked, float*& number, bool& same_line, bool& separator_in_column, bool& next_column,
-	int& num_columns, float& width, float4& color)
+void ComponentTransform::Inspector()
 {
-	info = "";
-	same_line = separator_in_column = next_column = false;
-	num_columns = 1;
-	width = 50;
-	switch (index)
-	{
-	case 0:
-		Component::Inspector(type,index,info,checked,number,same_line, separator_in_column, next_column, num_columns, width, color);
-		break;
-	case 3:
-	case 4:
-	case 6:
-	case 8:
-	case 10:
-	case 11:
-	case 13:
-	case 15:
-	case 17:
-	case 18:
-	case 20:
-	case 22:
-		switch (index)
-		{
-		case 3:
-		case 10:
-		case 17:
-			switch (index)
-			{
-			case 3:
-				info = "Position";
-				break;
-			case 10:
-				info = "Rotation";
-				next_column = true;
-				break;
-			case 17:
-				info = "Scale";
-				next_column = true;
-				break;
-			}
-			break;
-		case 4:
-		case 6:
-		case 8:
-		case 11:
-		case 13:
-		case 15:
-		case 18:
-		case 20:
-		case 22:
-			switch (index)
-			{
-			case 4:
-			case 11:
-			case 18:
-				info = "X";
-				break;
-			case 6:
-			case 13:
-			case 20:
-				info = "Y";
-				break;
-			case 8:
-			case 15:
-			case 22:
-				info = "Z";
-				break;
-			}
-			next_column = true;
-			break;
-		}
-		type = Gui_Type::Text;
-		index++;
-		break;
-	case 5:
-	case 7:
-	case 9:
-	case 12:
-	case 14:
-	case 16:
-	case 19:
-	case 21:
-	case 23:
-		switch (index)
-		{
-		case 5:
-			number = &position.x;
-			break;
-		case 7:
-			number = &position.y;
-			break;
-		case 9:
-			number = &position.z;
-			break;
-		case 12:
-			number = &euler.x;
-			break;
-		case 14:
-			number = &euler.y;
-			break;
-		case 16:
-			number = &euler.z;
-			break;
-		case 19:
-			number = &size.x;
-			break;
-		case 21:
-			number = &size.y;
-			break;
-		case 23:
-			number = &size.z;
-			break;
-		}
-		type = Gui_Type::DragFloat;
-		index++;
-		same_line = true;
-		break;
-	case 1:
-		type = Gui_Type::Separator;
-		index++;
-		break;
-	case 2:
-		num_columns = 4;
-	case 24:
-		type = Gui_Type::Column;
-		index++;
-		break;
-	default:
-		return false;
-		break;
-	}
-	return true;
+	int index = 0;
+	ImGui::PushID((name + std::to_string(index)).c_str());
+	Component::Inspector();
+	ImGui::PopID();
+	index++;
+
+	ImGui::PushID((name + std::to_string(index)).c_str());
+	ImGui::Separator();
+	ImGui::PopID();
+	index++;
+
+	ImGui::PushID((name + std::to_string(index)).c_str());
+	ImGui::Columns(4, "", false);
+	ImGui::PopID();
+	index++;
+
+	ImGui::PushID((name + std::to_string(index)).c_str());
+	ImGui::AlignTextToFramePadding();
+	ImGui::Text("Position");
+	ImGui::PopID();
+	index++;
+
+	ImGui::PushID((name + std::to_string(index)).c_str());
+	ImGui::NextColumn();
+	ImGui::AlignTextToFramePadding();
+	ImGui::Text("X");
+	ImGui::PopID();
+	index++;
+
+	ImGui::PushID((name + std::to_string(index)).c_str());
+	ImGui::SameLine();
+	ImGui::PushItemWidth(50);
+	ImGui::DragFloat("", &position.x, 0.01f);
+	ImGui::PopItemWidth();
+	ImGui::PopID();
+	index++;
+
+	ImGui::PushID((name + std::to_string(index)).c_str());
+	ImGui::NextColumn();
+	ImGui::AlignTextToFramePadding();
+	ImGui::Text("Y");
+	ImGui::PopID();
+	index++;
+
+	ImGui::PushID((name + std::to_string(index)).c_str());
+	ImGui::SameLine();
+	ImGui::PushItemWidth(50);
+	ImGui::DragFloat("", &position.y, 0.01f);
+	ImGui::PopItemWidth();
+	ImGui::PopID();
+	index++;
+
+	ImGui::PushID((name + std::to_string(index)).c_str());
+	ImGui::NextColumn();
+	ImGui::AlignTextToFramePadding();
+	ImGui::Text("Z");
+	ImGui::PopID();
+	index++;
+
+	ImGui::PushID((name + std::to_string(index)).c_str());
+	ImGui::SameLine();
+	ImGui::PushItemWidth(50);
+	ImGui::DragFloat("", &position.z, 0.01f);
+	ImGui::PopItemWidth();
+	ImGui::PopID();
+	index++;
+
+	ImGui::PushID((name + std::to_string(index)).c_str());
+	ImGui::NextColumn();
+	ImGui::AlignTextToFramePadding();
+	ImGui::Text("Rotation");
+	ImGui::PopID();
+	index++;
+
+	ImGui::PushID((name + std::to_string(index)).c_str());
+	ImGui::NextColumn();
+	ImGui::AlignTextToFramePadding();
+	ImGui::Text("X");
+	ImGui::PopID();
+	index++;
+
+	ImGui::PushID((name + std::to_string(index)).c_str());
+	ImGui::SameLine();
+	ImGui::PushItemWidth(50);
+	ImGui::DragFloat("", &euler.x, 0.01f);
+	ImGui::PopItemWidth();
+	ImGui::PopID();
+	index++;
+
+	ImGui::PushID((name + std::to_string(index)).c_str());
+	ImGui::NextColumn();
+	ImGui::AlignTextToFramePadding();
+	ImGui::Text("Y");
+	ImGui::PopID();
+	index++;
+
+	ImGui::PushID((name + std::to_string(index)).c_str());
+	ImGui::SameLine();
+	ImGui::PushItemWidth(50);
+	ImGui::DragFloat("", &euler.y, 0.01f);
+	ImGui::PopItemWidth();
+	ImGui::PopID();
+	index++;
+
+	ImGui::PushID((name + std::to_string(index)).c_str());
+	ImGui::NextColumn();
+	ImGui::AlignTextToFramePadding();
+	ImGui::Text("Z");
+	ImGui::PopID();
+	index++;
+
+	ImGui::PushID((name + std::to_string(index)).c_str());
+	ImGui::SameLine();
+	ImGui::PushItemWidth(50);
+	ImGui::DragFloat("", &euler.z, 0.01f);
+	ImGui::PopItemWidth();
+	ImGui::PopID();
+	index++;
+
+	ImGui::PushID((name + std::to_string(index)).c_str());
+	ImGui::NextColumn();
+	ImGui::AlignTextToFramePadding();
+	ImGui::Text("Size");
+	ImGui::PopID();
+	index++;
+
+	ImGui::PushID((name + std::to_string(index)).c_str());
+	ImGui::NextColumn();
+	ImGui::AlignTextToFramePadding();
+	ImGui::Text("X");
+	ImGui::PopID();
+	index++;
+
+	ImGui::PushID((name + std::to_string(index)).c_str());
+	ImGui::SameLine();
+	ImGui::PushItemWidth(50);
+	ImGui::DragFloat("", &size.x, 0.01f);
+	ImGui::PopItemWidth();
+	ImGui::PopID();
+	index++;
+
+	ImGui::PushID((name + std::to_string(index)).c_str());
+	ImGui::NextColumn();
+	ImGui::AlignTextToFramePadding();
+	ImGui::Text("Y");
+	ImGui::PopID();
+	index++;
+
+	ImGui::PushID((name + std::to_string(index)).c_str());
+	ImGui::SameLine();
+	ImGui::PushItemWidth(50);
+	ImGui::DragFloat("", &size.y, 0.01f);
+	ImGui::PopItemWidth();
+	ImGui::PopID();
+	index++;
+
+	ImGui::PushID((name + std::to_string(index)).c_str());
+	ImGui::NextColumn();
+	ImGui::AlignTextToFramePadding();
+	ImGui::Text("Z");
+	ImGui::PopID();
+	index++;
+
+	ImGui::PushID((name + std::to_string(index)).c_str());
+	ImGui::SameLine();
+	ImGui::PushItemWidth(50);
+	ImGui::DragFloat("", &size.z, 0.01f);
+	ImGui::PopItemWidth();
+	ImGui::PopID();
+	index++;
+
+	ImGui::PushID((name + std::to_string(index)).c_str());
+	ImGui::Columns(1, "", false);
+	ImGui::PopID();
 }

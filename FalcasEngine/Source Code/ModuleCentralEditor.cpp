@@ -468,7 +468,7 @@ update_status ModuleCentralEditor::PostUpdate(float dt)
             for (int i = 0; i < game_object->components.size(); i++) {
                 Component* game_object_component = game_object->components.at(i);
                 if (ImGui::CollapsingHeader(game_object_component->name.c_str(), ImGuiTreeNodeFlags_DefaultOpen)) {
-                    ShowComponentInInspector(game_object_component);
+                    game_object_component->Inspector();
                 }
             }
         }
@@ -578,66 +578,5 @@ void ModuleCentralEditor::HierarchyRecursiveTree(GameObject* game_object, static
         }
     }
  
-}
-
-void ModuleCentralEditor::ShowComponentInInspector(Component* component)
-{
-    Gui_Type gui_type;
-    float4 color;
-    std::string info = "";
-    float* number;
-    float width = 50;
-    int index = 0;
-    int num_columns = 0;
-    bool* checked = nullptr;
-    bool same_line, separator_in_column, next_column;
-    same_line = separator_in_column = next_column = false;
-    component->Inspector(gui_type, index, info, checked, number, same_line, separator_in_column, next_column, num_columns, width, color);
-    do {
-        ImGui::PushID((component->name + std::to_string(index)).c_str());
-        if (same_line) {
-            ImGui::SameLine();
-        }
-        if (next_column) {
-            ImGui::NextColumn();
-        }
-        switch (gui_type)
-        {
-        case Gui_Type::CheckBox:
-            ImGui::Checkbox(info.c_str(), checked);
-            break;
-        case Gui_Type::Text:
-            ImGui::AlignTextToFramePadding();
-            ImGui::Text(info.c_str());
-            break;
-        case Gui_Type::SliderFloat:
-            ImGui::PushItemWidth(70);
-            ImGui::SliderFloat(info.c_str(), number, 0,360);
-            ImGui::PopItemWidth();
-            break;
-        case Gui_Type::DragFloat:
-            ImGui::PushItemWidth(70);
-            ImGui::DragFloat(info.c_str(), number, 0.01f);
-            ImGui::PopItemWidth();
-            break;
-        case Gui_Type::Separator:
-            ImGui::Separator();
-            break;
-        case Gui_Type::Column:
-            ImGui::Columns(num_columns, info.c_str(), separator_in_column);
-            break;
-        case Gui_Type::TextColored:
-            ImGui::TextColored(ImVec4(color.x, color.y, color.z, color.w), info.c_str());
-            break;
-        case Gui_Type::Tooltip:
-            if (ImGui::IsItemHovered()) {
-                ImGui::SetTooltip(info.c_str());
-            }
-            break;
-        }
-        ImGui::PopID();
-    } while (component->Inspector(gui_type, index, info, checked, number, same_line, separator_in_column, next_column, num_columns, width, color));
-    if (num_columns > 1)
-        ImGui::Columns(1, "", false);
 }
 
