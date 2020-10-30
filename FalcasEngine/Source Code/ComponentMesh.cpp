@@ -63,7 +63,7 @@ void ComponentMesh::Initialization()
 	glGenBuffers(1, (GLuint*)&(id_indices));
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id_indices);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * num_indices, indices, GL_STATIC_DRAW);
-	if (loading) {
+	if (num_textureCoords > 0 && grid == false) {
 		glGenBuffers(1, (GLuint*)&(id_normals));
 		glBindBuffer(GL_NORMAL_ARRAY, id_normals);
 		glBufferData(GL_NORMAL_ARRAY, sizeof(float) * num_vertices, normals, GL_STATIC_DRAW);
