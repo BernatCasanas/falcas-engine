@@ -95,7 +95,6 @@ void ComponentMesh::Render()
 		}
 
 		if (num_textureCoords > 0 && grid == false) {
-			glEnable(GL_TEXTURE_2D);
 			glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 			glBindBuffer(GL_TEXTURE_COORD_ARRAY, id_texCoords);
 			glTexCoordPointer(2, GL_FLOAT, 0, NULL);
@@ -144,7 +143,6 @@ void ComponentMesh::Render()
 		if (num_textureCoords > 0 && grid == false) {
 			glBindBuffer(GL_TEXTURE_COORD_ARRAY, 0);
 			glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-			glDisable(GL_TEXTURE_2D);
 		}
 
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
