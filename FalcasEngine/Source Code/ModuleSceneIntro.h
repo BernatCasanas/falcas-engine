@@ -25,14 +25,12 @@ public:
 	GameObject* SearchGameObject(int id, GameObject* game_obj);
 
 
-	void LoadGameObject(float3 position, const char* file, std::string name);
 	std::string CheckNameGameObject(std::string name, bool numbered = false, int digits = 1);
 	std::string NameGameObjectWhenMoreThan2Digits(std::string name, int &digits);
 
 	GameObject* game_object_selected;
 	GameObject* root;
 	int GetID();
-	bool loading;
 private:
 	int id_gameobject;
 

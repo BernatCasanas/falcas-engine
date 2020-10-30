@@ -1,7 +1,7 @@
 #pragma once
 #include "Component.h"
 #include "External Libraries/MathGeoLib/include/Math/float3.h"
-
+#include <vector>
 
 class GameObject;
 
@@ -29,6 +29,7 @@ public:
 	bool Inspector(Gui_Type& type, int& index, std::string& info, bool*& checked, float*& number, bool& same_line, bool& separator_in_column, bool& next_column,
 		int& num_columns, float& width, float4& Color);
 
+	void LoadMesh(float3 position, const char* file, std::string name);
 
 	uint id_vertices;
 	uint id_indices;
@@ -48,6 +49,8 @@ public:
 	bool show_normals;
 	float length_normals;
 	GameObject* parent;
+
 private:
 	bool grid;
+	bool loading;
 };

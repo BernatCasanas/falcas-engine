@@ -1,13 +1,16 @@
 #pragma once
 #include "External Libraries/Glew/include/glew.h"
-#include "ComponentMesh.h"
 #include "Application.h"
 #include "ModuleCentralEditor.h"
 #include "External Libraries/MathGeoLib/include/Math/MathFunc.h"
 #include <vector>
 #include "ModuleSceneIntro.h"
 #include "GameObject.h"
+#include "External Libraries/Assimp/Assimp/include/cimport.h"
+#include "External Libraries/Assimp/Assimp/include/postprocess.h"
+#include "External Libraries/Assimp/Assimp/include/scene.h"
 #include "ComponentMaterial.h"
+#include "ComponentMesh.h"
 
 #define M_PI       3.14159265358979323846
 
@@ -23,6 +26,8 @@ ComponentMesh::ComponentMesh(GameObject* owner) :Component(Component_Type::Mesh,
 	name = "Mesh";
 	full_file_name = "";
 	file_name = "";
+	loading = false;
+	parent = owner;
 }
 
 ComponentMesh::~ComponentMesh()
@@ -571,7 +576,7 @@ void ComponentMesh::Initialization()
 	glGenBuffers(1, (GLuint*)&(id_indices));
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id_indices);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * num_indices, indices, GL_STATIC_DRAW);
-	if (App->scene_intro->loading) {
+	if (loading) {
 		glGenBuffers(1, (GLuint*)&(id_normals));
 		glBindBuffer(GL_NORMAL_ARRAY, id_normals);
 		glBufferData(GL_NORMAL_ARRAY, sizeof(float) * num_vertices, normals, GL_STATIC_DRAW);
@@ -624,14 +629,16 @@ void ComponentMesh::Render()
 			glEnd();
 
 
-			//if (material != nullptr) {
-			//	if (material->defaultTex) {
-			//		glBindTexture(GL_TEXTURE_2D, material->defaultTex);
-			//	}
-			//	else glBindTexture(GL_TEXTURE_2D, material->texture_id);
-			//}
+
 		}
-		//glBindTexture(GL_TEXTURE_2D, material->defaultTex);
+		ComponentMaterial* material = parent->material;
+		/*if (material != nullptr) {
+			if (material->wantTex) {
+				glBindTexture(GL_TEXTURE_2D, material->defaultTex);
+			}
+			else glBindTexture(GL_TEXTURE_2D, material->texture_id);
+		}*/
+		//glBindTexture(GL_TEXTURE_2D, material->texture_id);
 
 		//cleaning stuff
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -778,4 +785,81 @@ bool ComponentMesh::Inspector(Gui_Type& type, int& index, std::string& info, boo
 		break;
 	}
 	return true;
+}
+
+void ComponentMesh::LoadMesh(float3 position, const char* file, std::string name)
+{
+	loading = true;
+	GameObject* m;
+	ComponentMesh* m_mesh;
+	bool multimesh = false;
+	const aiScene* scene = nullptr;
+	scene = aiImportFile(file, aiProcessPreset_TargetRealtime_MaxQuality);
+	if (scene != nullptr && scene->HasMeshes())
+	{
+		if (scene->mNumMeshes > 1) {
+			multimesh = true;
+		}
+		for (int i = 0; i < scene->mNumMeshes; i++)
+		{
+			if (multimesh) {
+				m = App->scene_intro->CreateGameObject(name, parent);
+				m_mesh = (ComponentMesh*)m->CreateComponent(Component_Type::Mesh);
+			}
+			else m_mesh = this;
+			if (scene->mMeshes[i] == NULL) continue;
+			m_mesh->SetFileName(file);
+			aiMesh* ai_mesh = scene->mMeshes[i];
+			m_mesh->num_vertices = ai_mesh->mNumVertices;
+			m_mesh->vertices = new float[m_mesh->num_vertices * 3];
+			memcpy(m_mesh->vertices, ai_mesh->mVertices, sizeof(float) * m_mesh->num_vertices);
+			LOG("Loading FBX correctly");
+			LOG("New mesh with %d vertices", m_mesh->num_vertices);
+
+			if (ai_mesh->HasFaces())
+			{
+				m_mesh->num_indices = ai_mesh->mNumFaces * 3;
+				m_mesh->indices = new uint[m_mesh->num_indices];
+				for (uint j = 0; j < ai_mesh->mNumFaces; ++j)
+				{
+					if (ai_mesh->mFaces[j].mNumIndices != 3) {
+						LOG("WARNING, geometry face with != 3 indices!");
+					}
+					else {
+						memcpy(&m_mesh->indices[j * 3], ai_mesh->mFaces[j].mIndices, 3 * sizeof(uint));
+					}
+
+				}
+				LOG("New mesh with %d index", m_mesh->num_indices);
+			}
+			m_mesh->num_normals = m_mesh->num_vertices;
+			m_mesh->normals = new float[ai_mesh->mNumVertices * 3];
+			for (int x = 0, y = 0; x < ai_mesh->mNumVertices; x++, y += 3) {
+				if (ai_mesh->HasNormals())
+				{
+					//normal copying
+					m_mesh->normals[y] = ai_mesh->mNormals[x].x;
+					m_mesh->normals[y + 1] = ai_mesh->mNormals[x].y;
+					m_mesh->normals[y + 2] = ai_mesh->mNormals[x].z;
+				}
+			}
+
+			if (ai_mesh->HasTextureCoords(0)) {
+				m_mesh->num_textureCoords = ai_mesh->mNumVertices;
+				m_mesh->texCoords = new float[m_mesh->num_textureCoords * 2];
+				for (uint i = 0, j = 0; i < m_mesh->num_textureCoords; i++, j += 2) {
+					m_mesh->texCoords[j] = ai_mesh->mTextureCoords[0][i].x;
+					m_mesh->texCoords[j + 1] = ai_mesh->mTextureCoords[0][i].y;
+				}
+			}
+
+			m_mesh->Initialization();
+		}
+		aiReleaseImport(scene);
+	}
+	else {
+		const char* error = aiGetErrorString();
+		LOG("Error loading FBX: %s", error)
+	}
+	loading = false;
 }

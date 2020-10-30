@@ -131,7 +131,7 @@ update_status ModuleInput::PreUpdate(float dt)
 
 			case SDL_DROPFILE:
 			{
-				App->scene_intro->LoadGameObject({ 0,0,0 }, e.drop.file, GetFileName(e.drop.file));
+				//App->scene_intro->LoadGameObject({ 0,0,0 }, e.drop.file, GetFileName(e.drop.file));
 			}
 			break;
 		}

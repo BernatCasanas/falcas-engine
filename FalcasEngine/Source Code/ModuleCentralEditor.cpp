@@ -9,8 +9,6 @@
 #include "External Libraries/ImGui/imgui_impl_opengl3.h"
 #include "External Libraries/SDL/include/SDL.h"
 #include "External Libraries/SDL/include/SDL_opengl.h"
-#include <gl/GL.h>
-#include <gl/GLU.h>
 #include <string>
 #include <Windows.h>
 #include <list>
@@ -22,6 +20,8 @@
 #include "GameObject.h"
 #include "Component.h"
 #include "ComponentMesh.h"
+#include <gl/GL.h>
+#include <gl/GLU.h>
 
 
 ModuleCentralEditor::ModuleCentralEditor(Application* app, bool start_enabled) : Module(app, start_enabled)

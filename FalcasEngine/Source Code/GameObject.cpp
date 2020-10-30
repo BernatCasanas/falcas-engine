@@ -1,9 +1,9 @@
 #pragma once
+#include "ComponentMaterial.h"
 #include "GameObject.h"
 #include "Component.h"
 #include "ComponentTransform.h"
 #include "ComponentMesh.h"
-#include "ComponentMaterial.h"
 
 GameObject::GameObject(int id)
 {
@@ -70,12 +70,15 @@ Component* GameObject::CreateComponent(Component_Type type)
 		{
 		case Component_Type::Transform:
 			component = new ComponentTransform(this, { 0,0,0 }, Quat::identity, { 1,1,1 });
+			transform = (ComponentTransform*)component;
 			break;
 		case Component_Type::Mesh:
 			component = new ComponentMesh(this);
+			mesh = (ComponentMesh*)component;
 			break;
 		case Component_Type::Material:
 			component = new ComponentMaterial(this);
+			material = (ComponentMaterial*)component;
 			break;
 		}
 		components.push_back(component);
