@@ -72,8 +72,7 @@ Quat ComponentTransform::EulerToQuaternion(float3 eu)
 
 void ComponentTransform::Inspector()
 {
-	int index = 0;
-	ImGui::PushID((name + std::to_string(index)).c_str());
+	ImGui::PushID((name + std::to_string(0)).c_str());
 	Component::Inspector();
 	
 	ImGui::Separator();
@@ -89,31 +88,25 @@ void ComponentTransform::Inspector()
 	
 	ImGui::SameLine();
 	ImGui::PushItemWidth(50);
-	ImGui::DragFloat("", &position.x, 0.01f);
+	ImGui::DragFloat("##0", &position.x, 0.01f);
 	ImGui::PopItemWidth();
 	
 	ImGui::NextColumn();
 	ImGui::AlignTextToFramePadding();
 	ImGui::Text("Y");
-	ImGui::PopID();
-	index++;
-
-	ImGui::PushID((name + std::to_string(index)).c_str());
+	
 	ImGui::SameLine();
 	ImGui::PushItemWidth(50);
-	ImGui::DragFloat("", &position.y, 0.01f);
+	ImGui::DragFloat("##1", &position.y, 0.01f);
 	ImGui::PopItemWidth();
 	
 	ImGui::NextColumn();
 	ImGui::AlignTextToFramePadding();
 	ImGui::Text("Z");
-	ImGui::PopID();
-	index++;
 
-	ImGui::PushID((name + std::to_string(index)).c_str());
 	ImGui::SameLine();
 	ImGui::PushItemWidth(50);
-	ImGui::DragFloat("", &position.z, 0.01f);
+	ImGui::DragFloat("##2", &position.z, 0.01f);
 	ImGui::PopItemWidth();
 	
 	ImGui::NextColumn();
@@ -123,37 +116,28 @@ void ComponentTransform::Inspector()
 	ImGui::NextColumn();
 	ImGui::AlignTextToFramePadding();
 	ImGui::Text("X");
-	ImGui::PopID();
-	index++;
 
-	ImGui::PushID((name + std::to_string(index)).c_str());
 	ImGui::SameLine();
 	ImGui::PushItemWidth(50);
-	ImGui::DragFloat("", &euler.x, 0.01f);
+	ImGui::DragFloat("##3", &euler.x, 0.01f);
 	ImGui::PopItemWidth();
 	
 	ImGui::NextColumn();
 	ImGui::AlignTextToFramePadding();
 	ImGui::Text("Y");
-	ImGui::PopID();
-	index++;
 
-	ImGui::PushID((name + std::to_string(index)).c_str());
 	ImGui::SameLine();
 	ImGui::PushItemWidth(50);
-	ImGui::DragFloat("", &euler.y, 0.01f);
+	ImGui::DragFloat("##4", &euler.y, 0.01f);
 	ImGui::PopItemWidth();
 	
 	ImGui::NextColumn();
 	ImGui::AlignTextToFramePadding();
 	ImGui::Text("Z");
-	ImGui::PopID();
-	index++;
 
-	ImGui::PushID((name + std::to_string(index)).c_str());
 	ImGui::SameLine();
 	ImGui::PushItemWidth(50);
-	ImGui::DragFloat("", &euler.z, 0.01f);
+	ImGui::DragFloat("##5", &euler.z, 0.01f);
 	ImGui::PopItemWidth();
 	
 	ImGui::NextColumn();
@@ -163,37 +147,28 @@ void ComponentTransform::Inspector()
 	ImGui::NextColumn();
 	ImGui::AlignTextToFramePadding();
 	ImGui::Text("X");
-	ImGui::PopID();
-	index++;
 
-	ImGui::PushID((name + std::to_string(index)).c_str());
 	ImGui::SameLine();
 	ImGui::PushItemWidth(50);
-	ImGui::DragFloat("", &size.x, 0.01f);
+	ImGui::DragFloat("##6", &size.x, 0.01f);
 	ImGui::PopItemWidth();
 	
 	ImGui::NextColumn();
 	ImGui::AlignTextToFramePadding();
 	ImGui::Text("Y");
-	ImGui::PopID();
-	index++;
 
-	ImGui::PushID((name + std::to_string(index)).c_str());
 	ImGui::SameLine();
 	ImGui::PushItemWidth(50);
-	ImGui::DragFloat("", &size.y, 0.01f);
+	ImGui::DragFloat("##7", &size.y, 0.01f);
 	ImGui::PopItemWidth();
 	
 	ImGui::NextColumn();
 	ImGui::AlignTextToFramePadding();
 	ImGui::Text("Z");
-	ImGui::PopID();
-	index++;
 
-	ImGui::PushID((name + std::to_string(index)).c_str());
 	ImGui::SameLine();
 	ImGui::PushItemWidth(50);
-	ImGui::DragFloat("", &size.z, 0.01f);
+	ImGui::DragFloat("##8", &size.z, 0.01f);
 	ImGui::PopItemWidth();
 	
 	ImGui::Columns(1, "", false);

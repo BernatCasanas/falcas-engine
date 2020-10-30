@@ -650,8 +650,7 @@ void ComponentMesh::Render()
 
 void ComponentMesh::Inspector()
 {
-	int index = 0;
-	ImGui::PushID((name + std::to_string(index)).c_str());
+	ImGui::PushID((name + std::to_string(0)).c_str());
 	Component::Inspector();
 	
 	ImGui::Separator();
