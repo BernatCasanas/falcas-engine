@@ -653,139 +653,76 @@ void ComponentMesh::Inspector()
 	int index = 0;
 	ImGui::PushID((name + std::to_string(index)).c_str());
 	Component::Inspector();
-	ImGui::PopID();
-	index++;
-
-	ImGui::PushID((name + std::to_string(index)).c_str());
+	
 	ImGui::Separator();
-	ImGui::PopID();
-	index++;
-
-	ImGui::PushID((name + std::to_string(index)).c_str());
+	
 	ImGui::AlignTextToFramePadding();
 	ImGui::Text("File: ");
-	ImGui::PopID();
-	index++;
-
-	ImGui::PushID((name + std::to_string(index)).c_str());
+	
 	ImGui::SameLine();
 	ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), file_name.c_str());
-	ImGui::PopID();
-
-	ImGui::PushID((name + std::to_string(index)).c_str());
+	
 	if (ImGui::IsItemHovered()) {
 		ImGui::SetTooltip(full_file_name.c_str());
 	}
-	ImGui::PopID();
-	index++;
-
-	ImGui::PushID((name + std::to_string(index)).c_str());
+	
 	ImGui::Separator();
-	ImGui::PopID();
-	index++;
-
-	ImGui::PushID((name + std::to_string(index)).c_str());
+	
 	ImGui::Columns(2, "", true);
-	ImGui::PopID();
-	index++;
-
-	ImGui::PushID((name + std::to_string(index)).c_str());
+	
 	ImGui::AlignTextToFramePadding();
 	ImGui::Text("Show Normals");
-	ImGui::PopID();
-	index++;
-
-	ImGui::PushID((name + std::to_string(index)).c_str());
+	
 	ImGui::NextColumn();
 	ImGui::AlignTextToFramePadding();
 	ImGui::Text("Indices: ");
-	ImGui::PopID();
-	index++;
-
-	ImGui::PushID((name + std::to_string(index)).c_str());
+	
 	ImGui::SameLine();
 	ImGui::AlignTextToFramePadding();
 	ImGui::Text(std::to_string(num_indices).c_str());
-	ImGui::PopID();
-	index++;
-
-	ImGui::PushID((name + std::to_string(index)).c_str());
+	
 	ImGui::NextColumn();
 	ImGui::Checkbox("Per Triangle", &show_normals);
-	ImGui::PopID();
-	index++;
-
-	ImGui::PushID((name + std::to_string(index)).c_str());
+	
 	ImGui::NextColumn();
 	ImGui::AlignTextToFramePadding();
 	ImGui::Text("Vertices: ");
-	ImGui::PopID();
-	index++;
-
-	ImGui::PushID((name + std::to_string(index)).c_str());
+	
 	ImGui::SameLine();
 	ImGui::AlignTextToFramePadding();
 	ImGui::Text(std::to_string(num_vertices).c_str());
-	ImGui::PopID();
-	index++;
-
-	ImGui::PushID((name + std::to_string(index)).c_str());
+	
 	ImGui::NextColumn();
 	ImGui::Checkbox("Per Face", &show_normals);
-	ImGui::PopID();
-	index++;
-
-	ImGui::PushID((name + std::to_string(index)).c_str());
+	
 	ImGui::NextColumn();
 	ImGui::AlignTextToFramePadding();
 	ImGui::Text("Normals: ");
-	ImGui::PopID();
-	index++;
-
-	ImGui::PushID((name + std::to_string(index)).c_str());
+	
 	ImGui::SameLine();
 	ImGui::AlignTextToFramePadding();
 	ImGui::Text(std::to_string(num_normals).c_str());
-	ImGui::PopID();
-	index++;
-
-	ImGui::PushID((name + std::to_string(index)).c_str());
+	
 	ImGui::NextColumn();
 	ImGui::AlignTextToFramePadding();
 	ImGui::Text("Length Normals");
-	ImGui::PopID();
-	index++;
-
-	ImGui::PushID((name + std::to_string(index)).c_str());
+	
 	ImGui::NextColumn();
 	ImGui::AlignTextToFramePadding();
 	ImGui::Text("Faces: ");
-	ImGui::PopID();
-	index++;
-
-	ImGui::PushID((name + std::to_string(index)).c_str());
+	
 	ImGui::SameLine();
 	ImGui::AlignTextToFramePadding();
 	ImGui::Text(std::to_string(num_indices / 3).c_str());
-	ImGui::PopID();
-	index++;
-
-	ImGui::PushID((name + std::to_string(index)).c_str());
+	
 	ImGui::NextColumn();
 	ImGui::PushItemWidth(120);
 	ImGui::DragFloat("", &length_normals, 0.1f);
 	ImGui::PopItemWidth();
-	ImGui::PopID();
-	index++;
 	
-	ImGui::PushID((name + std::to_string(index)).c_str());
-
-	ImGui::PopID();
-	index++;
-
-
-	ImGui::PushID((name + std::to_string(index)).c_str());
 	ImGui::Columns(1, "", false);
+	ImGui::Separator();
+
 	ImGui::PopID();
 }
 
