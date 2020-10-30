@@ -108,7 +108,7 @@ void ComponentMesh::Render()
 
 		//drawing indices
 		if (grid == false) {
-			glBindTexture(GL_TEXTURE_2D, 2);
+			//glBindTexture(GL_TEXTURE_2D, 2);
 			glDrawElements(GL_TRIANGLES, num_indices, GL_UNSIGNED_INT, NULL);
 		}
 		else
