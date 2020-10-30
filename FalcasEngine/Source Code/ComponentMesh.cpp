@@ -608,10 +608,13 @@ void ComponentMesh::Render()
 			glNormalPointer(GL_FLOAT, 0, NULL);
 		}
 
-		if (num_textureCoords > 0) {
+		if (num_textureCoords > 0 && grid == false) {
+			glEnable(GL_TEXTURE_2D);
 			glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 			glBindBuffer(GL_TEXTURE_COORD_ARRAY, id_texCoords);
 			glTexCoordPointer(2, GL_FLOAT, 0, NULL);
+			glBindTexture(GL_TEXTURE_2D, material->texture_id);
+			glBindTexture(GL_TEXTURE_2D, 0);
 		}
 
 		//indices
@@ -622,7 +625,6 @@ void ComponentMesh::Render()
 		if (grid == false) {
 			glBindTexture(GL_TEXTURE_2D, 2);
 			glDrawElements(GL_TRIANGLES, num_indices, GL_UNSIGNED_INT, NULL);
-			glBindTexture(GL_TEXTURE_2D, 0);
 		}
 		else
 			glDrawElements(GL_LINES, num_indices, GL_UNSIGNED_INT, NULL);
@@ -646,14 +648,17 @@ void ComponentMesh::Render()
 			glEnd();
 		}
 
+
+
 		//cleaning stuff
 		if (num_normals > 0) {
 			glBindBuffer(GL_NORMAL_ARRAY, 0);
 			glDisableClientState(GL_NORMAL_ARRAY);
 		}
-		if (num_textureCoords > 0) {
+		if (num_textureCoords > 0 && grid == false) {
 			glBindBuffer(GL_TEXTURE_COORD_ARRAY, 0);
 			glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+			glDisable(GL_TEXTURE_2D);
 		}
 
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -741,7 +746,7 @@ void ComponentMesh::Inspector()
 	ImGui::PopID();
 }
 
-void ComponentMesh::LoadMesh(float3 position, const char* file, std::string name)
+void ComponentMesh::LoadMesh(float3 position, const char* file, std::string name, ComponentMaterial* mat)
 {
 	loading = true;
 	GameObject* m;
@@ -762,6 +767,7 @@ void ComponentMesh::LoadMesh(float3 position, const char* file, std::string name
 			}
 			else m_mesh = this;
 			if (scene->mMeshes[i] == NULL) continue;
+			m_mesh->material = mat;
 			m_mesh->SetFileName(file);
 			aiMesh* ai_mesh = scene->mMeshes[i];
 			m_mesh->num_vertices = ai_mesh->mNumVertices*3;

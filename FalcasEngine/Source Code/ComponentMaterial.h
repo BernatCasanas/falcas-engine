@@ -27,6 +27,7 @@ public:
 
 	bool wantTex = false;
 
+
 	GameObject* parent;
 };
 #endif // !_COMPONENT_MATERIAL_

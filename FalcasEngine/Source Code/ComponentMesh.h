@@ -28,7 +28,7 @@ public:
 
 	void Inspector();
 
-	void LoadMesh(float3 position, const char* file, std::string name);
+	void LoadMesh(float3 position, const char* file, std::string name, ComponentMaterial* mat);
 
 	uint id_vertices;
 	uint id_indices;
@@ -52,4 +52,5 @@ public:
 private:
 	bool grid;
 	bool loading;
+	ComponentMaterial* material;
 };

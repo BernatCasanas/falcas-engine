@@ -47,11 +47,12 @@ bool ModuleSceneIntro::Start()
 	mesh->CreateGrid({ 0,0,0 }, { 500,1,500 });
 	game_object_selected = nullptr;
 
+
 	GameObject* house = CreateGameObject("BakerHouse", root);
-	ComponentMesh* meshHouse = (ComponentMesh*)house->CreateComponent(Component_Type::Mesh);
-	meshHouse->LoadMesh({0,0,0},"Assets/BakerHouse.fbx","BakerHouse");
 	ComponentMaterial* material = (ComponentMaterial*)house->CreateComponent(Component_Type::Material);
 	material->LoadTexture("/Assets/Baker_house.png");
+	ComponentMesh* meshHouse = (ComponentMesh*)house->CreateComponent(Component_Type::Mesh);
+	meshHouse->LoadMesh({0,0,0},"Assets/BakerHouse.fbx","BakerHouse", material);
 
 	return ret;
 }
