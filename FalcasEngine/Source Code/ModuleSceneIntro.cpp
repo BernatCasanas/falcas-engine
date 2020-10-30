@@ -52,10 +52,12 @@ bool ModuleSceneIntro::Start()
 
 
 	GameObject* house = CreateGameObject("BakerHouse", root);
-	ComponentMaterial* material = (ComponentMaterial*)house->CreateComponent(Component_Type::Material);
-	material->LoadTexture("/Assets/Baker_house.png");
-	ComponentMesh* meshHouse = (ComponentMesh*)house->CreateComponent(Component_Type::Mesh);
-	meshHouse->LoadMesh({0,0,0},"Assets/BakerHouse.fbx","BakerHouse", material);
+	house->CreateComponent(Component_Type::Mesh);
+	house->CreateComponent(Component_Type::Transform);
+	house->CreateComponent(Component_Type::Material);
+	house->material->LoadTexture("/Assets/Baker_house.png");
+	house->mesh->LoadMesh({0,0,0},"Assets/BakerHouse.fbx","",house->material);
+
 
 	return ret;
 }

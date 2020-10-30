@@ -70,7 +70,7 @@ void ComponentMesh::Initialization()
 
 		glGenBuffers(1, (GLuint*)&(id_texCoords));
 		glBindBuffer(GL_TEXTURE_COORD_ARRAY, id_texCoords);
-		glBufferData(GL_TEXTURE_COORD_ARRAY, sizeof(float) * num_textureCoords, texCoords, GL_STATIC_DRAW);
+		glBufferData(GL_TEXTURE_COORD_ARRAY, sizeof(float) * num_textureCoords * 2, texCoords, GL_STATIC_DRAW);
 	}
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
@@ -98,7 +98,7 @@ void ComponentMesh::Render()
 			glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 			glBindBuffer(GL_TEXTURE_COORD_ARRAY, id_texCoords);
 			glTexCoordPointer(2, GL_FLOAT, 0, NULL);
-			glBindTexture(GL_TEXTURE_2D, material->texture_id);
+			//glBindTexture(GL_TEXTURE_2D, material->texture_id);
 			glBindTexture(GL_TEXTURE_2D, 0);
 		}
 
@@ -248,10 +248,15 @@ void ComponentMesh::LoadMesh(float3 position, const char* file, std::string name
 			if (multimesh) {
 				m = App->scene_intro->CreateGameObject(name, parent);
 				m_mesh = (ComponentMesh*)m->CreateComponent(Component_Type::Mesh);
+				m->CreateComponent(Component_Type::Transform);
+				m->CreateComponent(Component_Type::Material);
+
 			}
-			else m_mesh = this;
-			if (scene->mMeshes[i] == NULL) continue;
-			m_mesh->material = mat;
+			else {
+				m = parent;
+				m_mesh = m->mesh;
+			}
+			m->material = m_mesh->material = mat;
 			m_mesh->SetFileName(file);
 			aiMesh* ai_mesh = scene->mMeshes[i];
 			m_mesh->num_vertices = ai_mesh->mNumVertices*3;
