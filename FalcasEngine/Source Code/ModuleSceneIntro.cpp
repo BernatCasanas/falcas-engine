@@ -14,6 +14,7 @@
 #include <string>
 #include "ComponentMaterial.h"
 #include <gl/GL.h>
+#include "Shape.h"
 
 #pragma comment( lib, "Source Code/External Libraries/Devil/lib/ILU.lib" )
 #pragma comment( lib, "Source Code/External Libraries/Devil/lib/DevIL.lib" )
@@ -44,7 +45,9 @@ bool ModuleSceneIntro::Start()
 	id_gameobject++;
 	root->CreateComponent(Component_Type::Mesh);
 	ComponentMesh* mesh = (ComponentMesh*)root->components.back();
-	mesh->CreateGrid({ 0,0,0 }, { 500,1,500 });
+	mesh->grid = true;
+	CreateGrid(mesh->num_vertices, mesh->num_indices, mesh->indices, mesh->vertices, { 0,0,0 }, { 500,1,500 });
+	mesh->Initialization();
 	game_object_selected = nullptr;
 
 
