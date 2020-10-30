@@ -331,14 +331,11 @@ update_status ModuleCentralEditor::PostUpdate(float dt)
         ImGui::Text("\n");
         ImGui::Text("3rd Party Libraries used:\n");
         ImGui::BulletText("SDL 2.0");
-        ImGui::BulletText("SDL Mixer 2.0");
-        ImGui::BulletText("Cereal 1.2.2");
         ImGui::BulletText("Glew 7.0");
         ImGui::BulletText("ImGui 1.51");
         ImGui::BulletText("MathGeoLib 1.5");
         ImGui::BulletText("OpenGL 3.1");
-        ImGui::BulletText("Assimp 3.1.1");
-        ImGui::BulletText("Devil 1.7.8");
+        ImGui::BulletText("Devil 1.8");
         ImGui::BulletText("Assimp 5.0.1");
         ImGui::Separator();
         ImGui::TextWrapped("\n\n"
@@ -406,6 +403,12 @@ update_status ModuleCentralEditor::PostUpdate(float dt)
             ImGui::Text("SDL Version: ");
             ImGui::SameLine();
             ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "2.0");
+            ImGui::Text("DevIL Version: ");
+            ImGui::SameLine();
+            ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "1.8");
+            ImGui::Text("OpenGL Version: ");
+            ImGui::SameLine();
+            ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "3.1");
             ImGui::Separator();
             ImGui::Text("CPUs: ");
             ImGui::SameLine();
