@@ -46,7 +46,10 @@ ComponentMesh::~ComponentMesh()
 void ComponentMesh::SetFileName(std::string file)
 {
 	full_file_name = file;
-	int pos = full_file_name.find_last_of('\\');
+	int pos = -1;
+	pos = full_file_name.find_last_of('\\');
+	if (pos == -1)
+		pos = full_file_name.find_last_of('/');
 	file_name = full_file_name.substr(pos + 1);
 }
 
