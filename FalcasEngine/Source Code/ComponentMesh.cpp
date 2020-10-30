@@ -638,7 +638,7 @@ void ComponentMesh::Render()
 			}
 			else glBindTexture(GL_TEXTURE_2D, material->texture_id);
 		}*/
-		//glBindTexture(GL_TEXTURE_2D, material->texture_id);
+		//glBindTexture(GL_TEXTURE_2D, material->defaultTex);
 
 		//cleaning stuff
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
