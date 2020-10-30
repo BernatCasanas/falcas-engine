@@ -44,7 +44,7 @@ public:
 	bool show_hierarchy;
 	bool show_inspector;
 
-	bool depth, cullface, lighting, colorMaterial, texture, ambient, stencil, wireframe, normals, textures;
+	bool depth, cullface, lighting, colorMaterial, texture, ambient, stencil, wireframe, normals;
 
 	float progress;
 	float progress2;

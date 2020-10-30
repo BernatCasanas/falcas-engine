@@ -103,8 +103,8 @@ bool ModuleCentralEditor::Init()
     show_console = false;
     show_openglOptions = false;
     show_hierarchy = show_inspector = true;
-    depth = cullface = lighting = colorMaterial = texture = ambient = stencil = wireframe = normals = false;
-    textures = true;
+    depth = cullface = lighting = colorMaterial = ambient = stencil = wireframe = normals = false;
+    texture = true;
     progress = 50.f;
     progress2 = 50.f;
     progress3 = 50.f;
@@ -498,26 +498,23 @@ update_status ModuleCentralEditor::PostUpdate(float dt)
         ImGui::Checkbox("Stencil", &stencil);
         ImGui::Checkbox("Wireframe", &wireframe);
         ImGui::Checkbox("Normals", &normals);
-        ImGui::Checkbox("Textures", &textures);
 
-        if (!depth) glEnable(GL_DEPTH_TEST);
-        else glDisable(GL_DEPTH_TEST);
-        if (!cullface) glEnable(GL_CULL_FACE);
-        else glDisable(GL_CULL_FACE);
-        if (!lighting) glEnable(GL_LIGHTING);
-        else glDisable(GL_LIGHTING);
-        if (!colorMaterial) glEnable(GL_COLOR_MATERIAL);
-        else glDisable(GL_COLOR_MATERIAL);
-        if (!texture) glEnable(GL_TEXTURE_2D);
-        else glDisable(GL_TEXTURE_2D);
-        if (ambient) glEnable(GL_STENCIL_TEST);
-        else glDisable(GL_STENCIL_TEST);
-        if (stencil) glEnable(GL_AMBIENT);
-        else glDisable(GL_AMBIENT);
-        if(textures) glEnable(GL_TEXTURE_2D);
-        else glDisable(GL_TEXTURE_2D);
         ImGui::End();
     }
+    if (!depth) glEnable(GL_DEPTH_TEST);
+    else glDisable(GL_DEPTH_TEST);
+    if (!cullface) glEnable(GL_CULL_FACE);
+    else glDisable(GL_CULL_FACE);
+    if (!lighting) glEnable(GL_LIGHTING);
+    else glDisable(GL_LIGHTING);
+    if (!colorMaterial) glEnable(GL_COLOR_MATERIAL);
+    else glDisable(GL_COLOR_MATERIAL);
+    if (!texture) glEnable(GL_TEXTURE_2D);
+    else glDisable(GL_TEXTURE_2D);
+    if (ambient) glEnable(GL_STENCIL_TEST);
+    else glDisable(GL_STENCIL_TEST);
+    if (stencil) glEnable(GL_AMBIENT);
+    else glDisable(GL_AMBIENT);
     // Rendering
     ImGui::Render();
     //glViewport(0, 0, (int)io.DisplaySize.x, (int)io.DisplaySize.y);
