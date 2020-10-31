@@ -56,7 +56,7 @@ bool ModuleSceneIntro::Start()
 	house->CreateComponent(Component_Type::Transform);
 	house->CreateComponent(Component_Type::Material);
 	house->material->LoadTexture("/Assets/Baker_house.png");
-	house->mesh->LoadMesh({0,0,0},"Assets/BakerHouse.fbx","",house->material);
+	house->mesh->LoadMesh({0,0,0},"Assets/BakerHouse.fbx","BakerHouse",house->material);
 
 
 	return ret;

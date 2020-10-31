@@ -98,7 +98,7 @@ void ComponentMesh::Render()
 			glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 			glBindBuffer(GL_TEXTURE_COORD_ARRAY, id_texCoords);
 			glTexCoordPointer(2, GL_FLOAT, 0, NULL);
-			//glBindTexture(GL_TEXTURE_2D, material->texture_id);
+			glBindTexture(GL_TEXTURE_2D, material->defaultTex);
 			glBindTexture(GL_TEXTURE_2D, 0);
 		}
 
