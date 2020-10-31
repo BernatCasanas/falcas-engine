@@ -105,6 +105,13 @@ void ComponentMaterial::Inspector()
 	ImGui::AlignTextToFramePadding();
 	ImGui::Text(std::to_string(height).c_str());
 
+
+	ImGui::Image((void*)(intptr_t)texture_id, ImVec2((float)128, (float)128), ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f));
+
+
+	ImGui::Separator();
+
+
 	ImGui::Checkbox("Checkers Texture", &show_default_tex);
 
 	ImGui::Separator();
