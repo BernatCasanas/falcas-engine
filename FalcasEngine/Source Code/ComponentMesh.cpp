@@ -94,12 +94,12 @@ void ComponentMesh::Render()
 		}
 
 		if (num_textureCoords > 0 && grid == false) {
+			ComponentMaterial* mat = (ComponentMaterial*)owner->GetComponent(Component_Type::Material);
+			glBindTexture(GL_TEXTURE_2D, mat->texture_id);
+
 			glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 			glBindBuffer(GL_TEXTURE_COORD_ARRAY, id_texCoords);
 			glTexCoordPointer(2, GL_FLOAT, 0, NULL);
-
-			ComponentMaterial* mat = (ComponentMaterial*)owner->GetComponent(Component_Type::Material);
-			glBindTexture(GL_TEXTURE_2D, mat->texture_id);
 		}
 
 		//indices
