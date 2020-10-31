@@ -10,7 +10,7 @@
 #include "External Libraries/Assimp/Assimp/include/scene.h"
 #include "ComponentMaterial.h"
 #include "ComponentMesh.h"
-
+#include "FileSystem.h"
 
 ComponentMesh::ComponentMesh(GameObject* owner) :Component(Component_Type::Mesh, owner)
 {

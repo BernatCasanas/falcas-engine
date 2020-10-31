@@ -51,7 +51,7 @@ bool ModuleSceneIntro::Start()
 	mesh->Initialization();
 	game_object_selected = nullptr;
 
-	App->filesystem->CreateCompleteGameObject("BakerHouse", root, "Assets/BakerHouse.fbx", "Assets/Baker_house.png");
+	//App->filesystem->CreateCompleteGameObject("BakerHouse", root, "Assets/BakerHouse.fbx", "Assets/Baker_house.png");
 
 	return ret;
 }

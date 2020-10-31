@@ -18,9 +18,9 @@ public:
 	FileSystem(Application* app, bool start_enabled = true);
 	~FileSystem();
 
-	bool Start() {};
-	update_status Update(float dt) {};
-	bool CleanUp() {};
+	bool Start() { return true; };
+	update_status Update(float dt) { return UPDATE_CONTINUE; };
+	bool CleanUp() { return true; };
 
 	GameObject* CreateGameObject(std::string name = "", GameObject* parent = nullptr);
 	GameObject* CreateGameObject(float3 position, Quat rotation, float3 size, std::string name = "", GameObject* parent = nullptr);
