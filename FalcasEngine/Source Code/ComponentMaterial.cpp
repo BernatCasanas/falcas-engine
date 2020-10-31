@@ -1,6 +1,6 @@
 #include "ComponentMaterial.h"
 #include "Component.h"
-
+#include "External Libraries/ImGui/imgui.h"
 
 ComponentMaterial::ComponentMaterial(GameObject* owner) : Component(Component_Type::Material, owner)
 {
@@ -21,6 +21,7 @@ ComponentMaterial::~ComponentMaterial()
 
 void ComponentMaterial::LoadTexture(const char* file)
 {
+	full_file_name = file;
 	ilEnable(IL_ORIGIN_SET);
 	ilOriginFunc(IL_ORIGIN_LOWER_LEFT);
 
@@ -31,9 +32,14 @@ void ComponentMaterial::LoadTexture(const char* file)
 		ILenum error = ilGetError();
 		LOG("Error loading Texture %s\n", iluErrorString(error));
 	}
-	wantTex = true;
+	show_default_tex = false;
 	texture_id = ilutGLBindTexImage();
 	ilDeleteImages(1, &image_name);
+	int pos = -1;
+	pos = full_file_name.find_last_of('\\');
+	if (pos == -1)
+		pos = full_file_name.find_last_of('/');
+	file_name = full_file_name.substr(pos + 1);
 }
 
 void ComponentMaterial::LoadDefault()
@@ -58,4 +64,38 @@ void ComponentMaterial::LoadDefault()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 64, 64, 0, GL_RGBA, GL_UNSIGNED_BYTE, checker);
+}
+
+void ComponentMaterial::Inspector()
+{
+	ImGui::PushID(name.c_str());
+	Component::Inspector();
+
+	ImGui::Separator();
+
+	ImGui::AlignTextToFramePadding();
+	ImGui::Text("File: ");
+
+	ImGui::SameLine();
+	ImGui::TextColored(ImVec4(1.0f, 0.0f, 1.0f, 1.0f), file_name.c_str());
+
+	if (ImGui::IsItemHovered()) {
+		ImGui::SetTooltip(full_file_name.c_str());
+	}
+
+	ImGui::Separator();
+
+
+	ImGui::AlignTextToFramePadding();
+	ImGui::Text("Size: ");
+
+	ImGui::SameLine();
+	ImGui::AlignTextToFramePadding();
+	ImGui::Text("Indices: ");
+
+	ImGui::Checkbox("Checkers Texture", &show_default_tex);
+
+	ImGui::Separator();
+
+	ImGui::PopID();
 }

@@ -96,11 +96,18 @@ void ComponentMesh::Render()
 		}
 
 		if (num_textureCoords > 0 && grid == false) {
-			glBindBuffer(GL_ARRAY_BUFFER, id_texCoords);
 			ComponentMaterial* mat = (ComponentMaterial*)owner->GetComponent(Component_Type::Material);
-			glBindTexture(GL_TEXTURE_2D, mat->texture_id);
-			glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-			glTexCoordPointer(2, GL_FLOAT, 0, NULL);
+			if (mat->active == true) {
+				glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+				glBindBuffer(GL_ARRAY_BUFFER, id_texCoords);
+				glTexCoordPointer(2, GL_FLOAT, 0, NULL);
+				if (!mat->show_default_tex) {
+					glBindTexture(GL_TEXTURE_2D, mat->texture_id);
+				}
+				else {
+					glBindTexture(GL_TEXTURE_2D, mat->defaultTex);
+				}
+			}
 
 		}
 
@@ -158,7 +165,7 @@ void ComponentMesh::Render()
 
 void ComponentMesh::Inspector()
 {
-	ImGui::PushID((name + std::to_string(0)).c_str());
+	ImGui::PushID(name.c_str());
 	Component::Inspector();
 	
 	ImGui::Separator();

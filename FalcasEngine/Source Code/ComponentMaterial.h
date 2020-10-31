@@ -17,14 +17,20 @@ public:
 public:
 	void LoadTexture(const char* file);
 	void LoadDefault();
+
+
+	void Inspector();
+
 	
 public:
 	ILuint image_name;
 	ILuint checkers;
 	uint texture_id;
 	uint defaultTex;
+	std::string full_file_name;
+	std::string file_name;
 
-	bool wantTex = false;
+	bool show_default_tex = true;
 
 
 };

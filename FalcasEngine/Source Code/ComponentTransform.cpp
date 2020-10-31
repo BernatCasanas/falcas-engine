@@ -72,7 +72,7 @@ Quat ComponentTransform::EulerToQuaternion(float3 eu)
 
 void ComponentTransform::Inspector()
 {
-	ImGui::PushID((name + std::to_string(0)).c_str());
+	ImGui::PushID(name.c_str());
 	Component::Inspector();
 	
 	ImGui::Separator();
