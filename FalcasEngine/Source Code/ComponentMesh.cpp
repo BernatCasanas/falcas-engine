@@ -69,9 +69,6 @@ void ComponentMesh::Initialization()
 
 		glGenBuffers(1, (GLuint*)&(id_texCoords));
 		glBindBuffer(GL_ARRAY_BUFFER, id_texCoords);
-		for (int i = 0; i < num_textureCoords * 2; i++) {
-			LOG("%f", texCoords[i]);
-		}
 		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * num_textureCoords * 2, texCoords, GL_STATIC_DRAW);
 	}
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -231,7 +228,7 @@ void ComponentMesh::Inspector()
 	
 	ImGui::NextColumn();
 	ImGui::PushItemWidth(120);
-	ImGui::DragFloat("", &length_normals, 0.1f);
+	ImGui::DragFloat("##1", &length_normals, 0.1f);
 	ImGui::PopItemWidth();
 	
 	ImGui::Columns(1, "", false);
@@ -259,14 +256,12 @@ void ComponentMesh::LoadMesh(float3 position, const char* file, std::string name
 			if (multimesh) {
 				m = App->filesystem->CreateGameObject(name, owner);
 				m_mesh = (ComponentMesh*)m->CreateComponent(Component_Type::Mesh);
-				//m->CreateComponent(Component_Type::Transform);
 				
 				m_material=(ComponentMaterial*)m->CreateComponent(Component_Type::Material);
 			}
 			else {
 				m = owner;
 				m_mesh = (ComponentMesh*)m->GetComponent(Component_Type::Mesh);
-				//m->CreateComponent(Component_Type::Transform);
 
 				m_material = (ComponentMaterial*)m->GetComponent(Component_Type::Material);
 			}

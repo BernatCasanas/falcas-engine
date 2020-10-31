@@ -52,20 +52,23 @@ update_status ModuleCamera3D::Update(float dt)
 	// Mouse motion ----------------
 	int wheel = App->input->GetMouseZ();
 	if (wheel != 0) {
-		vec3 looking = Reference - Position;
-		vec3 looking_normalized = looking / sqrt(pow(looking.x, 2) + pow(looking.y, 2) + pow(looking.z, 2));
-		looking_normalized *= wheel;
-		looking = looking_normalized;
-		looking = Position;
-		Position += looking_normalized;
-		if (wheel > 0 && is_inside(Position, looking, Reference))
-			Reference += looking_normalized;
+		Zooming(wheel);
+	}
+	if (App->input->GetMouseButton(SDL_BUTTON_MIDDLE) == KEY_REPEAT) {
+		int double_speed = 1;
+		int dx = -App->input->GetMouseXMotion();
+		int dy = -App->input->GetMouseYMotion();
 
-		
-		LookAt(Reference);
+		newPos -= Y * speed * dy;
+		newPos += X * speed * dx;
+
+		Position += newPos;
+		Reference += newPos;
+
 	}
 
-	if(App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
+
+	else if(App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT&&App->input->GetKey(SDL_SCANCODE_LALT)!=KEY_REPEAT)
 	{
 		int double_speed = 1;
 		if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT || App->input->GetKey(SDL_SCANCODE_RSHIFT) == KEY_REPEAT)
@@ -115,9 +118,23 @@ update_status ModuleCamera3D::Update(float dt)
 		Position2 = Reference + Z * length(Position);
 		Reference += Position - Position2;
 	}
+	else if (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT) {
+		int speed = 1;
 
+		int dx = -App->input->GetMouseXMotion();
+		int dy = -App->input->GetMouseYMotion();
 
-	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT) {
+		if (dx + dy > 0) {
+			speed = -1;
+		}
+		else if (dx + dy == 0 && dx > 0) {
+			speed = -1;
+		}
+
+		Zooming(((abs(dx) + abs(dy)) / 2) * speed);
+	}
+
+	else if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT) {
 
 
 		int dx = -App->input->GetMouseXMotion();
@@ -154,10 +171,7 @@ update_status ModuleCamera3D::Update(float dt)
 
 		Position = Reference + Z * length(Position);
 	}
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN && App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_IDLE) {
-		Reference={0,0,0};
-		LookAt(Reference);
-	}
+	
 	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN) {
 		if (App->scene_intro->game_object_selected == nullptr) {
 			LOG("You must select and object in order to center to it!");
@@ -165,8 +179,9 @@ update_status ModuleCamera3D::Update(float dt)
 		else{
 			ComponentTransform* transform = (ComponentTransform*)App->scene_intro->game_object_selected->components.front();
 			float3 position = transform->GetPosition();
+			float3 size = transform->GetSize();
 			Reference = { position.x,position.y,position.z };
-			Position = Reference+5;
+			Position = Reference + size.MaxElement();
 			LookAt(Reference);
 		}
 	}
@@ -221,6 +236,21 @@ void ModuleCamera3D::Move(const vec3 &Movement)
 float* ModuleCamera3D::GetViewMatrix()
 {
 	return &ViewMatrix;
+}
+
+void ModuleCamera3D::Zooming(float zooming_value)
+{
+	vec3 looking = Reference - Position;
+	vec3 looking_normalized = looking / sqrt(pow(looking.x, 2) + pow(looking.y, 2) + pow(looking.z, 2));
+	looking_normalized *= zooming_value;
+	looking = looking_normalized;
+	looking = Position;
+	Position += looking_normalized;
+	if (zooming_value > 0 && is_inside(Position, looking, Reference))
+		Reference += looking_normalized;
+
+
+	LookAt(Reference);
 }
 
 // -----------------------------------------------------------------
