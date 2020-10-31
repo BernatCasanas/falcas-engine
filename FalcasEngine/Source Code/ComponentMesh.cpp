@@ -68,13 +68,15 @@ void ComponentMesh::Initialization()
 		glBufferData(GL_NORMAL_ARRAY, sizeof(float) * num_vertices, normals, GL_STATIC_DRAW);
 
 		glGenBuffers(1, (GLuint*)&(id_texCoords));
-		glBindBuffer(GL_TEXTURE_COORD_ARRAY, id_texCoords);
-		glBufferData(GL_TEXTURE_COORD_ARRAY, sizeof(float) * num_textureCoords * 2, texCoords, GL_STATIC_DRAW);
+		glBindBuffer(GL_ARRAY_BUFFER, id_texCoords);
+		for (int i = 0; i < num_textureCoords * 2; i++) {
+			LOG("%f", texCoords[i]);
+		}
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * num_textureCoords * 2, texCoords, GL_STATIC_DRAW);
 	}
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_NORMAL_ARRAY, 0);
-	glBindBuffer(GL_TEXTURE_COORD_ARRAY, 0);
 }
 
 void ComponentMesh::Render()
@@ -94,12 +96,12 @@ void ComponentMesh::Render()
 		}
 
 		if (num_textureCoords > 0 && grid == false) {
-
-			glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-			glBindBuffer(GL_TEXTURE_COORD_ARRAY, id_texCoords);
-			glTexCoordPointer(2, GL_FLOAT, 0, NULL);
+			glBindBuffer(GL_ARRAY_BUFFER, id_texCoords);
 			ComponentMaterial* mat = (ComponentMaterial*)owner->GetComponent(Component_Type::Material);
 			glBindTexture(GL_TEXTURE_2D, mat->texture_id);
+			glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+			glTexCoordPointer(2, GL_FLOAT, 0, NULL);
+
 		}
 
 		//indices
@@ -234,9 +236,9 @@ void ComponentMesh::Inspector()
 void ComponentMesh::LoadMesh(float3 position, const char* file, std::string name, ComponentMaterial* mat)
 {
 	loading = true;
-	GameObject* m;
-	ComponentMesh* m_mesh;
-	ComponentMaterial* m_material;
+	GameObject* m=nullptr;
+	ComponentMesh* m_mesh=nullptr;
+	ComponentMaterial* m_material=nullptr;
 	bool multimesh = false;
 	const aiScene* scene = nullptr;
 	scene = aiImportFile(file, aiProcessPreset_TargetRealtime_MaxQuality);
@@ -256,6 +258,10 @@ void ComponentMesh::LoadMesh(float3 position, const char* file, std::string name
 			}
 			else {
 				m = owner;
+				m_mesh = (ComponentMesh*)m->GetComponent(Component_Type::Mesh);
+				//m->CreateComponent(Component_Type::Transform);
+
+				m_material = (ComponentMaterial*)m->GetComponent(Component_Type::Material);
 			}
 			*m_material = *mat;
 			m_mesh->SetFileName(file);
