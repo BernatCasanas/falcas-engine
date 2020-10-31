@@ -179,8 +179,9 @@ update_status ModuleCamera3D::Update(float dt)
 		else{
 			ComponentTransform* transform = (ComponentTransform*)App->scene_intro->game_object_selected->components.front();
 			float3 position = transform->GetPosition();
+			float3 size = transform->GetSize();
 			Reference = { position.x,position.y,position.z };
-			Position = Reference+5;
+			Position = Reference + size.MaxElement();
 			LookAt(Reference);
 		}
 	}
