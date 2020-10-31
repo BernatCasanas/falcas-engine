@@ -15,7 +15,7 @@ public:
 	ComponentMaterial(GameObject* owner);
 	~ComponentMaterial();
 public:
-	void LoadTexture(const char* file);
+	void LoadTexture(std::string file);
 	void LoadDefault();
 
 

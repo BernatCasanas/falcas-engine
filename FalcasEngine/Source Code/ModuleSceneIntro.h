@@ -20,19 +20,12 @@ public:
 	bool CleanUp();
 	
 
-	GameObject* CreateGameObject(std::string name = "", GameObject* parent = nullptr);
-	GameObject* CreateGameObject(float3 position, Quat rotation, float3 size, std::string name = "", GameObject* parent = nullptr);
-	GameObject* SearchGameObject(int id, GameObject* game_obj);
-
-
-	std::string CheckNameGameObject(std::string name, bool numbered = false, int digits = 1);
-	std::string NameGameObjectWhenMoreThan2Digits(std::string name, int &digits);
-
 	GameObject* game_object_selected;
 	GameObject* root;
 	int GetID();
-private:
 	int id_gameobject;
 
-public:
+private:
+
+
 };

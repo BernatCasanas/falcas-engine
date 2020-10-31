@@ -16,6 +16,7 @@
     <ClCompile Include="Source Code\ComponentMaterial.cpp" />
     <ClCompile Include="Source Code\ComponentMesh.cpp" />
     <ClCompile Include="Source Code\ComponentTransform.cpp" />
+    <ClCompile Include="Source Code\FileSystem.cpp" />
     <ClCompile Include="Source Code\GameObject.cpp" />
     <ClCompile Include="Source Code\Mesh.cpp" />
     <ClCompile Include="Source Code\Color.cpp" />
@@ -79,6 +80,7 @@
     <ClInclude Include="Source Code\ComponentMaterial.h" />
     <ClInclude Include="Source Code\ComponentMesh.h" />
     <ClInclude Include="Source Code\ComponentTransform.h" />
+    <ClInclude Include="Source Code\FileSystem.h" />
     <ClInclude Include="Source Code\GameObject.h" />
     <ClInclude Include="Source Code\Mesh.h" />
     <ClInclude Include="Source Code\Color.h" />

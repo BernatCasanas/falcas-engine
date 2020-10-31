@@ -10,6 +10,7 @@
 #include "ModulePhysics3D.h"
 #include "ModuleCentralEditor.h"
 #include "Console.h"
+#include "FileSystem.h"
 
 Application::Application()
 {
@@ -23,6 +24,7 @@ Application::Application()
 	camera = new ModuleCamera3D(this);
 	physics = new ModulePhysics3D(this);
 	central_editor = new ModuleCentralEditor(this);
+	filesystem = new FileSystem(this);
 
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
@@ -34,6 +36,7 @@ Application::Application()
 	AddModule(input);
 	AddModule(audio);
 	AddModule(physics);
+	AddModule(filesystem);
 	
 	// Scenes
 	AddModule(scene_intro);

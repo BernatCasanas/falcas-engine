@@ -17,6 +17,7 @@ class ModulePhysics3D;
 class ModuleCentralEditor;
 class Console;
 class Module;
+class FileSystem;
 
 class Application
 {
@@ -30,6 +31,7 @@ public:
 	ModulePhysics3D* physics;
 	ModuleCentralEditor* central_editor;
 	Console* console;
+	FileSystem* filesystem;
 	bool console_active;
 
 private:

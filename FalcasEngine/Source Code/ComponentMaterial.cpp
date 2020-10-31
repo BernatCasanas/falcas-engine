@@ -19,7 +19,7 @@ ComponentMaterial::~ComponentMaterial()
 
 
 
-void ComponentMaterial::LoadTexture(const char* file)
+void ComponentMaterial::LoadTexture(std::string file)
 {
 	full_file_name = file;
 	ilEnable(IL_ORIGIN_SET);
@@ -28,7 +28,7 @@ void ComponentMaterial::LoadTexture(const char* file)
 	ilGenImages(1, &image_name);
 	ilBindImage(image_name);
 
-	if (ilLoadImage(file)) {
+	if (ilLoadImage(file.c_str())) {
 		ILenum error = ilGetError();
 		LOG("Error loading Texture %s\n", iluErrorString(error));
 	}

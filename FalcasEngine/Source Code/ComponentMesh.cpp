@@ -257,7 +257,7 @@ void ComponentMesh::LoadMesh(float3 position, const char* file, std::string name
 		for (int i = 0; i < scene->mNumMeshes; i++)
 		{
 			if (multimesh) {
-				m = App->scene_intro->CreateGameObject(name, owner);
+				m = App->filesystem->CreateGameObject(name, owner);
 				m_mesh = (ComponentMesh*)m->CreateComponent(Component_Type::Mesh);
 				//m->CreateComponent(Component_Type::Transform);
 				
