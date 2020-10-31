@@ -69,9 +69,6 @@ void ComponentMesh::Initialization()
 
 		glGenBuffers(1, (GLuint*)&(id_texCoords));
 		glBindBuffer(GL_ARRAY_BUFFER, id_texCoords);
-		for (int i = 0; i < num_textureCoords * 2; i++) {
-			LOG("%f", texCoords[i]);
-		}
 		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * num_textureCoords * 2, texCoords, GL_STATIC_DRAW);
 	}
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
