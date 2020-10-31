@@ -2,7 +2,7 @@
 #include "Component.h"
 
 
-ComponentMaterial::ComponentMaterial(GameObject* parent) : Component(Component_Type::Material, owner)
+ComponentMaterial::ComponentMaterial(GameObject* owner) : Component(Component_Type::Material, owner)
 {
 	name = "Material";
 	image_name = 0;
@@ -10,7 +10,6 @@ ComponentMaterial::ComponentMaterial(GameObject* parent) : Component(Component_T
 	texture_id = 0;
 	LoadDefault();
 
-	this->parent = parent;
 }
 
 ComponentMaterial::~ComponentMaterial()
@@ -18,13 +17,7 @@ ComponentMaterial::~ComponentMaterial()
 
 }
 
-ComponentMaterial::ComponentMaterial() : Component(Component_Type::Material, owner)
-{
-	ILuint image_name = 0;
-	ILuint checkers = 0;
-	uint texture_id = 0;
-	uint defaultTex = 0;
-}
+
 
 void ComponentMaterial::LoadTexture(const char* file)
 {

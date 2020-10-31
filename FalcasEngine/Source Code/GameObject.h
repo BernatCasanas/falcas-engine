@@ -3,9 +3,7 @@
 #include "External Libraries/MathGeoLib/include/Math/float3.h"
 #include "External Libraries/MathGeoLib/include/Math/Quat.h"
 #include <vector>
-#include "ComponentMaterial.h"
-#include "ComponentMesh.h"
-#include "ComponentTransform.h"
+
 
 class Component;
 enum class Component_Type;
@@ -26,10 +24,6 @@ public:
 public:
 	bool active;
 	std::vector<Component*> components;
-
-	ComponentMaterial* material;
-	ComponentMesh* mesh;
-	ComponentTransform* transform;
 
 	GameObject* parent;
 	std::vector<GameObject*> children;

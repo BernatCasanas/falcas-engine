@@ -4,7 +4,7 @@
 #include <vector>
 
 class GameObject;
-
+class ComponentMaterial;
 
 class ComponentMesh : public Component {
 public:
@@ -37,10 +37,8 @@ public:
 	uint* indices = nullptr;
 	bool show_normals;
 	float length_normals;
-	GameObject* parent;
 	bool grid;
 
 private:
 	bool loading;
-	ComponentMaterial* material;
 };

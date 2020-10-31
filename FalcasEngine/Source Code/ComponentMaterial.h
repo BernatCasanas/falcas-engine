@@ -12,9 +12,8 @@ class GameObject;
 
 class ComponentMaterial : public Component {
 public:
-	ComponentMaterial(GameObject* parent);
+	ComponentMaterial(GameObject* owner);
 	~ComponentMaterial();
-	ComponentMaterial();
 public:
 	void LoadTexture(const char* file);
 	void LoadDefault();
@@ -28,6 +27,5 @@ public:
 	bool wantTex = false;
 
 
-	GameObject* parent;
 };
 #endif // !_COMPONENT_MATERIAL_
