@@ -30,6 +30,9 @@ public:
 	std::string full_file_name;
 	std::string file_name;
 
+	int width;
+	int height;
+
 	bool show_default_tex = true;
 
 

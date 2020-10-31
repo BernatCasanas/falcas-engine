@@ -32,9 +32,13 @@ void ComponentMaterial::LoadTexture(const char* file)
 		ILenum error = ilGetError();
 		LOG("Error loading Texture %s\n", iluErrorString(error));
 	}
+	height = ilGetInteger(IL_IMAGE_HEIGHT);
+	width = ilGetInteger(IL_IMAGE_WIDTH);
 	show_default_tex = false;
 	texture_id = ilutGLBindTexImage();
 	ilDeleteImages(1, &image_name);
+
+
 	int pos = -1;
 	pos = full_file_name.find_last_of('\\');
 	if (pos == -1)
@@ -91,7 +95,15 @@ void ComponentMaterial::Inspector()
 
 	ImGui::SameLine();
 	ImGui::AlignTextToFramePadding();
-	ImGui::Text("Indices: ");
+	ImGui::Text(std::to_string(width).c_str());
+
+	ImGui::SameLine();
+	ImGui::AlignTextToFramePadding();
+	ImGui::Text(" x ");
+
+	ImGui::SameLine();
+	ImGui::AlignTextToFramePadding();
+	ImGui::Text(std::to_string(height).c_str());
 
 	ImGui::Checkbox("Checkers Texture", &show_default_tex);
 
