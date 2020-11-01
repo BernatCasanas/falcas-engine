@@ -11,17 +11,6 @@ enum class Component_Type {
 	Material,
 };
 
-enum class Gui_Type {
-	Unknwon=-1,
-	Text,
-	TextColored,
-	CheckBox,
-	SliderFloat,
-	Tooltip,
-	DragFloat,
-	Separator,
-	Column,
-};
 
 class Component {
 public:

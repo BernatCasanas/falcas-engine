@@ -83,6 +83,24 @@ Component* GameObject::CreateComponent(Component_Type type)
 	return component;
 }
 
+Component* GameObject::CreateComponent(Component_Type type, char* file)
+{
+	Component* component = nullptr;
+	if (!CheckComponentType(type)) {
+		switch (type)
+		{
+		case Component_Type::Mesh:
+			component = new ComponentMesh(this, file);
+			break;
+		case Component_Type::Material:
+			component = new ComponentMaterial(this, file);
+			break;
+		}
+		components.push_back(component);
+	}
+	return component;
+}
+
 Component* GameObject::GetComponent(Component_Type type)
 {
 	Component* component = nullptr;
@@ -112,3 +130,4 @@ bool GameObject::CheckComponentType(Component_Type type)
 	}
 	return returned;
 }
+

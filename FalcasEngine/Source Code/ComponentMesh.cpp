@@ -20,11 +20,28 @@ ComponentMesh::ComponentMesh(GameObject* owner) :Component(Component_Type::Mesh,
 	normals = nullptr;
 	show_normals = false;
 	length_normals = 1;
-	id_indices = id_vertices = num_indices = num_vertices = id_normals = num_normals = 0;
+	id_indices = id_vertices = num_indices = num_vertices = id_normals = num_normals =num_textureCoords= 0;
 	name = "Mesh";
 	full_file_name = "";
 	file_name = "";
-	loading = false;
+
+}
+
+ComponentMesh::ComponentMesh(GameObject* owner, char* file) :Component(Component_Type::Mesh, owner)
+{
+	grid = false;
+	vertices = nullptr;
+	indices = nullptr;
+	normals = nullptr;
+	show_normals = false;
+	length_normals = 1;
+	id_indices = id_vertices = num_indices = num_vertices = id_normals = num_normals = num_textureCoords = 0;
+	name = "Mesh";
+	SetFileName(file);
+	const aiScene* scene = nullptr;
+	int num = 0;
+	scene = GetNumberOfMeshes(file, num);
+	LoadMesh(scene);
 }
 
 ComponentMesh::~ComponentMesh()
@@ -48,6 +65,17 @@ void ComponentMesh::SetFileName(std::string file)
 	if (pos == -1)
 		pos = full_file_name.find_last_of('/');
 	file_name = full_file_name.substr(pos + 1);
+}
+
+const aiScene* ComponentMesh::GetNumberOfMeshes(const char* file, int& num)
+{
+	const aiScene* scene = nullptr;
+	char* buffer = nullptr;
+	uint size = App->filesystem->Load(file, &buffer);
+
+	scene = aiImportFileFromMemory(buffer, size, aiProcessPreset_TargetRealtime_MaxQuality, nullptr);
+	num = scene->mNumMeshes;
+	return scene;
 }
 
 
@@ -92,7 +120,7 @@ void ComponentMesh::Render()
 			glNormalPointer(GL_FLOAT, 0, NULL);
 		}
 
-		if (num_textureCoords > 0 && grid == false) {
+		if (num_textureCoords > 0 &&owner->GetComponent(Component_Type::Material)) {
 			ComponentMaterial* mat = (ComponentMaterial*)owner->GetComponent(Component_Type::Material);
 			if (mat->active == true) {
 				glEnableClientState(GL_TEXTURE_COORD_ARRAY);
@@ -158,6 +186,70 @@ void ComponentMesh::Render()
 		glDisableClientState(GL_VERTEX_ARRAY);
 		glDisableClientState(GL_ELEMENT_ARRAY_BUFFER);
 	}
+}
+
+
+void ComponentMesh::LoadMesh(const aiScene* scene, int num_of_mesh)
+{
+
+	if (scene != nullptr && scene->HasMeshes())
+	{
+
+		aiMesh* ai_mesh = scene->mMeshes[num_of_mesh];
+		num_vertices = ai_mesh->mNumVertices*3;
+		vertices = new float[num_vertices];
+		memcpy(vertices, ai_mesh->mVertices, sizeof(float) * num_vertices);
+		LOG("Loading FBX correctly");
+		LOG("New mesh with %d vertices", num_vertices/3);
+
+		if (ai_mesh->HasFaces())
+		{
+			num_indices = ai_mesh->mNumFaces * 3;
+			indices = new uint[num_indices];
+			for (uint j = 0; j < ai_mesh->mNumFaces; ++j)
+			{
+				if (ai_mesh->mFaces[j].mNumIndices != 3) {
+					LOG("WARNING, geometry face with != 3 indices!");
+				}
+				else {
+					memcpy(&indices[j * 3], ai_mesh->mFaces[j].mIndices, 3 * sizeof(uint));
+				}
+
+			}
+			LOG("New mesh with %d index", num_indices);
+		}
+		num_normals = num_vertices;
+		normals = new float[ai_mesh->mNumVertices * 3];
+		for (int x = 0, y = 0; x < ai_mesh->mNumVertices; x++, y += 3) {
+			if (ai_mesh->HasNormals())
+			{
+				normals[y] = ai_mesh->mNormals[x].x;
+				normals[y + 1] = ai_mesh->mNormals[x].y;
+				normals[y + 2] = ai_mesh->mNormals[x].z;
+			}
+		}
+
+		if (ai_mesh->HasTextureCoords(0)) {
+			num_textureCoords = ai_mesh->mNumVertices;
+			texCoords = new float[num_textureCoords * 2];
+			for (uint i = 0, j = 0; i < num_textureCoords; i++, j += 2) {
+				texCoords[j] = ai_mesh->mTextureCoords[0][i].x;
+				texCoords[j + 1] = ai_mesh->mTextureCoords[0][i].y;
+			}
+		}
+
+		Initialization();
+	}
+	else {
+		const char* error = aiGetErrorString();
+		LOG("Error loading FBX: %s", error)
+	}
+
+}
+
+void ComponentMesh::CleanScene(const aiScene* scene)
+{
+	aiReleaseImport(scene);
 }
 
 void ComponentMesh::Inspector()
@@ -235,93 +327,4 @@ void ComponentMesh::Inspector()
 	ImGui::Separator();
 
 	ImGui::PopID();
-}
-
-void ComponentMesh::LoadMesh(float3 position, const char* file, std::string name, ComponentMaterial* mat)
-{
-	loading = true;
-	GameObject* m=nullptr;
-	ComponentMesh* m_mesh=nullptr;
-	ComponentMaterial* m_material=nullptr;
-
-	bool multimesh = false;
-	const aiScene* scene = nullptr;
-	char* buffer = nullptr;
-	uint size = App->filesystem->Load(file, &buffer);
-
-	scene = aiImportFileFromMemory(buffer, size, aiProcessPreset_TargetRealtime_MaxQuality, nullptr);
-
-	if (scene != nullptr && scene->HasMeshes())
-	{
-		if (scene->mNumMeshes > 1) {
-			multimesh = true;
-		}
-		for (int i = 0; i < scene->mNumMeshes; i++)
-		{
-			if (multimesh) {
-				m = App->filesystem->CreateGameObject(name, owner);
-				m_mesh = (ComponentMesh*)m->CreateComponent(Component_Type::Mesh);
-				
-				m_material=(ComponentMaterial*)m->CreateComponent(Component_Type::Material);
-			}
-			else {
-				m = owner;
-				m_mesh = (ComponentMesh*)m->GetComponent(Component_Type::Mesh);
-
-				m_material = (ComponentMaterial*)m->GetComponent(Component_Type::Material);
-			}
-			*m_material = *mat;
-			m_mesh->SetFileName(file);
-			aiMesh* ai_mesh = scene->mMeshes[i];
-			m_mesh->num_vertices = ai_mesh->mNumVertices*3;
-			m_mesh->vertices = new float[m_mesh->num_vertices];
-			memcpy(m_mesh->vertices, ai_mesh->mVertices, sizeof(float) * m_mesh->num_vertices);
-			LOG("Loading FBX correctly");
-			LOG("New mesh with %d vertices", m_mesh->num_vertices/3);
-
-			if (ai_mesh->HasFaces())
-			{
-				m_mesh->num_indices = ai_mesh->mNumFaces * 3;
-				m_mesh->indices = new uint[m_mesh->num_indices];
-				for (uint j = 0; j < ai_mesh->mNumFaces; ++j)
-				{
-					if (ai_mesh->mFaces[j].mNumIndices != 3) {
-						LOG("WARNING, geometry face with != 3 indices!");
-					}
-					else {
-						memcpy(&m_mesh->indices[j * 3], ai_mesh->mFaces[j].mIndices, 3 * sizeof(uint));
-					}
-
-				}
-				LOG("New mesh with %d index", m_mesh->num_indices);
-			}
-			m_mesh->num_normals = m_mesh->num_vertices;
-			m_mesh->normals = new float[ai_mesh->mNumVertices * 3];
-			for (int x = 0, y = 0; x < ai_mesh->mNumVertices; x++, y += 3) {
-				if (ai_mesh->HasNormals())
-				{
-					m_mesh->normals[y] = ai_mesh->mNormals[x].x;
-					m_mesh->normals[y + 1] = ai_mesh->mNormals[x].y;
-					m_mesh->normals[y + 2] = ai_mesh->mNormals[x].z;
-				}
-			}
-
-			if (ai_mesh->HasTextureCoords(0)) {
-				m_mesh->num_textureCoords = ai_mesh->mNumVertices;
-				m_mesh->texCoords = new float[m_mesh->num_textureCoords * 2];
-				for (uint i = 0, j = 0; i < m_mesh->num_textureCoords; i++, j += 2) {
-					m_mesh->texCoords[j] = ai_mesh->mTextureCoords[0][i].x;
-					m_mesh->texCoords[j + 1] = ai_mesh->mTextureCoords[0][i].y;
-				}
-			}
-
-			m_mesh->Initialization();
-		}
-		aiReleaseImport(scene);
-	}
-	else {
-		const char* error = aiGetErrorString();
-		LOG("Error loading FBX: %s", error)
-	}
-	loading = false;
 }

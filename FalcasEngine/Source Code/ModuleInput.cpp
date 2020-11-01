@@ -134,7 +134,8 @@ update_status ModuleInput::PreUpdate(float dt)
 			{
 				switch (GetTypeFile(e.drop.file)) {
 				case FILE_TYPE::FBX:
-					App->filesystem->CreateCompleteGameObject(GetFileName(e.drop.file), App->scene_intro->root, e.drop.file);
+					//App->scene_intro->CreateCompleteGameObject(GetFileName(e.drop.file), App->scene_intro->root, e.drop.file);
+					break;
 				}
 			}
 			break;
