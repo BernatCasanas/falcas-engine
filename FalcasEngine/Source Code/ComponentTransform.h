@@ -19,6 +19,8 @@ public:
 	float3 QuaternionToEuler(Quat q);
 	Quat EulerToQuaternion(float3 eu);
 
+
+	void SetTransformation(float3 pos, Quat rot, float3 size);
 	void Inspector();
 
 private:

@@ -503,7 +503,7 @@ update_status ModuleCentralEditor::PostUpdate(float dt)
         ImGui::Checkbox("Wireframe", &wireframe);
         ImGui::Checkbox("Vertex Normals", &normals_v);
         ImGui::Checkbox("Face Normals", &normals_f);
-
+        ImGui::Checkbox("Grid", &App->scene_intro->root->components.back()->active);
         ImGui::End();
     }
     if (depth) glEnable(GL_DEPTH_TEST);

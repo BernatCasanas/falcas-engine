@@ -70,6 +70,13 @@ Quat ComponentTransform::EulerToQuaternion(float3 eu)
 	return q;
 }
 
+void ComponentTransform::SetTransformation(float3 pos, Quat rot, float3 size)
+{
+	position = pos;
+	rotation = rot;
+	this->size = size;
+}
+
 void ComponentTransform::Inspector()
 {
 	ImGui::PushID(name.c_str());

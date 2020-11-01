@@ -34,6 +34,7 @@ public:
 	int GetID();
 	int id_gameobject;
 
+
 private:
 
 

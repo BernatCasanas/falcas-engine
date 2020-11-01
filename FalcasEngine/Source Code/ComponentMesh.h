@@ -11,7 +11,7 @@ public:
 	ComponentMesh(GameObject* owner);
 	ComponentMesh(GameObject* owner, char* file);
 	~ComponentMesh();
-	void Update() {};
+	void Update();
 	void SetFileName(std::string file);
 
 	const aiScene* GetNumberOfMeshes(const char* file, int& num);
