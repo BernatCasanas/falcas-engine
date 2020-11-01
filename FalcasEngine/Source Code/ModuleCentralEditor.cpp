@@ -103,7 +103,7 @@ bool ModuleCentralEditor::Init()
     show_console = false;
     show_openglOptions = false;
     show_hierarchy = show_inspector = true;
-    cullface = colorMaterial = ambient = stencil = wireframe = normals = false;
+    cullface = colorMaterial = ambient = stencil = wireframe = normals_v = normals_f = false;
     texture = depth = lighting = true;
     progress = 50.f;
     progress2 = 50.f;
@@ -337,6 +337,7 @@ update_status ModuleCentralEditor::PostUpdate(float dt)
         ImGui::BulletText("OpenGL 3.1");
         ImGui::BulletText("Devil 1.8");
         ImGui::BulletText("Assimp 5.0.1");
+        ImGui::BulletText("PhysFS 3.1");
         ImGui::Separator();
         ImGui::TextWrapped("\n\n"
             "MIT License\n\n"
@@ -500,7 +501,8 @@ update_status ModuleCentralEditor::PostUpdate(float dt)
         ImGui::Checkbox("Ambient", &ambient);
         ImGui::Checkbox("Stencil", &stencil);
         ImGui::Checkbox("Wireframe", &wireframe);
-        ImGui::Checkbox("Normals", &normals);
+        ImGui::Checkbox("Vertex Normals", &normals_v);
+        ImGui::Checkbox("Face Normals", &normals_f);
 
         ImGui::End();
     }

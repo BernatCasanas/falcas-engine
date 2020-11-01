@@ -18,7 +18,7 @@ ComponentMesh::ComponentMesh(GameObject* owner) :Component(Component_Type::Mesh,
 	vertices = nullptr;
 	indices = nullptr;
 	normals = nullptr;
-	show_normals = false;
+	show_normals_v = show_normals_f = false;
 	length_normals = 1;
 	id_indices = id_vertices = num_indices = num_vertices = id_normals = num_normals =num_textureCoords= 0;
 	name = "Mesh";
@@ -33,7 +33,7 @@ ComponentMesh::ComponentMesh(GameObject* owner, char* file) :Component(Component
 	vertices = nullptr;
 	indices = nullptr;
 	normals = nullptr;
-	show_normals = false;
+	show_normals_v = show_normals_f = false;
 	length_normals = 1;
 	id_indices = id_vertices = num_indices = num_vertices = id_normals = num_normals = num_textureCoords = 0;
 	name = "Mesh";
@@ -151,8 +151,7 @@ void ComponentMesh::Render()
 
 
 		//drawing normals
-		if ((App->central_editor->normals || show_normals) && normals != nullptr) {
-
+		if ((App->central_editor->normals_v || show_normals_v) && normals != nullptr) {
 			if (id_normals == -1)
 				return;
 
@@ -163,10 +162,34 @@ void ComponentMesh::Render()
 				glVertex3f(vertices[i], vertices[i + 1], vertices[i + 2]);
 				glVertex3f(vertices[i] + (-normals[i] * length_normals), vertices[i + 1] + (-normals[i + 1] * length_normals), vertices[i + 2] + (-normals[i + 2]) * length_normals);
 			}
+
 			glColor3f(1.0f, 1.0f, 1.0f);
 			glEnd();
 		}
+		if ((App->central_editor->normals_f || show_normals_f) && normals != nullptr) {
+			if (id_normals == -1)
+				return;
+			glBegin(GL_LINES);
+			for (size_t i = 0; i < num_vertices; i += 3)
+			{
+				glColor3f(1.0f, 0.f, 1.f);
+				float vx = (vertices[i] + vertices[i + 3] + vertices[i + 6]) / 3;
+				float vy = (vertices[i + 1] + vertices[i + 4] + vertices[i + 7]) / 3;
+				float vz = (vertices[i + 2] + vertices[i + 5] + vertices[i + 8]) / 3;
 
+				float nx = (normals[i] + normals[i + 3] + normals[i + 6]) / 3;
+				float ny = (normals[i + 1] + normals[i + 4] + normals[i + 7]) / 3;
+				float nz = (normals[i + 2] + normals[i + 5] + normals[i + 8]) / 3;
+
+				glVertex3f(vx, vy, vz);
+
+				glVertex3f(vx + (normals[i] * length_normals),
+					vy + (normals[i + 1] * length_normals),
+					vz + (normals[i + 2]) * length_normals);
+			}
+			glColor3f(1.0f, 1.0f, 1.0f);
+			glEnd();
+		}
 
 
 		//cleaning stuff
@@ -285,7 +308,7 @@ void ComponentMesh::Inspector()
 	ImGui::Text(std::to_string(num_indices).c_str());
 	
 	ImGui::NextColumn();
-	ImGui::Checkbox("Per Triangle", &show_normals);
+	ImGui::Checkbox("Per Triangle", &show_normals_v);
 	
 	ImGui::NextColumn();
 	ImGui::AlignTextToFramePadding();
@@ -296,7 +319,7 @@ void ComponentMesh::Inspector()
 	ImGui::Text(std::to_string(num_vertices / 3).c_str());
 	
 	ImGui::NextColumn();
-	ImGui::Checkbox("Per Face", &show_normals);
+	ImGui::Checkbox("Per Face", &show_normals_f);
 	
 	ImGui::NextColumn();
 	ImGui::AlignTextToFramePadding();
