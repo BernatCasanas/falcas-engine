@@ -153,6 +153,7 @@ update_status ModuleInput::PreUpdate(float dt)
 					break;
 				}
 				case FILE_TYPE::PNG:
+				case FILE_TYPE::DDS:
 				{
 					if (App->scene_intro->game_object_selected != nullptr) {
 						ComponentMaterial* mat = (ComponentMaterial*)App->scene_intro->game_object_selected->GetComponent(Component_Type::Material);
