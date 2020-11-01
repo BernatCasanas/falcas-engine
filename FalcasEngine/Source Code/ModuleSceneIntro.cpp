@@ -87,22 +87,9 @@ int ModuleSceneIntro::GetID()
 // Update: draw background
 update_status ModuleSceneIntro::Update(float dt)
 {
-	ComponentMesh* mesh = (ComponentMesh*)root->GetComponent(Component_Type::Mesh);
-	if (mesh != nullptr && root->active == true) {
-		mesh->Render();
-	}
-	GameObject* game_object = nullptr;
-	mesh = nullptr;
-	for (int i = 0; i < id_gameobject; i++) {
-		game_object = App->scene_intro->SearchGameObject(i, root);
-		if (game_object != nullptr && game_object->active == true && game_object->CheckComponentType(Component_Type::Mesh)) {
-			mesh = (ComponentMesh*)game_object->GetComponent(Component_Type::Mesh);
-			if (mesh != nullptr && mesh->active == true) {
-				mesh->Render();
-			}
-			mesh = nullptr;
-		}
-	}
+	
+	root->Update();
+
 	
 	if (App->central_editor->wireframe) {
 		glPolygonMode(GL_FRONT, GL_LINE);
@@ -113,6 +100,7 @@ update_status ModuleSceneIntro::Update(float dt)
 		glPolygonMode(GL_BACK, GL_FILL);
 	}
 	
+
 	return UPDATE_CONTINUE;
 }
 

@@ -57,6 +57,11 @@ ComponentMesh::~ComponentMesh()
 	glDeleteBuffers(1, &id_normals);
 }
 
+void ComponentMesh::Update()
+{
+	Render();
+}
+
 void ComponentMesh::SetFileName(std::string file)
 {
 	full_file_name = file;
@@ -217,7 +222,6 @@ void ComponentMesh::LoadMesh(const aiScene* scene, int num_of_mesh)
 
 	if (scene != nullptr && scene->HasMeshes())
 	{
-
 		aiMesh* ai_mesh = scene->mMeshes[num_of_mesh];
 		num_vertices = ai_mesh->mNumVertices*3;
 		vertices = new float[num_vertices];
@@ -262,6 +266,13 @@ void ComponentMesh::LoadMesh(const aiScene* scene, int num_of_mesh)
 		}
 
 		Initialization();
+
+		ComponentTransform* trans = (ComponentTransform*)owner->GetComponent(Component_Type::Transform);
+		aiVector3D pos;
+		aiQuaternion rot;
+		aiVector3D size;
+		scene->mRootNode->mChildren[num_of_mesh]->mTransformation.Decompose(size, rot, pos);
+		trans->SetTransformation({ pos.x,pos.y,pos.z }, { rot.x,rot.y,rot.z,rot.w }, { size.x,size.y,size.z });
 	}
 	else {
 		const char* error = aiGetErrorString();

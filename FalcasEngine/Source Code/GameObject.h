@@ -15,6 +15,8 @@ public:
 	GameObject(int id, std::string name, GameObject* parent, float3 position, Quat rotation, float3 size);
 	~GameObject();
 
+	void Update();
+
 	Component* CreateComponent(Component_Type type);
 	Component* CreateComponent(Component_Type type, char* file);
 	Component* GetComponent(Component_Type type);
