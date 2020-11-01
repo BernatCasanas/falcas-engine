@@ -22,6 +22,7 @@ ComponentMaterial::~ComponentMaterial()
 
 void ComponentMaterial::LoadTexture(std::string file)
 {
+	if (file == "") return;
 	full_file_name = file;
 	ilEnable(IL_ORIGIN_SET);
 	ilOriginFunc(IL_ORIGIN_LOWER_LEFT);

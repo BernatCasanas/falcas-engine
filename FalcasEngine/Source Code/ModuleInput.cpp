@@ -5,6 +5,7 @@
 #include "Application.h"
 #include "ModuleRenderer3D.h"
 #include "ModuleSceneIntro.h"
+#include "FileSystem.h"
 #include "External Libraries/SDL/include/SDL.h"
 
 #define MAX_KEYS 300
@@ -131,7 +132,10 @@ update_status ModuleInput::PreUpdate(float dt)
 
 			case SDL_DROPFILE:
 			{
-				//App->scene_intro->LoadGameObject({ 0,0,0 }, e.drop.file, GetFileName(e.drop.file));
+				switch (GetTypeFile(e.drop.file)) {
+				case FILE_TYPE::FBX:
+					App->filesystem->CreateCompleteGameObject(GetFileName(e.drop.file), App->scene_intro->root, e.drop.file);
+				}
 			}
 			break;
 		}
@@ -169,19 +173,19 @@ std::string ModuleInput::GetFileName(char* file)
 	return name.c_str();
 }
 
-char* ModuleInput::GetTypeFile(char* file)
+FILE_TYPE ModuleInput::GetTypeFile(char* file)
 {
-	char* name = new char;
-	int i;
-	for (i = 0; file[i] != '\0'; i++) {}
-	int j = i;
-	for (j; file[j] != '.'; --j) {}
+	std::string name = file;
+	
 
-	int k = 0;
-	for (int z = j + 1; z <= i; z++) {
-		name[k] = file[z];
-		++k;
-	}
-	return name;
+	uint size = name.find_last_of('.');
+	name = name.substr(size + 1);
+
+	
+	if (name == "fbx") return FILE_TYPE::FBX;
+	else if (name == "png") return FILE_TYPE::PNG;
+	else if (name == "dds") return FILE_TYPE::DDS;
+	else return FILE_TYPE::UNKNOWN;
+
 }
 

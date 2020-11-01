@@ -13,6 +13,14 @@ enum KEY_STATE
 	KEY_UP
 };
 
+enum class FILE_TYPE
+{
+	UNKNOWN = -1,
+	FBX,
+	PNG,
+	DDS
+};
+
 class ModuleInput : public Module
 {
 public:
@@ -57,7 +65,7 @@ public:
 	}
 
 	std::string GetFileName(char* file);
-	char* GetTypeFile(char* file);
+	FILE_TYPE GetTypeFile(char* file);
 
 private:
 	KEY_STATE* keyboard;
