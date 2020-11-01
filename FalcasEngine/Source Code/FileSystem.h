@@ -10,7 +10,10 @@
 #include "ComponentTransform.h"
 #include "ModuleSceneIntro.h"
 #include "Application.h"
+#include "External Libraries/PhysFS/include/physfs.h"
+#include "Globals.h"
 
+#pragma comment(lib, "PhysFS/libx86/physfs.lib")
 
 
 class FileSystem : public Module {
@@ -18,7 +21,7 @@ public:
 	FileSystem(Application* app, bool start_enabled = true);
 	~FileSystem();
 
-	bool Start() { return true; };
+	bool Start();
 	update_status Update(float dt) { return UPDATE_CONTINUE; };
 	bool CleanUp() { return true; };
 

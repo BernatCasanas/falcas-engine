@@ -2,10 +2,25 @@
 
 FileSystem::FileSystem(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
+	PHYSFS_init(nullptr);
+	PHYSFS_mount(".", nullptr, 1);
 }
 
 FileSystem::~FileSystem()
 {
+	PHYSFS_deinit();
+}
+
+bool FileSystem::Start()
+{
+	if (PHYSFS_isInit()) {
+		LOG("Asset Manager is Loaded");
+	}
+	else {
+		LOG("Failed to load Asset Manager");
+	}
+
+	return true;
 }
 
 GameObject* FileSystem::CreateGameObject(std::string name, GameObject* parent)

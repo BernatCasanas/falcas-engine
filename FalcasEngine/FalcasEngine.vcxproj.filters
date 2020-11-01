@@ -213,7 +213,9 @@
     <ClCompile Include="Source Code\Shape.cpp">
       <Filter>Source Code</Filter>
     </ClCompile>
-    <ClCompile Include="Source Code\FileSystem.cpp" />
+    <ClCompile Include="Source Code\FileSystem.cpp">
+      <Filter>Source Code</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source Code\Application.h">
