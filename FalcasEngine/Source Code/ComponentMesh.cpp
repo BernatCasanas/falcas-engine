@@ -203,12 +203,6 @@ void ComponentMesh::Render()
 
 
 		//cleaning stuff
-		if (num_normals > 0) {
-			glDisableClientState(GL_NORMAL_ARRAY);
-		}
-		if (num_textureCoords > 0 && grid == false) {
-			glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-		}
 
 		glBindTexture(GL_TEXTURE_2D, 0);
 		glBindBuffer(GL_NORMAL_ARRAY, 0);
@@ -216,6 +210,12 @@ void ComponentMesh::Render()
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
+		if (num_normals > 0) {
+			glDisableClientState(GL_NORMAL_ARRAY);
+		}
+		if (num_textureCoords > 0 && grid == false) {
+			glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+		}
 		glDisableClientState(GL_VERTEX_ARRAY);
 		glDisableClientState(GL_ELEMENT_ARRAY_BUFFER);
 	}
