@@ -13,6 +13,16 @@ ComponentMaterial::ComponentMaterial(GameObject* owner) : Component(Component_Ty
 
 }
 
+ComponentMaterial::ComponentMaterial(GameObject* owner, char* file) : Component(Component_Type::Material, owner)
+{
+	name = "Material";
+	image_name = 0;
+	checkers = 0;
+	texture_id = 0;
+	LoadDefault();
+	LoadTexture(file);
+}
+
 ComponentMaterial::~ComponentMaterial()
 {
 

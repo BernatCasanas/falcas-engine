@@ -13,6 +13,7 @@ class GameObject;
 class ComponentMaterial : public Component {
 public:
 	ComponentMaterial(GameObject* owner);
+	ComponentMaterial(GameObject* owner, char* file);
 	~ComponentMaterial();
 public:
 	void LoadTexture(std::string file);

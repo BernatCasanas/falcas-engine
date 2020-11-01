@@ -5,20 +5,25 @@
 
 class GameObject;
 class ComponentMaterial;
-
+struct aiScene;
 class ComponentMesh : public Component {
 public:
 	ComponentMesh(GameObject* owner);
+	ComponentMesh(GameObject* owner, char* file);
 	~ComponentMesh();
 	void Update() {};
 	void SetFileName(std::string file);
+
+	const aiScene* GetNumberOfMeshes(const char* file, int& num);
 	
+	void LoadMesh(const aiScene* scene, int num_of_mesh = 0);
+	void CleanScene(const aiScene* scene);
+
 	void Initialization();
 	void Render();
 
 	void Inspector();
 
-	void LoadMesh(float3 position, const char* file, std::string name, ComponentMaterial* mat);
 
 	uint id_vertices;
 	uint id_indices;
@@ -40,5 +45,4 @@ public:
 	bool grid;
 
 private:
-	bool loading;
 };
