@@ -105,7 +105,7 @@ Component* GameObject::GetComponent(Component_Type type)
 {
 	Component* component = nullptr;
 	bool stop = false;
-	for (int i = 0; i < components.size(), stop == false; i++) {
+	for (int i = 0; i < components.size()&& stop == false; i++) {
 		if (components.at(i)->type == type) {
 			stop = true;
 			component = components.at(i);

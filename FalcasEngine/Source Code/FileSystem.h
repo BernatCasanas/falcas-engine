@@ -28,6 +28,7 @@ public:
 
 public:
 	uint Load(const char* path, char** buffer) const;
+
 };
 
 

@@ -134,7 +134,21 @@ update_status ModuleInput::PreUpdate(float dt)
 			{
 				switch (GetTypeFile(e.drop.file)) {
 				case FILE_TYPE::FBX:
-					//App->scene_intro->CreateCompleteGameObject(GetFileName(e.drop.file), App->scene_intro->root, e.drop.file);
+					GameObject* game_object = App->scene_intro->CreateGameObject(GetFileName(e.drop.file), App->scene_intro->root);
+					ComponentMesh* mesh;
+					int num = 0;
+					const aiScene* scene = mesh->GetNumberOfMeshes(e.drop.file, num);
+					if (num > 1) {
+						GameObject* game_object_iterator = nullptr;
+						for (int i = 0; i < num; i++) {
+							game_object_iterator = App->scene_intro->CreateGameObject(scene, i, GetFileName(e.drop.file), game_object);
+						}
+					}
+					else {
+						mesh = (ComponentMesh*)game_object->CreateComponent(Component_Type::Mesh);
+						mesh->LoadMesh(scene, 0);
+					}
+					mesh->CleanScene(scene);
 					break;
 				}
 			}

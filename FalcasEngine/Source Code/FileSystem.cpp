@@ -1,4 +1,5 @@
 #include "FileSystem.h"
+#include <algorithm>
 
 FileSystem::FileSystem(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -28,7 +29,14 @@ bool FileSystem::Start()
 uint FileSystem::Load(const char* path, char** buffer) const
 {
 	uint ret;
-	PHYSFS_file* file = PHYSFS_openRead(path);
+	std::string str = path;
+	std::replace(str.begin(), str.end(), '\\', '/');
+	int size = -1;
+	size = str.find("Assets/");
+	if(size>0)
+		str=str.substr(size).c_str();
+	const char* path_relative = str.c_str();
+	PHYSFS_file* file = PHYSFS_openRead(path_relative);
 	if (!PHYSFS_eof(file))
 	{
 		uint lenght = PHYSFS_fileLength(file);
@@ -54,3 +62,4 @@ uint FileSystem::Load(const char* path, char** buffer) const
 
 	return ret;
 }
+
