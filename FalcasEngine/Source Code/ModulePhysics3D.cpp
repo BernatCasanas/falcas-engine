@@ -1,3 +1,4 @@
+#pragma once
 #include "Globals.h"
 #include "Application.h"
 #include "ModulePhysics3D.h"

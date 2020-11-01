@@ -1,3 +1,5 @@
+#pragma once
+
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleInput.h"
@@ -7,6 +9,9 @@
 #include "ModuleSceneIntro.h"
 #include "FileSystem.h"
 #include "External Libraries/SDL/include/SDL.h"
+#include "GameObject.h"
+#include "ComponentMaterial.h"
+#include "ComponentMesh.h"
 
 #define MAX_KEYS 300
 

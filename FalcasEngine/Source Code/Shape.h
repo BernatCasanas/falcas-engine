@@ -1,3 +1,4 @@
+#pragma once
 #include "External Libraries/MathGeoLib/include/Math/float3.h"
 #include "Globals.h"
 

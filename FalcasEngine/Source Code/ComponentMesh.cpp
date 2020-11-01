@@ -2,7 +2,7 @@
 #include "External Libraries/Glew/include/glew.h"
 #include "Application.h"
 #include "ModuleCentralEditor.h"
-#include <vector>
+#include "ComponentTransform.h"
 #include "ModuleSceneIntro.h"
 #include "GameObject.h"
 #include "External Libraries/Assimp/Assimp/include/cimport.h"
@@ -11,6 +11,8 @@
 #include "ComponentMaterial.h"
 #include "ComponentMesh.h"
 #include "FileSystem.h"
+
+#pragma comment (lib, "Source Code/External Libraries/Assimp/Assimp/libx86/assimp.lib")
 
 ComponentMesh::ComponentMesh(GameObject* owner) :Component(Component_Type::Mesh, owner)
 {
@@ -52,9 +54,12 @@ ComponentMesh::~ComponentMesh()
 		delete[] indices;
 	if (normals != nullptr)
 		delete[] normals;
+	if (texCoords != nullptr)
+		delete[]texCoords;
 	glDeleteBuffers(1, &id_indices);
 	glDeleteBuffers(1, &id_vertices);
 	glDeleteBuffers(1, &id_normals);
+	glDeleteBuffers(1, &id_texCoords);
 }
 
 void ComponentMesh::Update()
@@ -147,7 +152,6 @@ void ComponentMesh::Render()
 
 		//drawing indices
 		if (grid == false) {
-			//glBindTexture(GL_TEXTURE_2D, 2);
 			glDrawElements(GL_TRIANGLES, num_indices, GL_UNSIGNED_INT, NULL);
 		}
 		else

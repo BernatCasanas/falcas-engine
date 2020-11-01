@@ -1,3 +1,4 @@
+#pragma once
 #include "Shape.h"
 #include <vector>
 #include "External Libraries/MathGeoLib/include/Math/MathFunc.h"

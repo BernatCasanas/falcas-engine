@@ -1,3 +1,4 @@
+#pragma once
 #ifndef __ModuleWindow_H__
 #define __ModuleWindow_H__
 

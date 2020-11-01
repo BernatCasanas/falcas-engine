@@ -1,7 +1,6 @@
 #pragma once
 #include "Globals.h"
 #include <string>
-#include "External Libraries/MathGeoLib/include/Math/float4.h"
 class GameObject;
 
 enum class Component_Type {

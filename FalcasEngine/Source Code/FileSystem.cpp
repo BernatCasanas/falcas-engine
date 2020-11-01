@@ -1,5 +1,17 @@
+#pragma once
 #include "FileSystem.h"
 #include <algorithm>
+#include "Application.h"
+#include "GameObject.h"
+#include "ModuleSceneIntro.h"
+#include "ComponentMaterial.h"
+#include "ComponentMesh.h"
+#include "ComponentTransform.h"
+
+
+#include "External Libraries/PhysFS/include/physfs.h"
+
+#pragma comment(lib, "Source Code/External Libraries/PhysFS/libx86/physfs.lib")
 
 FileSystem::FileSystem(Application* app, bool start_enabled) : Module(app, start_enabled)
 {

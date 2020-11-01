@@ -1,7 +1,13 @@
+#pragma once
 #include "ComponentMaterial.h"
-#include "Component.h"
 #include "External Libraries/ImGui/imgui.h"
 #include "FileSystem.h"
+#include "Application.h"
+
+#pragma comment (lib, "Source Code/External Libraries/Devil/lib/DevIL.lib")
+#pragma comment (lib, "Source Code/External Libraries/Devil/lib/ILUT.lib")
+#pragma comment (lib, "Source Code/External Libraries/Devil/lib/ILU.lib")
+
 
 ComponentMaterial::ComponentMaterial(GameObject* owner) : Component(Component_Type::Material, owner)
 {
@@ -34,7 +40,6 @@ void ComponentMaterial::LoadTexture(std::string file)
 {
 	if (file == "") return;
 	full_file_name = file;
-	ilEnable(IL_ORIGIN_SET);
 	ilOriginFunc(IL_ORIGIN_LOWER_LEFT);
 
 	ilGenImages(1, &image_name);

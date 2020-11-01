@@ -1,10 +1,7 @@
 #pragma once
 #include "Component.h"
-#include "External Libraries/MathGeoLib/include/Math/float3.h"
-#include <vector>
 
 class GameObject;
-class ComponentMaterial;
 struct aiScene;
 class ComponentMesh : public Component {
 public:

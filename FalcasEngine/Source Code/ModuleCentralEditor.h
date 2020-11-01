@@ -1,3 +1,4 @@
+#pragma once
 #ifndef __ModuleCentralEditor_H__
 #define __ModuleCentralEditor_H__
 

@@ -6,7 +6,6 @@
 #include "ModuleCamera3D.h"
 
 #include "Console.h"
-#include "Mesh.h"
 #include "GameObject.h"
 #include "External Libraries/MathGeoLib/include/Math/Quat.h"
 #include "ComponentMesh.h"
@@ -38,6 +37,8 @@ bool ModuleSceneIntro::Start()
 	iluInit();
 	ilutInit();
 	ilutRenderer(ILUT_OPENGL);
+	ilEnable(IL_ORIGIN_SET);
+
 
 	App->camera->Move(vec3(1.0f, 1.0f, 0.0f));
 	App->camera->LookAt(vec3(0, 0, 0));
@@ -74,6 +75,7 @@ bool ModuleSceneIntro::Start()
 bool ModuleSceneIntro::CleanUp()
 {
 	LOG("Unloading Intro scene");
+	ilDisable(IL_ORIGIN_SET);
 
 	return true;
 }
