@@ -142,12 +142,13 @@ update_status ModuleInput::PreUpdate(float dt)
 					if (num > 1) {
 						GameObject* game_object_iterator = nullptr;
 						for (int i = 0; i < num; i++) {
-							game_object_iterator = App->scene_intro->CreateGameObject(scene, i, GetFileName(e.drop.file), game_object);
+							game_object_iterator = App->scene_intro->CreateGameObject(scene, i, e.drop.file, GetFileName(e.drop.file), game_object);
 						}
 					}
 					else {
 						mesh = (ComponentMesh*)game_object->CreateComponent(Component_Type::Mesh);
 						mesh->LoadMesh(scene, 0);
+						mesh->SetFileName(e.drop.file);
 					}
 					mesh->CleanScene(scene);
 					break;

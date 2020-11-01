@@ -55,7 +55,7 @@ bool ModuleSceneIntro::Start()
 	if (num > 1) {
 		GameObject* game_object = nullptr;
 		for (int i = 0; i < num; i++) {
-			game_object =CreateGameObject(scene, i, "BakerHouse", house);
+			game_object =CreateGameObject(scene, i, "Assets/BakerHouse.fbx", "BakerHouse", house);
 			game_object->CreateComponent(Component_Type::Material, "Assets/Baker_house.png");
 		}
 	}
@@ -133,7 +133,7 @@ GameObject* ModuleSceneIntro::CreateGameObject(float3 position, Quat rotation, f
 	return game_object;
 }
 
-GameObject* ModuleSceneIntro::CreateGameObject(const aiScene* scene, int num_of_mesh, std::string name, GameObject* parent)
+GameObject* ModuleSceneIntro::CreateGameObject(const aiScene* scene, int num_of_mesh, std::string file_name, std::string name, GameObject* parent)
 {
 	GameObject* game_object = nullptr;
 	name = CheckNameGameObject(name);
@@ -147,10 +147,11 @@ GameObject* ModuleSceneIntro::CreateGameObject(const aiScene* scene, int num_of_
 	}
 	ComponentMesh* mesh= (ComponentMesh*)game_object->CreateComponent(Component_Type::Mesh);
 	mesh->LoadMesh(scene, num_of_mesh);
+	mesh->SetFileName(file_name);
 	return game_object;
 }
 
-GameObject* ModuleSceneIntro::CreateGameObject(const aiScene* scene, int num_of_mesh, float3 position, Quat rotation, float3 size, std::string name, GameObject* parent)
+GameObject* ModuleSceneIntro::CreateGameObject(const aiScene* scene, int num_of_mesh, float3 position, Quat rotation, float3 size, std::string file_name, std::string name, GameObject* parent)
 {
 	GameObject* game_object = nullptr;
 	name = CheckNameGameObject(name);
@@ -163,6 +164,7 @@ GameObject* ModuleSceneIntro::CreateGameObject(const aiScene* scene, int num_of_
 	}
 	ComponentMesh* mesh = (ComponentMesh*)game_object->CreateComponent(Component_Type::Mesh);
 	mesh->LoadMesh(scene, num_of_mesh);
+	mesh->SetFileName(file_name);
 	return game_object;
 }
 
