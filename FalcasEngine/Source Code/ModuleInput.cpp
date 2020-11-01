@@ -134,8 +134,9 @@ update_status ModuleInput::PreUpdate(float dt)
 			{
 				switch (GetTypeFile(e.drop.file)) {
 				case FILE_TYPE::FBX:
+				{
 					GameObject* game_object = App->scene_intro->CreateGameObject(GetFileName(e.drop.file), App->scene_intro->root);
-					ComponentMesh* mesh;
+					ComponentMesh* mesh=nullptr;
 					int num = 0;
 					const aiScene* scene = mesh->GetNumberOfMeshes(e.drop.file, num);
 					if (num > 1) {
@@ -150,6 +151,23 @@ update_status ModuleInput::PreUpdate(float dt)
 					}
 					mesh->CleanScene(scene);
 					break;
+				}
+				case FILE_TYPE::PNG:
+				{
+					if (App->scene_intro->game_object_selected != nullptr) {
+						ComponentMaterial* mat = (ComponentMaterial*)App->scene_intro->game_object_selected->GetComponent(Component_Type::Material);
+						if (mat != nullptr) {
+							mat->LoadTexture(e.drop.file);
+						}
+						else {
+							App->scene_intro->game_object_selected->CreateComponent(Component_Type::Material, e.drop.file);
+						}
+					}
+					else {
+						LOG("You must select a game object to put it a texture.")
+					}
+					break;
+				}
 				}
 			}
 			break;
