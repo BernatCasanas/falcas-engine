@@ -20,6 +20,8 @@ bool FileSystem::Start()
 		LOG("Failed to load Asset Manager");
 	}
 
+	PHYSFS_mount("Assets.zip", nullptr, 1);
+
 	return true;
 }
 
@@ -138,4 +140,34 @@ void FileSystem::CreateCompleteGameObject(std::string name, GameObject* parent, 
 	ComponentMesh* mesh = (ComponentMesh*)gameObject->GetComponent(Component_Type::Mesh);
 	mat->LoadTexture(material_path);
 	mesh->LoadMesh({ 0,0,0 }, mesh_path.c_str(), name, mat);
+}
+
+uint FileSystem::Load(const char* path, char** buffer) const
+{
+	uint ret;
+	PHYSFS_file* file = PHYSFS_openRead(path);
+	if (!PHYSFS_eof(file))
+	{
+		uint lenght = PHYSFS_fileLength(file);
+		*buffer = new char[lenght];
+		uint bytes = PHYSFS_readBytes(file, *buffer, lenght);
+
+		if (bytes != lenght)
+		{
+			LOG("%s", path, "ERROR: %s", PHYSFS_getLastError());
+			if (buffer != NULL)  
+			{               
+				delete[] buffer;
+				buffer = NULL;
+			}
+		}
+		else
+			ret = bytes;
+	}
+	else
+		LOG("%s", path, "ERROR: %s", PHYSFS_getLastError());
+
+	PHYSFS_close(file);
+
+	return ret;
 }

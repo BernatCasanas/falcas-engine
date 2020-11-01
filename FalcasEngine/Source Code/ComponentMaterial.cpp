@@ -1,6 +1,7 @@
 #include "ComponentMaterial.h"
 #include "Component.h"
 #include "External Libraries/ImGui/imgui.h"
+#include "FileSystem.h"
 
 ComponentMaterial::ComponentMaterial(GameObject* owner) : Component(Component_Type::Material, owner)
 {
@@ -28,7 +29,10 @@ void ComponentMaterial::LoadTexture(std::string file)
 	ilGenImages(1, &image_name);
 	ilBindImage(image_name);
 
-	if (ilLoadImage(file.c_str())) {
+	char* buffer = nullptr;
+	uint size = App->filesystem->Load(file.c_str(), &buffer);
+
+	if (ilLoadL(IL_TYPE_UNKNOWN,buffer,size)) {
 		ILenum error = ilGetError();
 		LOG("Error loading Texture %s\n", iluErrorString(error));
 	}

@@ -12,6 +12,7 @@
 #include "Application.h"
 #include "External Libraries/PhysFS/include/physfs.h"
 #include "Globals.h"
+#include "External Libraries/SDL/include/SDL.h"
 
 #pragma comment(lib, "PhysFS/libx86/physfs.lib")
 
@@ -35,6 +36,8 @@ public:
 	void CreateWhiteGameObject();
 	void CreateCompleteGameObject(std::string name, GameObject* parent, std::string mesh_path, std::string material_path = "");
 
+public:
+	uint Load(const char* path, char** buffer) const;
 };
 
 

@@ -243,9 +243,14 @@ void ComponentMesh::LoadMesh(float3 position, const char* file, std::string name
 	GameObject* m=nullptr;
 	ComponentMesh* m_mesh=nullptr;
 	ComponentMaterial* m_material=nullptr;
+
 	bool multimesh = false;
 	const aiScene* scene = nullptr;
-	scene = aiImportFile(file, aiProcessPreset_TargetRealtime_MaxQuality);
+	char* buffer = nullptr;
+	uint size = App->filesystem->Load(file, &buffer);
+
+	scene = aiImportFileFromMemory(buffer, size, aiProcessPreset_TargetRealtime_MaxQuality, nullptr);
+
 	if (scene != nullptr && scene->HasMeshes())
 	{
 		if (scene->mNumMeshes > 1) {
