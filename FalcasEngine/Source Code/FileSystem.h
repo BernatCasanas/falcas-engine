@@ -14,7 +14,7 @@
 #include "Globals.h"
 #include "External Libraries/SDL/include/SDL.h"
 
-#pragma comment(lib, "PhysFS/libx86/physfs.lib")
+#pragma comment(lib, "Source Code/External Libraries/PhysFS/libx86/physfs.lib")
 
 
 class FileSystem : public Module {
