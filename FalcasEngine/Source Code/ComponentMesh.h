@@ -40,7 +40,8 @@ public:
 	float* vertices = nullptr;
 	float* normals = nullptr;
 	uint* indices = nullptr;
-	bool show_normals;
+	bool show_normals_v;
+	bool show_normals_f;
 	float length_normals;
 	bool grid;
 
