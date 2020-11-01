@@ -50,18 +50,18 @@ bool ModuleSceneIntro::Start()
 	game_object_selected = nullptr;
 	int num = 0;
 	GameObject* house=CreateGameObject("BakerHouse", root);
-	const aiScene* scene = mesh->GetNumberOfMeshes("Assets/BakerHouse.fbx", num);
+	const aiScene* scene = mesh->GetNumberOfMeshes("Assets/BakerHouse/BakerHouse.fbx", num);
 	if (num > 1) {
 		GameObject* game_object = nullptr;
 		for (int i = 0; i < num; i++) {
-			game_object =CreateGameObject(scene, i, "Assets/BakerHouse.fbx", "BakerHouse", house);
-			game_object->CreateComponent(Component_Type::Material, "Assets/Baker_house.png");
+			game_object =CreateGameObject(scene, i, "Assets/BakerHouse/BakerHouse.fbx", "BakerHouse", house);
+			game_object->CreateComponent(Component_Type::Material, "Assets/BakerHouse/Baker_house.png");
 		}
 	}
 	else {
 		mesh = (ComponentMesh*)house->CreateComponent(Component_Type::Mesh);
 		mesh->LoadMesh(scene, 0);
-		house->CreateComponent(Component_Type::Material, "Assets/Baker_house.png");
+		house->CreateComponent(Component_Type::Material, "Assets/BakerHouse/Baker_house.png");
 	}
 	mesh->CleanScene(scene);
 
