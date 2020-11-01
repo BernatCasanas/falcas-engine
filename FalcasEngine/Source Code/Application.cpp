@@ -6,7 +6,6 @@
 #include "ModuleSceneIntro.h"
 #include "ModuleRenderer3D.h"
 #include "ModuleCamera3D.h"
-#include "ModulePhysics3D.h"
 #include "ModuleCentralEditor.h"
 #include "Console.h"
 #include "FileSystem.h"
@@ -20,7 +19,6 @@ Application::Application()
 	scene_intro = new ModuleSceneIntro(this);
 	renderer3D = new ModuleRenderer3D(this);
 	camera = new ModuleCamera3D(this);
-	physics = new ModulePhysics3D(this);
 	central_editor = new ModuleCentralEditor(this);
 	filesystem = new FileSystem(this);
 
@@ -32,7 +30,6 @@ Application::Application()
 	AddModule(window);
 	AddModule(camera);
 	AddModule(input);
-	AddModule(physics);
 	AddModule(filesystem);
 	
 	// Scenes

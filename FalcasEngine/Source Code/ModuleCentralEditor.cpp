@@ -1,5 +1,4 @@
 ﻿#pragma once
-#include "Globals.h"
 #include "Application.h"
 #include "ModuleCentralEditor.h"
 #include "External Libraries/Glew/include/glew.h"
@@ -11,7 +10,6 @@
 #include "External Libraries/SDL/include/SDL_opengl.h"
 #include <string>
 #include <Windows.h>
-#include <list>
 #include <stdio.h>
 #include "ModuleWindow.h"
 #include "Console.h"
@@ -44,46 +42,19 @@ bool ModuleCentralEditor::Init()
 	LOG("Init ImGui stuff related");
 	bool ret = true;
 
-    /*
-    // Initialize OpenGL loader
-#if defined(IMGUI_IMPL_OPENGL_LOADER_GL3W)
-    bool err = glewInit() != 0;
-#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLEW)
-    bool err = glewInit() != GLEW_OK;
-#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLAD)
-    bool err = gladLoadGL() == 0;
-#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLAD2)
-    bool err = gladLoadGL((GLADloadfunc)SDL_GL_GetProcAddress) == 0; // glad2 recommend using the windowing library loader instead of the (optionally) bundled one.
-#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLBINDING2)
-    bool err = false;
-    glbinding::Binding::initialize();
-#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLBINDING3)
-    bool err = false;
-    glbinding::initialize([](const char* name) { return (glbinding::ProcAddress)SDL_GL_GetProcAddress(name); });
-#else
-    bool err = false; // If you use IMGUI_IMPL_OPENGL_LOADER_CUSTOM, your loader is likely to requires some form of initialization.
-#endif
-    if (err)
-    {
-        fprintf(stderr, "Failed to initialize OpenGL loader!\n");
-        return 1;
-    }
-    */
+  
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;       // Enable Keyboard Controls
-    //io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
     io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;         // Enable Multi-Viewport / Platform Windows
 
-    //io.ConfigViewportsNoAutoMerge = true;
-    //io.ConfigViewportsNoTaskBarIcon = true;
+  
 
     // Setup Dear ImGui style
     ImGui::StyleColorsDark();
-    //ImGui::StyleColorsClassic();
 
     // When viewports are enabled we tweak WindowRounding/WindowBg so platform windows can look identical to regular ones.
     ImGuiStyle& style = ImGui::GetStyle();
@@ -398,7 +369,6 @@ update_status ModuleCentralEditor::PostUpdate(float dt)
         }
         if (ImGui::CollapsingHeader("Audio")) {
             ImGui::SliderFloat("", &progress4, 0.0f, 100.0f);
-            //code goes here
         }
         if (ImGui::CollapsingHeader("Hardware")) {
             ImGui::Text("SDL Version: ");
@@ -433,7 +403,6 @@ update_status ModuleCentralEditor::PostUpdate(float dt)
             if(SDL_HasSSE41) ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "SSE41 "); ImGui::SameLine();
             if(SDL_HasSSE42) ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "SSE42 "); ImGui::SameLine();
             ImGui::Separator();
-            //no me detecta la funcion glgetstring
             const GLubyte* vendor = glGetString(GL_VENDOR);
             const GLubyte* renderer = glGetString(GL_RENDERER);
 
@@ -522,9 +491,7 @@ update_status ModuleCentralEditor::PostUpdate(float dt)
     else glDisable(GL_AMBIENT);
     // Rendering
     ImGui::Render();
-    //glViewport(0, 0, (int)io.DisplaySize.x, (int)io.DisplaySize.y);
-    //glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
-    //glClear(GL_COLOR_BUFFER_BIT);
+   
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
     // Update and Render additional Platform Windows

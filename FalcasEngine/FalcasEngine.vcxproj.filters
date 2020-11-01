@@ -57,9 +57,6 @@
     <ClCompile Include="Source Code\ModuleInput.cpp">
       <Filter>Source Code</Filter>
     </ClCompile>
-    <ClCompile Include="Source Code\ModulePhysics3D.cpp">
-      <Filter>Source Code</Filter>
-    </ClCompile>
     <ClCompile Include="Source Code\ModuleRenderer3D.cpp">
       <Filter>Source Code</Filter>
     </ClCompile>
@@ -237,9 +234,6 @@
       <Filter>Source Code</Filter>
     </ClInclude>
     <ClInclude Include="Source Code\ModuleInput.h">
-      <Filter>Source Code</Filter>
-    </ClInclude>
-    <ClInclude Include="Source Code\ModulePhysics3D.h">
       <Filter>Source Code</Filter>
     </ClInclude>
     <ClInclude Include="Source Code\ModuleRenderer3D.h">

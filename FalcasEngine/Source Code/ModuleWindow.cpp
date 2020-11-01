@@ -1,5 +1,4 @@
 #pragma once
-#include "Globals.h"
 #include "Application.h"
 #include "ModuleWindow.h"
 #include "External Libraries/SDL/include/SDL.h"

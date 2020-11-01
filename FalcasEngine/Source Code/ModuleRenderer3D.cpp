@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Globals.h"
 #include "Application.h"
 #include "ModuleRenderer3D.h"
 #include "ModuleCamera3D.h"
@@ -122,17 +121,7 @@ bool ModuleRenderer3D::Init()
 
 	// Projection matrix for
 	OnResize(SCREEN_WIDTH, SCREEN_HEIGHT);
-	//DIFFERENT SHAPES' INITIALIZATION
-	//square_pyramid = new SquarePyramid(Shape::SquarePyramid, { 0,0,0 }, 1,1);
-	//cube = new Cube(Shape::Cube, { 0,0,0 }, 1);
-	//rectangular_prism = new RectangularPrism(Shape::RectangularPrism, { 0,0,0 }, 1, 1, 1);
-	//triangular_pyramid = new TriangularPyramid(Shape::TriangularPyramid, { 0,0,0 }, 1);
-	//rectangular_pyramid = new RectangularPyramid(Shape::RectangularPyramid, { 0,0,0 }, 1, 3, 2);
-	//solid_sphere = new SolidSphere(Shape::SolidSphere, { 0,0,0 }, 1, 12, 24);
-	//cilinder = new Cilinder(Shape::Cilinder, { 0,0,0 }, 1, 1, 3, 8);
-	//solid_cone = new SolidCone(Shape::SolidCone, { 0,0,0 }, 1, 3, 16);
-	//grid = new Grid(Shape::Grid, { 0,0,0 }, 500);
-	//solid_plane = new SolidPlane(Shape::SolidPlane, { 0,0,0 }, 1);
+
 	return ret;
 }
 
@@ -150,18 +139,7 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 
 	for(uint i = 0; i < MAX_LIGHTS; ++i)
 		lights[i].Render();
-	glLineWidth(2.0f);
-	//DIFFERENT SHAPES' RENDERIZATION
-	//cube->Render();
-	//square_pyramid->Render();
-	//rectangular_prism->Render();
-	//triangular_pyramid->Render();
-	//rectangular_pyramid->Render();
-	//solid_sphere->Render();
-	//cilinder->Render();
-	//solid_cone->Render();
-	//grid->Render(false);
-	//solid_plane->Render();
+
 	glLineWidth(1.0f);
 	
 	return UPDATE_CONTINUE;
@@ -179,17 +157,6 @@ bool ModuleRenderer3D::CleanUp()
 {
 	LOG("Destroying 3D Renderer");
 
-	//DIFFERENT SHAPES' ELIMINATION
-	//delete cube;
-	//delete square_pyramid;
-	//delete rectangular_prism;
-	//delete triangular_pyramid;
-	//delete rectangular_pyramid;
-	//delete solid_sphere;
-	//delete cilinder;
-	//delete solid_cone;
-	//delete grid;
-	//delete solid_plane;
 	SDL_GL_DeleteContext(context);
 
 	return true;

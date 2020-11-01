@@ -6,12 +6,10 @@
 #include <list>
 #include <vector>
 #include "External Libraries/ImGui/imgui_impl_sdl.h"
-#include "External Libraries/ImGui/imgui.h"
+
 
 class Application;
-class ImVec4;
 class GameObject;
-class Component;
 
 class ModuleCentralEditor : public Module
 {

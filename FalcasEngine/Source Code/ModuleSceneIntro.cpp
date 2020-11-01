@@ -1,5 +1,4 @@
 #pragma once
-#include "Globals.h"
 #include "Application.h"
 #include "ModuleSceneIntro.h"
 #include "ModuleCentralEditor.h"
@@ -10,7 +9,6 @@
 #include "External Libraries/MathGeoLib/include/Math/Quat.h"
 #include "ComponentMesh.h"
 #include "External Libraries/Devil/Include/il.h"
-#include <string>
 #include "ComponentMaterial.h"
 #include <gl/GL.h>
 #include "Shape.h"
@@ -75,6 +73,7 @@ bool ModuleSceneIntro::Start()
 bool ModuleSceneIntro::CleanUp()
 {
 	LOG("Unloading Intro scene");
+	delete root;
 	ilDisable(IL_ORIGIN_SET);
 
 	return true;
