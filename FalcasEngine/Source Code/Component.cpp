@@ -1,6 +1,7 @@
 #pragma once
 #include "Component.h"
 #include "External Libraries/ImGui/imgui.h"
+#include "GameObject.h"
 
 
 Component::Component(Component_Type type, GameObject* owner)
@@ -13,6 +14,15 @@ Component::Component(Component_Type type, GameObject* owner)
 
 Component::~Component()
 {
+	if (owner != nullptr) {
+		std::vector<Component*>::iterator it = owner->components.begin();
+		for (int i = 0; it != owner->components.end(); ++it, i++) {
+			if (owner->components.at(i)->name == name) {
+				owner->components.erase(it);
+				break;
+			}
+		}
+	}
 	owner = nullptr;
 }
 

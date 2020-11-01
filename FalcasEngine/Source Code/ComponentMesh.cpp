@@ -20,6 +20,7 @@ ComponentMesh::ComponentMesh(GameObject* owner) :Component(Component_Type::Mesh,
 	vertices = nullptr;
 	indices = nullptr;
 	normals = nullptr;
+	texCoords = nullptr;
 	show_normals_v = show_normals_f = false;
 	length_normals = 1;
 	id_indices = id_vertices = num_indices = num_vertices = id_normals = num_normals =num_textureCoords= 0;

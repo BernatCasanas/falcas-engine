@@ -20,6 +20,7 @@ public:
 	Component* CreateComponent(Component_Type type);
 	Component* CreateComponent(Component_Type type, char* file);
 	Component* GetComponent(Component_Type type);
+	void DeleteComponent(Component_Type type);
 	void AddComponentToGameObject(Component* component);
 	std::string GetName() { return name; }
 	bool CheckComponentType(Component_Type type);

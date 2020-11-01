@@ -74,6 +74,7 @@ bool ModuleSceneIntro::CleanUp()
 {
 	LOG("Unloading Intro scene");
 	delete root;
+	game_object_selected = nullptr;
 	ilDisable(IL_ORIGIN_SET);
 
 	return true;

@@ -55,9 +55,8 @@ GameObject::~GameObject()
 		delete children.at(i);
 	}
 	children.clear();
-	size = components.size();
-	for (int i = size-1; i >= 0; i--) {
-		delete components.at(i);
+	for (int i = 0; i < 3; i++) {
+		DeleteComponent((Component_Type)i);
 	}
 	components.clear();
 }
@@ -126,6 +125,13 @@ Component* GameObject::GetComponent(Component_Type type)
 		}
 	}
 	return component;
+}
+
+void GameObject::DeleteComponent(Component_Type type)
+{
+	Component* c= GetComponent(type);
+	if (c != nullptr)
+		delete c;
 }
 
 void GameObject::AddComponentToGameObject(Component* component)

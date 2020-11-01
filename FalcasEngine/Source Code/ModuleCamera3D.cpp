@@ -182,7 +182,7 @@ update_status ModuleCamera3D::Update(float dt)
 			float3 position = transform->GetPosition();
 			float3 size = transform->GetSize();
 			Reference = { position.x,position.y,position.z };
-			Position = Reference + size.MaxElement();
+			Position = Reference + 20;//size.MaxElement();
 			LookAt(Reference);
 		}
 	}

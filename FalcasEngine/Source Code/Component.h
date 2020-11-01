@@ -4,10 +4,11 @@
 class GameObject;
 
 enum class Component_Type {
-	Uknown=-1,
+	Uknown = -1,
 	Transform,
 	Mesh,
 	Material,
+	Max,
 };
 
 
