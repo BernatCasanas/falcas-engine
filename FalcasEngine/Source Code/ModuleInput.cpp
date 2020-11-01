@@ -161,12 +161,21 @@ update_status ModuleInput::PreUpdate(float dt)
 				case FILE_TYPE::DDS:
 				{
 					if (App->scene_intro->game_object_selected != nullptr) {
-						ComponentMaterial* mat = (ComponentMaterial*)App->scene_intro->game_object_selected->GetComponent(Component_Type::Material);
-						if (mat != nullptr) {
-							mat->LoadTexture(e.drop.file);
+						ComponentMesh* mesh = (ComponentMesh*)App->scene_intro->game_object_selected->GetComponent(Component_Type::Mesh);
+						if (mesh != nullptr && mesh->num_textureCoords > 0) {
+							ComponentMaterial* mat = (ComponentMaterial*)App->scene_intro->game_object_selected->GetComponent(Component_Type::Material);
+							if (mat != nullptr) {
+								mat->LoadTexture(e.drop.file);
+							}
+							else {
+								App->scene_intro->game_object_selected->CreateComponent(Component_Type::Material, e.drop.file);
+							}
+						}
+						else if (mesh != nullptr) {
+							LOG("The mesh has to have texture coords in order to have a texture");
 						}
 						else {
-							App->scene_intro->game_object_selected->CreateComponent(Component_Type::Material, e.drop.file);
+							LOG("The game object must have a mesh in order to have a texture");
 						}
 					}
 					else {
