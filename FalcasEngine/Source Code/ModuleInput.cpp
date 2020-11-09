@@ -8,6 +8,7 @@
 #include "ModuleSceneIntro.h"
 #include "FileSystem.h"
 #include "External Libraries/SDL/include/SDL.h"
+#include "External Libraries/Assimp/Assimp/include/scene.h"
 #include "GameObject.h"
 #include "ComponentMaterial.h"
 #include "ComponentMesh.h"
@@ -139,21 +140,11 @@ update_status ModuleInput::PreUpdate(float dt)
 				switch (GetTypeFile(e.drop.file)) {
 				case FILE_TYPE::FBX:
 				{
-					GameObject* game_object = App->scene_intro->CreateGameObject(GetFileName(e.drop.file), App->scene_intro->root);
 					ComponentMesh* mesh=nullptr;
-					int num = 0;
-					const aiScene* scene = mesh->GetNumberOfMeshes(e.drop.file, num);
-					if (num > 1) {
-						GameObject* game_object_iterator = nullptr;
-						for (int i = 0; i < num; i++) {
-							game_object_iterator = App->scene_intro->CreateGameObject(scene, i, e.drop.file, GetFileName(e.drop.file), game_object);
-						}
-					}
-					else {
-						mesh = (ComponentMesh*)game_object->CreateComponent(Component_Type::Mesh);
-						mesh->LoadMesh(scene, 0);
-						mesh->SetFileName(e.drop.file);
-					}
+					const aiScene* scene = mesh->GetSceneOfMeshes(e.drop.file);
+					aiNode* nod = scene->mRootNode;
+					App->scene_intro->CreateGameObject(nod, scene, e.drop.file, GetFileName(e.drop.file), App->scene_intro->root);
+					
 					mesh->CleanScene(scene);
 					break;
 				}
@@ -230,7 +221,7 @@ FILE_TYPE ModuleInput::GetTypeFile(char* file)
 	name = name.substr(size + 1);
 
 	
-	if (name == "fbx") return FILE_TYPE::FBX;
+	if (name == "fbx"||name=="FBX") return FILE_TYPE::FBX;
 	else if (name == "png") return FILE_TYPE::PNG;
 	else if (name == "dds") return FILE_TYPE::DDS;
 	else return FILE_TYPE::UNKNOWN;

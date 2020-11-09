@@ -43,8 +43,8 @@ ComponentMesh::ComponentMesh(GameObject* owner, char* file) :Component(Component
 	SetFileName(file);
 	const aiScene* scene = nullptr;
 	int num = 0;
-	scene = GetNumberOfMeshes(file, num);
-	LoadMesh(scene);
+	scene = GetSceneOfMeshes(file);
+	//LoadMesh(scene);
 }
 
 ComponentMesh::~ComponentMesh()
@@ -78,14 +78,13 @@ void ComponentMesh::SetFileName(std::string file)
 	file_name = full_file_name.substr(pos + 1);
 }
 
-const aiScene* ComponentMesh::GetNumberOfMeshes(const char* file, int& num)
+const aiScene* ComponentMesh::GetSceneOfMeshes(const char* file)
 {
 	const aiScene* scene = nullptr;
 	char* buffer = nullptr;
 	uint size = App->filesystem->Load(file, &buffer);
 
 	scene = aiImportFileFromMemory(buffer, size, aiProcessPreset_TargetRealtime_MaxQuality, nullptr);
-	num = scene->mNumMeshes;
 	return scene;
 }
 
@@ -118,11 +117,15 @@ void ComponentMesh::Initialization()
 void ComponentMesh::Render()
 {
 	if (id_indices > 0 && id_vertices > 0) {
+		ComponentTransform* trans = (ComponentTransform*)owner->GetComponent(Component_Type::Transform);
+		glPushMatrix();
+		glMultMatrixf((float*)&trans->GetGlobalMatrixTransposed());
 		//vertices
 		glEnableClientState(GL_VERTEX_ARRAY);
 
 		glBindBuffer(GL_ARRAY_BUFFER, id_vertices);
 		glVertexPointer(3, GL_FLOAT, 0, NULL);
+
 
 		//normals
 		if (num_normals > 0) {
@@ -218,16 +221,17 @@ void ComponentMesh::Render()
 		}
 		glDisableClientState(GL_VERTEX_ARRAY);
 		glDisableClientState(GL_ELEMENT_ARRAY_BUFFER);
+		glPopMatrix();
 	}
 }
 
 
-void ComponentMesh::LoadMesh(const aiScene* scene, int num_of_mesh)
+int ComponentMesh::LoadMesh(int num_mesh, const aiScene* scene)
 {
-
-	if (scene != nullptr && scene->HasMeshes())
+	int material_index = -1;
+	aiMesh* ai_mesh = scene->mMeshes[num_mesh];
+	if (ai_mesh != nullptr )
 	{
-		aiMesh* ai_mesh = scene->mMeshes[num_of_mesh];
 		num_vertices = ai_mesh->mNumVertices*3;
 		vertices = new float[num_vertices];
 		memcpy(vertices, ai_mesh->mVertices, sizeof(float) * num_vertices);
@@ -268,22 +272,19 @@ void ComponentMesh::LoadMesh(const aiScene* scene, int num_of_mesh)
 				texCoords[j] = ai_mesh->mTextureCoords[0][i].x;
 				texCoords[j + 1] = ai_mesh->mTextureCoords[0][i].y;
 			}
+			material_index = ai_mesh->mMaterialIndex;
 		}
+		
 
 		Initialization();
 
-		ComponentTransform* trans = (ComponentTransform*)owner->GetComponent(Component_Type::Transform);
-		aiVector3D pos;
-		aiQuaternion rot;
-		aiVector3D size;
-		scene->mRootNode->mChildren[num_of_mesh]->mTransformation.Decompose(size, rot, pos);
-		trans->SetTransformation({ pos.x,pos.y,pos.z }, { rot.x,rot.y,rot.z,rot.w }, { size.x,size.y,size.z });
+	
 	}
 	else {
 		const char* error = aiGetErrorString();
 		LOG("Error loading FBX: %s", error)
 	}
-
+	return material_index;
 }
 
 void ComponentMesh::CleanScene(const aiScene* scene)

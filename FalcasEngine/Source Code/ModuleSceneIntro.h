@@ -7,6 +7,7 @@
 
 class GameObject;
 struct aiScene;
+struct aiNode;
 class ModuleSceneIntro : public Module
 {
 public:
@@ -21,8 +22,7 @@ public:
 	
 	GameObject* CreateGameObject(std::string name = "", GameObject* parent = nullptr);
 	GameObject* CreateGameObject(float3 position, Quat rotation, float3 size, std::string name = "", GameObject* parent = nullptr);
-	GameObject* CreateGameObject(const aiScene* scene, int num_of_mesh, std::string file_name="", std::string name = "", GameObject* parent = nullptr);
-	GameObject* CreateGameObject(const aiScene* scene, int num_of_mesh, float3 position, Quat rotation, float3 size, std::string file_name = "", std::string name = "", GameObject* parent = nullptr);
+	GameObject* CreateGameObject(const aiNode* node, const aiScene* scene, std::string file_name = "", std::string name = "", GameObject* parent = nullptr);
 
 
 	GameObject* SearchGameObject(int id, GameObject* game_obj);

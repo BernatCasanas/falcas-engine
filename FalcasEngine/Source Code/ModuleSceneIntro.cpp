@@ -7,6 +7,7 @@
 #include "Console.h"
 #include "GameObject.h"
 #include "External Libraries/MathGeoLib/include/Math/Quat.h"
+#include "External Libraries/Assimp/Assimp/include/scene.h"
 #include "ComponentMesh.h"
 #include "External Libraries/Devil/Include/il.h"
 #include "ComponentMaterial.h"
@@ -41,7 +42,7 @@ bool ModuleSceneIntro::Start()
 	App->camera->Move(vec3(1.0f, 1.0f, 0.0f));
 	App->camera->LookAt(vec3(0, 0, 0));
 	id_gameobject = -1;
-	root = new GameObject(id_gameobject, "Grid", nullptr, { 0,0,0 }, Quat::identity, { 500,1,500 });
+	root = new GameObject(id_gameobject, "Grid", nullptr, { 0,0,0 }, Quat::identity, { 1,1,1 });
 	id_gameobject++;
 	ComponentMesh* mesh = (ComponentMesh*)root->CreateComponent(Component_Type::Mesh);
 	mesh->grid = true;
@@ -49,20 +50,12 @@ bool ModuleSceneIntro::Start()
 	mesh->Initialization();
 	game_object_selected = nullptr;
 	int num = 0;
-	GameObject* house=CreateGameObject("BakerHouse", root);
-	const aiScene* scene = mesh->GetNumberOfMeshes("Assets/BakerHouse/BakerHouse.fbx", num);
-	if (num > 1) {
-		GameObject* game_object = nullptr;
-		for (int i = 0; i < num; i++) {
-			game_object =CreateGameObject(scene, i, "Assets/BakerHouse/BakerHouse.fbx", "BakerHouse", house);
-			game_object->CreateComponent(Component_Type::Material, "Assets/BakerHouse/Baker_house.png");
-		}
-	}
-	else {
-		mesh = (ComponentMesh*)house->CreateComponent(Component_Type::Mesh);
-		mesh->LoadMesh(scene, 0);
-		house->CreateComponent(Component_Type::Material, "Assets/BakerHouse/Baker_house.png");
-	}
+
+	std::string path = "Assets/BakerHouse/BakerHouse.fbx";
+	const aiScene* scene = mesh->GetSceneOfMeshes(path.c_str());
+	aiNode* nod = scene->mRootNode;
+	CreateGameObject(nod, scene, path.c_str(), "BakerHouse", root);
+
 	mesh->CleanScene(scene);
 
 
@@ -135,38 +128,43 @@ GameObject* ModuleSceneIntro::CreateGameObject(float3 position, Quat rotation, f
 	return game_object;
 }
 
-GameObject* ModuleSceneIntro::CreateGameObject(const aiScene* scene, int num_of_mesh, std::string file_name, std::string name, GameObject* parent)
+
+GameObject* ModuleSceneIntro::CreateGameObject(const aiNode* node, const aiScene* scene, std::string file_name, std::string name, GameObject* parent)
 {
 	GameObject* game_object = nullptr;
 	name = CheckNameGameObject(name);
-	game_object = new GameObject(App->scene_intro->id_gameobject, name, parent);
-	if (game_object != nullptr) {
-		App->scene_intro->id_gameobject++;
-		if (parent != nullptr) {
-			parent->children.push_back(game_object);
-		}
-
-	}
-	ComponentMesh* mesh= (ComponentMesh*)game_object->CreateComponent(Component_Type::Mesh);
-	mesh->LoadMesh(scene, num_of_mesh);
-	mesh->SetFileName(file_name);
-	return game_object;
-}
-
-GameObject* ModuleSceneIntro::CreateGameObject(const aiScene* scene, int num_of_mesh, float3 position, Quat rotation, float3 size, std::string file_name, std::string name, GameObject* parent)
-{
-	GameObject* game_object = nullptr;
-	name = CheckNameGameObject(name);
-	game_object = new GameObject(App->scene_intro->id_gameobject, name, parent, position, rotation, size);
+	aiVector3D position, size;
+	aiQuaternion rotation;
+	node->mTransformation.Decompose(size,rotation, position);
+	game_object = new GameObject(App->scene_intro->id_gameobject, name, parent, { position.x,position.y,position.z }, { rotation.x,rotation.y,rotation.z,rotation.w }, { size.x,size.y,size.z });
 	if (game_object != nullptr) {
 		App->scene_intro->id_gameobject++;
 		if (parent != nullptr) {
 			parent->children.push_back(game_object);
 		}
 	}
-	ComponentMesh* mesh = (ComponentMesh*)game_object->CreateComponent(Component_Type::Mesh);
-	mesh->LoadMesh(scene, num_of_mesh);
-	mesh->SetFileName(file_name);
+	if (node->mNumMeshes > 0) {
+		ComponentMesh* mesh = (ComponentMesh*)game_object->CreateComponent(Component_Type::Mesh);
+		int num_material = mesh->LoadMesh(node->mMeshes[0], scene);
+		mesh->SetFileName(file_name);
+		if (num_material != -1&& num_material<scene->mNumMaterials) {
+			ComponentMaterial* mat = (ComponentMaterial*)game_object->CreateComponent(Component_Type::Material);
+			aiString material_path;
+			scene->mMaterials[num_material]->GetTexture(aiTextureType_DIFFUSE, 0, &material_path);
+			if (material_path.length > 0) {
+				std::string path = file_name;
+				int pos_path = path.find_last_of('/');
+				if (pos_path == -1)
+					pos_path = path.find_last_of('\\');
+				path = path.substr(0, pos_path + 1);
+				path += material_path.C_Str();
+				mat->LoadTexture(path.c_str());
+			}
+		}
+	}
+	for (int i = 0; i < node->mNumChildren; i++) {
+		CreateGameObject(node->mChildren[i], scene, file_name, name, game_object);
+	}
 	return game_object;
 }
 

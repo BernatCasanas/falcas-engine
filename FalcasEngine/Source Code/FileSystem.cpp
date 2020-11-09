@@ -40,7 +40,7 @@ bool FileSystem::Start()
 
 uint FileSystem::Load(const char* path, char** buffer) const
 {
-	uint ret;
+	uint ret=0;
 	std::string str = path;
 	std::replace(str.begin(), str.end(), '\\', '/');
 	int size = -1;
@@ -49,7 +49,7 @@ uint FileSystem::Load(const char* path, char** buffer) const
 		str=str.substr(size).c_str();
 	const char* path_relative = str.c_str();
 	PHYSFS_file* file = PHYSFS_openRead(path_relative);
-	if (!PHYSFS_eof(file))
+	if (file!=nullptr&&!PHYSFS_eof(file))
 	{
 		uint lenght = PHYSFS_fileLength(file);
 		*buffer = new char[lenght];

@@ -3,6 +3,7 @@
 
 class GameObject;
 struct aiScene;
+struct aiMesh;
 class ComponentMesh : public Component {
 public:
 	ComponentMesh(GameObject* owner);
@@ -11,9 +12,9 @@ public:
 	void Update();
 	void SetFileName(std::string file);
 
-	const aiScene* GetNumberOfMeshes(const char* file, int& num);
+	const aiScene* GetSceneOfMeshes(const char* file);
 	
-	void LoadMesh(const aiScene* scene, int num_of_mesh = 0);
+	int LoadMesh(int num_mesh, const aiScene* scene);
 	void CleanScene(const aiScene* scene);
 
 	void Initialization();

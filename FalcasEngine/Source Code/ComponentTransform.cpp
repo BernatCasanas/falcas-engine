@@ -1,6 +1,7 @@
 #pragma once
 #include "ComponentTransform.h"
 #include "External Libraries/ImGui/imgui.h"
+#include "GameObject.h"
 
 ComponentTransform::ComponentTransform(GameObject* owner, float3 position, Quat rotation, float3 size) :Component(Component_Type::Transform, owner)
 {
@@ -9,6 +10,13 @@ ComponentTransform::ComponentTransform(GameObject* owner, float3 position, Quat 
 	this->size = size;
 	euler = QuaternionToEuler(rotation);
 	name = "Transform";
+	local_matrix = local_matrix.FromTRS(position, rotation, size);
+	if (owner->parent != nullptr) {
+		ComponentTransform* parent_trans = (ComponentTransform*)owner->parent->GetComponent(Component_Type::Transform);
+		global_matrix = parent_trans->GetGlobalMatrix() * local_matrix;
+	}
+	else global_matrix = local_matrix;
+	global_matrix_transposed = global_matrix.Transposed();
 }
 
 ComponentTransform::~ComponentTransform()
@@ -20,12 +28,12 @@ void ComponentTransform::Update()
 	rotation = EulerToQuaternion(euler);
 }
 
-float3 ComponentTransform::GetPosition()
+float3 ComponentTransform::GetPosition()const
 {
 	return position;
 }
 
-Quat ComponentTransform::GetRotation()
+Quat ComponentTransform::GetRotation()const
 {
 	return rotation;
 }
@@ -35,7 +43,7 @@ float3 ComponentTransform::GetRotation(bool convert)
 	return QuaternionToEuler(rotation);
 }
 
-float3 ComponentTransform::GetSize()
+float3 ComponentTransform::GetSize()const
 {
 	return size;
 }
@@ -70,11 +78,29 @@ Quat ComponentTransform::EulerToQuaternion(float3 eu)
 	return q;
 }
 
+float4x4 ComponentTransform::GetGlobalMatrix() const
+{
+	return global_matrix;
+}
+
+float4x4 ComponentTransform::GetGlobalMatrixTransposed() const
+{
+	return global_matrix_transposed;
+}
+
 void ComponentTransform::SetTransformation(float3 pos, Quat rot, float3 size)
 {
 	position = pos;
 	rotation = rot;
 	this->size = size;
+	local_matrix = local_matrix.FromTRS(pos, rot, size);
+	if (owner->parent != nullptr) {
+		ComponentTransform* parent_trans = (ComponentTransform*)owner->parent->GetComponent(Component_Type::Transform);
+		global_matrix = parent_trans->GetGlobalMatrix() * local_matrix;
+	}
+	else global_matrix = local_matrix;
+	global_matrix_transposed = global_matrix.Transposed();
+
 }
 
 void ComponentTransform::Inspector()

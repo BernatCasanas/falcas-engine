@@ -1,6 +1,7 @@
 #pragma once
 #include "Component.h"
 #include "External Libraries/MathGeoLib/include/Math/float3.h"
+#include "External Libraries/MathGeoLib/include/Math/float4x4.h"
 #include "External Libraries/MathGeoLib/include/Math/Quat.h"
 
 class GameObject;
@@ -12,18 +13,23 @@ public:
 	~ComponentTransform();
 	void Update();
 
-	float3 GetPosition();
-	Quat GetRotation();
+	float3 GetPosition()const;
+	Quat GetRotation()const;
 	float3 GetRotation(bool convert);
-	float3 GetSize();
+	float3 GetSize()const;
 	float3 QuaternionToEuler(Quat q);
 	Quat EulerToQuaternion(float3 eu);
+	float4x4 GetGlobalMatrix() const;
+	float4x4 GetGlobalMatrixTransposed() const;
 
 
 	void SetTransformation(float3 pos, Quat rot, float3 size);
 	void Inspector();
 
 private:
+	float4x4 local_matrix;
+	float4x4 global_matrix;
+	float4x4 global_matrix_transposed;
 	float3 position;
 	Quat rotation;
 	float3 size;
