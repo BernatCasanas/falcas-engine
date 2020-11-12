@@ -26,6 +26,8 @@ public:
 	update_status PreUpdate(float dt);
 	update_status PostUpdate(float dt);
 
+	void Draw();
+
 
 	bool ProcessEvents(SDL_Event event);
 
@@ -57,6 +59,8 @@ public:
 
 	ImGuiTextBuffer  input_list;
 	bool need_scroll = false;
+
+	bool wantToExit = false;
 };
 
 #endif // __ModuleCentralEditor_H__

@@ -10,6 +10,8 @@
 #include "External Libraries/ImGui/imgui.h"
 #include "External Libraries/SDL/include/SDL.h"
 #include "ModuleWindow.h"
+#include "ModuleCentralEditor.h"
+#include "ModuleSceneIntro.h"
 
 
 
@@ -32,7 +34,6 @@ bool ModuleRenderer3D::Init()
 	LOG("Creating 3D Renderer context");
 	bool ret = true;
 	
-
 
 	//Create context
 	context = SDL_GL_CreateContext(App->window->window);
@@ -106,7 +107,38 @@ bool ModuleRenderer3D::Init()
 		lights[0].Active(true);
 		glEnable(GL_LIGHTING);
 		glEnable(GL_COLOR_MATERIAL);
+
+
+		
 	}
+
+	//Creating frame buffer
+	glGenFramebuffers(1, &frameBuffer);
+	glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
+
+	glGenTextures(1, &texColorBuffer);
+	glBindTexture(GL_TEXTURE_2D, texColorBuffer);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexImage2D(
+		GL_TEXTURE_2D, 0, GL_RGB, SCREEN_WIDTH, SCREEN_HEIGHT, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL
+	);
+	glFramebufferTexture2D(
+		GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texColorBuffer, 0
+	);
+
+	glGenRenderbuffers(1, &rboDepthStencil);
+	glBindRenderbuffer(GL_RENDERBUFFER, rboDepthStencil);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, SCREEN_WIDTH, SCREEN_HEIGHT);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rboDepthStencil);
+
+	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+		LOG("Famebuffer is not complete");
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
 
 
 	GLenum err = glewInit();
@@ -128,6 +160,8 @@ bool ModuleRenderer3D::Init()
 // PreUpdate: clear buffer
 update_status ModuleRenderer3D::PreUpdate(float dt)
 {
+	glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
+
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 
@@ -145,9 +179,22 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	return UPDATE_CONTINUE;
 }
 
+update_status ModuleRenderer3D::Update(float dt)
+{
+	App->scene_intro->Draw(texColorBuffer);
+
+	return update_status::UPDATE_CONTINUE;
+}
+
 // PostUpdate present buffer to screen
 update_status ModuleRenderer3D::PostUpdate(float dt)
 {
+	glBindVertexArray(0);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glClear(GL_COLOR_BUFFER_BIT);
+
+	App->central_editor->Draw();
+
 	SDL_GL_SwapWindow(App->window->window);
 	return UPDATE_CONTINUE;
 }
@@ -156,6 +203,8 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 bool ModuleRenderer3D::CleanUp()
 {
 	LOG("Destroying 3D Renderer");
+
+	glDeleteFramebuffers(1, &frameBuffer);
 
 	SDL_GL_DeleteContext(context);
 

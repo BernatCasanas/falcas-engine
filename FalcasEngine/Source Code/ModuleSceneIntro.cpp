@@ -73,6 +73,16 @@ bool ModuleSceneIntro::CleanUp()
 	return true;
 }
 
+void ModuleSceneIntro::Draw(GLuint tex)
+{
+	ImGui::Begin("Scene");
+
+	ImVec2 windowSize = ImGui::GetWindowSize();
+	ImGui::Image((ImTextureID)tex, windowSize, ImVec2(0, 1), ImVec2(1, 0));
+
+	ImGui::End();
+}
+
 int ModuleSceneIntro::GetID()
 {
 	return id_gameobject;
@@ -82,7 +92,6 @@ int ModuleSceneIntro::GetID()
 // Update: draw background
 update_status ModuleSceneIntro::Update(float dt)
 {
-	
 	root->Update();
 
 	

@@ -2,8 +2,9 @@
 #include "Module.h"
 #include "External Libraries/MathGeoLib/include/Math/float3.h"
 #include <string>
+#include "External Libraries/Glew/include/glew.h"
 
-
+#pragma comment(lib, "Source Code/External Libraries/Glew/libx86/glew32.lib")
 
 class GameObject;
 struct aiScene;
@@ -19,6 +20,8 @@ public:
 	bool Start();
 	update_status Update(float dt);
 	bool CleanUp();
+
+	void Draw(GLuint tex);
 	
 	GameObject* CreateGameObject(std::string name = "", GameObject* parent = nullptr);
 	GameObject* CreateGameObject(float3 position, Quat rotation, float3 size, std::string name = "", GameObject* parent = nullptr);

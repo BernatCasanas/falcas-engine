@@ -2,6 +2,8 @@
 #include "Module.h"
 #include "Light.h"
 #include "External Libraries/SDL/include/SDL_video.h"
+#include "External Libraries/Glew/include/glew.h"
+
 
 #define MAX_LIGHTS 8
 
@@ -13,6 +15,7 @@ public:
 
 	bool Init();
 	update_status PreUpdate(float dt);
+	update_status Update(float dt);
 	update_status PostUpdate(float dt);
 	bool CleanUp();
 
@@ -25,4 +28,8 @@ public:
 	SDL_GLContext context;
 	mat3x3 NormalMatrix;
 	mat4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
+	GLuint frameBuffer;
+	GLuint texColorBuffer;
+	GLuint rboDepthStencil;
+
 };

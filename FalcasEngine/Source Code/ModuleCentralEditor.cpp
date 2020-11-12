@@ -18,6 +18,7 @@
 #include "GameObject.h"
 #include "Component.h"
 #include "ComponentMesh.h"
+#include "ModuleRenderer3D.h"
 #include <gl/GL.h>
 #include <gl/GLU.h>
 #include "Shape.h"
@@ -133,12 +134,21 @@ update_status ModuleCentralEditor::PostUpdate(float dt)
     if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
         show_inspector = !show_inspector;
 
+    if (wantToExit) update_status::UPDATE_STOP;
+   
+    
+
+    return UPDATE_CONTINUE;
+}
+
+void ModuleCentralEditor::Draw()
+{
 
     { // UPSIDE BAR
         ImGui::BeginMainMenuBar();
         if (ImGui::BeginMenu("File")) {
             if (ImGui::MenuItem("Quit", "Esc")) {
-                return update_status::UPDATE_STOP;
+                wantToExit=true;
             }
             ImGui::EndMenu();
         }
@@ -215,7 +225,7 @@ update_status ModuleCentralEditor::PostUpdate(float dt)
                 }
                 ImGui::EndMenu();
             }
-            if(ImGui::BeginMenu("2D Object")) {
+            if (ImGui::BeginMenu("2D Object")) {
                 if (ImGui::MenuItem("Plane")) {
                     GameObject* gm = App->scene_intro->CreateGameObject("SolidPlane", App->scene_intro->root);
                     ComponentMesh* mesh = (ComponentMesh*)gm->CreateComponent(Component_Type::Mesh);
@@ -339,15 +349,15 @@ update_status ModuleCentralEditor::PostUpdate(float dt)
     if (show_configuration) {
         ImGui::Begin("Configuration", &show_configuration);
         ImGui::Text("Options");
-        if(ImGui::CollapsingHeader("Window")) {
+        if (ImGui::CollapsingHeader("Window")) {
             //BRIGHT
             ImGui::SliderFloat("Bright", &progress, 0.0f, 100.0f);
-            SDL_SetWindowBrightness(App->window->window, (progress*2)/100);
+            SDL_SetWindowBrightness(App->window->window, (progress * 2) / 100);
 
             //SIZE WINDOW
             ImGui::SliderFloat("Width", &progress2, 0.0f, 100.0f);
             ImGui::SliderFloat("Height", &progress3, 0.0f, 100.0f);
-            SDL_SetWindowSize(App->window->window, (int)(progress2*1280/50) * SCREEN_SIZE, (int)(progress3 * 720 / 50)* SCREEN_SIZE);
+            SDL_SetWindowSize(App->window->window, (int)(progress2 * 1280 / 50) * SCREEN_SIZE, (int)(progress3 * 720 / 50) * SCREEN_SIZE);
         }
         if (ImGui::CollapsingHeader("Application")) {
             float fr[50];
@@ -356,8 +366,8 @@ update_status ModuleCentralEditor::PostUpdate(float dt)
             char ms_char[50];
             std::copy(fr_arr.begin(), fr_arr.end(), fr);
             std::copy(ms_arr.begin(), ms_arr.end(), ms);
-            sprintf_s(fr_char,50, "%f Framerate", fr[49]);
-            sprintf_s(ms_char,50, "%f Milliseconds", ms[49]);
+            sprintf_s(fr_char, 50, "%f Framerate", fr[49]);
+            sprintf_s(ms_char, 50, "%f Milliseconds", ms[49]);
             ImGui::PlotHistogram("", fr, 50, 0, fr_char, 0.0f, 150.0f, ImVec2(0, 80.0f));
             ImGui::PlotHistogram("", ms, 50, 0, ms_char, 0.0f, 30.f, ImVec2(0, 80.0f));
         }
@@ -391,17 +401,17 @@ update_status ModuleCentralEditor::PostUpdate(float dt)
             ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%i Mb", SDL_GetSystemRAM());
             ImGui::Text("Caps: ");
             ImGui::SameLine();
-            if(SDL_Has3DNow) ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "3D Now "); ImGui::SameLine();
-            if(SDL_HasAVX) ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "AVX "); ImGui::SameLine();
-            if(SDL_HasAVX2) ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "AVX2 "); ImGui::SameLine();
-            if(SDL_HasAltiVec) ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "AltiVec "); ImGui::SameLine();
-            if(SDL_HasMMX) ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "MMX "); ImGui::SameLine();
-            if(SDL_HasRDTSC) ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "RDTSC "); ImGui::SameLine();
-            if(SDL_HasSSE) ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "SSE "); ImGui::SameLine();
-            if(SDL_HasSSE2) ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "SSE2 "); ImGui::SameLine();
-            if(SDL_HasSSE3) ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "SSE3 "); ImGui::SameLine();
-            if(SDL_HasSSE41) ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "SSE41 "); ImGui::SameLine();
-            if(SDL_HasSSE42) ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "SSE42 "); ImGui::SameLine();
+            if (SDL_Has3DNow) ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "3D Now "); ImGui::SameLine();
+            if (SDL_HasAVX) ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "AVX "); ImGui::SameLine();
+            if (SDL_HasAVX2) ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "AVX2 "); ImGui::SameLine();
+            if (SDL_HasAltiVec) ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "AltiVec "); ImGui::SameLine();
+            if (SDL_HasMMX) ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "MMX "); ImGui::SameLine();
+            if (SDL_HasRDTSC) ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "RDTSC "); ImGui::SameLine();
+            if (SDL_HasSSE) ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "SSE "); ImGui::SameLine();
+            if (SDL_HasSSE2) ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "SSE2 "); ImGui::SameLine();
+            if (SDL_HasSSE3) ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "SSE3 "); ImGui::SameLine();
+            if (SDL_HasSSE41) ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "SSE41 "); ImGui::SameLine();
+            if (SDL_HasSSE42) ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "SSE42 "); ImGui::SameLine();
             ImGui::Separator();
             const GLubyte* vendor = glGetString(GL_VENDOR);
             const GLubyte* renderer = glGetString(GL_RENDERER);
@@ -418,7 +428,7 @@ update_status ModuleCentralEditor::PostUpdate(float dt)
     }
     //Console
     if (show_console) {
-        ImGui::Begin("Console",&show_console);
+        ImGui::Begin("Console", &show_console);
         console_logs = App->console->GetLogs();
         for (int i = 0; i < console_logs.size(); i++) {
             ImGui::Text(console_logs.at(i));
@@ -428,7 +438,7 @@ update_status ModuleCentralEditor::PostUpdate(float dt)
 
     //Hierarchy
     if (show_hierarchy) {
-        ImGui::Begin("Hierarchy",&show_hierarchy);
+        ImGui::Begin("Hierarchy", &show_hierarchy);
         static int selected = -1;
         static int node_clicked = -2;
         static ImGuiTreeNodeFlags base_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_SpanAvailWidth;
@@ -438,13 +448,13 @@ update_status ModuleCentralEditor::PostUpdate(float dt)
     }
 
     if (show_inspector) {
-        ImGui::Begin("Inspector",&show_inspector);
+        ImGui::Begin("Inspector", &show_inspector);
         if (App->scene_intro->game_object_selected != nullptr) {
             GameObject* game_object = App->scene_intro->game_object_selected;
             ImGui::Checkbox("", &game_object->active);
             ImGui::SameLine();
             std::string game_object_name = game_object->name;
-            if(ImGui::InputText(" ", &game_object_name, ImGuiInputTextFlags_EnterReturnsTrue)) {
+            if (ImGui::InputText(" ", &game_object_name, ImGuiInputTextFlags_EnterReturnsTrue)) {
                 if (game_object_name != game_object->name) {
                     game_object->name = game_object_name;
                 }
@@ -460,7 +470,7 @@ update_status ModuleCentralEditor::PostUpdate(float dt)
     }
 
     if (show_openglOptions)
-    {     
+    {
         ImGui::Begin("OpenGL Options", &show_openglOptions);
         ImGui::Checkbox("Depth Test", &depth);
         ImGui::Checkbox("Cull Face", &cullface);
@@ -489,9 +499,11 @@ update_status ModuleCentralEditor::PostUpdate(float dt)
     else glDisable(GL_STENCIL_TEST);
     if (stencil) glEnable(GL_AMBIENT);
     else glDisable(GL_AMBIENT);
+
+
     // Rendering
     ImGui::Render();
-   
+
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
     // Update and Render additional Platform Windows
@@ -507,8 +519,6 @@ update_status ModuleCentralEditor::PostUpdate(float dt)
         ImGui::RenderPlatformWindowsDefault();
         SDL_GL_MakeCurrent(backup_current_window, backup_current_context);
     }
-
-    return UPDATE_CONTINUE;
 }
 
 bool ModuleCentralEditor::ProcessEvents(SDL_Event event)
