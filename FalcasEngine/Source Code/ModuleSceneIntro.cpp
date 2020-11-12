@@ -6,12 +6,13 @@
 #include "Console.h"
 #include "GameObject.h"
 #include "External Libraries/MathGeoLib/include/Math/Quat.h"
-#include "External Libraries/Assimp/Assimp/include/scene.h"
 #include "ComponentMesh.h"
 #include "ComponentMaterial.h"
 #include <gl/GL.h>
 #include "Shape.h"
 #include "FileSystem.h"
+#include "External Libraries/Devil/Include/ilut.h"
+#include "Importer.h"
 
 
 
@@ -49,12 +50,7 @@ bool ModuleSceneIntro::Start()
 	int num = 0;
 
 	std::string path = "Assets/BakerHouse/BakerHouse.fbx";
-	const aiScene* scene = mesh->GetSceneOfMeshes(path.c_str());
-	aiNode* nod = scene->mRootNode;
-	CreateGameObject(nod, scene, path.c_str(), "BakerHouse", root);
-
-	mesh->CleanScene(scene);
-
+	ImportFBX(path);
 
 	return ret;
 }
@@ -135,44 +131,6 @@ GameObject* ModuleSceneIntro::CreateGameObject(float3 position, Quat rotation, f
 }
 
 
-GameObject* ModuleSceneIntro::CreateGameObject(const aiNode* node, const aiScene* scene, std::string file_name, std::string name, GameObject* parent)
-{
-	GameObject* game_object = nullptr;
-	name = CheckNameGameObject(name);
-	aiVector3D position, size;
-	aiQuaternion rotation;
-	node->mTransformation.Decompose(size,rotation, position);
-	game_object = new GameObject(App->scene_intro->id_gameobject, name, parent, { position.x,position.y,position.z }, { rotation.x,rotation.y,rotation.z,rotation.w }, { size.x,size.y,size.z });
-	if (game_object != nullptr) {
-		App->scene_intro->id_gameobject++;
-		if (parent != nullptr) {
-			parent->children.push_back(game_object);
-		}
-	}
-	if (node->mNumMeshes > 0) {
-		ComponentMesh* mesh = (ComponentMesh*)game_object->CreateComponent(Component_Type::Mesh);
-		int num_material = mesh->LoadMesh(node->mMeshes[0], scene);
-		mesh->SetFileName(file_name);
-		if (num_material != -1&& num_material<scene->mNumMaterials) {
-			ComponentMaterial* mat = (ComponentMaterial*)game_object->CreateComponent(Component_Type::Material);
-			aiString material_path;
-			scene->mMaterials[num_material]->GetTexture(aiTextureType_DIFFUSE, 0, &material_path);
-			if (material_path.length > 0) {
-				std::string path = file_name;
-				int pos_path = path.find_last_of('/');
-				if (pos_path == -1)
-					pos_path = path.find_last_of('\\');
-				path = path.substr(0, pos_path + 1);
-				path += material_path.C_Str();
-				mat->LoadTexture(path.c_str());
-			}
-		}
-	}
-	for (int i = 0; i < node->mNumChildren; i++) {
-		CreateGameObject(node->mChildren[i], scene, file_name, name, game_object);
-	}
-	return game_object;
-}
 
 
 GameObject* ModuleSceneIntro::SearchGameObject(int id, GameObject* game_obj)

@@ -207,6 +207,9 @@
     <ClCompile Include="Source Code\FileSystem.cpp">
       <Filter>Source Code</Filter>
     </ClCompile>
+    <ClCompile Include="Source Code\Importer.cpp">
+      <Filter>Source Code</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source Code\Application.h">
@@ -573,6 +576,9 @@
       <Filter>Source Code</Filter>
     </ClInclude>
     <ClInclude Include="Source Code\FileSystem.h">
+      <Filter>Source Code</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\Importer.h">
       <Filter>Source Code</Filter>
     </ClInclude>
   </ItemGroup>

@@ -76,9 +76,6 @@ Component* GameObject::CreateComponent(Component_Type type, char* file)
 	if (!HasComponentType(type)) {
 		switch (type)
 		{
-		case Component_Type::Mesh:
-			component = new ComponentMesh(this, file);
-			break;
 		case Component_Type::Material:
 			component = new ComponentMaterial(this, file);
 			break;

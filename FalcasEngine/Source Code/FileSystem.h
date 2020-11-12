@@ -6,7 +6,16 @@
 
 #include "Module.h"
 #include "Globals.h"
+#include <string>
 
+
+enum class FILE_TYPE
+{
+	UNKNOWN = -1,
+	FBX,
+	PNG,
+	DDS
+};
 
 class Application;
 class FileSystem : public Module {
@@ -17,6 +26,10 @@ public:
 	bool Start();
 	update_status Update(float dt) { return UPDATE_CONTINUE; };
 	bool CleanUp() { return true; };
+
+	std::string GetFileName(std::string file, bool has_filename_extension = false);
+	std::string GetPathFile(std::string file);
+	FILE_TYPE GetTypeFile(char* file);
 
 public:
 	uint Load(const char* path, char** buffer) const;

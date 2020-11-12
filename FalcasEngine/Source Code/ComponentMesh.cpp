@@ -4,46 +4,12 @@
 #include "ComponentTransform.h"
 #include "ModuleSceneIntro.h"
 #include "GameObject.h"
-#include "External Libraries/Assimp/Assimp/include/cimport.h"
-#include "External Libraries/Assimp/Assimp/include/postprocess.h"
-#include "External Libraries/Assimp/Assimp/include/scene.h"
 #include "ComponentMaterial.h"
 #include "ComponentMesh.h"
-#include "FileSystem.h"
+#include "Importer.h"
 
-#pragma comment (lib, "Source Code/External Libraries/Assimp/Assimp/libx86/assimp.lib")
-
-ComponentMesh::ComponentMesh(GameObject* owner) :Component(Component_Type::Mesh, owner)
+ComponentMesh::ComponentMesh(GameObject* owner) :Component(Component_Type::Mesh, owner, "Mesh")
 {
-	grid = false;
-	vertices = nullptr;
-	indices = nullptr;
-	normals = nullptr;
-	texCoords = nullptr;
-	show_normals_v = show_normals_f = false;
-	length_normals = 1;
-	id_indices = id_vertices = num_indices = num_vertices = id_normals = num_normals =num_textureCoords= 0;
-	name = "Mesh";
-	full_file_name = "";
-	file_name = "";
-
-}
-
-ComponentMesh::ComponentMesh(GameObject* owner, char* file) :Component(Component_Type::Mesh, owner)
-{
-	grid = false;
-	vertices = nullptr;
-	indices = nullptr;
-	normals = nullptr;
-	show_normals_v = show_normals_f = false;
-	length_normals = 1;
-	id_indices = id_vertices = num_indices = num_vertices = id_normals = num_normals = num_textureCoords = 0;
-	name = "Mesh";
-	SetFileName(file);
-	const aiScene* scene = nullptr;
-	int num = 0;
-	scene = GetSceneOfMeshes(file);
-	//LoadMesh(scene);
 }
 
 ComponentMesh::~ComponentMesh()
@@ -77,15 +43,6 @@ void ComponentMesh::SetFileName(std::string file)
 	file_name = full_file_name.substr(pos + 1);
 }
 
-const aiScene* ComponentMesh::GetSceneOfMeshes(const char* file)
-{
-	const aiScene* scene = nullptr;
-	char* buffer = nullptr;
-	uint size = App->filesystem->Load(file, &buffer);
-
-	scene = aiImportFileFromMemory(buffer, size, aiProcessPreset_TargetRealtime_MaxQuality, nullptr);
-	return scene;
-}
 
 
 
@@ -230,72 +187,6 @@ void ComponentMesh::Render()
 	}
 }
 
-
-int ComponentMesh::LoadMesh(int num_mesh, const aiScene* scene)
-{
-	int material_index = -1;
-	aiMesh* ai_mesh = scene->mMeshes[num_mesh];
-	if (ai_mesh != nullptr )
-	{
-		num_vertices = ai_mesh->mNumVertices*3;
-		vertices = new float[num_vertices];
-		memcpy(vertices, ai_mesh->mVertices, sizeof(float) * num_vertices);
-		LOG("Loading FBX correctly");
-		LOG("New mesh with %d vertices", num_vertices/3);
-
-		if (ai_mesh->HasFaces())
-		{
-			num_indices = ai_mesh->mNumFaces * 3;
-			indices = new uint[num_indices];
-			for (uint j = 0; j < ai_mesh->mNumFaces; ++j)
-			{
-				if (ai_mesh->mFaces[j].mNumIndices != 3) {
-					LOG("WARNING, geometry face with != 3 indices!");
-				}
-				else {
-					memcpy(&indices[j * 3], ai_mesh->mFaces[j].mIndices, 3 * sizeof(uint));
-				}
-
-			}
-			LOG("New mesh with %d index", num_indices);
-		}
-		num_normals = num_vertices;
-		normals = new float[ai_mesh->mNumVertices * 3];
-		for (int x = 0, y = 0; x < ai_mesh->mNumVertices; x++, y += 3) {
-			if (ai_mesh->HasNormals())
-			{
-				normals[y] = ai_mesh->mNormals[x].x;
-				normals[y + 1] = ai_mesh->mNormals[x].y;
-				normals[y + 2] = ai_mesh->mNormals[x].z;
-			}
-		}
-
-		if (ai_mesh->HasTextureCoords(0)) {
-			num_textureCoords = ai_mesh->mNumVertices;
-			texCoords = new float[num_textureCoords * 2];
-			for (uint i = 0, j = 0; i < num_textureCoords; i++, j += 2) {
-				texCoords[j] = ai_mesh->mTextureCoords[0][i].x;
-				texCoords[j + 1] = ai_mesh->mTextureCoords[0][i].y;
-			}
-			material_index = ai_mesh->mMaterialIndex;
-		}
-		
-
-		Initialization();
-
-	
-	}
-	else {
-		const char* error = aiGetErrorString();
-		LOG("Error loading FBX: %s", error)
-	}
-	return material_index;
-}
-
-void ComponentMesh::CleanScene(const aiScene* scene)
-{
-	aiReleaseImport(scene);
-}
 
 void ComponentMesh::Inspector()
 {

@@ -2,46 +2,37 @@
 #include "Component.h"
 
 class GameObject;
-struct aiScene;
-struct aiMesh;
 class ComponentMesh : public Component {
 public:
 	ComponentMesh(GameObject* owner);
-	ComponentMesh(GameObject* owner, char* file);
 	~ComponentMesh();
 	void Update();
 	void SetFileName(std::string file);
-
-	const aiScene* GetSceneOfMeshes(const char* file);
 	
-	int LoadMesh(int num_mesh, const aiScene* scene);
-	void CleanScene(const aiScene* scene);
-
 	void Initialization();
 	void Render();
 
 	void Inspector();
 
 
-	uint id_vertices;
-	uint id_indices;
-	uint id_normals;
-	uint id_texCoords;
-	uint num_indices;
-	uint num_vertices;
-	uint num_normals;
-	uint num_textureCoords;
+	uint id_vertices = 0;
+	uint id_indices = 0;
+	uint id_normals = 0;
+	uint id_texCoords = 0;
+	uint num_indices = 0;
+	uint num_vertices = 0;
+	uint num_normals = 0;
+	uint num_textureCoords = 0;
 
-	std::string full_file_name;
-	std::string file_name;
-	float* texCoords;
+	std::string full_file_name = "";
+	std::string file_name = "";
+	float* texCoords = nullptr;
 	float* vertices = nullptr;
 	float* normals = nullptr;
 	uint* indices = nullptr;
-	bool show_normals_v;
-	bool show_normals_f;
-	float length_normals;
-	bool grid;
+	bool show_normals_v = false;
+	bool show_normals_f = false;
+	float length_normals = 1;
+	bool grid = false;
 
-private:
 };

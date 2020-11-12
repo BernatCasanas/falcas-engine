@@ -2,30 +2,19 @@
 #include "External Libraries/ImGui/imgui.h"
 #include "FileSystem.h"
 #include "Application.h"
-
-#pragma comment (lib, "Source Code/External Libraries/Devil/lib/DevIL.lib")
-#pragma comment (lib, "Source Code/External Libraries/Devil/lib/ILUT.lib")
-#pragma comment (lib, "Source Code/External Libraries/Devil/lib/ILU.lib")
+#include "Importer.h"
 
 
-ComponentMaterial::ComponentMaterial(GameObject* owner) : Component(Component_Type::Material, owner)
+
+ComponentMaterial::ComponentMaterial(GameObject* owner) : Component(Component_Type::Material, owner, "Material")
 {
-	name = "Material";
-	image_name = 0;
-	checkers = 0;
-	texture_id = 0;
-	LoadDefault();
-
+	ImportDefaultTexture(this);
 }
 
-ComponentMaterial::ComponentMaterial(GameObject* owner, char* file) : Component(Component_Type::Material, owner)
+ComponentMaterial::ComponentMaterial(GameObject* owner, char* file) : Component(Component_Type::Material, owner, "Material")
 {
-	name = "Material";
-	image_name = 0;
-	checkers = 0;
-	texture_id = 0;
-	LoadDefault();
-	LoadTexture(file);
+	ImportDefaultTexture(this);
+	ImportTexture(file, this);
 }
 
 ComponentMaterial::~ComponentMaterial()
@@ -33,62 +22,6 @@ ComponentMaterial::~ComponentMaterial()
 
 }
 
-
-
-void ComponentMaterial::LoadTexture(std::string file)
-{
-	if (file == "") return;
-	full_file_name = file;
-	ilOriginFunc(IL_ORIGIN_LOWER_LEFT);
-
-	ilGenImages(1, &image_name);
-	ilBindImage(image_name);
-
-	char* buffer = nullptr;
-	uint size = App->filesystem->Load(file.c_str(), &buffer);
-
-	if (ilLoadL(IL_TYPE_UNKNOWN,buffer,size)) {
-		ILenum error = ilGetError();
-		LOG("Error loading Texture %s\n", iluErrorString(error));
-	}
-	height = ilGetInteger(IL_IMAGE_HEIGHT);
-	width = ilGetInteger(IL_IMAGE_WIDTH);
-	show_default_tex = false;
-	texture_id = ilutGLBindTexImage();
-	ilDeleteImages(1, &image_name);
-
-
-	int pos = -1;
-	pos = full_file_name.find_last_of('\\');
-	if (pos == -1)
-		pos = full_file_name.find_last_of('/');
-	file_name = full_file_name.substr(pos + 1);
-}
-
-void ComponentMaterial::LoadDefault()
-{
-	GLubyte checker[64][64][4];
-
-	for (int i = 0; i < 64; i++) {
-		for (int j = 0; j < 64; j++) {
-			int c = ((((i & 0x8) == 0) ^ (((j & 0x8)) == 0))) * 255;
-			checker[i][j][0] = (GLubyte)c;
-			checker[i][j][1] = (GLubyte)c;
-			checker[i][j][2] = (GLubyte)c;
-			checker[i][j][3] = (GLubyte)255;
-		}
-	}
-
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	glGenTextures(1, &defaultTex);
-	glBindTexture(GL_TEXTURE_2D, defaultTex);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 64, 64, 0, GL_RGBA, GL_UNSIGNED_BYTE, checker);
-	glBindTexture(GL_TEXTURE_2D, 0);
-}
 
 void ComponentMaterial::Inspector()
 {

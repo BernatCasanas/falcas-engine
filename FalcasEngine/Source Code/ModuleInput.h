@@ -12,13 +12,6 @@ enum KEY_STATE
 	KEY_UP
 };
 
-enum class FILE_TYPE
-{
-	UNKNOWN = -1,
-	FBX,
-	PNG,
-	DDS
-};
 
 class ModuleInput : public Module
 {
@@ -63,8 +56,7 @@ public:
 		return mouse_y_motion;
 	}
 
-	std::string GetFileName(char* file);
-	FILE_TYPE GetTypeFile(char* file);
+	
 
 private:
 	KEY_STATE* keyboard;

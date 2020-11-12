@@ -2,7 +2,6 @@
 #define _COMPONENT_MATERIAL_
 #pragma once
 
-#include "External Libraries/Devil/Include/ilut.h"
 #include "Component.h"
 
 
@@ -14,23 +13,20 @@ public:
 	ComponentMaterial(GameObject* owner, char* file);
 	~ComponentMaterial();
 public:
-	void LoadTexture(std::string file);
-	void LoadDefault();
-
 
 	void Inspector();
 
 	
 public:
-	ILuint image_name;
-	ILuint checkers;
-	uint texture_id;
-	uint defaultTex;
-	std::string full_file_name;
-	std::string file_name;
+	uint image_name = 0;
+	uint checkers = 0;
+	uint texture_id = 0;
+	uint defaultTex = 0;
+	std::string full_file_name = "";
+	std::string file_name = "";
 
-	int width;
-	int height;
+	int width = 0;
+	int height = 0;
 
 	bool show_default_tex = true;
 

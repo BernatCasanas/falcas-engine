@@ -14,7 +14,7 @@ enum class Component_Type {
 
 class Component {
 public:
-	Component(Component_Type type, GameObject* owner);
+	Component(Component_Type type, GameObject* owner, std::string name = "");
 	virtual ~Component();
 	virtual void Enable();
 	virtual void Update();
@@ -22,7 +22,7 @@ public:
 	virtual void Inspector();
 
 	Component_Type type;
-	bool active;
+	bool active = true;
 	GameObject* owner;
 	std::string name;
 

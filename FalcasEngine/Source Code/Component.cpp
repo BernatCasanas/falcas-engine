@@ -3,12 +3,9 @@
 #include "GameObject.h"
 
 
-Component::Component(Component_Type type, GameObject* owner)
+Component::Component(Component_Type type, GameObject* owner, std::string name): owner(owner), type(type), name(name)
 {
-	this->type = type;
-	this->owner = owner;
-	this->active = true;
-	this->name = "";
+
 }
 
 Component::~Component()

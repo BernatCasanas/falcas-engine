@@ -2,13 +2,9 @@
 #include "External Libraries/ImGui/imgui.h"
 #include "GameObject.h"
 
-ComponentTransform::ComponentTransform(GameObject* owner, float3 position, Quat rotation, float3 size) :Component(Component_Type::Transform, owner)
+ComponentTransform::ComponentTransform(GameObject* owner, float3 position, Quat rotation, float3 size) :Component(Component_Type::Transform, owner, "Transform"), position(position), rotation(rotation), size(size)
 {
-	this->position = position;
-	this->rotation = rotation;
-	this->size = size;
 	euler = QuaternionToEuler(rotation);
-	name = "Transform";
 	local_matrix = local_matrix.FromTRS(position, rotation, size);
 	if (owner->parent != nullptr) {
 		ComponentTransform* parent_trans = (ComponentTransform*)owner->parent->GetComponent(Component_Type::Transform);

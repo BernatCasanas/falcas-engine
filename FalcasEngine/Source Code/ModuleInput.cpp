@@ -1,5 +1,3 @@
-
-
 #include "Application.h"
 #include "ModuleInput.h"
 #include "ModuleCentralEditor.h"
@@ -12,6 +10,7 @@
 #include "GameObject.h"
 #include "ComponentMaterial.h"
 #include "ComponentMesh.h"
+#include "Importer.h"
 
 #define MAX_KEYS 300
 
@@ -137,33 +136,23 @@ update_status ModuleInput::PreUpdate(float dt)
 
 			case SDL_DROPFILE:
 			{
-				switch (GetTypeFile(e.drop.file)) {
+				switch (App->filesystem->GetTypeFile(e.drop.file)) {
 				case FILE_TYPE::FBX:
 				{
-					ComponentMesh* mesh=nullptr;
-					const aiScene* scene = mesh->GetSceneOfMeshes(e.drop.file);
-					aiNode* nod = scene->mRootNode;
-					App->scene_intro->CreateGameObject(nod, scene, e.drop.file, GetFileName(e.drop.file), App->scene_intro->root);
-					
-					mesh->CleanScene(scene);
+					ImportFBX(e.drop.file);
 					break;
 				}
 				case FILE_TYPE::PNG:
 				case FILE_TYPE::DDS:
 				{
 					if (App->scene_intro->game_object_selected != nullptr) {
-						ComponentMesh* mesh = (ComponentMesh*)App->scene_intro->game_object_selected->GetComponent(Component_Type::Mesh);
-						if (mesh != nullptr && mesh->num_textureCoords > 0) {
-							ComponentMaterial* mat = (ComponentMaterial*)App->scene_intro->game_object_selected->GetComponent(Component_Type::Material);
-							if (mat != nullptr) {
-								mat->LoadTexture(e.drop.file);
-							}
-							else {
-								App->scene_intro->game_object_selected->CreateComponent(Component_Type::Material, e.drop.file);
-							}
-						}
-						else if (mesh != nullptr) {
-							LOG("The mesh has to have texture coords in order to have a texture");
+						if (App->scene_intro->game_object_selected->HasComponentType(Component_Type::Mesh)) {
+								if (App->scene_intro->game_object_selected->HasComponentType(Component_Type::Material)) {
+									ImportTexture(e.drop.file, (ComponentMaterial*)App->scene_intro->game_object_selected->GetComponent(Component_Type::Material));
+								}
+								else {
+									App->scene_intro->game_object_selected->CreateComponent(Component_Type::Material, e.drop.file);
+								}
 						}
 						else {
 							LOG("The game object must have a mesh in order to have a texture");
@@ -197,34 +186,5 @@ bool ModuleInput::CleanUp()
 KEY_STATE ModuleInput::GetKey(int id) const
 {
 	return keyboard[id];
-}
-
-std::string ModuleInput::GetFileName(char* file)
-{
-	std::string name = file;
-	do {
-		name.pop_back();
-	} while (name.back() != '.');
-	name.pop_back();
-
-	int pos=name.find_last_of('\\');
-	name = name.substr(pos + 1);
-	return name.c_str();
-}
-
-FILE_TYPE ModuleInput::GetTypeFile(char* file)
-{
-	std::string name = file;
-	
-
-	uint size = name.find_last_of('.');
-	name = name.substr(size + 1);
-
-	
-	if (name == "fbx"||name=="FBX") return FILE_TYPE::FBX;
-	else if (name == "png") return FILE_TYPE::PNG;
-	else if (name == "dds") return FILE_TYPE::DDS;
-	else return FILE_TYPE::UNKNOWN;
-
 }
 

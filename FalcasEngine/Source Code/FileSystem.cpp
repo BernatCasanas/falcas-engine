@@ -37,6 +37,47 @@ bool FileSystem::Start()
 	return true;
 }
 
+std::string FileSystem::GetFileName(std::string file, bool has_filename_extension)
+{
+	if (has_filename_extension) {
+		do {
+			file.pop_back();
+		} while (file.back() != '.');
+		file.pop_back();
+	}
+	int pos = file.find_last_of('\\');
+	if (pos == -1)
+		pos = file.find_last_of('/');
+	file = file.substr(pos + 1);
+	return file;
+}
+
+std::string FileSystem::GetPathFile(std::string file)
+{
+	int pos = file.find_last_of('\\');
+	if (pos == -1)
+		pos = file.find_last_of('/');
+	file = file.substr(0, pos+1);
+	return file;
+}
+
+FILE_TYPE FileSystem::GetTypeFile(char* file)
+{
+	std::string name = file;
+
+
+	uint size = name.find_last_of('.');
+	name = name.substr(size + 1);
+
+
+	if (name == "fbx" || name == "FBX") return FILE_TYPE::FBX;
+	else if (name == "png" || name == "PNG") return FILE_TYPE::PNG;
+	else if (name == "dds" || name == "DDS") return FILE_TYPE::DDS;
+	else return FILE_TYPE::UNKNOWN;
+}
+
+
+
 uint FileSystem::Load(const char* path, char** buffer) const
 {
 	uint ret=0;
