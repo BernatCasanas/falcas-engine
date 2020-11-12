@@ -22,6 +22,7 @@
 #include <gl/GLU.h>
 #include "Shape.h"
 #include "External Libraries/ImGui/imconfig.h"
+#include "External Libraries/ImGui/imgui_impl_sdl.h"
 
 
 ModuleCentralEditor::ModuleCentralEditor(Application* app, bool start_enabled) : Module(app, start_enabled)
@@ -345,7 +346,8 @@ void ModuleCentralEditor::Draw()
             ImGui::PlotHistogram("", ms, 50, 0, ms_char, 0.0f, 30.f, ImVec2(0, 80.0f));
         }
         if (ImGui::CollapsingHeader("Input")) {
-            ImGui::TextUnformatted(input_list.begin());
+            for(int i=0;i<input_list.size();i++)
+                ImGui::TextUnformatted(input_list[i]);
             if (need_scroll)
                 ImGui::SetScrollHere(1.0f);
             need_scroll = false;

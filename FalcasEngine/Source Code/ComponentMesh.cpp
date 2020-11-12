@@ -7,6 +7,7 @@
 #include "ComponentMaterial.h"
 #include "ComponentMesh.h"
 #include "Importer.h"
+#include "External Libraries/ImGui/imgui.h"
 
 ComponentMesh::ComponentMesh(GameObject* owner) :Component(Component_Type::Mesh, owner, "Mesh")
 {

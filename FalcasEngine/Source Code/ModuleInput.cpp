@@ -63,7 +63,7 @@ update_status ModuleInput::PreUpdate(float dt)
 				keyboard[i] = KEY_UP;
 				char entry[50];
 				sprintf_s(entry, 50, "Key ID: %i\n", i);
-				App->central_editor->input_list.append(entry);
+				App->central_editor->input_list.push_back(strdup(entry));
 				App->central_editor->need_scroll = true;
 			}
 			else
@@ -92,7 +92,7 @@ update_status ModuleInput::PreUpdate(float dt)
 				mouse_buttons[i] = KEY_UP;
 				char entry[50];
 				sprintf_s(entry, 50, "Key ID: %i\n", i);
-				App->central_editor->input_list.append(entry);
+				App->central_editor->input_list.push_back(strdup(entry));
 				App->central_editor->need_scroll = true;
 			}
 			else

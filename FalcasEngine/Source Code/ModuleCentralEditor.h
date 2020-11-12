@@ -6,7 +6,6 @@
 #include <list>
 #include <vector>
 #include <string>
-#include "External Libraries/ImGui/imgui_impl_sdl.h"
 
 
 enum class Shape {
@@ -23,7 +22,8 @@ enum class Shape {
 
 class Application;
 class GameObject;
-//typedef int ImGuiTreeNodeFlags; 
+typedef int ImGuiTreeNodeFlags; 
+union SDL_Event;
 
 class ModuleCentralEditor : public Module
 {
@@ -75,7 +75,7 @@ public:
 
 	std::vector<char*> console_logs;
 
-	ImGuiTextBuffer  input_list;
+	std::vector <char*> input_list;
 	bool need_scroll = false;
 
 	bool wantToExit = false;
