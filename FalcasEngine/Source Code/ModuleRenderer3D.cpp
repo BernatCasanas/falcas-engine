@@ -1,4 +1,4 @@
-#pragma once
+
 
 #include "Application.h"
 #include "ModuleRenderer3D.h"

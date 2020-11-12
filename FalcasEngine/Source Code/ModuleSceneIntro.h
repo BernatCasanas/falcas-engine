@@ -4,7 +4,6 @@
 #include <string>
 #include "External Libraries/Glew/include/glew.h"
 
-#pragma comment(lib, "Source Code/External Libraries/Glew/libx86/glew32.lib")
 
 class GameObject;
 struct aiScene;
@@ -29,8 +28,8 @@ public:
 
 
 	GameObject* SearchGameObject(int id, GameObject* game_obj);
-	std::string CheckNameGameObject(std::string name, bool numbered = false, int digits = 1);
-	std::string NameGameObjectWhenMoreThan2Digits(std::string name, int& digits);
+	bool IsGameObjectNameRepeated(std::string name, GameObject* game_obj);
+	std::string CheckNameGameObject(std::string name, bool numbered = false);
 
 	GameObject* game_object_selected;
 	GameObject* root;

@@ -5,8 +5,21 @@
 #include "Module.h"
 #include <list>
 #include <vector>
+#include <string>
 #include "External Libraries/ImGui/imgui_impl_sdl.h"
 
+
+enum class Shape {
+    Cube,
+    Rectangular_Prism,
+    Triangular_Pyramid,
+    Square_Pyramid,
+    Rectangular_Pyramid,
+	Cilinder,
+	Cone,
+	Sphere,
+	Plane
+};
 
 class Application;
 class GameObject;
@@ -35,6 +48,7 @@ public:
 
 
 	void CreateDock();
+	void CreateShape(Shape shape, std::string name);
 
 public:
 

@@ -1,62 +1,36 @@
-#pragma once
 #include "ComponentMaterial.h"
 #include "GameObject.h"
 #include "Component.h"
 #include "ComponentTransform.h"
 #include "ComponentMesh.h"
 
-GameObject::GameObject(int id)
+GameObject::GameObject(int id) : name(""), parent(nullptr), id(id)
 {
-	this->active = true;
-	this->children.clear();
-	this->components.clear();
-	this->name = "";
-	this->parent = nullptr;
-	this->id = id;
 	CreateComponent(Component_Type::Transform);
 }
-GameObject::GameObject(int id, std::string name, GameObject* parent)
+GameObject::GameObject(int id, std::string name, GameObject* parent) : name(name), parent(parent), id(id)
 {
-	this->active = true;
-	this->children.clear();
-	this->components.clear();
-	this->name = name;
-	this->parent = parent;
-	this->id = id;
 	CreateComponent(Component_Type::Transform);
 }
 
-GameObject::GameObject(int id, std::string name, GameObject* parent, float3 position, Quat rotation, float3 size)
+GameObject::GameObject(int id, std::string name, GameObject* parent, float3 position, Quat rotation, float3 size) : name(name), parent(parent), id(id)
 {
-	this->active = true;
-	this->children.clear();
-	this->components.clear();
-	this->name = name;
-	this->parent = parent;
-	this->id = id;
 	AddComponentToGameObject(new ComponentTransform(this, position, rotation, size));
 }
 
 
 GameObject::~GameObject()
 {
-	if (parent != nullptr) {
-		std::vector<GameObject*>::iterator it = parent->children.begin();
-		for (int i = 0; it != parent->children.end(); ++it, i++) {
-			if (parent->children.at(i)->id == id) {
-				parent->children.erase(it);
-				break;
-			}
-		}
-	}
+	RemoveFromParent();
 	parent = nullptr;
 	int size = children.size();
 	for (int i = size-1; i >= 0; i--) {
-		delete children.at(i);
+		delete children[i];
 	}
 	children.clear();
-	for (int i = 0; i < 3; i++) {
-		DeleteComponent((Component_Type)i);
+	size = components.size();
+	for (int i = size - 1; i >= 0; i--) {
+		delete components[i];
 	}
 	components.clear();
 }
@@ -65,12 +39,12 @@ void GameObject::Update()
 {
 	if (active == true) {
 		for (int i = 0; i < children.size(); i++) {
-			if(children.at(i)->active == true)
-				children.at(i)->Update();
+			if(children[i]->active == true)
+				children[i]->Update();
 		}
 		for (int i = 0; i < components.size(); i++) {
-			if(components.at(i)->active==true)
-				components.at(i)->Update();
+			if(components[i]->active==true)
+				components[i]->Update();
 		}
 	}
 }
@@ -78,7 +52,7 @@ void GameObject::Update()
 Component* GameObject::CreateComponent(Component_Type type)
 {
 	Component* component = nullptr;
-	if (!CheckComponentType(type)) {
+	if (!HasComponentType(type)) {
 		switch (type)
 		{
 		case Component_Type::Transform:
@@ -99,7 +73,7 @@ Component* GameObject::CreateComponent(Component_Type type)
 Component* GameObject::CreateComponent(Component_Type type, char* file)
 {
 	Component* component = nullptr;
-	if (!CheckComponentType(type)) {
+	if (!HasComponentType(type)) {
 		switch (type)
 		{
 		case Component_Type::Mesh:
@@ -114,14 +88,14 @@ Component* GameObject::CreateComponent(Component_Type type, char* file)
 	return component;
 }
 
-Component* GameObject::GetComponent(Component_Type type)
+Component* GameObject::GetComponent(Component_Type type) const
 {
 	Component* component = nullptr;
 	bool stop = false;
 	for (int i = 0; i < components.size()&& stop == false; i++) {
-		if (components.at(i)->type == type) {
+		if (components[i]->type == type) {
 			stop = true;
-			component = components.at(i);
+			component = components[i];
 		}
 	}
 	return component;
@@ -129,25 +103,46 @@ Component* GameObject::GetComponent(Component_Type type)
 
 void GameObject::DeleteComponent(Component_Type type)
 {
-	Component* c= GetComponent(type);
-	if (c != nullptr)
-		delete c;
+	if (!HasComponentType(type)) {
+		return;
+	}
+	ComponentTransform* t = (ComponentTransform*)components.front();
+	for (std::vector<Component*>::iterator it = components.begin(); it != components.end(); ++it) {
+		if ((*it)->type == type) {
+			delete (*it);
+			components.erase(it);
+			break;
+		}
+	}	
 }
 
 void GameObject::AddComponentToGameObject(Component* component)
 {
-	if (!CheckComponentType(component->type)) {
+	if (!HasComponentType(component->type)) {
 		components.push_back(component);
 	}
 }
 
-bool GameObject::CheckComponentType(Component_Type type)
+bool GameObject::HasComponentType(Component_Type type) const
 {
 	bool returned = false;
 	for (int i = 0; i < components.size() && returned == false; i++) {
-		if (components.at(i)->type == type)
+		if (components[i]->type == type)
 			returned = true;
 	}
 	return returned;
+}
+
+void GameObject::RemoveFromParent()
+{
+	if (parent == nullptr) {
+		return;
+	}
+	for (std::vector<GameObject*>::iterator it = parent->children.begin(); it != parent->children.end(); ++it) {
+		if ((*it)->id == id) {
+			parent->children.erase(it);
+			break;
+		}
+	}
 }
 

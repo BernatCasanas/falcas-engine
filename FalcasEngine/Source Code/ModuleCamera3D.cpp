@@ -1,8 +1,8 @@
-#pragma once
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleCamera3D.h"
-#include "External Libraries/SDL/include/SDL.h"
+#include "External Libraries/SDL/include/SDL_scancode.h"
+#include "External Libraries/SDL/include/SDL_mouse.h"
 #include "External Libraries/MathGeoLib/include/Math/MathFunc.h"
 #include "ModuleInput.h"
 #include "ModuleSceneIntro.h"

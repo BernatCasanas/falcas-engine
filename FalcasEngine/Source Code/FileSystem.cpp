@@ -1,4 +1,3 @@
-#pragma once
 #include "FileSystem.h"
 #include <algorithm>
 #include "Application.h"
