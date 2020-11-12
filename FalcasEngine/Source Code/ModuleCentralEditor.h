@@ -46,6 +46,8 @@ public:
 
 	void HierarchyRecursiveTree(GameObject* game_object, static int selected, static ImGuiTreeNodeFlags base_flags, int &node_clicked);
 
+
+	void CreateDock();
 	void CreateShape(Shape shape, std::string name);
 
 public:
