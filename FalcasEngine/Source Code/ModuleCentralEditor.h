@@ -33,6 +33,9 @@ public:
 
 	void HierarchyRecursiveTree(GameObject* game_object, static int selected, static ImGuiTreeNodeFlags base_flags, int &node_clicked);
 
+
+	void CreateDock();
+
 public:
 
 	bool show_demo_window;

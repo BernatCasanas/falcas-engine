@@ -181,7 +181,6 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 
 update_status ModuleRenderer3D::Update(float dt)
 {
-	App->scene_intro->Draw(texColorBuffer);
 
 	return update_status::UPDATE_CONTINUE;
 }
@@ -193,7 +192,11 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glClear(GL_COLOR_BUFFER_BIT);
 
+	App->central_editor->CreateDock();
+	App->scene_intro->Draw(texColorBuffer);
+
 	App->central_editor->Draw();
+
 
 	SDL_GL_SwapWindow(App->window->window);
 	return UPDATE_CONTINUE;

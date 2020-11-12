@@ -22,6 +22,7 @@
 #include <gl/GL.h>
 #include <gl/GLU.h>
 #include "Shape.h"
+#include "External Libraries/ImGui/imconfig.h"
 
 
 ModuleCentralEditor::ModuleCentralEditor(Application* app, bool start_enabled) : Module(app, start_enabled)
@@ -52,7 +53,6 @@ bool ModuleCentralEditor::Init()
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
     io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;         // Enable Multi-Viewport / Platform Windows
 
-  
 
     // Setup Dear ImGui style
     ImGui::StyleColorsDark();
@@ -65,6 +65,7 @@ bool ModuleCentralEditor::Init()
         style.Colors[ImGuiCol_WindowBg].w = 1.0f;
     }
 
+
     ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->window->gl_context);
     ImGui_ImplOpenGL3_Init();
     show_demo_window = true;
@@ -72,7 +73,7 @@ bool ModuleCentralEditor::Init()
     show_example = false;
     show_about = false;
     show_configuration = false;
-    show_console = false;
+    show_console = true;
     show_openglOptions = false;
     show_hierarchy = show_inspector = true;
     cullface = colorMaterial = ambient = stencil = wireframe = normals_v = normals_f = false;
@@ -571,5 +572,34 @@ void ModuleCentralEditor::HierarchyRecursiveTree(GameObject* game_object, static
         }
     }
  
+}
+
+void ModuleCentralEditor::CreateDock()
+{
+    static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_PassthruCentralNode;
+
+    ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoDocking;
+
+    ImGuiViewport* viewport = ImGui::GetMainViewport();
+    ImGui::SetNextWindowPos(viewport->GetWorkPos());
+    ImGui::SetNextWindowSize(viewport->GetWorkSize());
+    ImGui::SetNextWindowViewport(viewport->ID);
+
+    window_flags |= ImGuiWindowFlags_NoTitleBar;
+
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+
+    ImGui::Begin("DockSpace", (bool*)true, window_flags);
+
+    ImGui::PopStyleVar();
+
+    ImGuiIO& io = ImGui::GetIO();
+    if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
+    {
+        ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
+        ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
+    }
+
+    ImGui::End();
 }
 
