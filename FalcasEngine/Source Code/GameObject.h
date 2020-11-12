@@ -19,15 +19,16 @@ public:
 
 	Component* CreateComponent(Component_Type type);
 	Component* CreateComponent(Component_Type type, char* file);
-	Component* GetComponent(Component_Type type);
+	Component* GetComponent(Component_Type type) const;
 	void DeleteComponent(Component_Type type);
 	void AddComponentToGameObject(Component* component);
 	std::string GetName() { return name; }
-	bool CheckComponentType(Component_Type type);
+	bool HasComponentType(Component_Type type) const;
+	void RemoveFromParent();
 	
 
 public:
-	bool active;
+	bool active=true;
 	std::vector<Component*> components;
 
 	GameObject* parent;
