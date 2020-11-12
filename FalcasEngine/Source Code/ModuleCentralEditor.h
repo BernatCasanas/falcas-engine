@@ -5,8 +5,21 @@
 #include "Module.h"
 #include <list>
 #include <vector>
+#include <string>
 #include "External Libraries/ImGui/imgui_impl_sdl.h"
 
+
+enum class Shape {
+    Cube,
+    Rectangular_Prism,
+    Triangular_Pyramid,
+    Square_Pyramid,
+    Rectangular_Pyramid,
+	Cilinder,
+	Cone,
+	Sphere,
+	Plane
+};
 
 class Application;
 class GameObject;
@@ -32,6 +45,8 @@ public:
 	bool ProcessEvents(SDL_Event event);
 
 	void HierarchyRecursiveTree(GameObject* game_object, static int selected, static ImGuiTreeNodeFlags base_flags, int &node_clicked);
+
+	void CreateShape(Shape shape, std::string name);
 
 public:
 

@@ -4,7 +4,6 @@
 #include "External Libraries/Glew/include/glew.h"
 #include "External Libraries/MathGeoLib/include/MathGeoLib.h"
 #include "External Libraries/ImGui/imgui.h"
-#include "External Libraries/ImGui/imgui_impl_sdl.h"
 #include "External Libraries/ImGui/imgui_impl_opengl3.h"
 #include "External Libraries/SDL/include/SDL.h"
 #include "External Libraries/SDL/include/SDL_opengl.h"
@@ -176,61 +175,34 @@ void ModuleCentralEditor::Draw()
             }
             if (ImGui::BeginMenu("3D Object")) {
                 if (ImGui::MenuItem("Cube")) {
-                    GameObject* gm = App->scene_intro->CreateGameObject("Cube", App->scene_intro->root);
-                    ComponentMesh* mesh = (ComponentMesh*)gm->CreateComponent(Component_Type::Mesh);
-                    CreateCube(mesh->num_vertices, mesh->num_indices, mesh->indices, mesh->vertices);
-                    mesh->Initialization();
+                    CreateShape(Shape::Cube, "Cube");
                 }
                 if (ImGui::MenuItem("Rectangular Prism")) {
-                    GameObject* gm = App->scene_intro->CreateGameObject("RectangularPrism", App->scene_intro->root);
-                    ComponentMesh* mesh = (ComponentMesh*)gm->CreateComponent(Component_Type::Mesh);
-                    CreatePrism(mesh->num_vertices, mesh->num_indices, mesh->indices, mesh->vertices);
-                    mesh->Initialization();
+                    CreateShape(Shape::Rectangular_Prism, "Rectangular Prism");
                 }
                 if (ImGui::MenuItem("Triangular Pyramid")) {
-                    GameObject* gm = App->scene_intro->CreateGameObject("TriangularPyramid", App->scene_intro->root);
-                    ComponentMesh* mesh = (ComponentMesh*)gm->CreateComponent(Component_Type::Mesh);
-                    CreateTriPyramid(mesh->num_vertices, mesh->num_indices, mesh->indices, mesh->vertices);
-                    mesh->Initialization();
+                    CreateShape(Shape::Triangular_Pyramid, "Triangular Pyramid");
                 }
                 if (ImGui::MenuItem("Square Pyramid")) {
-                    GameObject* gm = App->scene_intro->CreateGameObject("SquarePyramid", App->scene_intro->root);
-                    ComponentMesh* mesh = (ComponentMesh*)gm->CreateComponent(Component_Type::Mesh);
-                    CreateSqrPyramid(mesh->num_vertices, mesh->num_indices, mesh->indices, mesh->vertices);
-                    mesh->Initialization();
+                    CreateShape(Shape::Square_Pyramid, "Square Pyramid");
                 }
                 if (ImGui::MenuItem("Rectangular Pyramid")) {
-                    GameObject* gm = App->scene_intro->CreateGameObject("RectangularPyramid", App->scene_intro->root);
-                    ComponentMesh* mesh = (ComponentMesh*)gm->CreateComponent(Component_Type::Mesh);
-                    CreateRectPyramid(mesh->num_vertices, mesh->num_indices, mesh->indices, mesh->vertices);
-                    mesh->Initialization();
+                    CreateShape(Shape::Rectangular_Pyramid, "Rectangular Pyramid");
                 }
                 if (ImGui::MenuItem("Cilinder")) {
-                    GameObject* gm = App->scene_intro->CreateGameObject("Cilinder", App->scene_intro->root);
-                    ComponentMesh* mesh = (ComponentMesh*)gm->CreateComponent(Component_Type::Mesh);
-                    CreateCilinder(mesh->num_vertices, mesh->num_indices, mesh->indices, mesh->vertices);
-                    mesh->Initialization();
+                    CreateShape(Shape::Cilinder, "Cilinder");
                 }
                 if (ImGui::MenuItem("Cone")) {
-                    GameObject* gm = App->scene_intro->CreateGameObject("SolidCone", App->scene_intro->root);
-                    ComponentMesh* mesh = (ComponentMesh*)gm->CreateComponent(Component_Type::Mesh);
-                    CreateCone(mesh->num_vertices, mesh->num_indices, mesh->indices, mesh->vertices);
-                    mesh->Initialization();
+                    CreateShape(Shape::Cone, "Cone");
                 }
                 if (ImGui::MenuItem("Sphere")) {
-                    GameObject* gm = App->scene_intro->CreateGameObject("SolidSphere", App->scene_intro->root);
-                    ComponentMesh* mesh = (ComponentMesh*)gm->CreateComponent(Component_Type::Mesh);
-                    CreateSphere(mesh->num_vertices, mesh->num_indices, mesh->indices, mesh->vertices);
-                    mesh->Initialization();
+                    CreateShape(Shape::Sphere, "Sphere");
                 }
                 ImGui::EndMenu();
             }
             if (ImGui::BeginMenu("2D Object")) {
                 if (ImGui::MenuItem("Plane")) {
-                    GameObject* gm = App->scene_intro->CreateGameObject("SolidPlane", App->scene_intro->root);
-                    ComponentMesh* mesh = (ComponentMesh*)gm->CreateComponent(Component_Type::Mesh);
-                    CreatePlane(mesh->num_vertices, mesh->num_indices, mesh->indices, mesh->vertices);
-                    mesh->Initialization();
+                    CreateShape(Shape::Plane, "Plane");
                 }
                 ImGui::EndMenu();
             }
@@ -532,44 +504,75 @@ bool ModuleCentralEditor::ProcessEvents(SDL_Event event)
     return done;
 }
 
-void ModuleCentralEditor::HierarchyRecursiveTree(GameObject* game_object, static int selected, static ImGuiTreeNodeFlags base_flags, int &node_clicked)
+void ModuleCentralEditor::HierarchyRecursiveTree(GameObject* game_object, static int selected, static ImGuiTreeNodeFlags base_flags, int &id_node_clicked)
 {
-    if (game_object != nullptr) {
-        const bool is_selected = game_object->id == node_clicked;
-        if (is_selected) {
-            base_flags |= ImGuiTreeNodeFlags_Selected;
-            if (game_object->id >= 0)
-                App->scene_intro->game_object_selected = game_object;
-            else
-                App->scene_intro->game_object_selected = nullptr;
-        }
-        if (game_object->children.size() == 0) {
-            if(game_object->id<0)
-                ImGui::Unindent(ImGui::GetTreeNodeToLabelSpacing());
-            base_flags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen;
-            ImGui::TreeNodeEx((void*)(intptr_t)game_object->id, base_flags, (game_object->id < 0) ? "Main" : game_object->GetName().c_str());
-            if (is_selected)
-                base_flags -= ImGuiTreeNodeFlags_Selected;
-            base_flags -= ImGuiTreeNodeFlags_Leaf - ImGuiTreeNodeFlags_NoTreePushOnOpen;
-            if (ImGui::IsItemClicked())
-                node_clicked = game_object->id;
-            if (game_object->id < 0)
-                ImGui::Indent(ImGui::GetTreeNodeToLabelSpacing());
-        }
-        else {
-            bool node_open = ImGui::TreeNodeEx((void*)(intptr_t)game_object->id, base_flags, (game_object->id < 0) ? "Main" : game_object->GetName().c_str());
-            if (is_selected)
-                base_flags -= ImGuiTreeNodeFlags_Selected;
-            if (ImGui::IsItemClicked())
-                node_clicked = game_object->id;
-            if (node_open) {
-                for (int i = 0; i < game_object->children.size(); i++) {
-                    HierarchyRecursiveTree(game_object->children.at(i), selected, base_flags, node_clicked);
-                }
-                ImGui::TreePop();
-            }
-        }
+    if (game_object == nullptr) {
+        return;
     }
- 
+    ImGuiTreeNodeFlags final_flags = base_flags;
+    const bool is_selected = game_object->id == id_node_clicked;
+    if (is_selected) {
+        final_flags |= ImGuiTreeNodeFlags_Selected;
+        if (game_object->id >= 0)
+            App->scene_intro->game_object_selected = game_object;
+        else
+            App->scene_intro->game_object_selected = nullptr;
+    }
+    bool has_children = true;
+    if (game_object->children.size() == 0) {
+        has_children = false;
+        final_flags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen;
+    }
+    if (game_object->id < 0 && !has_children) {
+        ImGui::Unindent(ImGui::GetTreeNodeToLabelSpacing());
+    }
+    bool node_open = ImGui::TreeNodeEx((void*)(intptr_t)game_object->id, final_flags, (game_object->id < 0) ? "Main" : game_object->GetName().c_str());
+    if (ImGui::IsItemClicked())
+        id_node_clicked = game_object->id;
+    if (node_open && has_children) {
+        for (int i = 0; i < game_object->children.size(); i++) {
+            HierarchyRecursiveTree(game_object->children.at(i), selected, base_flags, id_node_clicked);
+        }
+        ImGui::TreePop();
+    }
+    if (game_object->id < 0 && !has_children)
+        ImGui::Indent(ImGui::GetTreeNodeToLabelSpacing());
+}
+
+void ModuleCentralEditor::CreateShape(Shape shape, std::string name)
+{
+    GameObject* gm = App->scene_intro->CreateGameObject(name, App->scene_intro->root);
+    ComponentMesh* mesh = (ComponentMesh*)gm->CreateComponent(Component_Type::Mesh);
+    switch (shape)
+    {
+    case Shape::Cube:
+        CreateCube(mesh->num_vertices, mesh->num_indices, mesh->indices, mesh->vertices);
+        break;
+    case Shape::Rectangular_Prism:
+        CreatePrism(mesh->num_vertices, mesh->num_indices, mesh->indices, mesh->vertices);
+        break;
+    case Shape::Triangular_Pyramid:
+        CreateTriPyramid(mesh->num_vertices, mesh->num_indices, mesh->indices, mesh->vertices);
+        break;
+    case Shape::Square_Pyramid:
+        CreateSqrPyramid(mesh->num_vertices, mesh->num_indices, mesh->indices, mesh->vertices);
+        break;
+    case Shape::Rectangular_Pyramid:
+        CreateRectPyramid(mesh->num_vertices, mesh->num_indices, mesh->indices, mesh->vertices);
+        break;
+    case Shape::Cilinder:
+        CreateCilinder(mesh->num_vertices, mesh->num_indices, mesh->indices, mesh->vertices);
+        break;
+    case Shape::Cone:
+        CreateCone(mesh->num_vertices, mesh->num_indices, mesh->indices, mesh->vertices);
+        break;
+    case Shape::Sphere:
+        CreateSphere(mesh->num_vertices, mesh->num_indices, mesh->indices, mesh->vertices);
+        break;
+    case Shape::Plane:
+        CreatePlane(mesh->num_vertices, mesh->num_indices, mesh->indices, mesh->vertices);
+        break;
+    }
+        mesh->Initialization();
 }
 
