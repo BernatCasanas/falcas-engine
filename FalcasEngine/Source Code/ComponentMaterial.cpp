@@ -1,4 +1,3 @@
-#pragma once
 #include "ComponentMaterial.h"
 #include "External Libraries/ImGui/imgui.h"
 #include "FileSystem.h"

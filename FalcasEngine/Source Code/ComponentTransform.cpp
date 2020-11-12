@@ -1,4 +1,3 @@
-#pragma once
 #include "ComponentTransform.h"
 #include "External Libraries/ImGui/imgui.h"
 #include "GameObject.h"

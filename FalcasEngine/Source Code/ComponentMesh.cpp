@@ -1,4 +1,3 @@
-#pragma once
 #include "External Libraries/Glew/include/glew.h"
 #include "Application.h"
 #include "ModuleCentralEditor.h"

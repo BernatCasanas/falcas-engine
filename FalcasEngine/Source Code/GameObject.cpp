@@ -1,4 +1,3 @@
-#pragma once
 #include "ComponentMaterial.h"
 #include "GameObject.h"
 #include "Component.h"

@@ -1,22 +1,19 @@
-#pragma once
+
 #include "Application.h"
 #include "ModuleSceneIntro.h"
 #include "ModuleCentralEditor.h"
 #include "ModuleCamera3D.h"
-
 #include "Console.h"
 #include "GameObject.h"
 #include "External Libraries/MathGeoLib/include/Math/Quat.h"
 #include "External Libraries/Assimp/Assimp/include/scene.h"
 #include "ComponentMesh.h"
-#include "External Libraries/Devil/Include/il.h"
 #include "ComponentMaterial.h"
 #include <gl/GL.h>
 #include "Shape.h"
 #include "FileSystem.h"
 
-#pragma comment( lib, "Source Code/External Libraries/Devil/lib/ILU.lib" )
-#pragma comment( lib, "Source Code/External Libraries/Devil/lib/DevIL.lib" )
+
 
 
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
@@ -190,28 +187,53 @@ GameObject* ModuleSceneIntro::SearchGameObject(int id, GameObject* game_obj)
 	return game_object;
 }
 
-std::string ModuleSceneIntro::CheckNameGameObject(std::string name, bool numbered, int digits)
+bool ModuleSceneIntro::IsGameObjectNameRepeated(std::string name, GameObject* game_obj)
 {
-	bool stop = false;
-	GameObject* game_object = nullptr;
-	for (int i = 0; i <= id_gameobject && stop == false; i++) {
-		game_object = SearchGameObject(i, App->scene_intro->root);
-		if (game_object != nullptr && game_object->name == name) {
-			stop = true;
-		}
+	bool ret = false;
+	if (game_obj->name == name) {
+		return true;
 	}
+	for (int i = 0; i < game_obj->children.size() && ret == false; i++) {
+		ret = IsGameObjectNameRepeated(name, game_obj->children.at(i));
+	}
+	return ret;
+}
+
+std::string ModuleSceneIntro::CheckNameGameObject(std::string name, bool numbered)
+{
+	bool stop = IsGameObjectNameRepeated(name,App->scene_intro->root);
 	if (stop == true) {
 		if (numbered) {
 			name.pop_back();
-			int number = name.back() - '0';
-			if (number >= 9)
-				name = NameGameObjectWhenMoreThan2Digits(name, digits);
-			else {
-				number++;
-				name.pop_back();
-				name.push_back(number + '0');
-				name.push_back(')');
+			int digits = 0;
+			int number = 0;
+			stop = false;
+			do {
+				if (isdigit(name.back())) {
+					number += (name.back() - '0') * (pow(10, digits));
+					name.pop_back();
+					digits++;
+				}
+				else {
+					stop=true;
+				}
+			} while (stop == false);
+			number++;
+			if (number - pow(10, digits) >= 0) {
+				digits++;
 			}
+			for (int i = digits - 1; i > 0; i--) {
+				if (number > (pow(10, i)) - 1) {
+					int n = number / pow(10, i);
+					name.push_back(n + '0');
+					number -= n * (pow(10, i));
+				}
+				else {
+					name.push_back(0 + '0');
+				}
+			}
+			name.push_back(number + '0');
+			name.push_back(')');
 		}
 		else {
 			name.push_back(' ');
@@ -219,34 +241,7 @@ std::string ModuleSceneIntro::CheckNameGameObject(std::string name, bool numbere
 			name.push_back('1');
 			name.push_back(')');
 		}
-		name = CheckNameGameObject(name, true, digits);
+		name = CheckNameGameObject(name, true);
 	}
-	return name;
-}
-
-std::string ModuleSceneIntro::NameGameObjectWhenMoreThan2Digits(std::string name, int& digits)
-{
-	int number = 0;
-	for (int i = 0; i < digits; i++) {
-		number += (name.back() - '0') * (pow(10, i));
-		name.pop_back();
-	}
-	number++;
-	if (pow(10, digits) <= number) {
-		digits++;
-	}
-	for (int i = digits - 1; i > 0; i--) {
-		if (number > (pow(10, i)) - 1) {
-			int n = number / pow(10, i);
-			name.push_back(n + '0');
-			number -= n * (pow(10, i));
-		}
-		else {
-			name.push_back(0 + '0');
-		}
-	}
-
-	name.push_back(number + '0');
-	name.push_back(')');
 	return name;
 }
