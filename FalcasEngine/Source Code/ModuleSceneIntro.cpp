@@ -11,7 +11,6 @@
 #include <gl/GL.h>
 #include "Shape.h"
 #include "FileSystem.h"
-#include "External Libraries/Devil/Include/ilut.h"
 #include "Importer.h"
 
 
@@ -30,12 +29,7 @@ bool ModuleSceneIntro::Start()
 	LOG("Loading Intro assets");
 	bool ret = true;
 
-	ilInit();
-	iluInit();
-	ilutInit();
-	ilutRenderer(ILUT_OPENGL);
-	ilEnable(IL_ORIGIN_SET);
-
+	DevilInit();
 
 	App->camera->Move(vec3(1.0f, 1.0f, 0.0f));
 	App->camera->LookAt(vec3(0, 0, 0));
@@ -61,7 +55,7 @@ bool ModuleSceneIntro::CleanUp()
 	LOG("Unloading Intro scene");
 	delete root;
 	game_object_selected = nullptr;
-	ilDisable(IL_ORIGIN_SET);
+	DevilCleanUp();
 
 	return true;
 }

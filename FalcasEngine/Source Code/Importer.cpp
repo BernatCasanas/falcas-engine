@@ -19,6 +19,20 @@
 #pragma comment (lib, "Source Code/External Libraries/Assimp/Assimp/libx86/assimp.lib")
 
 
+void DevilInit()
+{
+	ilInit();
+	iluInit();
+	ilutInit();
+	ilutRenderer(ILUT_OPENGL);
+	ilEnable(IL_ORIGIN_SET);
+}
+
+void DevilCleanUp()
+{
+	ilDisable(IL_ORIGIN_SET);
+}
+
 void ImportFBX(std::string file)
 {
 	const aiScene* scene = nullptr;

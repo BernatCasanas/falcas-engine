@@ -8,6 +8,10 @@ class aiNode;
 class aiMesh;
 class GameObject;
 
+void DevilInit();
+
+void DevilCleanUp();
+
 void ImportFBX(std::string file);
 
 void ImportGameObjectFromFBX(const aiScene* scene, aiNode* node, GameObject* parent, std::string file);

@@ -23,6 +23,7 @@ enum class Shape {
 
 class Application;
 class GameObject;
+//typedef int ImGuiTreeNodeFlags; 
 
 class ModuleCentralEditor : public Module
 {
