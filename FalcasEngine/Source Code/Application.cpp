@@ -63,7 +63,7 @@ bool Application::Init()
 
 	int size = list_modules.size();
 	for (int i = 0; i < size && ret==true; i++) {
-		ret = list_modules.at(i)->Init();
+		ret = list_modules[i]->Init();
 	}
 	
 
@@ -71,7 +71,7 @@ bool Application::Init()
 	LOG("Application Start --------------");
 
 	for (int i = 0; i < size && ret == true; i++) {
-		ret = list_modules.at(i)->Start();
+		ret = list_modules[i]->Start();
 	}
 	
 	ms_timer.Start();
@@ -100,15 +100,15 @@ update_status Application::Update()
 
 	int size = list_modules.size();
 	for (int i = 0; i < size && ret == UPDATE_CONTINUE; i++) {
-		ret = list_modules.at(i)->PreUpdate(dt);
+		ret = list_modules[i]->PreUpdate(dt);
 	}
 
 	for (int i = 0; i < size && ret == UPDATE_CONTINUE; i++) {
-		ret = list_modules.at(i)->Update(dt);
+		ret = list_modules[i]->Update(dt);
 	}
 
 	for (int i = 0; i < size && ret == UPDATE_CONTINUE; i++) {
-		ret = list_modules.at(i)->PostUpdate(dt);
+		ret = list_modules[i]->PostUpdate(dt);
 	}
 
 
@@ -124,7 +124,7 @@ bool Application::CleanUp()
 
 	int size = list_modules.size();
 	for (int i = 0; i < size && ret == true; i++) {
-		ret = list_modules.at(i)->CleanUp();
+		ret = list_modules[i]->CleanUp();
 	}
 
 	return ret;

@@ -404,7 +404,7 @@ void ModuleCentralEditor::Draw()
         ImGui::Begin("Console", &show_console);
         console_logs = App->console->GetLogs();
         for (int i = 0; i < console_logs.size(); i++) {
-            ImGui::Text(console_logs.at(i));
+            ImGui::Text(console_logs[i]);
         }
         ImGui::End();
     }
@@ -433,7 +433,7 @@ void ModuleCentralEditor::Draw()
                 }
             }
             for (int i = 0; i < game_object->components.size(); i++) {
-                Component* game_object_component = game_object->components.at(i);
+                Component* game_object_component = game_object->components[i];
                 if (ImGui::CollapsingHeader(game_object_component->name.c_str(), ImGuiTreeNodeFlags_DefaultOpen)) {
                     game_object_component->Inspector();
                 }
@@ -532,7 +532,7 @@ void ModuleCentralEditor::HierarchyRecursiveTree(GameObject* game_object, static
         id_node_clicked = game_object->id;
     if (node_open && has_children) {
         for (int i = 0; i < game_object->children.size(); i++) {
-            HierarchyRecursiveTree(game_object->children.at(i), selected, base_flags, id_node_clicked);
+            HierarchyRecursiveTree(game_object->children[i], selected, base_flags, id_node_clicked);
         }
         ImGui::TreePop();
     }

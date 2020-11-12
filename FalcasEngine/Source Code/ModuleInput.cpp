@@ -6,7 +6,6 @@
 #include "ModuleSceneIntro.h"
 #include "FileSystem.h"
 #include "External Libraries/SDL/include/SDL.h"
-#include "External Libraries/Assimp/Assimp/include/scene.h"
 #include "GameObject.h"
 #include "ComponentMaterial.h"
 #include "ComponentMesh.h"

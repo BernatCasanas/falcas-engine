@@ -140,7 +140,7 @@ GameObject* ModuleSceneIntro::SearchGameObject(int id, GameObject* game_obj)
 		return game_obj;
 	}
 	for (int i = 0; i < game_obj->children.size() && game_object == nullptr; i++) {
-		game_object = SearchGameObject(id, game_obj->children.at(i));
+		game_object = SearchGameObject(id, game_obj->children[i]);
 	}
 	return game_object;
 }
@@ -152,7 +152,7 @@ bool ModuleSceneIntro::IsGameObjectNameRepeated(std::string name, GameObject* ga
 		return true;
 	}
 	for (int i = 0; i < game_obj->children.size() && ret == false; i++) {
-		ret = IsGameObjectNameRepeated(name, game_obj->children.at(i));
+		ret = IsGameObjectNameRepeated(name, game_obj->children[i]);
 	}
 	return ret;
 }
