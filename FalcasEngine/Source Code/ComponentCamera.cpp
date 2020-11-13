@@ -29,6 +29,14 @@ void ComponentCamera::Update()
 	UpdateFrustum();
 }
 
+bool ComponentCamera::GetIfIsFrustumCulling() const
+{
+	if (active)
+		return frustum_culling;
+	else
+		return false;
+}
+
 void ComponentCamera::Inspector()
 {
 	ImGui::PushID(name.c_str());
@@ -36,7 +44,8 @@ void ComponentCamera::Inspector()
 
 	ImGui::Separator();
 
-	
+	ImGui::Checkbox("Camera Culling", &frustum_culling);
+
 	ImGui::AlignTextToFramePadding();
 	ImGui::Text("Near Plane Distance");
 

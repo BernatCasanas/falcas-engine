@@ -42,24 +42,34 @@ GameObject::~GameObject()
 
 void GameObject::Update()
 {
-	if (active == true) {
-		if (trans->needed_to_update)
-			UpdateAABB();
-		for (int i = 0; i < children.size(); i++) {
-			if (children[i]->active) {
-				if (trans->needed_to_update) {
-					children[i]->trans->needed_to_update = true;
-				}
-				children[i]->Update();
-			}
-		}
-		for (int i = 0; i < components.size(); i++) {
-			if(components[i]->active)
-				components[i]->Update();
-		}
-		if (App->central_editor->aabbs)
-			App->renderer3D->aabbs.push_back(aabb);
+	if (!active)
+		return;
+
+	if (trans->needed_to_update)
+		UpdateAABB();
+	if (parent != nullptr && !parent->culled) {
+		if (id > 0 && App->renderer3D->camera_culling->GetIfIsFrustumCulling() && HasComponentType(Component_Type::Mesh) && !IsInsideFrustumCulling())
+			culled = true;
+		else culled = false;
 	}
+
+	for (int i = 0; i < children.size(); i++) {
+		if (children[i]->active) {
+			if (culled)
+				children[i]->culled;
+			if (trans->needed_to_update) {
+				children[i]->trans->needed_to_update = true;
+			}
+			children[i]->Update();
+		}
+	}
+	for (int i = 0; i < components.size(); i++) {
+		if(components[i]->active)
+			components[i]->Update();
+	}
+	if (App->central_editor->aabbs)
+		App->renderer3D->aabbs.push_back(aabb);
+	
 }
 
 Component* GameObject::CreateComponent(Component_Type type)
@@ -173,5 +183,28 @@ void GameObject::UpdateAABB()
 	//aabb
 	aabb.SetNegativeInfinity();
 	aabb.Enclose(obb);
+}
+
+bool GameObject::IsInsideFrustumCulling()
+{
+	float3 vCorner;
+	for (int p = 0; p < 6; ++p) {
+		int outside = 0;
+		for (int i = 0; i < 8; ++i) {
+			vCorner = aabb.CornerPoint(i);
+				if (App->renderer3D->camera_culling->frustum.GetPlane(p).IsOnPositiveSide(vCorner)) { 
+					outside++;
+				}
+				
+			}
+		if (outside == 8)
+			return false;
+	}
+	return true;
+}
+
+bool GameObject::IsCulled() const
+{
+	return culled;
 }
 

@@ -222,6 +222,7 @@ bool ModuleRenderer3D::CleanUp()
 void ModuleRenderer3D::DrawAABB(AABB aabb)
 {
 	glBegin(GL_LINES);
+
 	glVertex3f(aabb.CornerPoint(0).x, aabb.CornerPoint(0).y, aabb.CornerPoint(0).z);
 	glVertex3f(aabb.CornerPoint(2).x, aabb.CornerPoint(2).y, aabb.CornerPoint(2).z);
 	glVertex3f(aabb.CornerPoint(2).x, aabb.CornerPoint(2).y, aabb.CornerPoint(2).z);

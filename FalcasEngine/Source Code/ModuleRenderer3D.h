@@ -7,6 +7,7 @@
 
 
 #define MAX_LIGHTS 8
+class ComponentCamera;
 
 class ModuleRenderer3D : public Module
 {
@@ -36,4 +37,5 @@ public:
 	GLuint texColorBuffer;
 	GLuint rboDepthStencil;
 	std::vector<AABB> aabbs;
+	ComponentCamera* camera_culling = nullptr;
 };

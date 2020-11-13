@@ -13,6 +13,7 @@
 #include "FileSystem.h"
 #include "Importer.h"
 #include "External Libraries/ImGui/imgui_impl_sdl.h"
+#include "ModuleRenderer3D.h"
 
 
 
@@ -43,6 +44,7 @@ bool ModuleSceneIntro::Start()
 	CreateGrid(mesh->num_vertices, mesh->num_indices, mesh->indices, mesh->vertices, { 0,0,0 }, { 500,1,500 });
 	mesh->Initialization();
 	camera = (ComponentCamera*)CreateGameObject("Camera", root)->CreateComponent(Component_Type::Camera);
+	App->renderer3D->camera_culling = camera;
 	id_gameobject++;
 	game_object_selected = nullptr;
 	int num = 0;

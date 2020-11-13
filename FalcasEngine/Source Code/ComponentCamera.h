@@ -15,6 +15,7 @@ public:
 	void UpdateFrustum();
 	void Inspector();
 	void Update();
+	bool GetIfIsFrustumCulling() const;
 
 
 public:
@@ -26,6 +27,7 @@ private:
 	float far_plane_distance=100;
 	float field_of_view_vertical = 1;
 	float field_of_view_horizontal = 1;
+	bool frustum_culling = false;
 
 };
 #endif // !_COMPONENT_CAMERA_
