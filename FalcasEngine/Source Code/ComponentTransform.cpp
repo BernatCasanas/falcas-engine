@@ -5,13 +5,7 @@
 ComponentTransform::ComponentTransform(GameObject* owner, float3 position, Quat rotation, float3 size) :Component(Component_Type::Transform, owner, "Transform"), position(position), rotation(rotation), size(size)
 {
 	euler = QuaternionToEuler(rotation);
-	local_matrix = local_matrix.FromTRS(position, rotation, size);
-	if (owner->parent != nullptr) {
-		ComponentTransform* parent_trans = (ComponentTransform*)owner->parent->GetComponent(Component_Type::Transform);
-		global_matrix = parent_trans->GetGlobalMatrix() * local_matrix;
-	}
-	else global_matrix = local_matrix;
-	global_matrix_transposed = global_matrix.Transposed();
+	SetMatrices();
 }
 
 ComponentTransform::~ComponentTransform()
@@ -23,13 +17,7 @@ void ComponentTransform::Update()
 	if (!needed_to_update)
 		return;
 	rotation = EulerToQuaternion(euler);
-	local_matrix = local_matrix.FromTRS(position, rotation, size);
-	if (owner->parent != nullptr) {
-		ComponentTransform* parent_trans = (ComponentTransform*)owner->parent->GetComponent(Component_Type::Transform);
-		global_matrix = parent_trans->GetGlobalMatrix() * local_matrix;
-	}
-	else global_matrix = local_matrix;
-	global_matrix_transposed = global_matrix.Transposed();
+	SetMatrices();
 	needed_to_update = false;
 	for (int i = 0; i < owner->children.size(); i++) {
 		ComponentTransform* child_trans = (ComponentTransform*)owner->children[i]->GetComponent(Component_Type::Transform);
@@ -102,14 +90,19 @@ void ComponentTransform::SetTransformation(float3 pos, Quat rot, float3 size)
 	position = pos;
 	rotation = rot;
 	this->size = size;
-	local_matrix = local_matrix.FromTRS(pos, rot, size);
+	SetMatrices();
+
+}
+
+void ComponentTransform::SetMatrices()
+{
+	local_matrix = local_matrix.FromTRS(position, rotation, size);
 	if (owner->parent != nullptr) {
 		ComponentTransform* parent_trans = (ComponentTransform*)owner->parent->GetComponent(Component_Type::Transform);
 		global_matrix = parent_trans->GetGlobalMatrix() * local_matrix;
 	}
 	else global_matrix = local_matrix;
 	global_matrix_transposed = global_matrix.Transposed();
-
 }
 
 void ComponentTransform::Inspector()

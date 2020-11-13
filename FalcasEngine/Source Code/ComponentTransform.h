@@ -24,6 +24,7 @@ public:
 
 
 	void SetTransformation(float3 pos, Quat rot, float3 size);
+	void SetMatrices();
 	void Inspector();
 
 	bool needed_to_update = false;
