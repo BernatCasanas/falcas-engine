@@ -20,7 +20,21 @@ ComponentTransform::~ComponentTransform()
 
 void ComponentTransform::Update()
 {
+	if (!needed_to_update)
+		return;
 	rotation = EulerToQuaternion(euler);
+	local_matrix = local_matrix.FromTRS(position, rotation, size);
+	if (owner->parent != nullptr) {
+		ComponentTransform* parent_trans = (ComponentTransform*)owner->parent->GetComponent(Component_Type::Transform);
+		global_matrix = parent_trans->GetGlobalMatrix() * local_matrix;
+	}
+	else global_matrix = local_matrix;
+	global_matrix_transposed = global_matrix.Transposed();
+	needed_to_update = false;
+	for (int i = 0; i < owner->children.size(); i++) {
+		ComponentTransform* child_trans = (ComponentTransform*)owner->children[i]->GetComponent(Component_Type::Transform);
+		child_trans->needed_to_update = true;
+	}
 }
 
 float3 ComponentTransform::GetPosition()const
@@ -116,7 +130,8 @@ void ComponentTransform::Inspector()
 	
 	ImGui::SameLine();
 	ImGui::PushItemWidth(50);
-	ImGui::DragFloat("##0", &position.x, 0.01f);
+	if(ImGui::DragFloat("##0", &position.x, 0.01f))
+		needed_to_update = true;
 	ImGui::PopItemWidth();
 	
 	ImGui::NextColumn();
@@ -125,7 +140,8 @@ void ComponentTransform::Inspector()
 	
 	ImGui::SameLine();
 	ImGui::PushItemWidth(50);
-	ImGui::DragFloat("##1", &position.y, 0.01f);
+	if (ImGui::DragFloat("##1", &position.y, 0.01f))
+		needed_to_update = true;
 	ImGui::PopItemWidth();
 	
 	ImGui::NextColumn();
@@ -134,7 +150,8 @@ void ComponentTransform::Inspector()
 
 	ImGui::SameLine();
 	ImGui::PushItemWidth(50);
-	ImGui::DragFloat("##2", &position.z, 0.01f);
+	if(ImGui::DragFloat("##2", &position.z, 0.01f))
+		needed_to_update = true;
 	ImGui::PopItemWidth();
 	
 	ImGui::NextColumn();
@@ -147,7 +164,8 @@ void ComponentTransform::Inspector()
 
 	ImGui::SameLine();
 	ImGui::PushItemWidth(50);
-	ImGui::DragFloat("##3", &euler.x, 0.01f);
+	if(ImGui::DragFloat("##3", &euler.x, 0.01f))
+		needed_to_update = true;
 	ImGui::PopItemWidth();
 	
 	ImGui::NextColumn();
@@ -156,7 +174,8 @@ void ComponentTransform::Inspector()
 
 	ImGui::SameLine();
 	ImGui::PushItemWidth(50);
-	ImGui::DragFloat("##4", &euler.y, 0.01f);
+	if(ImGui::DragFloat("##4", &euler.y, 0.01f))
+		needed_to_update = true;
 	ImGui::PopItemWidth();
 	
 	ImGui::NextColumn();
@@ -165,7 +184,8 @@ void ComponentTransform::Inspector()
 
 	ImGui::SameLine();
 	ImGui::PushItemWidth(50);
-	ImGui::DragFloat("##5", &euler.z, 0.01f);
+	if(ImGui::DragFloat("##5", &euler.z, 0.01f))
+		needed_to_update = true;
 	ImGui::PopItemWidth();
 	
 	ImGui::NextColumn();
@@ -178,7 +198,8 @@ void ComponentTransform::Inspector()
 
 	ImGui::SameLine();
 	ImGui::PushItemWidth(50);
-	ImGui::DragFloat("##6", &size.x, 0.01f);
+	if(ImGui::DragFloat("##6", &size.x, 0.01f))
+		needed_to_update = true;
 	ImGui::PopItemWidth();
 	
 	ImGui::NextColumn();
@@ -187,7 +208,8 @@ void ComponentTransform::Inspector()
 
 	ImGui::SameLine();
 	ImGui::PushItemWidth(50);
-	ImGui::DragFloat("##7", &size.y, 0.01f);
+	if(ImGui::DragFloat("##7", &size.y, 0.01f))
+		needed_to_update = true;
 	ImGui::PopItemWidth();
 	
 	ImGui::NextColumn();
@@ -196,7 +218,8 @@ void ComponentTransform::Inspector()
 
 	ImGui::SameLine();
 	ImGui::PushItemWidth(50);
-	ImGui::DragFloat("##8", &size.z, 0.01f);
+	if(ImGui::DragFloat("##8", &size.z, 0.01f))
+		needed_to_update = true;
 	ImGui::PopItemWidth();
 	
 	ImGui::Columns(1, "", false);

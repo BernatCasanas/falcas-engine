@@ -26,6 +26,8 @@ public:
 	void SetTransformation(float3 pos, Quat rot, float3 size);
 	void Inspector();
 
+	bool needed_to_update = false;
+
 private:
 	float4x4 local_matrix;
 	float4x4 global_matrix;
