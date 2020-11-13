@@ -87,6 +87,9 @@ public:
 	float3 Center() const;
 	float3 Centroid() const { return l.CenterPoint(); } ///< [similarOverload: Center]
 
+	/// Quickly returns an arbitrary point inside this Capsule. Used in GJK intersection test.
+	inline vec AnyPointFast() const { return l.a; }
+
 	/// Computes the extreme point of this Capsule in the given direction.
 	/** An extreme point is a farthest point of this Capsule in the given direction. Given a direction,
 		this point is not necessarily unique.
@@ -94,6 +97,8 @@ public:
 			be unnormalized, but may not be null.
 		@return The extreme point of this Capsule in the given direction. */
 	float3 ExtremePoint(const float3 &direction) const;
+	vec ExtremePoint(const vec& direction, float& projectionDistance) const;
+
 
 	/// Projects this Capsule onto the given 1D axis direction vector.
 	/** This function collapses this Capsule onto an 1D axis for the purposes of e.g. separate axis test computations.
@@ -265,6 +270,8 @@ public:
 	/// Returns a human-readable representation of this Capsule. Most useful for debugging purposes.
 	/** The returned string specifies the line segment and the radius of this Capsule. */
 	std::string ToString() const;
+	std::string SerializeToString() const;
+
 #endif
 #ifdef MATH_QT_INTEROP
 	operator QString() const { return toString(); }

@@ -4,7 +4,7 @@
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -12,9 +12,9 @@
    See the License for the specific language governing permissions and
    limitations under the License. */
 
-/** @file MathOps.cpp
-	@author Jukka Jylänki
-	@brief */
+   /** @file MathOps.cpp
+	   @author Jukka Jylänki
+	   @brief */
 #include "MathFunc.h"
 #include "myassert.h"
 
@@ -23,20 +23,19 @@ MATH_BEGIN_NAMESPACE
 /** Compares the two values for equality, allowing the given amount of absolute error. */
 bool EqualAbs(float a, float b, float epsilon)
 {
-	return Abs(a-b) < epsilon;
+	return Abs(a - b) < epsilon;
 }
 
 float RelativeError(float a, float b)
 {
 	if (a == b) return 0.f; // Handles the special case where approximation and real are both zero.
-	return Abs((a-b)/Max(Abs(a), Abs(b)));
+	return Abs((a - b) / Max(Abs(a), Abs(b)));
 }
 
 bool EqualRel(float a, float b, float maxRelError)
 {
 	if (a == b) return true; // Handles the special case where a and b are both zero.
-	float relativeError = Abs((a-b)/Max(Abs(a), Abs(b)));
-	return relativeError <= maxRelError;
+	return Abs(a - b) <= maxRelError * Max(Abs(a), Abs(b));
 }
 
 inline int ReinterpretFloatAsInt(float a)

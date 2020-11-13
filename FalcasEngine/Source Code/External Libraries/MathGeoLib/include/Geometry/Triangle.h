@@ -183,6 +183,9 @@ public:
 		@see PlaneCCW(), PlaneCW(), NormalCCW(), NormalCW(). */
 	float3 UnnormalizedNormalCW() const;
 
+	/// Quickly returns an arbitrary point inside this Triangle. Used in GJK intersection test.
+	inline vec AnyPointFast() const { return a; }
+
 	/// Computes an extreme point of this Triangle in the given direction.
 	/** An extreme point is a farthest point of this Triangle in the given direction. Given a direction,
 		this point is not necessarily unique.
@@ -192,6 +195,8 @@ public:
 			vertex of this Triangle.
 		@see Vertex(). */
 	float3 ExtremePoint(const float3 &direction) const;
+	vec ExtremePoint(const vec& direction, float& projectionDistance) const;
+
 
 	/// Returns a Polygon representation of this Triangle.
 	/** The returned polygon is identical to this Triangle. It has three vertices a, b and c which wind in the same
@@ -257,6 +262,9 @@ public:
 	float Distance(const float3 &point) const;
 	float Distance(const Sphere &sphere) const;
 	float Distance(const Capsule &capsule) const;
+
+	float DistanceSq(const vec& point) const;
+
 
 	/// Tests whether this triangle and the given object intersect.	
 	/** Both objects are treated as "solid", meaning that if one of the objects is fully contained inside
@@ -359,6 +367,7 @@ public:
 #ifdef MATH_ENABLE_STL_SUPPORT
 	/// Returns a human-readable representation of this Line. Most useful for debugging purposes.
 	std::string ToString() const;
+	std::string SerializeToString() const;
 #endif
 #ifdef MATH_QT_INTEROP
 	operator QString() const { return toString(); }

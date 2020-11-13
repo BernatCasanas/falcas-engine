@@ -297,6 +297,13 @@ float3 OBB::ExtremePoint(const float3 &direction) const
 	return pt;
 }
 
+vec OBB::ExtremePoint(const vec& direction, float& projectionDistance) const
+{
+	vec extremePoint = ExtremePoint(direction);
+	projectionDistance = extremePoint.Dot(direction);
+	return extremePoint;
+}
+
 void OBB::ProjectToAxis(const float3 &direction, float &outMin, float &outMax) const
 {
 	float x = Abs(Dot(direction, axis[0]) * r.x);
@@ -1024,6 +1031,16 @@ std::string OBB::ToString() const
 	sprintf(str, "OBB(Pos:(%.2f, %.2f, %.2f) Size:(%.2f, %.2f, %.2f) X:(%.2f, %.2f, %.2f) Y:(%.2f, %.2f, %.2f) Z:(%.2f, %.2f, %.2f))",
 		pos.x, pos.y, pos.z, r.x*2.f, r.y*2.f, r.z*2.f, axis[0].x, axis[0].y, axis[0].z, axis[1].x, axis[1].y, axis[1].z, axis[2].x, axis[2].y, axis[2].z);
 	return str;
+}
+
+std::string OBB::SerializeToString() const
+{
+	std::string s = pos.xyz().SerializeToString() + " "
+		+ r.xyz().SerializeToString() + " "
+		+ axis[0].xyz().SerializeToString() + " "
+		+ axis[1].xyz().SerializeToString() + " "
+		+ axis[2].xyz().SerializeToString();
+	return s;
 }
 
 std::ostream &operator <<(std::ostream &o, const OBB &obb)

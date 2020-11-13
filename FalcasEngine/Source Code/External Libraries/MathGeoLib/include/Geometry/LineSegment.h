@@ -80,6 +80,9 @@ public:
 		@see a, b. */
 	float3 Dir() const;
 
+	/// Quickly returns an arbitrary point inside this LineSegment. Used in GJK intersection test.
+	inline vec AnyPointFast() const { return a; }
+
 	/// Computes an extreme point of this LineSegment in the given direction.
 	/** An extreme point is a farthest point along this LineSegment in the given direction. Given a direction,
 		this point is not necessarily unique.
@@ -89,6 +92,8 @@ public:
 			either a or b.
 		@see a, b.*/
 	float3 ExtremePoint(const float3 &direction) const;
+	vec ExtremePoint(const vec& direction, float& projectionDistance) const;
+
 
 	/// Translates this LineSegment in world space.
 	/** @param offset The amount of displacement to apply to this LineSegment, in world space coordinates.
@@ -134,6 +139,8 @@ public:
 	bool Contains(const float3 &point, float distanceThreshold = 1e-3f) const;
 	bool Contains(const LineSegment &lineSegment, float distanceThreshold = 1e-3f) const;
 
+	vec ClosestPoint(const vec& point, float& d) const;
+
 	/// Computes the closest point on this line segment to the given object.
 	/** @param d [out] If specified, this parameter receives the normalized distance along
 			this line segment which specifies the closest point on this line segment to
@@ -164,6 +171,8 @@ public:
 	float Distance(const Plane &other) const;
 	float Distance(const Sphere &other) const;
 	float Distance(const Capsule &other) const;
+
+	float DistanceSq(const vec& point) const;
 
 	/// Tests whether this line segment and the given object intersect.	
 	/** Both objects are treated as "solid", meaning that if one of the objects is fully contained inside
@@ -219,6 +228,8 @@ public:
 #ifdef MATH_ENABLE_STL_SUPPORT
 	/// Returns a human-readable representation of this LineSegment. Most useful for debugging purposes.
 	std::string ToString() const;
+	std::string SerializeToString() const;
+
 #endif
 #ifdef MATH_QT_INTEROP
 	operator QString() const { return toString(); }

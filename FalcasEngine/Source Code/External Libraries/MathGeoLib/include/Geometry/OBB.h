@@ -198,6 +198,8 @@ public:
 		@see Volume(), SurfaceArea(). */
 	float3 Centroid() const { return CenterPoint(); }
 
+	inline vec AnyPointFast() const { return pos; }
+
 	/// Computes the volume of this OBB.
 	/** @see CenterPoint(), SurfaceArea(). */
 	float Volume() const;
@@ -237,6 +239,7 @@ public:
 			corner point of this OBB.
 		@see CornerPoint(). */
 	float3 ExtremePoint(const float3 &direction) const;
+	vec ExtremePoint(const vec& direction, float& projectionDistance) const;
 
 	/// Projects this OBB onto the given 1D axis direction vector.
 	/** This function collapses this OBB onto an 1D axis for the purposes of e.g. separate axis test computations.
@@ -467,6 +470,8 @@ public:
 	/// Returns a human-readable representation of this OBB. Most useful for debugging purposes.
 	/** The returned string specifies the center point and the half-axes of this OBB. */
 	std::string ToString() const;
+	std::string SerializeToString() const;
+
 #endif
 #ifdef MATH_QT_INTEROP
 	operator QString() const { return toString(); }

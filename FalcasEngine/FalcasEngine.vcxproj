@@ -17,6 +17,8 @@
     <ClCompile Include="Source Code\ComponentMaterial.cpp" />
     <ClCompile Include="Source Code\ComponentMesh.cpp" />
     <ClCompile Include="Source Code\ComponentTransform.cpp" />
+    <ClCompile Include="Source Code\External Libraries\MathGeoLib\include\Algorithm\GJK.cpp" />
+    <ClCompile Include="Source Code\External Libraries\MathGeoLib\include\Math\float3.cpp" />
     <ClCompile Include="Source Code\FileSystem.cpp" />
     <ClCompile Include="Source Code\GameObject.cpp" />
     <ClCompile Include="Source Code\Color.cpp" />
@@ -44,7 +46,6 @@
     <ClCompile Include="Source Code\External Libraries\MathGeoLib\include\Geometry\TriangleMesh.cpp" />
     <ClCompile Include="Source Code\External Libraries\MathGeoLib\include\Math\BitOps.cpp" />
     <ClCompile Include="Source Code\External Libraries\MathGeoLib\include\Math\float2.cpp" />
-    <ClCompile Include="Source Code\External Libraries\MathGeoLib\include\Math\float3.cpp" />
     <ClCompile Include="Source Code\External Libraries\MathGeoLib\include\Math\float3x3.cpp" />
     <ClCompile Include="Source Code\External Libraries\MathGeoLib\include\Math\float3x4.cpp" />
     <ClCompile Include="Source Code\External Libraries\MathGeoLib\include\Math\float4.cpp" />
@@ -78,6 +79,8 @@
     <ClInclude Include="Source Code\ComponentMaterial.h" />
     <ClInclude Include="Source Code\ComponentMesh.h" />
     <ClInclude Include="Source Code\ComponentTransform.h" />
+    <ClInclude Include="Source Code\External Libraries\MathGeoLib\include\Algorithm\GJK.h" />
+    <ClInclude Include="Source Code\External Libraries\MathGeoLib\include\Math\float3.h" />
     <ClInclude Include="Source Code\FileSystem.h" />
     <ClInclude Include="Source Code\GameObject.h" />
     <ClInclude Include="Source Code\Color.h" />
@@ -154,7 +157,6 @@
     <ClInclude Include="Source Code\External Libraries\MathGeoLib\include\Math\CoordinateAxisConvention.h" />
     <ClInclude Include="Source Code\External Libraries\MathGeoLib\include\Math\FixedPoint.h" />
     <ClInclude Include="Source Code\External Libraries\MathGeoLib\include\Math\float2.h" />
-    <ClInclude Include="Source Code\External Libraries\MathGeoLib\include\Math\float3.h" />
     <ClInclude Include="Source Code\External Libraries\MathGeoLib\include\Math\float3x3.h" />
     <ClInclude Include="Source Code\External Libraries\MathGeoLib\include\Math\float3x4.h" />
     <ClInclude Include="Source Code\External Libraries\MathGeoLib\include\Math\float4.h" />

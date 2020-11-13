@@ -262,6 +262,14 @@ float3 Triangle::ExtremePoint(const float3 &direction) const
 	return mostExtreme;
 }
 
+
+vec Triangle::ExtremePoint(const vec& direction, float& projectionDistance) const
+{
+	vec extremePoint = ExtremePoint(direction);
+	projectionDistance = extremePoint.Dot(direction);
+	return extremePoint;
+}
+
 Polygon Triangle::ToPolygon() const
 {
 	Polygon p;
@@ -345,6 +353,11 @@ bool Triangle::Contains(const Polygon &polygon, float triangleThickness) const
 float Triangle::Distance(const float3 &point) const
 {
 	return ClosestPoint(point).Distance(point);
+}
+
+float Triangle::DistanceSq(const vec& point) const
+{
+	return ClosestPoint(point).DistanceSq(point);
 }
 
 float Triangle::Distance(const Sphere &sphere) const
@@ -1636,6 +1649,23 @@ Triangle operator *(const Quat &transform, const Triangle &triangle)
 	Triangle t(triangle);
 	t.Transform(transform);
 	return t;
+}
+
+std::string Triangle::SerializeToString() const
+{
+	char str[256];
+	char* s = SerializeFloat(a.x, str); *s = ','; ++s;
+	s = SerializeFloat(a.y, s); *s = ','; ++s;
+	s = SerializeFloat(a.z, s); *s = ','; ++s;
+	s = SerializeFloat(b.x, s); *s = ','; ++s;
+	s = SerializeFloat(b.y, s); *s = ','; ++s;
+	s = SerializeFloat(b.z, s); *s = ','; ++s;
+	s = SerializeFloat(c.x, s); *s = ','; ++s;
+	s = SerializeFloat(c.y, s); *s = ','; ++s;
+	s = SerializeFloat(c.z, s);
+	assert(s + 1 - str < 256);
+	MARK_UNUSED(s);
+	return str;
 }
 
 #ifdef MATH_ENABLE_STL_SUPPORT

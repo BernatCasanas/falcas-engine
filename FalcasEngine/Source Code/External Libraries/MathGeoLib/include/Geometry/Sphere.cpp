@@ -140,6 +140,13 @@ float3 Sphere::ExtremePoint(const float3 &direction) const
 	return pos + direction.ScaledToLength(r);
 }
 
+vec Sphere::ExtremePoint(const vec& direction, float& projectionDistance) const
+{
+	vec extremePoint = ExtremePoint(direction);
+	projectionDistance = extremePoint.Dot(direction);
+	return extremePoint;
+}
+
 void Sphere::ProjectToAxis(const float3 &direction, float &outMin, float &outMax) const
 {
 	float d = Dot(direction, pos);
@@ -1256,6 +1263,18 @@ std::string Sphere::ToString() const
 	char str[256];
 	sprintf(str, "Sphere(pos:(%.2f, %.2f, %.2f) r:%.2f)",
 		pos.x, pos.y, pos.z, r);
+	return str;
+}
+
+std::string Sphere::SerializeToString() const
+{
+	char str[256];
+	char* s = SerializeFloat(pos.x, str); *s = ','; ++s;
+	s = SerializeFloat(pos.y, s); *s = ','; ++s;
+	s = SerializeFloat(pos.z, s); *s = ','; ++s;
+	s = SerializeFloat(r, s);
+	assert(s + 1 - str < 256);
+	MARK_UNUSED(s);
 	return str;
 }
 

@@ -84,6 +84,13 @@ float3 Capsule::ExtremePoint(const float3 &direction) const
 	return (Dot(direction, l.b - l.a) >= 0.f ? l.b : l.a) + direction.ScaledToLength(r);
 }
 
+vec Capsule::ExtremePoint(const vec& direction, float& projectionDistance) const
+{
+	vec extremePoint = ExtremePoint(direction);
+	projectionDistance = extremePoint.Dot(direction);
+	return extremePoint;
+}
+
 void Capsule::ProjectToAxis(const float3 &direction, float &outMin, float &outMax) const
 {
 	outMin = Dot(direction, l.a);
@@ -417,6 +424,21 @@ std::string Capsule::ToString() const
 {
 	char str[256];
 	sprintf(str, "Capsule(a:(%.2f, %.2f, %.2f) b:(%.2f, %.2f, %.2f), r:%.2f)", l.a.x, l.a.y, l.a.z, l.b.x, l.b.y, l.b.z, r);
+	return str;
+}
+
+std::string Capsule::SerializeToString() const
+{
+	char str[256];
+	char* s = SerializeFloat(l.a.x, str); *s = ','; ++s;
+	s = SerializeFloat(l.a.y, s); *s = ','; ++s;
+	s = SerializeFloat(l.a.z, s); *s = ','; ++s;
+	s = SerializeFloat(l.b.x, s); *s = ','; ++s;
+	s = SerializeFloat(l.b.y, s); *s = ','; ++s;
+	s = SerializeFloat(l.b.z, s); *s = ','; ++s;
+	s = SerializeFloat(r, s);
+	assert(s + 1 - str < 256);
+	MARK_UNUSED(s);
 	return str;
 }
 

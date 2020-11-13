@@ -104,6 +104,9 @@ public:
 		@see pos */
 	float3 Centroid() const { return pos; }
 
+	/// Quickly returns an arbitrary point inside this Sphere. Used in GJK intersection test.
+	vec AnyPointFast() const { return pos; }
+
 	/// Computes the extreme point of this Sphere in the given direction.
 	/** An extreme point is a farthest point of this Sphere in the given direction. For
 		a Sphere, this point is unique.
@@ -111,6 +114,8 @@ public:
 			be unnormalized, but may not be null.
 		@return The extreme point of this Sphere in the given direction. */
 	float3 ExtremePoint(const float3 &direction) const;
+	vec ExtremePoint(const vec& direction, float& projectionDistance) const;
+
 
 	/// Projects this Sphere onto the given 1D axis direction vector.
 	/** This function collapses this Sphere onto an 1D axis for the purposes of e.g. separate axis test computations.
@@ -357,6 +362,8 @@ public:
 #ifdef MATH_ENABLE_STL_SUPPORT
 	/// Returns a human-readable representation of this Sphere. Most useful for debugging purposes.
 	std::string ToString() const;
+	std::string SerializeToString() const;
+
 #endif
 #ifdef MATH_QT_INTEROP
 	operator QString() const { return toString(); }

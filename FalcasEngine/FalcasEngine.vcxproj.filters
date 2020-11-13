@@ -138,9 +138,6 @@
     <ClCompile Include="Source Code\External Libraries\MathGeoLib\include\Math\float2.cpp">
       <Filter>External Libraries\MathGeoLib\Math</Filter>
     </ClCompile>
-    <ClCompile Include="Source Code\External Libraries\MathGeoLib\include\Math\float3.cpp">
-      <Filter>External Libraries\MathGeoLib\Math</Filter>
-    </ClCompile>
     <ClCompile Include="Source Code\External Libraries\MathGeoLib\include\Math\float3x3.cpp">
       <Filter>External Libraries\MathGeoLib\Math</Filter>
     </ClCompile>
@@ -209,6 +206,12 @@
     </ClCompile>
     <ClCompile Include="Source Code\External Libraries\MathGeoLib\include\Algorithm\Random\LCG.cpp">
       <Filter>External Libraries\MathGeoLib\Algorithm\Random</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\External Libraries\MathGeoLib\include\Math\float3.cpp">
+      <Filter>External Libraries\MathGeoLib\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\External Libraries\MathGeoLib\include\Algorithm\GJK.cpp">
+      <Filter>External Libraries\MathGeoLib\Algorithm</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -363,9 +366,6 @@
       <Filter>External Libraries\MathGeoLib\Math</Filter>
     </ClInclude>
     <ClInclude Include="Source Code\External Libraries\MathGeoLib\include\Math\float2.h">
-      <Filter>External Libraries\MathGeoLib\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Source Code\External Libraries\MathGeoLib\include\Math\float3.h">
       <Filter>External Libraries\MathGeoLib\Math</Filter>
     </ClInclude>
     <ClInclude Include="Source Code\External Libraries\MathGeoLib\include\Math\float3x3.h">
@@ -577,6 +577,12 @@
     </ClInclude>
     <ClInclude Include="Source Code\External Libraries\MathGeoLib\include\Algorithm\Random\LCG.h">
       <Filter>External Libraries\MathGeoLib\Algorithm\Random</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External Libraries\MathGeoLib\include\Math\float3.h">
+      <Filter>External Libraries\MathGeoLib\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External Libraries\MathGeoLib\include\Algorithm\GJK.h">
+      <Filter>External Libraries\MathGeoLib\Algorithm</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -84,6 +84,13 @@ float3 LineSegment::ExtremePoint(const float3 &direction) const
 	return Dot(direction, b-a) >= 0.f ? b : a;
 }
 
+vec LineSegment::ExtremePoint(const vec& direction, float& projectionDistance) const
+{
+	vec extremePoint = ExtremePoint(direction);
+	projectionDistance = extremePoint.Dot(direction);
+	return extremePoint;
+}
+
 void LineSegment::Translate(const float3 &offset)
 {
 	a += offset;
@@ -142,6 +149,13 @@ bool LineSegment::Contains(const LineSegment &rhs, float distanceThreshold) cons
 bool LineSegment::Equals(const LineSegment &rhs, float e) const
 {
 	return (a.Equals(rhs.a, e) && b.Equals(rhs.b, e)) || (a.Equals(rhs.b, e) && b.Equals(rhs.a, e));
+}
+
+vec LineSegment::ClosestPoint(const vec& point, float& d) const
+{
+	vec dir = b - a;
+	d = Clamp01(Dot(point - a, dir) / dir.LengthSq());
+	return a + d * dir;
 }
 
 float3 LineSegment::ClosestPoint(const float3 &point, float *d) const
@@ -301,6 +315,14 @@ float LineSegment::Distance(const float3 &point, float *d) const
 	return closestPoint.Distance(point);
 }
 
+float LineSegment::DistanceSq(const vec& point) const
+{
+	float d;
+	/// See Christer Ericson's Real-Time Collision Detection, p.130.
+	vec closestPoint = ClosestPoint(point, d);
+	return closestPoint.DistanceSq(point);
+}
+
 float LineSegment::Distance(const Ray &other, float *d, float *d2) const
 {
 	float u, u2;
@@ -334,6 +356,7 @@ float LineSegment::Distance(const LineSegment &other, float *d, float *d2) const
 		*d2 = u2;
 	return GetPoint(u).Distance(other.GetPoint(u2));
 }
+
 
 float LineSegment::Distance(const Plane &other) const
 {
@@ -470,6 +493,20 @@ std::string LineSegment::ToString() const
 	char str[256];
 	sprintf(str, "LineSegment(a:(%.2f, %.2f, %.2f) b:(%.2f, %.2f, %.2f))",
 		a.x, a.y, a.z, b.x, b.y, b.z);
+	return str;
+}
+
+std::string LineSegment::SerializeToString() const
+{
+	char str[256];
+	char* s = SerializeFloat(a.x, str); *s = ','; ++s;
+	s = SerializeFloat(a.y, s); *s = ','; ++s;
+	s = SerializeFloat(a.z, s); *s = ','; ++s;
+	s = SerializeFloat(b.x, s); *s = ','; ++s;
+	s = SerializeFloat(b.y, s); *s = ','; ++s;
+	s = SerializeFloat(b.z, s);
+	assert(s + 1 - str < 256);
+	MARK_UNUSED(s);
 	return str;
 }
 
