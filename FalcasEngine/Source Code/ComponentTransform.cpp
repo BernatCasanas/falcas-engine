@@ -19,10 +19,6 @@ void ComponentTransform::Update()
 	rotation = EulerToQuaternion(euler);
 	SetMatrices();
 	needed_to_update = false;
-	for (int i = 0; i < owner->children.size(); i++) {
-		ComponentTransform* child_trans = (ComponentTransform*)owner->children[i]->GetComponent(Component_Type::Transform);
-		child_trans->needed_to_update = true;
-	}
 }
 
 float3 ComponentTransform::GetPosition()const

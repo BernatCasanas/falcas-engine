@@ -3,6 +3,7 @@
 #include "Light.h"
 #include "External Libraries/SDL/include/SDL_video.h"
 #include "External Libraries/Glew/include/glew.h"
+#include "External Libraries/MathGeoLib/include/Geometry/AABB.h"
 
 
 #define MAX_LIGHTS 8
@@ -19,6 +20,8 @@ public:
 	update_status PostUpdate(float dt);
 	bool CleanUp();
 
+	void DrawAABB(AABB aabb);
+
 	void OnResize(int width, int height);
 
 
@@ -31,5 +34,5 @@ public:
 	GLuint frameBuffer;
 	GLuint texColorBuffer;
 	GLuint rboDepthStencil;
-
+	std::vector<AABB> aabbs;
 };

@@ -2,10 +2,13 @@
 #include "Globals.h"
 #include "External Libraries/MathGeoLib/include/Math/float3.h"
 #include "External Libraries/MathGeoLib/include/Math/Quat.h"
+#include "External Libraries/MathGeoLib/include/Geometry/AABB.h"
+#include "External Libraries/MathGeoLib/include/Geometry/OBB.h"
 #include <vector>
 
 
 class Component;
+class ComponentTransform;
 enum class Component_Type;
 
 class GameObject {
@@ -25,6 +28,7 @@ public:
 	std::string GetName() { return name; }
 	bool HasComponentType(Component_Type type) const;
 	void RemoveFromParent();
+	void UpdateAABB();
 	
 
 public:
@@ -36,4 +40,7 @@ public:
 	std::string name;
 	int id;
 private:
+	ComponentTransform* trans = nullptr;
+	AABB aabb;
+	OBB obb;
 };

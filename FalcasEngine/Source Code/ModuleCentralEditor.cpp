@@ -25,11 +25,8 @@
 #include "External Libraries/ImGui/imgui_impl_sdl.h"
 
 
-ModuleCentralEditor::ModuleCentralEditor(Application* app, bool start_enabled) : Module(app, start_enabled)
+ModuleCentralEditor::ModuleCentralEditor(Application* app, bool start_enabled) : Module(app, start_enabled),progress(50.f),progress2(50.f),progress3(50.f), progress4(50.f)
 {
-    progress = 0.f;
-    progress2 = 50.f;
-    progress3 = 50.f;
 }
 
 // Destructor
@@ -68,20 +65,7 @@ bool ModuleCentralEditor::Init()
 
     ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->window->gl_context);
     ImGui_ImplOpenGL3_Init();
-    show_demo_window = true;
-    show_another_window = false;
-    show_example = false;
-    show_about = false;
-    show_configuration = false;
-    show_console = true;
-    show_openglOptions = false;
-    show_hierarchy = show_inspector = true;
-    cullface = colorMaterial = ambient = stencil = wireframe = normals_v = normals_f = false;
-    texture = depth = lighting = true;
-    progress = 50.f;
-    progress2 = 50.f;
-    progress3 = 50.f;
-    progress4 = 50.f;
+
 	return ret;
 }
 
@@ -455,6 +439,7 @@ void ModuleCentralEditor::Draw()
         ImGui::Checkbox("Ambient", &ambient);
         ImGui::Checkbox("Stencil", &stencil);
         ImGui::Checkbox("Wireframe", &wireframe);
+        ImGui::Checkbox("AABBs", &aabbs);
         ImGui::Checkbox("Vertex Normals", &normals_v);
         ImGui::Checkbox("Face Normals", &normals_f);
         ImGui::Checkbox("Grid", &App->scene_intro->root->components.back()->active);

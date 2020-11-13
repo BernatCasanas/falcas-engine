@@ -971,8 +971,9 @@ void AABB::Enclose(const float3 *pointArray, int numPoints)
 	assume(pointArray || numPoints == 0);
 	if (!pointArray)
 		return;
-	for(int i = 0; i < numPoints; ++i)
+	for (int i = 0; i < numPoints; ++i) {
 		Enclose(pointArray[i]);
+	}
 }
 
 void AABB::Triangulate(int numFacesX, int numFacesY, int numFacesZ,

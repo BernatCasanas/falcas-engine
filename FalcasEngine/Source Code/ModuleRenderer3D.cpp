@@ -1,5 +1,3 @@
-
-
 #include "Application.h"
 #include "ModuleRenderer3D.h"
 #include "ModuleCamera3D.h"
@@ -12,8 +10,6 @@
 #include "ModuleWindow.h"
 #include "ModuleCentralEditor.h"
 #include "ModuleSceneIntro.h"
-
-
 
 #pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
 #pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */
@@ -181,7 +177,10 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 
 update_status ModuleRenderer3D::Update(float dt)
 {
-
+	for (int i = 0; i < aabbs.size(); i++) {
+		DrawAABB(aabbs[i]);
+	}
+	aabbs.clear();
 	return update_status::UPDATE_CONTINUE;
 }
 
@@ -194,6 +193,8 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 
 	App->central_editor->CreateDock();
 	App->scene_intro->Draw(texColorBuffer);
+
+	
 
 	App->central_editor->Draw();
 
@@ -212,6 +213,36 @@ bool ModuleRenderer3D::CleanUp()
 	SDL_GL_DeleteContext(context);
 
 	return true;
+}
+
+void ModuleRenderer3D::DrawAABB(AABB aabb)
+{
+	glBegin(GL_LINES);
+	glVertex3f(aabb.CornerPoint(0).x, aabb.CornerPoint(0).y, aabb.CornerPoint(0).z);
+	glVertex3f(aabb.CornerPoint(2).x, aabb.CornerPoint(2).y, aabb.CornerPoint(2).z);
+	glVertex3f(aabb.CornerPoint(2).x, aabb.CornerPoint(2).y, aabb.CornerPoint(2).z);
+	glVertex3f(aabb.CornerPoint(3).x, aabb.CornerPoint(3).y, aabb.CornerPoint(3).z);
+	glVertex3f(aabb.CornerPoint(3).x, aabb.CornerPoint(3).y, aabb.CornerPoint(3).z);
+	glVertex3f(aabb.CornerPoint(1).x, aabb.CornerPoint(1).y, aabb.CornerPoint(1).z);
+	glVertex3f(aabb.CornerPoint(1).x, aabb.CornerPoint(1).y, aabb.CornerPoint(1).z);
+	glVertex3f(aabb.CornerPoint(0).x, aabb.CornerPoint(0).y, aabb.CornerPoint(0).z);
+	glVertex3f(aabb.CornerPoint(4).x, aabb.CornerPoint(4).y, aabb.CornerPoint(4).z);
+	glVertex3f(aabb.CornerPoint(5).x, aabb.CornerPoint(5).y, aabb.CornerPoint(5).z);
+	glVertex3f(aabb.CornerPoint(5).x, aabb.CornerPoint(5).y, aabb.CornerPoint(5).z);
+	glVertex3f(aabb.CornerPoint(7).x, aabb.CornerPoint(7).y, aabb.CornerPoint(7).z);
+	glVertex3f(aabb.CornerPoint(7).x, aabb.CornerPoint(7).y, aabb.CornerPoint(7).z);
+	glVertex3f(aabb.CornerPoint(6).x, aabb.CornerPoint(6).y, aabb.CornerPoint(6).z);
+	glVertex3f(aabb.CornerPoint(6).x, aabb.CornerPoint(6).y, aabb.CornerPoint(6).z);
+	glVertex3f(aabb.CornerPoint(4).x, aabb.CornerPoint(4).y, aabb.CornerPoint(4).z);
+	glVertex3f(aabb.CornerPoint(0).x, aabb.CornerPoint(0).y, aabb.CornerPoint(0).z);
+	glVertex3f(aabb.CornerPoint(4).x, aabb.CornerPoint(4).y, aabb.CornerPoint(4).z);
+	glVertex3f(aabb.CornerPoint(6).x, aabb.CornerPoint(6).y, aabb.CornerPoint(6).z);
+	glVertex3f(aabb.CornerPoint(2).x, aabb.CornerPoint(2).y, aabb.CornerPoint(2).z);
+	glVertex3f(aabb.CornerPoint(3).x, aabb.CornerPoint(3).y, aabb.CornerPoint(3).z);
+	glVertex3f(aabb.CornerPoint(7).x, aabb.CornerPoint(7).y, aabb.CornerPoint(7).z);
+	glVertex3f(aabb.CornerPoint(5).x, aabb.CornerPoint(5).y, aabb.CornerPoint(5).z);
+	glVertex3f(aabb.CornerPoint(1).x, aabb.CornerPoint(1).y, aabb.CornerPoint(1).z);
+	glEnd();
 }
 
 

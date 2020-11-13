@@ -34,17 +34,6 @@ void ComponentMesh::Update()
 	Render();
 }
 
-void ComponentMesh::SetFileName(std::string file)
-{
-	full_file_name = file;
-	int pos = -1;
-	pos = full_file_name.find_last_of('\\');
-	if (pos == -1)
-		pos = full_file_name.find_last_of('/');
-	file_name = full_file_name.substr(pos + 1);
-}
-
-
 
 
 
@@ -69,6 +58,8 @@ void ComponentMesh::Initialization()
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_NORMAL_ARRAY, 0);
+
+	SetAABB();
 }
 
 void ComponentMesh::Render()
@@ -264,4 +255,16 @@ void ComponentMesh::Inspector()
 	ImGui::Separator();
 
 	ImGui::PopID();
+}
+
+AABB ComponentMesh::GetAABB() const
+{
+	return aabb;
+}
+
+void ComponentMesh::SetAABB()
+{
+	aabb.SetNegativeInfinity();
+	aabb.Enclose((float3*)vertices, num_vertices/3);
+	owner->UpdateAABB();
 }

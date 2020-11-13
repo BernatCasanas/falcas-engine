@@ -3,19 +3,23 @@
 #include "Component.h"
 #include "ComponentTransform.h"
 #include "ComponentMesh.h"
+#include "Application.h"
+#include "ModuleRenderer3D.h"
+#include "ModuleCentralEditor.h"
 
 GameObject::GameObject(int id) : name(""), parent(nullptr), id(id)
 {
-	CreateComponent(Component_Type::Transform);
+	trans= (ComponentTransform*)CreateComponent(Component_Type::Transform);
 }
 GameObject::GameObject(int id, std::string name, GameObject* parent) : name(name), parent(parent), id(id)
 {
-	CreateComponent(Component_Type::Transform);
+	trans= (ComponentTransform*)CreateComponent(Component_Type::Transform);
 }
 
 GameObject::GameObject(int id, std::string name, GameObject* parent, float3 position, Quat rotation, float3 size) : name(name), parent(parent), id(id)
 {
 	AddComponentToGameObject(new ComponentTransform(this, position, rotation, size));
+	trans = (ComponentTransform*)GetComponent(Component_Type::Transform);
 }
 
 
@@ -38,14 +42,22 @@ GameObject::~GameObject()
 void GameObject::Update()
 {
 	if (active == true) {
+		if (trans->needed_to_update)
+			UpdateAABB();
 		for (int i = 0; i < children.size(); i++) {
-			if(children[i]->active == true)
+			if (children[i]->active) {
+				if (trans->needed_to_update) {
+					children[i]->trans->needed_to_update = true;
+				}
 				children[i]->Update();
+			}
 		}
 		for (int i = 0; i < components.size(); i++) {
-			if(components[i]->active==true)
+			if(components[i]->active)
 				components[i]->Update();
 		}
+		if (App->central_editor->aabbs)
+			App->renderer3D->aabbs.push_back(aabb);
 	}
 }
 
@@ -141,5 +153,21 @@ void GameObject::RemoveFromParent()
 			break;
 		}
 	}
+}
+
+void GameObject::UpdateAABB()
+{
+	if (!HasComponentType(Component_Type::Mesh))
+		return;
+
+	//obb
+	ComponentMesh* mesh = (ComponentMesh*)GetComponent(Component_Type::Mesh);
+	obb = mesh->GetAABB();
+	ComponentTransform* trans = (ComponentTransform*)GetComponent(Component_Type::Transform);
+	obb.Transform(trans->GetGlobalMatrix());
+
+	//aabb
+	aabb.SetNegativeInfinity();
+	aabb.Enclose(obb);
 }
 

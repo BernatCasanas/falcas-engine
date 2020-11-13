@@ -53,17 +53,27 @@ public:
 
 public:
 
-	bool show_demo_window;
-	bool show_another_window;
-	bool show_example;
-	bool show_about;
-	bool show_configuration;
-	bool show_console;
-	bool show_openglOptions;
-	bool show_hierarchy;
-	bool show_inspector;
+	bool show_demo_window = false;
+	bool show_another_window = false;
+	bool show_example = false;
+	bool show_about = false;
+	bool show_configuration = false;
+	bool show_console = true;
+	bool show_openglOptions = false;
+	bool show_hierarchy = true;
+	bool show_inspector = true;
 
-	bool depth, cullface, lighting, colorMaterial, texture, ambient, stencil, wireframe, normals_v, normals_f;
+	bool cullface = false;
+	bool colorMaterial = false;
+	bool ambient = false;
+	bool stencil = false;
+	bool wireframe = false;
+	bool normals_v = false;
+	bool normals_f = false;
+	bool aabbs = false;
+	bool depth = true;
+	bool lighting = true;
+	bool texture = true;
 
 	float progress;
 	float progress2;

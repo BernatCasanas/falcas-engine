@@ -1,5 +1,6 @@
 #pragma once
 #include "Component.h"
+#include "External Libraries/MathGeoLib/include/Geometry/AABB.h"
 
 class GameObject;
 class ComponentMesh : public Component {
@@ -7,12 +8,13 @@ public:
 	ComponentMesh(GameObject* owner);
 	~ComponentMesh();
 	void Update();
-	void SetFileName(std::string file);
 	
 	void Initialization();
 	void Render();
 
 	void Inspector();
+
+	AABB GetAABB()const;
 
 
 	uint id_vertices = 0;
@@ -35,4 +37,8 @@ public:
 	float length_normals = 1;
 	bool grid = false;
 
+private:
+	AABB aabb;
+	
+	void SetAABB();
 };
