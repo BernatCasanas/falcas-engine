@@ -13,6 +13,7 @@
   <ItemGroup>
     <ClCompile Include="Source Code\Application.cpp" />
     <ClCompile Include="Source Code\Component.cpp" />
+    <ClCompile Include="Source Code\ComponentCamera.cpp" />
     <ClCompile Include="Source Code\ComponentMaterial.cpp" />
     <ClCompile Include="Source Code\ComponentMesh.cpp" />
     <ClCompile Include="Source Code\ComponentTransform.cpp" />
@@ -30,8 +31,6 @@
     <ClCompile Include="Source Code\External Libraries\MathGeoLib\include\Geometry\AABB.cpp" />
     <ClCompile Include="Source Code\External Libraries\MathGeoLib\include\Geometry\Capsule.cpp" />
     <ClCompile Include="Source Code\External Libraries\MathGeoLib\include\Geometry\Circle.cpp" />
-    <ClCompile Include="Source Code\External Libraries\MathGeoLib\include\Geometry\Cone.cpp" />
-    <ClCompile Include="Source Code\External Libraries\MathGeoLib\include\Geometry\Cylinder.cpp" />
     <ClCompile Include="Source Code\External Libraries\MathGeoLib\include\Geometry\Frustum.cpp" />
     <ClCompile Include="Source Code\External Libraries\MathGeoLib\include\Geometry\Line.cpp" />
     <ClCompile Include="Source Code\External Libraries\MathGeoLib\include\Geometry\LineSegment.cpp" />
@@ -75,6 +74,7 @@
   <ItemGroup>
     <ClInclude Include="Source Code\Application.h" />
     <ClInclude Include="Source Code\Component.h" />
+    <ClInclude Include="Source Code\ComponentCamera.h" />
     <ClInclude Include="Source Code\ComponentMaterial.h" />
     <ClInclude Include="Source Code\ComponentMesh.h" />
     <ClInclude Include="Source Code\ComponentTransform.h" />
@@ -128,8 +128,6 @@
     <ClInclude Include="Source Code\External Libraries\MathGeoLib\include\Geometry\AABB2D.h" />
     <ClInclude Include="Source Code\External Libraries\MathGeoLib\include\Geometry\Capsule.h" />
     <ClInclude Include="Source Code\External Libraries\MathGeoLib\include\Geometry\Circle.h" />
-    <ClInclude Include="Source Code\External Libraries\MathGeoLib\include\Geometry\Cone.h" />
-    <ClInclude Include="Source Code\External Libraries\MathGeoLib\include\Geometry\Cylinder.h" />
     <ClInclude Include="Source Code\External Libraries\MathGeoLib\include\Geometry\Frustum.h" />
     <ClInclude Include="Source Code\External Libraries\MathGeoLib\include\Geometry\GeometryAll.h" />
     <ClInclude Include="Source Code\External Libraries\MathGeoLib\include\Geometry\GeomType.h" />

@@ -18,6 +18,7 @@
 
 #define WIN32
 
+
 #ifdef WIN32
 #define Polygon Polygon_unused
 #include <Windows.h>

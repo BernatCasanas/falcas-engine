@@ -8,6 +8,7 @@ enum class Component_Type {
 	Transform,
 	Mesh,
 	Material,
+	Camera,
 	Max,
 };
 

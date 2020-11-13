@@ -28,6 +28,9 @@
     <Filter Include="External Libraries\Assimp">
       <UniqueIdentifier>{f2435e1f-a340-4f7c-be9b-9c0407e457f4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="External Libraries\MathGeoLib\Algorithm\Random">
+      <UniqueIdentifier>{3810ccb9-053a-4c87-90cf-1d95a3cdcc8e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source Code\Application.cpp">
@@ -87,9 +90,6 @@
     <ClCompile Include="Source Code\External Libraries\ImGui\imgui_widgets.cpp">
       <Filter>External Libraries\ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="Source Code\External Libraries\MathGeoLib\include\Algorithm\Random\LCG.cpp">
-      <Filter>External Libraries\MathGeoLib\Algorithm</Filter>
-    </ClCompile>
     <ClCompile Include="Source Code\External Libraries\MathGeoLib\include\Geometry\AABB.cpp">
       <Filter>External Libraries\MathGeoLib\Geometry</Filter>
     </ClCompile>
@@ -97,12 +97,6 @@
       <Filter>External Libraries\MathGeoLib\Geometry</Filter>
     </ClCompile>
     <ClCompile Include="Source Code\External Libraries\MathGeoLib\include\Geometry\Circle.cpp">
-      <Filter>External Libraries\MathGeoLib\Geometry</Filter>
-    </ClCompile>
-    <ClCompile Include="Source Code\External Libraries\MathGeoLib\include\Geometry\Cone.cpp">
-      <Filter>External Libraries\MathGeoLib\Geometry</Filter>
-    </ClCompile>
-    <ClCompile Include="Source Code\External Libraries\MathGeoLib\include\Geometry\Cylinder.cpp">
       <Filter>External Libraries\MathGeoLib\Geometry</Filter>
     </ClCompile>
     <ClCompile Include="Source Code\External Libraries\MathGeoLib\include\Geometry\Frustum.cpp">
@@ -210,6 +204,12 @@
     <ClCompile Include="Source Code\Importer.cpp">
       <Filter>Source Code</Filter>
     </ClCompile>
+    <ClCompile Include="Source Code\ComponentCamera.cpp">
+      <Filter>Source Code</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\External Libraries\MathGeoLib\include\Algorithm\Random\LCG.cpp">
+      <Filter>External Libraries\MathGeoLib\Algorithm\Random</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source Code\Application.h">
@@ -284,9 +284,6 @@
     <ClInclude Include="Source Code\External Libraries\MathGeoLib\include\MathGeoLibFwd.h">
       <Filter>External Libraries\MathGeoLib</Filter>
     </ClInclude>
-    <ClInclude Include="Source Code\External Libraries\MathGeoLib\include\Algorithm\Random\LCG.h">
-      <Filter>External Libraries\MathGeoLib\Algorithm</Filter>
-    </ClInclude>
     <ClInclude Include="Source Code\External Libraries\MathGeoLib\include\Geometry\AABB.h">
       <Filter>External Libraries\MathGeoLib\Geometry</Filter>
     </ClInclude>
@@ -297,12 +294,6 @@
       <Filter>External Libraries\MathGeoLib\Geometry</Filter>
     </ClInclude>
     <ClInclude Include="Source Code\External Libraries\MathGeoLib\include\Geometry\Circle.h">
-      <Filter>External Libraries\MathGeoLib\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Source Code\External Libraries\MathGeoLib\include\Geometry\Cone.h">
-      <Filter>External Libraries\MathGeoLib\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Source Code\External Libraries\MathGeoLib\include\Geometry\Cylinder.h">
       <Filter>External Libraries\MathGeoLib\Geometry</Filter>
     </ClInclude>
     <ClInclude Include="Source Code\External Libraries\MathGeoLib\include\Geometry\Frustum.h">
@@ -580,6 +571,12 @@
     </ClInclude>
     <ClInclude Include="Source Code\Importer.h">
       <Filter>Source Code</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\ComponentCamera.h">
+      <Filter>Source Code</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External Libraries\MathGeoLib\include\Algorithm\Random\LCG.h">
+      <Filter>External Libraries\MathGeoLib\Algorithm\Random</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
