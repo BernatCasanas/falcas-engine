@@ -1,4 +1,3 @@
-
 #include "Application.h"
 #include "ModuleSceneIntro.h"
 #include "ModuleCentralEditor.h"
@@ -8,6 +7,7 @@
 #include "External Libraries/MathGeoLib/include/Math/Quat.h"
 #include "ComponentMesh.h"
 #include "ComponentMaterial.h"
+#include "ComponentCamera.h"
 #include <gl/GL.h>
 #include "Shape.h"
 #include "FileSystem.h"
@@ -42,6 +42,8 @@ bool ModuleSceneIntro::Start()
 	mesh->grid = true;
 	CreateGrid(mesh->num_vertices, mesh->num_indices, mesh->indices, mesh->vertices, { 0,0,0 }, { 500,1,500 });
 	mesh->Initialization();
+	camera = (ComponentCamera*)CreateGameObject("Camera", root)->CreateComponent(Component_Type::Camera);
+	id_gameobject++;
 	game_object_selected = nullptr;
 	int num = 0;
 

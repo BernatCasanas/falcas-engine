@@ -6,6 +6,7 @@
 
 
 class GameObject;
+class ComponentCamera;
 class ModuleSceneIntro : public Module
 {
 public:
@@ -29,6 +30,7 @@ public:
 	std::string CheckNameGameObject(std::string name, bool numbered = false);
 
 	GameObject* game_object_selected;
+	ComponentCamera* camera;
 	GameObject* root;
 	int GetID();
 	int id_gameobject;

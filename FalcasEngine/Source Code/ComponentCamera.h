@@ -9,7 +9,7 @@ class GameObject;
 
 class ComponentCamera : public Component {
 public:
-	ComponentCamera(GameObject* owner);
+	ComponentCamera(GameObject* owner, float3 pos = { 0,0,0 });
 	~ComponentCamera();
 public:
 	void CreateFrustum(float3 pos);

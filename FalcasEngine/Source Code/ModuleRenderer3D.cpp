@@ -10,6 +10,7 @@
 #include "ModuleWindow.h"
 #include "ModuleCentralEditor.h"
 #include "ModuleSceneIntro.h"
+#include "ComponentCamera.h"
 
 #pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
 #pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */
@@ -181,6 +182,9 @@ update_status ModuleRenderer3D::Update(float dt)
 		DrawAABB(aabbs[i]);
 	}
 	aabbs.clear();
+
+	DrawFrustum(App->scene_intro->camera->frustum);
+	
 	return update_status::UPDATE_CONTINUE;
 }
 
@@ -243,6 +247,39 @@ void ModuleRenderer3D::DrawAABB(AABB aabb)
 	glVertex3f(aabb.CornerPoint(5).x, aabb.CornerPoint(5).y, aabb.CornerPoint(5).z);
 	glVertex3f(aabb.CornerPoint(1).x, aabb.CornerPoint(1).y, aabb.CornerPoint(1).z);
 	glEnd();
+}
+
+void ModuleRenderer3D::DrawFrustum(Frustum frustum)
+{
+	vec* f_vec = new vec[8];
+	frustum.GetCornerPoints(f_vec);
+	glBegin(GL_LINES);
+	glVertex3f(f_vec[0].x, f_vec[0].y, f_vec[0].z);
+	glVertex3f(f_vec[1].x, f_vec[1].y, f_vec[1].z);
+	glVertex3f(f_vec[1].x, f_vec[1].y, f_vec[1].z);
+	glVertex3f(f_vec[3].x, f_vec[3].y, f_vec[3].z);
+	glVertex3f(f_vec[3].x, f_vec[3].y, f_vec[3].z);
+	glVertex3f(f_vec[2].x, f_vec[2].y, f_vec[2].z);
+	glVertex3f(f_vec[2].x, f_vec[2].y, f_vec[2].z);
+	glVertex3f(f_vec[0].x, f_vec[0].y, f_vec[0].z);
+	glVertex3f(f_vec[4].x, f_vec[4].y, f_vec[4].z);
+	glVertex3f(f_vec[5].x, f_vec[5].y, f_vec[5].z);
+	glVertex3f(f_vec[5].x, f_vec[5].y, f_vec[5].z);
+	glVertex3f(f_vec[7].x, f_vec[7].y, f_vec[7].z);
+	glVertex3f(f_vec[7].x, f_vec[7].y, f_vec[7].z);
+	glVertex3f(f_vec[6].x, f_vec[6].y, f_vec[6].z);
+	glVertex3f(f_vec[6].x, f_vec[6].y, f_vec[6].z);
+	glVertex3f(f_vec[4].x, f_vec[4].y, f_vec[4].z);
+	glVertex3f(f_vec[0].x, f_vec[0].y, f_vec[0].z);
+	glVertex3f(f_vec[4].x, f_vec[4].y, f_vec[4].z);
+	glVertex3f(f_vec[6].x, f_vec[6].y, f_vec[6].z);
+	glVertex3f(f_vec[2].x, f_vec[2].y, f_vec[2].z);
+	glVertex3f(f_vec[3].x, f_vec[3].y, f_vec[3].z);
+	glVertex3f(f_vec[7].x, f_vec[7].y, f_vec[7].z);
+	glVertex3f(f_vec[5].x, f_vec[5].y, f_vec[5].z);
+	glVertex3f(f_vec[1].x, f_vec[1].y, f_vec[1].z);
+	glEnd();
+	delete[] f_vec;
 }
 
 

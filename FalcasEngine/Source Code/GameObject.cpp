@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "Component.h"
 #include "ComponentTransform.h"
+#include "ComponentCamera.h"
 #include "ComponentMesh.h"
 #include "Application.h"
 #include "ModuleRenderer3D.h"
@@ -75,6 +76,9 @@ Component* GameObject::CreateComponent(Component_Type type)
 			break;
 		case Component_Type::Material:
 			component = new ComponentMaterial(this);
+			break;
+		case Component_Type::Camera:
+			component = new ComponentCamera(this, trans->GetPosition());
 			break;
 		}
 		components.push_back(component);

@@ -21,6 +21,7 @@ public:
 	bool CleanUp();
 
 	void DrawAABB(AABB aabb);
+	void DrawFrustum(Frustum frustum);
 
 	void OnResize(int width, int height);
 
