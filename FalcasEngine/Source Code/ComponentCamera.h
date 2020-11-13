@@ -12,13 +12,20 @@ public:
 	ComponentCamera(GameObject* owner, float3 pos = { 0,0,0 });
 	~ComponentCamera();
 public:
-	void CreateFrustum(float3 pos);
+	void UpdateFrustum();
 	void Inspector();
+	void Update();
 
 
 public:
 	Frustum frustum;
 
+private:
+	bool needed_to_update = false;
+	float near_plane_distance=1;
+	float far_plane_distance=100;
+	float field_of_view_vertical = 1;
+	float field_of_view_horizontal = 1;
 
 };
-#endif // !_COMPONENT_CAMERA_#pragma once
+#endif // !_COMPONENT_CAMERA_
