@@ -48,15 +48,23 @@ void ImportFBX(std::string file)
 	aiReleaseImport(scene);
 }
 
-void ImportGameObjectFromFBX(const aiScene* scene, aiNode* node, GameObject* parent, std::string file)
+void ImportGameObjectFromFBX(const aiScene* scene, aiNode* node, GameObject* parent, std::string file, float4x4 transform_heredated)
 {
+	if (node->mNumMeshes == 0 && node->mNumChildren == 0)
+		return;
 	aiVector3D position_ai, size_ai;
 	aiQuaternion rotation_ai;
 	node->mTransformation.Decompose(size_ai, rotation_ai, position_ai);
 	float3 position = { position_ai.x,position_ai.y,position_ai.z };
 	Quat rotation = { rotation_ai.x,rotation_ai.y,rotation_ai.z,rotation_ai.w };
 	float3 size = { size_ai.x,size_ai.y,size_ai.z };
-	GameObject* game_object = App->scene_intro->CreateGameObject(position, rotation, size, App->filesystem->GetFileName(file, true), parent);
+	GameObject* game_object = parent;
+	transform_heredated = transform_heredated * float4x4::FromTRS(position, rotation, size);
+	transform_heredated.Decompose(position, rotation, size);
+	if (node->mNumChildren > 1 || node->mNumMeshes != 0) {
+		game_object = App->scene_intro->CreateGameObject(position, rotation, size, App->filesystem->GetFileName(file, true), parent);
+		transform_heredated = float4x4::identity;
+	}
 
 
 	if (node->mNumMeshes > 0) {
@@ -77,7 +85,8 @@ void ImportGameObjectFromFBX(const aiScene* scene, aiNode* node, GameObject* par
 		}
 	}
 	for (int i = 0; i < node->mNumChildren; i++) {
-		ImportGameObjectFromFBX(scene, node->mChildren[i], game_object, file);
+		
+			ImportGameObjectFromFBX(scene, node->mChildren[i], game_object, file,transform_heredated);
 	}
 }
 

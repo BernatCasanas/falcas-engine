@@ -426,7 +426,7 @@ void ModuleCentralEditor::Draw()
         ImGui::Begin("Inspector", &show_inspector);
         if (App->scene_intro->game_object_selected != nullptr) {
             GameObject* game_object = App->scene_intro->game_object_selected;
-            ImGui::Checkbox("", &game_object->active);
+            ImGui::Checkbox("##0", &game_object->active);
             ImGui::SameLine();
             std::string game_object_name = game_object->name;
             if (ImGui::InputText(" ", &game_object_name, ImGuiInputTextFlags_EnterReturnsTrue)) {
