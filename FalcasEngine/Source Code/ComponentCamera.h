@@ -27,7 +27,7 @@ public:
 private:
 	bool needed_to_update = false;
 	float near_plane_distance=1;
-	float far_plane_distance=100;
+	float far_plane_distance=1000;
 	float field_of_view_vertical = 1;
 	float field_of_view_horizontal = 1;
 	bool frustum_culling = false;

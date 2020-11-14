@@ -148,8 +148,11 @@ bool ModuleRenderer3D::Init()
 	LOG("OpenGL version supported %s", glGetString(GL_VERSION));
 	LOG("GLSL: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
 
+	camera = App->camera->camera;
+
 	// Projection matrix for
 	OnResize(SCREEN_WIDTH, SCREEN_HEIGHT);
+
 
 	return ret;
 }
@@ -162,10 +165,10 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
-	if (camera_culling->update_projection_matrix) {
+	if (camera->update_projection_matrix) {
 		glMatrixMode(GL_PROJECTION);
-		glLoadMatrixf(camera_culling->GetProjectionMatrix());
-		camera_culling->update_projection_matrix = false;
+		glLoadMatrixf(camera->GetProjectionMatrix());
+		camera->update_projection_matrix = false;
 
 	}
 
@@ -297,8 +300,8 @@ void ModuleRenderer3D::OnResize(int width, int height)
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	ProjectionMatrix = perspective(60.0f, (float)width / (float)height, 0.125f, 512.0f);
-	glLoadMatrixf(&ProjectionMatrix);
+	glLoadMatrixf(camera->GetProjectionMatrix());
+	//ProjectionMatrix = perspective(60.0f, (float)width / (float)height, 0.125f, 512.0f);
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();

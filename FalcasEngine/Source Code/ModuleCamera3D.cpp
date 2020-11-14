@@ -8,9 +8,13 @@
 #include "ModuleSceneIntro.h"
 #include "GameObject.h"
 #include "ComponentTransform.h"
+#include "ComponentCamera.h"
 
 ModuleCamera3D::ModuleCamera3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
+
+	camera = (ComponentCamera*)(new GameObject(-2, "Editor Camera", nullptr))->CreateComponent(Component_Type::Camera);
+
 	CalculateViewMatrix();
 
 	X = vec3(1.0f, 0.0f, 0.0f);
@@ -23,7 +27,9 @@ ModuleCamera3D::ModuleCamera3D(Application* app, bool start_enabled) : Module(ap
 }
 
 ModuleCamera3D::~ModuleCamera3D()
-{}
+{
+	delete camera;
+}
 
 // -----------------------------------------------------------------
 bool ModuleCamera3D::Start()
@@ -45,6 +51,9 @@ bool ModuleCamera3D::CleanUp()
 // -----------------------------------------------------------------
 update_status ModuleCamera3D::Update(float dt)
 {
+
+	camera->Update();
+
 	// Implement a debug camera with keys and mouse
 	// Now we can make this movememnt frame rate independant!
 
@@ -259,5 +268,4 @@ void ModuleCamera3D::Zooming(float zooming_value)
 void ModuleCamera3D::CalculateViewMatrix()
 {
 	ViewMatrix = mat4x4(X.x, Y.x, Z.x, 0.0f, X.y, Y.y, Z.y, 0.0f, X.z, Y.z, Z.z, 0.0f, -dot(X, Position), -dot(Y, Position), -dot(Z, Position), 1.0f);
-	ViewMatrixInverse = inverse(ViewMatrix);
 }

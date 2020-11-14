@@ -2,6 +2,7 @@
 #include "Module.h"
 #include "glmath.h"
 
+class ComponentCamera;
 class ModuleCamera3D : public Module
 {
 public:
@@ -23,10 +24,10 @@ private:
 	void CalculateViewMatrix();
 
 public:
-	
+	ComponentCamera* camera=nullptr;
 	vec3 X, Y, Z, Position, Reference;
 
 private:
 
-	mat4x4 ViewMatrix, ViewMatrixInverse;
+	mat4x4 ViewMatrix;
 };
