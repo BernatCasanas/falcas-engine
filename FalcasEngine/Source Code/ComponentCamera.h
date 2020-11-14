@@ -28,6 +28,7 @@ private:
 	float field_of_view_vertical = 1;
 	float field_of_view_horizontal = 1;
 	bool frustum_culling = false;
-
+	float width = 1280;
+	float height = 720;
 };
 #endif // !_COMPONENT_CAMERA_

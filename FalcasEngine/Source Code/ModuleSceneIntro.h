@@ -20,6 +20,7 @@ public:
 	bool CleanUp();
 
 	void Draw(GLuint tex);
+	bool GetDimensionsWindow(float& width, float& height);
 	
 	GameObject* CreateGameObject(std::string name = "", GameObject* parent = nullptr);
 	GameObject* CreateGameObject(float3 position, Quat rotation, float3 size, std::string name = "", GameObject* parent = nullptr);
@@ -37,6 +38,7 @@ public:
 
 
 private:
-
+	float width;
+	float height;
 
 };

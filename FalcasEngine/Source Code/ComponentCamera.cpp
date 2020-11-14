@@ -1,4 +1,6 @@
 #include "ComponentCamera.h"
+#include "Application.h"
+#include "ModuleSceneIntro.h"
 #include "External Libraries/ImGui/imgui.h"
 
 ComponentCamera::ComponentCamera(GameObject* owner, float3 pos):Component(Component_Type::Camera,owner,"Camera")
@@ -19,12 +21,13 @@ ComponentCamera::~ComponentCamera()
 void ComponentCamera::UpdateFrustum()
 {
 	frustum.SetViewPlaneDistances(near_plane_distance, far_plane_distance);
+	field_of_view_horizontal = 2 * Atan(Tan(field_of_view_vertical / 2)*(width/height));
 	frustum.SetPerspective(field_of_view_vertical, field_of_view_horizontal);
 
 }
 void ComponentCamera::Update()
 {
-	if (!needed_to_update)
+	if (!App->scene_intro->GetDimensionsWindow(width, height) &&!needed_to_update)
 		return;
 	UpdateFrustum();
 }
@@ -70,15 +73,6 @@ void ComponentCamera::Inspector()
 	ImGui::SameLine();
 	ImGui::PushItemWidth(50);
 	if (ImGui::DragFloat("##2", &field_of_view_vertical, 0.01f))
-		needed_to_update = true;
-	ImGui::PopItemWidth();
-
-	ImGui::AlignTextToFramePadding();
-	ImGui::Text("Field of View Horizontal");
-
-	ImGui::SameLine();
-	ImGui::PushItemWidth(50);
-	if (ImGui::DragFloat("##3", &field_of_view_horizontal, 0.01f))
 		needed_to_update = true;
 	ImGui::PopItemWidth();
 

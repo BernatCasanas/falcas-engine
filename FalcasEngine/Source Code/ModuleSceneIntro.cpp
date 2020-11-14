@@ -71,9 +71,20 @@ void ModuleSceneIntro::Draw(GLuint tex)
 	ImGui::Begin("Scene");
 
 	ImVec2 windowSize = ImGui::GetWindowSize();
+	width = windowSize.x;
+	height = windowSize.y;
 	ImGui::Image((ImTextureID)tex, windowSize, ImVec2(0, 1), ImVec2(1, 0));
 
 	ImGui::End();
+}
+
+bool ModuleSceneIntro::GetDimensionsWindow(float& width, float& height)
+{
+	if (width == this->width && height == this->height)
+		return false;
+	width = this->width;
+	height = this->height;
+	return true;
 }
 
 int ModuleSceneIntro::GetID()
