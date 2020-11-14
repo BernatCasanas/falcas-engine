@@ -38,4 +38,5 @@ public:
 	GLuint rboDepthStencil;
 	std::vector<AABB> aabbs;
 	ComponentCamera* camera_culling = nullptr;
+	ComponentCamera* camera = nullptr;
 };

@@ -159,8 +159,15 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
 
+
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
+	if (camera_culling->update_projection_matrix) {
+		glMatrixMode(GL_PROJECTION);
+		glLoadMatrixf(camera_culling->GetProjectionMatrix());
+		camera_culling->update_projection_matrix = false;
+
+	}
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadMatrixf(App->camera->GetViewMatrix());

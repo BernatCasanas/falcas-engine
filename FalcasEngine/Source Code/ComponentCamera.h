@@ -4,6 +4,7 @@
 
 #include "Component.h"
 #include "External Libraries/MathGeoLib/include/Geometry/Frustum.h"
+#include "External Libraries/MathGeoLib/include/Math/float4x4.h"
 
 class GameObject;
 
@@ -16,9 +17,11 @@ public:
 	void Inspector();
 	void Update();
 	bool GetIfIsFrustumCulling() const;
-
+	float* GetProjectionMatrix() const;
+	float* GetViewMatrix() const;
 
 public:
+	bool update_projection_matrix = false;
 	Frustum frustum;
 
 private:
@@ -30,5 +33,7 @@ private:
 	bool frustum_culling = false;
 	float width = 1280;
 	float height = 720;
+	float3 pos;
+	float4x4 ViewMatrix;
 };
 #endif // !_COMPONENT_CAMERA_
