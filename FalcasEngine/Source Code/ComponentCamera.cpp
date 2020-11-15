@@ -38,6 +38,8 @@ void ComponentCamera::Update()
 	else
 		App->renderer3D->camera = App->camera->camera;
 	frustum.SetPos(trans->GetPosition());
+	frustum.SetFront(float3::unitZ * float3x3::FromQuat(trans->GetRotation()));
+	frustum.SetUp(float3::unitY * float3x3::FromQuat(trans->GetRotation()));
 	if (!App->scene_intro->GetDimensionsWindow(width, height) &&!needed_to_update)
 		return;
 	UpdateFrustum();
