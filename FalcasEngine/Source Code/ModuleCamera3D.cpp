@@ -93,8 +93,6 @@ update_status ModuleCamera3D::Update(float dt)
 
 		if (dx != 0)
 		{
-			//Position
-
 			float DeltaX = (float)dx * Sensitivity;
 			Reference += (GetRotation().ToFloat3x3() * float3::unitX) * DeltaX;
 		}

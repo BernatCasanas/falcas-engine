@@ -21,6 +21,7 @@ public:
 	float* GetProjectionMatrix() const;
 	float* GetViewMatrix() const;
 	void ChangeCameraActive();
+	void ChangeCullingCamera();
 
 public:
 	bool update_projection_matrix = false;

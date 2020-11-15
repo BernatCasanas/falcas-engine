@@ -195,7 +195,6 @@ update_status ModuleRenderer3D::Update(float dt)
 	aabbs.clear();
 
 	DrawFrustum(App->scene_intro->camera->frustum);
-	DrawFrustum(App->camera->camera->frustum);
 	
 	return update_status::UPDATE_CONTINUE;
 }

@@ -79,6 +79,15 @@ void ComponentCamera::ChangeCameraActive()
 	}
 }
 
+void ComponentCamera::ChangeCullingCamera()
+{
+	if (frustum_culling)
+		App->renderer3D->camera_culling = this;
+	else {
+		App->renderer3D->camera_culling = App->camera->camera;
+	}
+}
+
 void ComponentCamera::Inspector()
 {
 	ImGui::PushID(name.c_str());
@@ -90,7 +99,9 @@ void ComponentCamera::Inspector()
 		ChangeCameraActive();
 	}
 
-	ImGui::Checkbox("Camera Culling", &frustum_culling);
+	if (ImGui::Checkbox("Camera Culling", &frustum_culling)) {
+		ChangeCullingCamera();
+	}
 
 	ImGui::AlignTextToFramePadding();
 	ImGui::Text("Near Plane Distance");
