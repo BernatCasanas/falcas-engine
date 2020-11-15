@@ -31,7 +31,8 @@ ComponentMesh::~ComponentMesh()
 
 void ComponentMesh::Update()
 {
-	Render();
+	if(!owner->IsCulled())
+		Render();
 }
 
 

@@ -29,6 +29,9 @@ public:
 	bool HasComponentType(Component_Type type) const;
 	void RemoveFromParent();
 	void UpdateAABB();
+	bool IsInsideFrustumCulling();
+	bool IsCulled() const;
+	AABB GetAABB()const;
 	
 
 public:
@@ -43,4 +46,5 @@ private:
 	ComponentTransform* trans = nullptr;
 	AABB aabb;
 	OBB obb;
+	bool culled = false;
 };

@@ -24,6 +24,8 @@ public:
 
 
 	void SetTransformation(float3 pos, Quat rot, float3 size);
+	void SetPosition(float3 pos);
+	void SetRotation(Quat rot);
 	void SetMatrices();
 	void Inspector();
 

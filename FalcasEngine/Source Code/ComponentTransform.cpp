@@ -85,9 +85,23 @@ void ComponentTransform::SetTransformation(float3 pos, Quat rot, float3 size)
 {
 	position = pos;
 	rotation = rot;
+	euler = QuaternionToEuler(rotation);
 	this->size = size;
 	SetMatrices();
 
+}
+
+void ComponentTransform::SetPosition(float3 pos)
+{
+	position = pos;
+	SetMatrices();
+}
+
+void ComponentTransform::SetRotation(Quat rot)
+{
+	rotation = rot;
+	euler = QuaternionToEuler(rotation);
+	SetMatrices();
 }
 
 void ComponentTransform::SetMatrices()

@@ -2,6 +2,7 @@
 #include "Module.h"
 #include "External Libraries/MathGeoLib/include/Math/float3.h"
 #include <string>
+#include <map>
 #include "External Libraries/Glew/include/glew.h"
 
 
@@ -20,6 +21,7 @@ public:
 	bool CleanUp();
 
 	void Draw(GLuint tex);
+	bool GetDimensionsWindow(float& width, float& height);
 	
 	GameObject* CreateGameObject(std::string name = "", GameObject* parent = nullptr);
 	GameObject* CreateGameObject(float3 position, Quat rotation, float3 size, std::string name = "", GameObject* parent = nullptr);
@@ -29,6 +31,11 @@ public:
 	bool IsGameObjectNameRepeated(std::string name, GameObject* game_obj);
 	std::string CheckNameGameObject(std::string name, bool numbered = false);
 
+	void GetSceneDimensions(float& x, float& y, float& width, float& height);
+
+	void SelectGameObjectWithRay(LineSegment ray);
+	std::map<float, GameObject*> CheckIfGameObjectIsSelectable(GameObject* game_obj, std::map<float, GameObject*> map, LineSegment ray);
+
 	GameObject* game_object_selected;
 	ComponentCamera* camera;
 	GameObject* root;
@@ -37,6 +44,9 @@ public:
 
 
 private:
-
+	float width;
+	float height;
+	float x;
+	float y;
 
 };

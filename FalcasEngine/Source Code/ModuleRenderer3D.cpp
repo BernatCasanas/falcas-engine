@@ -12,6 +12,8 @@
 #include "ModuleSceneIntro.h"
 #include "ComponentCamera.h"
 
+
+
 #pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
 #pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */
 #pragma comment (lib, "Source Code/External Libraries/Glew/libx86/glew32.lib")
@@ -148,8 +150,12 @@ bool ModuleRenderer3D::Init()
 	LOG("OpenGL version supported %s", glGetString(GL_VERSION));
 	LOG("GLSL: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
 
+	camera = App->camera->camera;
+	camera->camera_active = true;
+
 	// Projection matrix for
 	OnResize(SCREEN_WIDTH, SCREEN_HEIGHT);
+
 
 	return ret;
 }
@@ -159,14 +165,21 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
 
+
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
+	if (camera->update_projection_matrix || changed_camera) {
+		glMatrixMode(GL_PROJECTION);
+		glLoadMatrixf(camera->GetProjectionMatrix());
+		camera->update_projection_matrix = false;
+		changed_camera = false;
 
+	}
 	glMatrixMode(GL_MODELVIEW);
-	glLoadMatrixf(App->camera->GetViewMatrix());
+	glLoadMatrixf(camera->GetViewMatrix());
 
 	// light 0 on cam pos
-	lights[0].SetPos(App->camera->Position.x, App->camera->Position.y, App->camera->Position.z);
+	lights[0].SetPos(App->camera->GetPosition().x, App->camera->GetPosition().y, App->camera->GetPosition().z);
 
 	for(uint i = 0; i < MAX_LIGHTS; ++i)
 		lights[i].Render();
@@ -184,6 +197,11 @@ update_status ModuleRenderer3D::Update(float dt)
 	aabbs.clear();
 
 	DrawFrustum(App->scene_intro->camera->frustum);
+
+	glBegin(GL_LINES);
+	glVertex3f(line_origin.x, line_origin.y, line_origin.z);
+	glVertex3f(line_end.x, line_end.y, line_end.z);
+	glEnd();
 	
 	return update_status::UPDATE_CONTINUE;
 }
@@ -222,6 +240,7 @@ bool ModuleRenderer3D::CleanUp()
 void ModuleRenderer3D::DrawAABB(AABB aabb)
 {
 	glBegin(GL_LINES);
+
 	glVertex3f(aabb.CornerPoint(0).x, aabb.CornerPoint(0).y, aabb.CornerPoint(0).z);
 	glVertex3f(aabb.CornerPoint(2).x, aabb.CornerPoint(2).y, aabb.CornerPoint(2).z);
 	glVertex3f(aabb.CornerPoint(2).x, aabb.CornerPoint(2).y, aabb.CornerPoint(2).z);
@@ -289,9 +308,32 @@ void ModuleRenderer3D::OnResize(int width, int height)
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	ProjectionMatrix = perspective(60.0f, (float)width / (float)height, 0.125f, 512.0f);
-	glLoadMatrixf(&ProjectionMatrix);
+	glLoadMatrixf(camera->GetProjectionMatrix());
+	//ProjectionMatrix = perspective(60.0f, (float)width / (float)height, 0.125f, 512.0f);
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
+}
+
+void ModuleRenderer3D::ChangeCameraActive(ComponentCamera* camera_to_change)
+{
+	changed_camera = true;
+	camera->camera_active = false;
+	if (camera_to_change!=nullptr)
+		camera = camera_to_change;
+	else {
+		camera = App->camera->camera;
+	}
+	camera->camera_active = true;
+}
+
+void ModuleRenderer3D::ChangeCullingCamera(ComponentCamera* camera_culling_to_change)
+{
+	camera->frustum_culling = false;
+	if (camera_culling_to_change !=nullptr)
+		camera_culling = camera_culling_to_change;
+	else {
+		camera_culling = App->camera->camera;
+	}
+	camera_culling->frustum_culling = true;
 }

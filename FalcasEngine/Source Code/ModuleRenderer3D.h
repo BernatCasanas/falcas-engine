@@ -4,9 +4,11 @@
 #include "External Libraries/SDL/include/SDL_video.h"
 #include "External Libraries/Glew/include/glew.h"
 #include "External Libraries/MathGeoLib/include/Geometry/AABB.h"
+#include "External Libraries/MathGeoLib/include/Math/float3x3.h"
 
 
 #define MAX_LIGHTS 8
+class ComponentCamera;
 
 class ModuleRenderer3D : public Module
 {
@@ -25,15 +27,26 @@ public:
 
 	void OnResize(int width, int height);
 
+	void ChangeCameraActive(ComponentCamera* camera);
+	void ChangeCullingCamera(ComponentCamera* camera_culling);
 
 
 public:
 	Light lights[MAX_LIGHTS];
 	SDL_GLContext context;
-	mat3x3 NormalMatrix;
-	mat4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
+	float3x3 NormalMatrix;
+	float4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
 	GLuint frameBuffer;
 	GLuint texColorBuffer;
 	GLuint rboDepthStencil;
 	std::vector<AABB> aabbs;
+	ComponentCamera* camera_culling = nullptr;
+	ComponentCamera* camera = nullptr;
+
+	///TEMPORAL
+	float3 line_origin = { 0,0,0 };
+	float3 line_end = { 0,0,0 };
+
+private:
+	bool changed_camera = false;
 };
