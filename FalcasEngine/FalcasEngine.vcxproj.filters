@@ -39,9 +39,6 @@
     <ClCompile Include="Source Code\Color.cpp">
       <Filter>Source Code</Filter>
     </ClCompile>
-    <ClCompile Include="Source Code\glmath.cpp">
-      <Filter>Source Code</Filter>
-    </ClCompile>
     <ClCompile Include="Source Code\Light.cpp">
       <Filter>Source Code</Filter>
     </ClCompile>
@@ -219,9 +216,6 @@
       <Filter>Source Code</Filter>
     </ClInclude>
     <ClInclude Include="Source Code\Color.h">
-      <Filter>Source Code</Filter>
-    </ClInclude>
-    <ClInclude Include="Source Code\glmath.h">
       <Filter>Source Code</Filter>
     </ClInclude>
     <ClInclude Include="Source Code\Globals.h">

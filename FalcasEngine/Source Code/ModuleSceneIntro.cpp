@@ -34,8 +34,6 @@ bool ModuleSceneIntro::Start()
 
 	DevilInit();
 
-	App->camera->Move(vec3(1.0f, 1.0f, 0.0f));
-	App->camera->LookAt(vec3(0, 0, 0));
 	id_gameobject = -1;
 	root = new GameObject(id_gameobject, "Grid", nullptr, { 0,0,0 }, Quat::identity, { 1,1,1 });
 	id_gameobject++;
