@@ -4,12 +4,18 @@
 #include "External Libraries/SDL/include/SDL_scancode.h"
 #include "External Libraries/SDL/include/SDL_mouse.h"
 #include "External Libraries/MathGeoLib/include/Math/MathFunc.h"
+#include "External Libraries/MathGeoLib/include/Geometry/LineSegment.h"
 #include "ModuleInput.h"
 #include "ModuleSceneIntro.h"
 #include "GameObject.h"
 #include "ComponentTransform.h"
 #include "ComponentCamera.h"
+#include "ModuleWindow.h"
 
+
+
+//////TEMPORAL
+#include "ModuleRenderer3D.h"
 ModuleCamera3D::ModuleCamera3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 
@@ -44,6 +50,22 @@ bool ModuleCamera3D::CleanUp()
 // -----------------------------------------------------------------
 update_status ModuleCamera3D::Update(float dt)
 {
+	if (App->input->GetMouseButton(SDL_BUTTON_LEFT)==KEY_DOWN && App->input->GetKey(SDL_SCANCODE_LALT) == KEY_IDLE) {
+		int x = App->input->GetMouseX();
+		int y = App->input->GetMouseY();
+		float scene_x, scene_y, scene_width, scene_height;
+		App->scene_intro->GetSceneDimensions(scene_x, scene_y, scene_width, scene_height);
+		if (x >= scene_x && x <= scene_width + scene_x && y >= scene_y && y <= scene_height + scene_y) {
+			float x_final = (x - scene_x) / (scene_width*0.5);
+			float y_final = (y - scene_y) / (scene_height*0.5);
+			x_final--;
+			y_final=-y_final + 1;
+			LineSegment picking_ray = camera->frustum.UnProjectLineSegment(x_final, y_final);
+			App->renderer3D->line_origin = picking_ray.a;
+			App->renderer3D->line_end = picking_ray.b;
+		}
+	}
+
 	camera->owner->Update();
 
 	// Implement a debug camera with keys and mouse

@@ -167,6 +167,10 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
+	if (camera == nullptr) {
+		camera = App->camera->camera;
+		camera->changed_camera = true;
+	}
 	if (camera->update_projection_matrix || camera->changed_camera) {
 		glMatrixMode(GL_PROJECTION);
 		glLoadMatrixf(camera->GetProjectionMatrix());
@@ -195,6 +199,12 @@ update_status ModuleRenderer3D::Update(float dt)
 	aabbs.clear();
 
 	DrawFrustum(App->scene_intro->camera->frustum);
+	DrawFrustum(App->camera->camera->frustum);
+
+	glBegin(GL_LINES);
+	glVertex3f(line_origin.x, line_origin.y, line_origin.z);
+	glVertex3f(line_end.x, line_end.y, line_end.z);
+	glEnd();
 	
 	return update_status::UPDATE_CONTINUE;
 }

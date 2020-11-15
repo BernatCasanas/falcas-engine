@@ -30,6 +30,8 @@ public:
 	bool IsGameObjectNameRepeated(std::string name, GameObject* game_obj);
 	std::string CheckNameGameObject(std::string name, bool numbered = false);
 
+	void GetSceneDimensions(float& x, float& y, float& width, float& height);
+
 	GameObject* game_object_selected;
 	ComponentCamera* camera;
 	GameObject* root;
@@ -40,5 +42,7 @@ public:
 private:
 	float width;
 	float height;
+	float x;
+	float y;
 
 };

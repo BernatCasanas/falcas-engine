@@ -41,7 +41,7 @@ public:
 	ComponentCamera* camera_culling = nullptr;
 	ComponentCamera* camera = nullptr;
 
-
-
-	bool temporal_change_of_camera = false;
+	///TEMPORAL
+	float3 line_origin = { 0,0,0 };
+	float3 line_end = { 0,0,0 };
 };

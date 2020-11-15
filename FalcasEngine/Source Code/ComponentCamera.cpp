@@ -4,10 +4,7 @@
 #include "GameObject.h"
 #include "ComponentTransform.h"
 #include "External Libraries/ImGui/imgui.h"
-
-//////TEMPORAL
 #include "ModuleRenderer3D.h"
-#include "ModuleCamera3D.h"
 
 ComponentCamera::ComponentCamera(GameObject* owner, ComponentTransform* trans) :Component(Component_Type::Camera, owner, "Camera"), trans(trans)
 {
@@ -74,8 +71,7 @@ void ComponentCamera::ChangeCameraActive()
 	if (camera_active)
 		App->renderer3D->camera = this;
 	else {
-		App->renderer3D->camera = App->camera->camera;
-		App->camera->camera->changed_camera = true;
+		App->renderer3D->camera = nullptr;
 	}
 }
 
@@ -84,9 +80,11 @@ void ComponentCamera::ChangeCullingCamera()
 	if (frustum_culling)
 		App->renderer3D->camera_culling = this;
 	else {
-		App->renderer3D->camera_culling = App->camera->camera;
+		App->renderer3D->camera_culling = nullptr;
 	}
 }
+
+
 
 void ComponentCamera::Inspector()
 {

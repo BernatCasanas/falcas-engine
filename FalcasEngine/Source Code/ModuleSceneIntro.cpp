@@ -69,6 +69,9 @@ void ModuleSceneIntro::Draw(GLuint tex)
 	ImGui::Begin("Scene");
 
 	ImVec2 windowSize = ImGui::GetWindowSize();
+	ImVec2 windowPos = ImGui::GetWindowPos();
+	x = windowPos.x;
+	y = windowPos.y;
 	width = windowSize.x;
 	height = windowSize.y;
 	ImGui::Image((ImTextureID)tex, windowSize, ImVec2(0, 1), ImVec2(1, 0));
@@ -211,4 +214,12 @@ std::string ModuleSceneIntro::CheckNameGameObject(std::string name, bool numbere
 		name = CheckNameGameObject(name, true);
 	}
 	return name;
+}
+
+void ModuleSceneIntro::GetSceneDimensions(float& x, float& y, float& width, float& height)
+{
+	x = this->x;
+	y = this->y;
+	width = this->width;
+	height = this->height;
 }
