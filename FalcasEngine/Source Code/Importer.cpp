@@ -70,7 +70,7 @@ void ImportGameObjectFromFBX(const aiScene* scene, aiNode* node, GameObject* par
 	if (node->mNumMeshes > 0) {
 		ComponentMesh* mesh = (ComponentMesh*)game_object->CreateComponent(Component_Type::Mesh);
 		aiMesh* ai_mesh = scene->mMeshes[node->mMeshes[0]];
-		int num_material = ImportMesh(ai_mesh, mesh);
+		int num_material = MeshImporter::Import(ai_mesh, mesh);
 		mesh->full_file_name = file;
 		mesh->file_name = App->filesystem->GetFileName(file, true);
 		if (num_material != -1 && num_material < scene->mNumMaterials) {
@@ -139,7 +139,8 @@ void ImportDefaultTexture(ComponentMaterial* mat) {
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-int ImportMesh(aiMesh* ai_mesh, ComponentMesh* mesh)
+
+int MeshImporter::Import(const aiMesh* ai_mesh, ComponentMesh* mesh)
 {
 	int material_index = -1;
 	if (ai_mesh == nullptr)
@@ -193,7 +194,88 @@ int ImportMesh(aiMesh* ai_mesh, ComponentMesh* mesh)
 	}
 
 	mesh->Initialization();
-		
+
 	return material_index;
+
 }
 
+uint MeshImporter::Save(const ComponentMesh* mesh, char** filebuffer)
+{
+	uint ranges[4] = { mesh->num_indices, mesh->num_vertices, mesh->num_normals, mesh->num_textureCoords };
+
+	uint size = sizeof(ranges) + sizeof(uint) * mesh->num_indices + sizeof(float) * mesh->num_vertices * 3
+		+ sizeof(float) * mesh->num_normals * 3 + sizeof(float) * mesh->num_textureCoords * 2;
+
+	char* buffer = new char[size];
+	char* cursor = buffer;
+
+	uint bytes = sizeof(ranges);
+	memcpy(cursor, ranges, bytes);
+	cursor += bytes;
+
+	//store indices
+	bytes = sizeof(uint) * mesh->num_indices;
+	memcpy(cursor, mesh->indices, bytes);
+	cursor += bytes;
+
+	//store vertices
+	bytes = sizeof(float) * mesh->num_vertices * 3;
+	memcpy(cursor, mesh->vertices, bytes);
+	cursor += bytes;
+
+	//store normals
+	bytes = sizeof(float) * mesh->num_normals * 3;
+	memcpy(cursor, mesh->normals, bytes);
+	cursor += bytes;
+
+	//store texcoords
+	bytes = sizeof(float) * mesh->num_textureCoords * 2;
+	memcpy(cursor, mesh->texCoords, bytes);
+
+	*filebuffer = buffer;
+
+	return size;
+}
+
+void MeshImporter::Load(const char* fileBuffer, ComponentMesh *mesh)
+{
+	char* buffer = nullptr;
+
+
+	char* cursor = buffer;
+
+	uint ranges[4];
+	uint bytes = sizeof(ranges);
+	memcpy(ranges, cursor, bytes);
+	cursor += bytes;
+
+	mesh->num_indices = ranges[0];
+	mesh->num_vertices = ranges[1];
+	mesh->num_normals = ranges[2];
+	mesh->num_textureCoords = ranges[3];
+
+	// Load indices
+	bytes = sizeof(uint) * mesh->num_indices;
+	mesh->indices = new uint[mesh->num_indices];
+	memcpy(mesh->indices, cursor, bytes);
+	cursor += bytes;
+
+	//load vertices
+	bytes = sizeof(float) * mesh->num_vertices * 3;
+	mesh->vertices = new float[mesh->num_vertices * 3];
+	memcpy(mesh->vertices, cursor, bytes);
+	cursor += bytes;
+
+	//load normals
+	bytes = sizeof(float) * mesh->num_normals * 3;
+	mesh->normals = new float[mesh->num_normals * 3];
+	memcpy(mesh->normals, cursor, bytes);
+	cursor += bytes;
+
+	//load texcoords
+	bytes = sizeof(float) * mesh->num_textureCoords * 2;
+	mesh->texCoords = new float[mesh->num_textureCoords * 2];
+	memcpy(mesh->texCoords, cursor, bytes);
+
+
+}
