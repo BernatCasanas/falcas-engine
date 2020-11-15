@@ -232,10 +232,21 @@ void ModuleSceneIntro::SelectGameObjectWithRay(LineSegment ray)
 {
 	std::map<float, GameObject*> list_of_possible;
 	list_of_possible = CheckIfGameObjectIsSelectable(root, list_of_possible, ray);
-	if (list_of_possible.size() == 0)
+	if (list_of_possible.size() == 0) {
+		game_object_selected = nullptr;
+		App->central_editor->SelectObject(game_object_selected);
 		return;
+	}
 	GameObject* game_obj_selected=nullptr;
-	for (std::map<float, GameObject*>::iterator it = list_of_possible.begin(); it != list_of_possible.end() && game_obj_selected == nullptr; ++it) {
+	float distance = -1;
+	for (std::map<float, GameObject*>::iterator it = list_of_possible.begin(); it != list_of_possible.end(); ++it) {
+		bool last_element = false;
+		if (distance >= 0 && distance < it->first)
+			break;
+		if (++it == list_of_possible.end()) {
+			last_element = true;
+		}
+		--it;
 		ComponentTransform* trans = (ComponentTransform*)it->second->GetComponent(Component_Type::Transform);
 		LineSegment ray_local = ray;
 		ray_local.Transform(trans->GetGlobalMatrix().Inverted());
@@ -245,14 +256,23 @@ void ModuleSceneIntro::SelectGameObjectWithRay(LineSegment ray)
 			tri.a = float3(&mesh->vertices[mesh->indices[i]*3]);
 			tri.b = float3(&mesh->vertices[mesh->indices[i+1] * 3]);
 			tri.c = float3(&mesh->vertices[mesh->indices[i+2] * 3]);
-			float distance;
 			float3 point;
-			if (ray_local.Intersects(tri, &distance, &point)) {
-				game_obj_selected = it->second;
+			float distance_local;
+			if (ray_local.Intersects(tri, &distance_local, &point)) {
+				distance_local *= 1000;
+				if (distance_local < distance || distance < 0) {
+					distance = distance_local;
+					game_obj_selected = it->second;
+					if (last_element)
+						break;
+				if (distance_local <= it->first)
+					break;
+				}
 			}
 		}
 	}
 	game_object_selected = game_obj_selected;
+	App->central_editor->SelectObject(game_object_selected);
 }
 
 std::map<float, GameObject*> ModuleSceneIntro::CheckIfGameObjectIsSelectable(GameObject* game_obj, std::map<float, GameObject*> map, LineSegment ray)

@@ -45,8 +45,9 @@ public:
 
 	bool ProcessEvents(SDL_Event event);
 
-	void HierarchyRecursiveTree(GameObject* game_object, static int selected, static ImGuiTreeNodeFlags base_flags, int &node_clicked);
+	void HierarchyRecursiveTree(GameObject* game_object, static ImGuiTreeNodeFlags base_flags, int &node_clicked);
 
+	void SelectObject(GameObject* game_obj);
 
 	void CreateDock();
 	void CreateShape(Shape shape, std::string name);
@@ -89,6 +90,10 @@ public:
 	bool need_scroll = false;
 
 	bool wantToExit = false;
+
+private:
+	bool selected_through_screen = false;
+	std::vector<int> ids_of_parents_selected;
 };
 
 #endif // __ModuleCentralEditor_H__

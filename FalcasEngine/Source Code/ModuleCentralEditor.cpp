@@ -398,11 +398,18 @@ void ModuleCentralEditor::Draw()
     //Hierarchy
     if (show_hierarchy) {
         ImGui::Begin("Hierarchy", &show_hierarchy);
-        static int selected = -1;
         static int node_clicked = -2;
+        if (selected_through_screen) {
+            if (App->scene_intro->game_object_selected == nullptr)
+                node_clicked = -2;
+            else
+                node_clicked = App->scene_intro->game_object_selected->id;
+            selected_through_screen = false;
+        }
         static ImGuiTreeNodeFlags base_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_SpanAvailWidth;
         GameObject* game_object = App->scene_intro->root;
-        HierarchyRecursiveTree(game_object, selected, base_flags, node_clicked);
+        HierarchyRecursiveTree(game_object, base_flags, node_clicked);
+        ids_of_parents_selected.clear();
         ImGui::End();
     }
 
@@ -492,7 +499,7 @@ bool ModuleCentralEditor::ProcessEvents(SDL_Event event)
     return done;
 }
 
-void ModuleCentralEditor::HierarchyRecursiveTree(GameObject* game_object, static int selected, static ImGuiTreeNodeFlags base_flags, int &id_node_clicked)
+void ModuleCentralEditor::HierarchyRecursiveTree(GameObject* game_object, static ImGuiTreeNodeFlags base_flags, int &id_node_clicked)
 {
     if (game_object == nullptr) {
         return;
@@ -514,17 +521,32 @@ void ModuleCentralEditor::HierarchyRecursiveTree(GameObject* game_object, static
     if (game_object->id < 0 && !has_children) {
         ImGui::Unindent(ImGui::GetTreeNodeToLabelSpacing());
     }
+    if ((ids_of_parents_selected.size() > 0 && ids_of_parents_selected.back() == game_object->id && has_children)) {
+        ids_of_parents_selected.pop_back();
+        ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+    }
+
     bool node_open = ImGui::TreeNodeEx((void*)(intptr_t)game_object->id, final_flags, (game_object->id < 0) ? "Main" : game_object->GetName().c_str());
     if (ImGui::IsItemClicked())
         id_node_clicked = game_object->id;
-    if (node_open && has_children) {
+    if ((node_open && has_children)) {
         for (int i = 0; i < game_object->children.size(); i++) {
-            HierarchyRecursiveTree(game_object->children[i], selected, base_flags, id_node_clicked);
+            HierarchyRecursiveTree(game_object->children[i], base_flags, id_node_clicked);
         }
         ImGui::TreePop();
     }
     if (game_object->id < 0 && !has_children)
         ImGui::Indent(ImGui::GetTreeNodeToLabelSpacing());
+}
+
+void ModuleCentralEditor::SelectObject(GameObject* game_obj)
+{
+    selected_through_screen = true;
+    if (game_obj == nullptr)
+        return;
+    ids_of_parents_selected.push_back(game_obj->id);
+    if (game_obj->parent != nullptr)
+        SelectObject(game_obj->parent);
 }
 
 void ModuleCentralEditor::CreateShape(Shape shape, std::string name)
