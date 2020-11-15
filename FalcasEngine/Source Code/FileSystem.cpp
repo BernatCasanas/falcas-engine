@@ -76,6 +76,12 @@ FILE_TYPE FileSystem::GetTypeFile(char* file)
 	else return FILE_TYPE::UNKNOWN;
 }
 
+void FileSystem::SaveInternal(const char* file, const void* buffer, uint size)
+{
+	PHYSFS_file* file_phys = PHYSFS_openWrite(file);
+	PHYSFS_write(file_phys, buffer, 1, size);
+}
+
 
 
 uint FileSystem::Load(const char* path, char** buffer) const

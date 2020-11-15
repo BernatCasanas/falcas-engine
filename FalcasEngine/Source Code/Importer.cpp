@@ -195,6 +195,10 @@ int MeshImporter::Import(const aiMesh* ai_mesh, ComponentMesh* mesh)
 
 	mesh->Initialization();
 
+	char* buffer;
+	uint size = MeshImporter::Save(mesh, &buffer);
+	App->filesystem->SaveInternal("mesh.mesh", buffer, size);
+
 	return material_index;
 
 }
@@ -219,12 +223,12 @@ uint MeshImporter::Save(const ComponentMesh* mesh, char** filebuffer)
 	cursor += bytes;
 
 	//store vertices
-	bytes = sizeof(float) * mesh->num_vertices * 3;
+	bytes = sizeof(float) * mesh->num_vertices;
 	memcpy(cursor, mesh->vertices, bytes);
 	cursor += bytes;
 
 	//store normals
-	bytes = sizeof(float) * mesh->num_normals * 3;
+	bytes = sizeof(float) * mesh->num_normals;
 	memcpy(cursor, mesh->normals, bytes);
 	cursor += bytes;
 

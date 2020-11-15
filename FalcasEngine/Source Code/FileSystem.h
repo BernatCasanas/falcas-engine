@@ -31,6 +31,8 @@ public:
 	std::string GetPathFile(std::string file);
 	FILE_TYPE GetTypeFile(char* file);
 
+	void SaveInternal(const char* file, const void* buffer, uint size);
+
 public:
 	uint Load(const char* path, char** buffer) const;
 

@@ -24,6 +24,6 @@ void ImportDefaultTexture(ComponentMaterial* mat);
 namespace MeshImporter {
 	int Import(const aiMesh* ai_material, ComponentMesh* mesh);
 	uint Save(const ComponentMesh* mesh, char** filebuffer);
-	void Load(const char* fileBuffer, ComponentMesh mesh);
+	void Load(const char* fileBuffer, ComponentMesh *mesh);
 }
 
