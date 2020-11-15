@@ -65,6 +65,7 @@ update_status ModuleCamera3D::Update(float dt)
 			x_final--;
 			y_final=-y_final + 1;
 			LineSegment picking_ray = camera->frustum.UnProjectLineSegment(x_final, y_final);
+			App->scene_intro->SelectGameObjectWithRay(picking_ray);
 			App->renderer3D->line_origin = picking_ray.a;
 			App->renderer3D->line_end = picking_ray.b;
 		}

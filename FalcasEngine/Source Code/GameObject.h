@@ -31,6 +31,7 @@ public:
 	void UpdateAABB();
 	bool IsInsideFrustumCulling();
 	bool IsCulled() const;
+	AABB GetAABB()const;
 	
 
 public:

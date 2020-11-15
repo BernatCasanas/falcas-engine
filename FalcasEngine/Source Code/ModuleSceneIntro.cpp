@@ -5,9 +5,13 @@
 #include "Console.h"
 #include "GameObject.h"
 #include "External Libraries/MathGeoLib/include/Math/Quat.h"
+#include "External Libraries/MathGeoLib/include/Geometry/LineSegment.h"
+#include "External Libraries/MathGeoLib/include/Geometry/Triangle.h"
 #include "ComponentMesh.h"
 #include "ComponentMaterial.h"
 #include "ComponentCamera.h"
+#include "ComponentTransform.h"
+#include "ComponentMesh.h"
 #include <gl/GL.h>
 #include "Shape.h"
 #include "FileSystem.h"
@@ -222,4 +226,45 @@ void ModuleSceneIntro::GetSceneDimensions(float& x, float& y, float& width, floa
 	y = this->y;
 	width = this->width;
 	height = this->height;
+}
+
+void ModuleSceneIntro::SelectGameObjectWithRay(LineSegment ray)
+{
+	std::map<float, GameObject*> list_of_possible;
+	list_of_possible = CheckIfGameObjectIsSelectable(root, list_of_possible, ray);
+	if (list_of_possible.size() == 0)
+		return;
+	GameObject* game_obj_selected=nullptr;
+	for (std::map<float, GameObject*>::iterator it = list_of_possible.begin(); it != list_of_possible.end() && game_obj_selected == nullptr; ++it) {
+		ComponentTransform* trans = (ComponentTransform*)it->second->GetComponent(Component_Type::Transform);
+		LineSegment ray_local = ray;
+		ray_local.Transform(trans->GetGlobalMatrix().Inverted());
+		ComponentMesh* mesh = (ComponentMesh*)it->second->GetComponent(Component_Type::Mesh);
+		for (int i = 0; i < mesh->num_indices; i+=3) {
+			Triangle tri;
+			tri.a = float3(&mesh->vertices[mesh->indices[i]*3]);
+			tri.b = float3(&mesh->vertices[mesh->indices[i+1] * 3]);
+			tri.c = float3(&mesh->vertices[mesh->indices[i+2] * 3]);
+			float distance;
+			float3 point;
+			if (ray_local.Intersects(tri, &distance, &point)) {
+				game_obj_selected = it->second;
+			}
+		}
+	}
+	game_object_selected = game_obj_selected;
+}
+
+std::map<float, GameObject*> ModuleSceneIntro::CheckIfGameObjectIsSelectable(GameObject* game_obj, std::map<float, GameObject*> map, LineSegment ray)
+{
+	if (game_obj->id >= 0 && game_obj->HasComponentType(Component_Type::Mesh)) {
+		if (ray.Intersects(game_obj->GetAABB())) {
+			float distance = Length(game_obj->GetAABB().ClosestPoint(ray.a) - ray.a);
+			map.insert(std::pair<float, GameObject*>(distance, game_obj));
+		}
+	}
+	for (int i = 0; i < game_obj->children.size(); i++) {
+		map=CheckIfGameObjectIsSelectable(game_obj->children[i], map, ray);
+	}
+	return map;
 }

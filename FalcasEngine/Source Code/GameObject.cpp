@@ -208,3 +208,8 @@ bool GameObject::IsCulled() const
 	return culled;
 }
 
+AABB GameObject::GetAABB() const
+{
+	return aabb;
+}
+

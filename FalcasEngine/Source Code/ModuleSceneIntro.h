@@ -2,6 +2,7 @@
 #include "Module.h"
 #include "External Libraries/MathGeoLib/include/Math/float3.h"
 #include <string>
+#include <map>
 #include "External Libraries/Glew/include/glew.h"
 
 
@@ -31,6 +32,9 @@ public:
 	std::string CheckNameGameObject(std::string name, bool numbered = false);
 
 	void GetSceneDimensions(float& x, float& y, float& width, float& height);
+
+	void SelectGameObjectWithRay(LineSegment ray);
+	std::map<float, GameObject*> CheckIfGameObjectIsSelectable(GameObject* game_obj, std::map<float, GameObject*> map, LineSegment ray);
 
 	GameObject* game_object_selected;
 	ComponentCamera* camera;
