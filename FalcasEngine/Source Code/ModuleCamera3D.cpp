@@ -14,7 +14,6 @@ ModuleCamera3D::ModuleCamera3D(Application* app, bool start_enabled) : Module(ap
 {
 
 	camera = (ComponentCamera*)(new GameObject(-2, "Editor Camera", nullptr))->CreateComponent(Component_Type::Camera);
-
 	CalculateViewMatrix();
 
 	X = vec3(1.0f, 0.0f, 0.0f);
@@ -22,6 +21,8 @@ ModuleCamera3D::ModuleCamera3D(Application* app, bool start_enabled) : Module(ap
 	Z = vec3(0.0f, 0.0f, 1.0f);
 
 	Position = vec3(0.0f, 0.0f, 5.0f);
+	SetPosition({ 1,1,5 });
+	LookAt({ 0,0,0 });
 	Reference = vec3(0.0f, 0.0f, 0.0f);
 
 }
@@ -51,8 +52,7 @@ bool ModuleCamera3D::CleanUp()
 // -----------------------------------------------------------------
 update_status ModuleCamera3D::Update(float dt)
 {
-
-	camera->Update();
+	camera->owner->Update();
 
 	// Implement a debug camera with keys and mouse
 	// Now we can make this movememnt frame rate independant!
@@ -84,8 +84,8 @@ update_status ModuleCamera3D::Update(float dt)
 		int double_speed = 1;
 		if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT || App->input->GetKey(SDL_SCANCODE_RSHIFT) == KEY_REPEAT)
 			double_speed = 2;
-		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) newPos -= Z * speed * double_speed;
-		if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) newPos += Z * speed * double_speed;
+		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) newPos += Y * speed * double_speed;
+		if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) newPos -= Y * speed * double_speed;
 
 
 		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) newPos -= X * speed * double_speed;
@@ -196,35 +196,26 @@ update_status ModuleCamera3D::Update(float dt)
 			LookAt(Reference);
 		}
 	}
+	LookAt(Reference);
 	// Recalculate matrix -------------
 	CalculateViewMatrix();
 
 	return UPDATE_CONTINUE;
 }
 
-// -----------------------------------------------------------------
-void ModuleCamera3D::Look(const vec3 &Position, const vec3 &Reference, bool RotateAroundReference)
-{
-	this->Position = Position;
-	this->Reference = Reference;
-
-	Z = normalize(Position - Reference);
-	X = normalize(cross(vec3(0.0f, 1.0f, 0.0f), Z));
-	Y = cross(Z, X);
-
-	if(!RotateAroundReference)
-	{
-		this->Reference = this->Position;
-		this->Position += Z * 0.05f;
-	}
-
-	CalculateViewMatrix();
-}
 
 // -----------------------------------------------------------------
 void ModuleCamera3D::LookAt( const vec3 &Spot)
 {
 	Reference = Spot;
+	float3 position = { Spot.x,Spot.y,Spot.z };
+	float3 vector = position - GetPosition();
+
+	float3x3 matrix = float3x3::LookAt(float3::unitZ, vector.Normalized(), float3::unitY, float3::unitY);
+	GetComponentTransform()->SetRotation(matrix.ToQuat());
+
+	
+
 
 	Z = normalize(Position - Reference);
 	if (Z.x != 0 || Z.y != 1 || Z.z != 0)
@@ -238,6 +229,8 @@ void ModuleCamera3D::LookAt( const vec3 &Spot)
 void ModuleCamera3D::Move(const vec3 &Movement)
 {
 	Position += Movement;
+	float3 Move = { Movement.x,Movement.y,Movement.z };
+	//SetPosition(GetPosition() + Move);
 	Reference += Movement;
 
 	CalculateViewMatrix();
@@ -271,14 +264,25 @@ void ModuleCamera3D::CalculateViewMatrix()
 }
 
 
+ComponentTransform* ModuleCamera3D::GetComponentTransform()
+{
+	return (ComponentTransform*)camera->owner->GetComponent(Component_Type::Transform);;
+}
+
 void ModuleCamera3D::SetPosition(float3 pos)
 {
-	ComponentTransform* trans = (ComponentTransform*)camera->owner->GetComponent(Component_Type::Transform);
+	ComponentTransform* trans = GetComponentTransform();
 	trans->SetPosition(pos);
-	camera->frustum.SetPos(pos);
 }
 
 float3 ModuleCamera3D::GetPosition()
 {
-	return camera->frustum.Pos();
+	ComponentTransform* trans = GetComponentTransform();
+	return trans->GetPosition();
+}
+
+Quat ModuleCamera3D::GetRotation()
+{
+	ComponentTransform* trans = GetComponentTransform();
+	return trans->GetRotation();
 }

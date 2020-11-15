@@ -20,14 +20,16 @@ public:
 	bool GetIfIsFrustumCulling() const;
 	float* GetProjectionMatrix() const;
 	float* GetViewMatrix() const;
+	void ChangeCameraActive();
 
 public:
 	bool update_projection_matrix = false;
 	Frustum frustum;
+	bool changed_camera = false;
 
 private:
 	bool needed_to_update = false;
-	float near_plane_distance = 1;
+	float near_plane_distance = 0.1;
 	float far_plane_distance = 1000;
 	float field_of_view_vertical = 1;
 	float field_of_view_horizontal = 1;

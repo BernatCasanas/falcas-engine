@@ -33,16 +33,15 @@ void ComponentCamera::UpdateFrustum()
 }
 void ComponentCamera::Update()
 {
-	if (camera_active)
-		App->renderer3D->camera = this;
-	else
-		App->renderer3D->camera = App->camera->camera;
+	changed_camera = false;
+	
 	frustum.SetPos(trans->GetPosition());
-	frustum.SetFront(float3::unitZ * float3x3::FromQuat(trans->GetRotation()));
-	frustum.SetUp(float3::unitY * float3x3::FromQuat(trans->GetRotation()));
+	frustum.SetFront(float3x3::FromQuat(trans->GetRotation())* float3::unitZ);
+	frustum.SetUp(float3x3::FromQuat(trans->GetRotation())*float3::unitY);
 	if (!App->scene_intro->GetDimensionsWindow(width, height) &&!needed_to_update)
 		return;
 	UpdateFrustum();
+	needed_to_update = false;
 }
 
 bool ComponentCamera::GetIfIsFrustumCulling() const
@@ -62,13 +61,22 @@ float* ComponentCamera::GetProjectionMatrix() const
 
 float* ComponentCamera::GetViewMatrix() const
 {
-	float3 pos = trans->GetPosition();
-	const float3x4 ViewMatrixFrustum = frustum.ViewMatrix();
-	float4x4 ViewMatrix = ViewMatrixFrustum;
-	ViewMatrix.SetRow(3, { -Dot(ViewMatrix.Row3(0), pos), -Dot(ViewMatrix.Row3(1), pos), -Dot(ViewMatrix.Row3(2), pos), 1.0f });
+	static float4x4 ViewMatrix;
+	ViewMatrix = frustum.ViewMatrix();
 	ViewMatrix.Transpose();
 	return (float*)ViewMatrix.v;
 	
+}
+
+void ComponentCamera::ChangeCameraActive()
+{
+	changed_camera = true;
+	if (camera_active)
+		App->renderer3D->camera = this;
+	else {
+		App->renderer3D->camera = App->camera->camera;
+		App->camera->camera->changed_camera = true;
+	}
 }
 
 void ComponentCamera::Inspector()
@@ -78,7 +86,9 @@ void ComponentCamera::Inspector()
 
 	ImGui::Separator();
 
-	ImGui::Checkbox("View Camera", &camera_active);
+	if (ImGui::Checkbox("View Camera", &camera_active)) {
+		ChangeCameraActive();
+	}
 
 	ImGui::Checkbox("Camera Culling", &frustum_culling);
 

@@ -174,7 +174,7 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN) {
 		temporal_change_of_camera = !temporal_change_of_camera;
 	}
-	if (camera->update_projection_matrix) {
+	if (camera->update_projection_matrix || camera->changed_camera) {
 		glMatrixMode(GL_PROJECTION);
 		glLoadMatrixf(camera->GetProjectionMatrix());
 		camera->update_projection_matrix = false;
@@ -208,6 +208,7 @@ update_status ModuleRenderer3D::Update(float dt)
 	aabbs.clear();
 
 	DrawFrustum(App->scene_intro->camera->frustum);
+	DrawFrustum(App->camera->camera->frustum);
 	
 	return update_status::UPDATE_CONTINUE;
 }
