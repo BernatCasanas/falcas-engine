@@ -88,7 +88,7 @@ Component* GameObject::CreateComponent(Component_Type type)
 			component = new ComponentMaterial(this);
 			break;
 		case Component_Type::Camera:
-			component = new ComponentCamera(this, trans->GetPosition());
+			component = new ComponentCamera(this, trans);
 			break;
 		}
 		components.push_back(component);

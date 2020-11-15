@@ -90,6 +90,11 @@ void ComponentTransform::SetTransformation(float3 pos, Quat rot, float3 size)
 
 }
 
+void ComponentTransform::SetPosition(float3 pos)
+{
+	position = pos;
+}
+
 void ComponentTransform::SetMatrices()
 {
 	local_matrix = local_matrix.FromTRS(position, rotation, size);

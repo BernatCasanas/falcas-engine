@@ -12,6 +12,12 @@
 #include "ModuleSceneIntro.h"
 #include "ComponentCamera.h"
 
+
+
+
+///////TEMPORAL
+#include "ModuleInput.h"
+
 #pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
 #pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */
 #pragma comment (lib, "Source Code/External Libraries/Glew/libx86/glew32.lib")
@@ -165,18 +171,26 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
+	if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN) {
+		temporal_change_of_camera = !temporal_change_of_camera;
+	}
 	if (camera->update_projection_matrix) {
 		glMatrixMode(GL_PROJECTION);
 		glLoadMatrixf(camera->GetProjectionMatrix());
 		camera->update_projection_matrix = false;
 
 	}
-
-	glMatrixMode(GL_MODELVIEW);
-	glLoadMatrixf(App->camera->GetViewMatrix());
+	if (temporal_change_of_camera) {
+		glMatrixMode(GL_MODELVIEW);
+		glLoadMatrixf(camera->GetViewMatrix());
+	}
+	else {
+		glMatrixMode(GL_MODELVIEW);
+		glLoadMatrixf(App->camera->GetViewMatrix());
+	}
 
 	// light 0 on cam pos
-	lights[0].SetPos(App->camera->Position.x, App->camera->Position.y, App->camera->Position.z);
+	lights[0].SetPos(App->camera->GetPosition().x, App->camera->GetPosition().y, App->camera->GetPosition().z);
 
 	for(uint i = 0; i < MAX_LIGHTS; ++i)
 		lights[i].Render();

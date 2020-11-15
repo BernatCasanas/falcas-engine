@@ -39,4 +39,8 @@ public:
 	std::vector<AABB> aabbs;
 	ComponentCamera* camera_culling = nullptr;
 	ComponentCamera* camera = nullptr;
+
+
+
+	bool temporal_change_of_camera = false;
 };

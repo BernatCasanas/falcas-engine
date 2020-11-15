@@ -7,10 +7,11 @@
 #include "External Libraries/MathGeoLib/include/Math/float4x4.h"
 
 class GameObject;
+class ComponentTransform;
 
 class ComponentCamera : public Component {
 public:
-	ComponentCamera(GameObject* owner, float3 pos = { 0,0,0 });
+	ComponentCamera(GameObject* owner, ComponentTransform* trans);
 	~ComponentCamera();
 public:
 	void UpdateFrustum();
@@ -26,14 +27,15 @@ public:
 
 private:
 	bool needed_to_update = false;
-	float near_plane_distance=1;
-	float far_plane_distance=1000;
+	float near_plane_distance = 1;
+	float far_plane_distance = 1000;
 	float field_of_view_vertical = 1;
 	float field_of_view_horizontal = 1;
 	bool frustum_culling = false;
 	float width = 1280;
 	float height = 720;
-	float3 pos;
 	float4x4 ViewMatrix;
+	ComponentTransform* trans;
+	bool camera_active = false;
 };
 #endif // !_COMPONENT_CAMERA_

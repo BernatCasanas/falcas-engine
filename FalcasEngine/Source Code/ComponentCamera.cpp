@@ -1,12 +1,18 @@
 #include "ComponentCamera.h"
 #include "Application.h"
 #include "ModuleSceneIntro.h"
+#include "GameObject.h"
+#include "ComponentTransform.h"
 #include "External Libraries/ImGui/imgui.h"
 
-ComponentCamera::ComponentCamera(GameObject* owner, float3 pos) :Component(Component_Type::Camera, owner, "Camera"), pos(pos)
+//////TEMPORAL
+#include "ModuleRenderer3D.h"
+#include "ModuleCamera3D.h"
+
+ComponentCamera::ComponentCamera(GameObject* owner, ComponentTransform* trans) :Component(Component_Type::Camera, owner, "Camera"), trans(trans)
 {
 	frustum.SetKind(FrustumSpaceGL, FrustumRightHanded);
-	frustum.SetPos(pos);
+	frustum.SetPos(trans->GetPosition());
 	frustum.SetFront({ 0,0,1 });
 	frustum.SetUp({ 0,1,0 });
 
@@ -27,6 +33,11 @@ void ComponentCamera::UpdateFrustum()
 }
 void ComponentCamera::Update()
 {
+	if (camera_active)
+		App->renderer3D->camera = this;
+	else
+		App->renderer3D->camera = App->camera->camera;
+	frustum.SetPos(trans->GetPosition());
 	if (!App->scene_intro->GetDimensionsWindow(width, height) &&!needed_to_update)
 		return;
 	UpdateFrustum();
@@ -49,6 +60,7 @@ float* ComponentCamera::GetProjectionMatrix() const
 
 float* ComponentCamera::GetViewMatrix() const
 {
+	float3 pos = trans->GetPosition();
 	const float3x4 ViewMatrixFrustum = frustum.ViewMatrix();
 	float4x4 ViewMatrix = ViewMatrixFrustum;
 	ViewMatrix.SetRow(3, { -Dot(ViewMatrix.Row3(0), pos), -Dot(ViewMatrix.Row3(1), pos), -Dot(ViewMatrix.Row3(2), pos), 1.0f });
@@ -63,6 +75,8 @@ void ComponentCamera::Inspector()
 	Component::Inspector();
 
 	ImGui::Separator();
+
+	ImGui::Checkbox("View Camera", &camera_active);
 
 	ImGui::Checkbox("Camera Culling", &frustum_culling);
 

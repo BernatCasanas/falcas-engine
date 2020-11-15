@@ -1,6 +1,7 @@
 #pragma once
 #include "Module.h"
 #include "glmath.h"
+#include "External Libraries/MathGeoLib/include/Math/float3.h"
 
 class ComponentCamera;
 class ModuleCamera3D : public Module
@@ -18,6 +19,9 @@ public:
 	void Move(const vec3 &Movement);
 	float* GetViewMatrix();
 	void Zooming(float zooming_value);
+
+	void SetPosition(float3 pos);
+	float3 GetPosition();
 
 private:
 

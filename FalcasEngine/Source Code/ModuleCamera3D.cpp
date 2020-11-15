@@ -269,3 +269,16 @@ void ModuleCamera3D::CalculateViewMatrix()
 {
 	ViewMatrix = mat4x4(X.x, Y.x, Z.x, 0.0f, X.y, Y.y, Z.y, 0.0f, X.z, Y.z, Z.z, 0.0f, -dot(X, Position), -dot(Y, Position), -dot(Z, Position), 1.0f);
 }
+
+
+void ModuleCamera3D::SetPosition(float3 pos)
+{
+	ComponentTransform* trans = (ComponentTransform*)camera->owner->GetComponent(Component_Type::Transform);
+	trans->SetPosition(pos);
+	camera->frustum.SetPos(pos);
+}
+
+float3 ModuleCamera3D::GetPosition()
+{
+	return camera->frustum.Pos();
+}
