@@ -151,6 +151,7 @@ bool ModuleRenderer3D::Init()
 	LOG("GLSL: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
 
 	camera = App->camera->camera;
+	camera->camera_active = true;
 
 	// Projection matrix for
 	OnResize(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -167,14 +168,11 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
-	if (camera == nullptr) {
-		camera = App->camera->camera;
-		camera->changed_camera = true;
-	}
-	if (camera->update_projection_matrix || camera->changed_camera) {
+	if (camera->update_projection_matrix || changed_camera) {
 		glMatrixMode(GL_PROJECTION);
 		glLoadMatrixf(camera->GetProjectionMatrix());
 		camera->update_projection_matrix = false;
+		changed_camera = false;
 
 	}
 	glMatrixMode(GL_MODELVIEW);
@@ -199,7 +197,6 @@ update_status ModuleRenderer3D::Update(float dt)
 	aabbs.clear();
 
 	DrawFrustum(App->scene_intro->camera->frustum);
-	DrawFrustum(App->camera->camera->frustum);
 
 	glBegin(GL_LINES);
 	glVertex3f(line_origin.x, line_origin.y, line_origin.z);
@@ -316,4 +313,27 @@ void ModuleRenderer3D::OnResize(int width, int height)
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
+}
+
+void ModuleRenderer3D::ChangeCameraActive(ComponentCamera* camera_to_change)
+{
+	changed_camera = true;
+	camera->camera_active = false;
+	if (camera_to_change!=nullptr)
+		camera = camera_to_change;
+	else {
+		camera = App->camera->camera;
+	}
+	camera->camera_active = true;
+}
+
+void ModuleRenderer3D::ChangeCullingCamera(ComponentCamera* camera_culling_to_change)
+{
+	camera->frustum_culling = false;
+	if (camera_culling_to_change !=nullptr)
+		camera_culling = camera_culling_to_change;
+	else {
+		camera_culling = App->camera->camera;
+	}
+	camera_culling->frustum_culling = true;
 }

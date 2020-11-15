@@ -50,6 +50,10 @@ bool ModuleCamera3D::CleanUp()
 // -----------------------------------------------------------------
 update_status ModuleCamera3D::Update(float dt)
 {
+	if (!camera->camera_active)
+		return UPDATE_CONTINUE;
+
+
 	if (App->input->GetMouseButton(SDL_BUTTON_LEFT)==KEY_DOWN && App->input->GetKey(SDL_SCANCODE_LALT) == KEY_IDLE) {
 		int x = App->input->GetMouseX();
 		int y = App->input->GetMouseY();

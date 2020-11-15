@@ -30,8 +30,6 @@ void ComponentCamera::UpdateFrustum()
 }
 void ComponentCamera::Update()
 {
-	changed_camera = false;
-	
 	frustum.SetPos(trans->GetPosition());
 	frustum.SetFront(float3x3::FromQuat(trans->GetRotation())* float3::unitZ);
 	frustum.SetUp(float3x3::FromQuat(trans->GetRotation())*float3::unitY);
@@ -65,26 +63,6 @@ float* ComponentCamera::GetViewMatrix() const
 	
 }
 
-void ComponentCamera::ChangeCameraActive()
-{
-	changed_camera = true;
-	if (camera_active)
-		App->renderer3D->camera = this;
-	else {
-		App->renderer3D->camera = nullptr;
-	}
-}
-
-void ComponentCamera::ChangeCullingCamera()
-{
-	if (frustum_culling)
-		App->renderer3D->camera_culling = this;
-	else {
-		App->renderer3D->camera_culling = nullptr;
-	}
-}
-
-
 
 void ComponentCamera::Inspector()
 {
@@ -94,11 +72,17 @@ void ComponentCamera::Inspector()
 	ImGui::Separator();
 
 	if (ImGui::Checkbox("View Camera", &camera_active)) {
-		ChangeCameraActive();
+		if(camera_active==true)
+			App->renderer3D->ChangeCameraActive(this);
+		else
+			App->renderer3D->ChangeCameraActive(nullptr);
 	}
 
 	if (ImGui::Checkbox("Camera Culling", &frustum_culling)) {
-		ChangeCullingCamera();
+		if (frustum_culling == true)
+			App->renderer3D->ChangeCullingCamera(this);
+		else
+			App->renderer3D->ChangeCullingCamera(nullptr);
 	}
 
 	ImGui::AlignTextToFramePadding();
