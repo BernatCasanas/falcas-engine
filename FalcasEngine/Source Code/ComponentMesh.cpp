@@ -81,12 +81,6 @@ void ComponentMesh::Render()
 			glEnableClientState(GL_NORMAL_ARRAY);
 			glBindBuffer(GL_NORMAL_ARRAY, id_normals);
 			glNormalPointer(GL_FLOAT, 0, NULL);
-			/*glBegin(GL_LINES);
-			for (int i = 0; i < num_normals; i+=3) {
-				glVertex3f(normals[i]+vertices[i], normals[i + 1] + vertices[i+1], normals[i + 2] + vertices[i+2]);
-			}
-			glEnd();*/
-			//glDrawElements(GL_LINES, num_normals, GL_FLOAT, NULL);
 		}
 
 		if (num_textureCoords > 0 &&owner->GetComponent(Component_Type::Material)) {

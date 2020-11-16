@@ -1,6 +1,7 @@
 #include "Importer.h"
 #include "ComponentMaterial.h"
 #include "ComponentMesh.h"
+#include <stdio.h>
 #include "FileSystem.h"
 #include "Application.h"
 #include "ModuleSceneIntro.h"
@@ -45,6 +46,8 @@ void ImportFBX(std::string file)
 
 	ImportGameObjectFromFBX(scene, nod, App->scene_intro->root, file);
 
+	App->filesystem->counterMesh = 0;
+
 	aiReleaseImport(scene);
 }
 
@@ -70,9 +73,15 @@ void ImportGameObjectFromFBX(const aiScene* scene, aiNode* node, GameObject* par
 	if (node->mNumMeshes > 0) {
 		ComponentMesh* mesh = (ComponentMesh*)game_object->CreateComponent(Component_Type::Mesh);
 		aiMesh* ai_mesh = scene->mMeshes[node->mMeshes[0]];
-		int num_material = MeshImporter::Import(ai_mesh, mesh);
 		mesh->full_file_name = file;
 		mesh->file_name = App->filesystem->GetFileName(file, true);
+		char name_buff[100];
+		if (App->filesystem->counterMesh != 0) {
+			sprintf_s(name_buff, 100, "%s (%i)", mesh->file_name.c_str(), App->filesystem->counterMesh);
+			mesh->file_name = name_buff;
+		}
+		App->filesystem->counterMesh++;
+		int num_material = MeshImporter::Import(ai_mesh, mesh);
 		if (num_material != -1 && num_material < scene->mNumMaterials) {
 			ComponentMaterial* mat = (ComponentMaterial*)game_object->CreateComponent(Component_Type::Material);
 			aiString material_path;
@@ -197,7 +206,9 @@ int MeshImporter::Import(const aiMesh* ai_mesh, ComponentMesh* mesh)
 
 	char* buffer;
 	uint size = MeshImporter::Save(mesh, &buffer);
-	App->filesystem->SaveInternal("Library/Meshes/mesh.mesh", buffer, size);
+	char name_buff[200];
+	sprintf_s(name_buff, 200, "Library/Meshes/%s.falcasmesh", mesh->file_name.c_str());
+	App->filesystem->SaveInternal(name_buff, buffer, size);
 
 	return material_index;
 

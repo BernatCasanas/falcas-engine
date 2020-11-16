@@ -34,10 +34,11 @@ public:
 	void SaveInternal(const char* file, const void* buffer, uint size);
 
 	void CreateFolders();
+	void CreateOneFolder(char* name);
 
 public:
 	uint Load(const char* path, char** buffer) const;
-
+	int counterMesh;
 };
 
 

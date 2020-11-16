@@ -38,6 +38,8 @@ bool FileSystem::Start()
 
 	PHYSFS_mount("Assets.zip", nullptr, 1);
 
+	counterMesh = 0;
+
 	return true;
 }
 
