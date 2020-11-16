@@ -33,6 +33,8 @@ public:
 
 	void SaveInternal(const char* file, const void* buffer, uint size);
 
+	void CreateFolders();
+
 public:
 	uint Load(const char* path, char** buffer) const;
 

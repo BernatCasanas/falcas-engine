@@ -33,8 +33,8 @@ bool FileSystem::Start()
 	}
 
 	PHYSFS_setWriteDir(".");
-	PHYSFS_mkdir("Library/Meshes/");
 
+	CreateFolders();
 
 	PHYSFS_mount("Assets.zip", nullptr, 1);
 
@@ -85,6 +85,19 @@ void FileSystem::SaveInternal(const char* file, const void* buffer, uint size)
 	PHYSFS_file* file_phys = PHYSFS_openWrite(file);
 	PHYSFS_write(file_phys, buffer, 1, size);
 	PHYSFS_close(file_phys);
+}
+
+void FileSystem::CreateFolders()
+{
+	CreateOneFolder("Library/Meshes/");
+	CreateOneFolder("Library/Textures/");
+}
+
+void FileSystem::CreateOneFolder(char* name)
+{
+	if (PHYSFS_isDirectory(name) == false) {
+		PHYSFS_mkdir(name);
+	}
 }
 
 
