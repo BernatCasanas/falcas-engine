@@ -27,13 +27,16 @@ public:
 	void SetPosition(float3 pos);
 	void SetRotation(Quat rot);
 	void SetMatrices();
+	void SetMatricesWithNewParent(float4x4 parent_global_matrix);
 	void Inspector();
 
 	bool needed_to_update = false;
+	bool needed_to_update_only_children = false;
 
 private:
 	float4x4 local_matrix;
 	float4x4 global_matrix;
+	float4x4 global_matrix2;
 	float4x4 global_matrix_transposed;
 	float3 position;
 	Quat rotation;

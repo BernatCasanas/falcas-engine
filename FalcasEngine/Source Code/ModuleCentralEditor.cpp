@@ -523,12 +523,31 @@ void ModuleCentralEditor::HierarchyRecursiveTree(GameObject* game_object, static
     }
     if ((ids_of_parents_selected.size() > 0 && ids_of_parents_selected.back() == game_object->id && has_children)) {
         ids_of_parents_selected.pop_back();
-        ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+        ImGui::SetNextItemOpen(true, ImGuiCond_Always);
     }
 
     bool node_open = ImGui::TreeNodeEx((void*)(intptr_t)game_object->id, final_flags, (game_object->id < 0) ? "Main" : game_object->GetName().c_str());
     if (ImGui::IsItemClicked())
         id_node_clicked = game_object->id;
+    if (game_object->id >= 0 && ImGui::BeginDragDropSource())
+    {
+        ImGui::SetDragDropPayload("GAME_OBJECT", &game_object->id, sizeof(int));
+        ImGui::Text("%s", game_object->name.c_str());
+        ImGui::EndDragDropSource();
+    }
+    if (ImGui::BeginDragDropTarget())
+    {
+        if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("GAME_OBJECT"))
+        {
+            IM_ASSERT(payload->DataSize == sizeof(int));
+            int payload_id = *(const int*)payload->Data;
+            GameObject* game_obj = App->scene_intro->SearchGameObject(payload_id, App->scene_intro->root);
+            game_obj->RemoveFromParent();
+            game_object->NewChild(game_obj);
+        }
+        ImGui::EndDragDropTarget();
+    }
+    
     if ((node_open && has_children)) {
         for (int i = 0; i < game_object->children.size(); i++) {
             HierarchyRecursiveTree(game_object->children[i], base_flags, id_node_clicked);

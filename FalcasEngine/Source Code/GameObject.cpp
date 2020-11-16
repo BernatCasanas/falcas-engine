@@ -53,20 +53,25 @@ void GameObject::Update()
 		else culled = false;
 	}
 
+	for (int i = 0; i < components.size(); i++) {
+		if(components[i]->active)
+			components[i]->Update();
+	}
 	for (int i = 0; i < children.size(); i++) {
 		if (children[i]->active) {
 			if (culled)
 				children[i]->culled;
+			if (trans->needed_to_update_only_children) {
+				children[i]->trans->SetMatricesWithNewParent(trans->GetGlobalMatrix());
+			}
 			if (trans->needed_to_update) {
 				children[i]->trans->needed_to_update = true;
 			}
 			children[i]->Update();
 		}
 	}
-	for (int i = 0; i < components.size(); i++) {
-		if(components[i]->active)
-			components[i]->Update();
-	}
+	trans->needed_to_update_only_children = false;
+	trans->needed_to_update = false;
 	if (App->central_editor->aabbs)
 		App->renderer3D->aabbs.push_back(aabb);
 	
@@ -167,6 +172,13 @@ void GameObject::RemoveFromParent()
 			break;
 		}
 	}
+}
+
+void GameObject::NewChild(GameObject* game_obj)
+{
+	children.push_back(game_obj);
+	game_obj->parent = this;
+	game_obj->trans->SetMatricesWithNewParent(trans->GetGlobalMatrix());
 }
 
 void GameObject::UpdateAABB()

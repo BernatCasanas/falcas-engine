@@ -1,6 +1,9 @@
 #include "ComponentTransform.h"
 #include "External Libraries/ImGui/imgui.h"
+#include "External Libraries/MathGeoLib/include/Math/float3x3.h"
 #include "GameObject.h"
+
+#define M_PI 3.14159265358979323846f
 
 ComponentTransform::ComponentTransform(GameObject* owner, float3 position, Quat rotation, float3 size) :Component(Component_Type::Transform, owner, "Transform"), position(position), rotation(rotation), size(size)
 {
@@ -18,7 +21,6 @@ void ComponentTransform::Update()
 		return;
 	rotation = EulerToQuaternion(euler);
 	SetMatrices();
-	needed_to_update = false;
 }
 
 float3 ComponentTransform::GetPosition()const
@@ -43,31 +45,15 @@ float3 ComponentTransform::GetSize()const
 
 float3 ComponentTransform::QuaternionToEuler(Quat q)
 {
-	float3 rotation_euler;
-	if (rotation.x * rotation.y + rotation.z * rotation.w == 0.5) {
-		rotation_euler.x = 0;
-		rotation_euler.z = 2 * atan2(rotation.x, rotation.w);
-	}
-	else if (rotation.x * rotation.y + rotation.z * rotation.w == -0.5) {
-		rotation_euler.x = 0;
-		rotation_euler.z = -2 * atan2(rotation.x, rotation.w);
-	}
-	else {
-		rotation_euler.x = atan2(2 * rotation.x * rotation.w - 2 * rotation.y * rotation.z, 1 - 2 * pow(rotation.x, 2) - 2 * pow(rotation.z, 2));
-		rotation_euler.z = atan2(2 * rotation.y * rotation.w - 2 * rotation.x * rotation.z, 1 - 2 * pow(rotation.y, 2) - 2 * pow(rotation.z, 2));
-	}
-	rotation_euler.y = asin(2 * rotation.x * rotation.y + 2 * rotation.z * rotation.w);
-
+	float3 rotation_euler = q.ToEulerXYZ();
+	//rotation_euler *= RADTODEG;
 	return rotation_euler;
 }
 
 Quat ComponentTransform::EulerToQuaternion(float3 eu)
 {
-	Quat q;
-	q.w = cos(eu.z / 2) * cos(eu.y / 2) * cos(eu.x / 2) - sin(eu.z / 2) * sin(eu.y / 2) * sin(eu.x / 2);
-	q.x = sin(eu.z / 2) * sin(eu.y / 2) * cos(eu.x / 2) + cos(eu.z / 2) * cos(eu.y / 2) * sin(eu.x / 2);
-	q.y = sin(eu.z / 2) * cos(eu.y / 2) * cos(eu.x / 2) + cos(eu.z / 2) * sin(eu.y / 2) * sin(eu.x / 2);
-	q.z = cos(eu.z / 2) * sin(eu.y / 2) * cos(eu.x / 2) - sin(eu.z / 2) * cos(eu.y / 2) * sin(eu.x / 2);
+	//eu *= DEGTORAD;
+	Quat q = Quat::FromEulerXYZ(eu.x, eu.y, eu.z);	
 	return q;
 }
 
@@ -112,7 +98,21 @@ void ComponentTransform::SetMatrices()
 		global_matrix = parent_trans->GetGlobalMatrix() * local_matrix;
 	}
 	else global_matrix = local_matrix;
+	if (!global_matrix.Equals(global_matrix2)&&needed_to_update_only_children)
+		LOG("HEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
 	global_matrix_transposed = global_matrix.Transposed();
+}
+
+void ComponentTransform::SetMatricesWithNewParent(float4x4 parent_global_matrix)
+{
+	local_matrix = parent_global_matrix.Inverted() * global_matrix;
+	local_matrix.Decompose(position, rotation, size);
+	global_matrix2 = parent_global_matrix * local_matrix;
+	if (!global_matrix.Equals(global_matrix2))
+		LOG("HEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
+	euler = QuaternionToEuler(rotation);
+	needed_to_update=true;
+	needed_to_update_only_children = true;
 }
 
 void ComponentTransform::Inspector()

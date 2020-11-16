@@ -28,6 +28,7 @@ public:
 	std::string GetName() { return name; }
 	bool HasComponentType(Component_Type type) const;
 	void RemoveFromParent();
+	void NewChild(GameObject* game_obj);
 	void UpdateAABB();
 	bool IsInsideFrustumCulling();
 	bool IsCulled() const;
