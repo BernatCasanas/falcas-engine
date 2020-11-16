@@ -32,6 +32,10 @@ bool FileSystem::Start()
 		LOG("Failed to load Asset Manager");
 	}
 
+	PHYSFS_setWriteDir(".");
+	PHYSFS_mkdir("Library/Meshes/");
+
+
 	PHYSFS_mount("Assets.zip", nullptr, 1);
 
 	return true;
@@ -80,6 +84,7 @@ void FileSystem::SaveInternal(const char* file, const void* buffer, uint size)
 {
 	PHYSFS_file* file_phys = PHYSFS_openWrite(file);
 	PHYSFS_write(file_phys, buffer, 1, size);
+	PHYSFS_close(file_phys);
 }
 
 

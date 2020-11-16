@@ -197,7 +197,7 @@ int MeshImporter::Import(const aiMesh* ai_mesh, ComponentMesh* mesh)
 
 	char* buffer;
 	uint size = MeshImporter::Save(mesh, &buffer);
-	App->filesystem->SaveInternal("mesh.mesh", buffer, size);
+	App->filesystem->SaveInternal("Library/Meshes/mesh.mesh", buffer, size);
 
 	return material_index;
 
