@@ -223,6 +223,8 @@ void ModuleCamera3D::Zooming(float zooming_value)
 	distance *= 0.1;
 
 	newPos += (GetRotation().ToFloat3x3() * float3::unitZ) * zooming_value * distance;
+	if (distance < 0.0001);
+		Reference += (GetRotation().ToFloat3x3() * float3::unitZ) * zooming_value * distance;
 	SetPosition(newPos);
 }
 
