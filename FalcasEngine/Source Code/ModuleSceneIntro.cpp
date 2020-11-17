@@ -18,7 +18,6 @@
 #include "Importer.h"
 #include "External Libraries/ImGui/imgui_impl_sdl.h"
 #include "ModuleRenderer3D.h"
-#include "External Libraries/ImGui/imgui_internal.h"
 
 
 
@@ -71,10 +70,8 @@ void ModuleSceneIntro::Draw(GLuint tex)
 {
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
 	ImGui::Begin("Scene");
-	ImGuiWindow* window = ImGui::GetCurrentWindow();
 	ImVec2 win = ImGui::GetContentRegionMax();
 	LOG("%f, %f", win.x, win.y);
-	window->DC.CursorPos;
 	ImVec2 windowSize = ImGui::GetWindowSize();
 	windowSize.y;// -= 35;
 	ImVec2 windowPos = ImGui::GetWindowPos();
