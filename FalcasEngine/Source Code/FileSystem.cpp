@@ -82,6 +82,26 @@ FILE_TYPE FileSystem::GetTypeFile(char* file)
 	else return FILE_TYPE::UNKNOWN;
 }
 
+bool FileSystem::FileExists(std::string file)
+{
+	bool ret = false;
+	if (PHYSFS_exists(file.c_str())) {
+		ret = true;
+	}
+	return ret;
+}
+
+char* FileSystem::ReadPhysFile(std::string file)
+{
+	char* buffer = nullptr;
+	PHYSFS_file* file_phys = PHYSFS_openRead(file.c_str());
+	PHYSFS_sint32 size = (PHYSFS_sint32)PHYSFS_fileLength(file_phys);
+	buffer = new char[size];
+	PHYSFS_read(file_phys, buffer, 1, size);
+	PHYSFS_close(file_phys);
+	return buffer;
+}
+
 void FileSystem::SaveInternal(const char* file, const void* buffer, uint size)
 {
 	PHYSFS_file* file_phys = PHYSFS_openWrite(file);

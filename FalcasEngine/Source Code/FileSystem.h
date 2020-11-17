@@ -31,6 +31,9 @@ public:
 	std::string GetPathFile(std::string file);
 	FILE_TYPE GetTypeFile(char* file);
 
+	bool FileExists(std::string file);
+	char* ReadPhysFile(std::string file);
+
 	void SaveInternal(const char* file, const void* buffer, uint size);
 
 	void CreateFolders();

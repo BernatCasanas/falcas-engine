@@ -73,15 +73,29 @@ void ImportGameObjectFromFBX(const aiScene* scene, aiNode* node, GameObject* par
 	if (node->mNumMeshes > 0) {
 		ComponentMesh* mesh = (ComponentMesh*)game_object->CreateComponent(Component_Type::Mesh);
 		aiMesh* ai_mesh = scene->mMeshes[node->mMeshes[0]];
+
 		mesh->full_file_name = file;
 		mesh->file_name = App->filesystem->GetFileName(file, true);
+
 		char name_buff[100];
 		if (App->filesystem->counterMesh != 0) {
 			sprintf_s(name_buff, 100, "%s (%i)", mesh->file_name.c_str(), App->filesystem->counterMesh);
 			mesh->file_name = name_buff;
 		}
 		App->filesystem->counterMesh++;
-		int num_material = MeshImporter::Import(ai_mesh, mesh);
+
+		int num_material = ai_mesh->mMaterialIndex;
+
+		if (App->filesystem->FileExists(mesh->file_name.c_str())) {
+			char name_buff[200];
+			sprintf_s(name_buff, 200, "Library/Meshes/%s.falcasmesh", mesh->file_name.c_str());
+			char* buffer = App->filesystem->ReadPhysFile(name_buff);
+			MeshImporter::Load(buffer, mesh);
+		}
+		else {
+			MeshImporter::Import(ai_mesh, mesh);
+		}
+
 		if (num_material != -1 && num_material < scene->mNumMaterials) {
 			ComponentMaterial* mat = (ComponentMaterial*)game_object->CreateComponent(Component_Type::Material);
 			aiString material_path;
@@ -254,10 +268,8 @@ uint MeshImporter::Save(const ComponentMesh* mesh, char** filebuffer)
 
 void MeshImporter::Load(const char* fileBuffer, ComponentMesh *mesh)
 {
-	char* buffer = nullptr;
 
-
-	char* cursor = buffer;
+	char* cursor = (char*)fileBuffer;
 
 	uint ranges[4];
 	uint bytes = sizeof(ranges);
