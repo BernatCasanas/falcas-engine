@@ -196,7 +196,10 @@ update_status ModuleRenderer3D::Update(float dt)
 	}
 	aabbs.clear();
 
-	DrawFrustum(App->scene_intro->camera->frustum);
+	for (int i = 0; i < camera_frustums.size(); i++) {
+		DrawFrustum(camera_frustums[i]);
+	}
+	camera_frustums.clear();
 	
 	return update_status::UPDATE_CONTINUE;
 }

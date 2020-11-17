@@ -54,7 +54,7 @@ public:
 
 public:
 
-	bool show_demo_window = false;
+	bool show_demo_window = true;
 	bool show_another_window = false;
 	bool show_example = false;
 	bool show_about = false;
@@ -75,6 +75,7 @@ public:
 	bool depth = true;
 	bool lighting = true;
 	bool texture = true;
+	bool frustums = false;
 
 	float progress;
 	float progress2;

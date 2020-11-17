@@ -28,6 +28,7 @@ public:
 
 private:
 	bool needed_to_update = false;
+	bool show_frustum = true;
 	float near_plane_distance = 0.1;
 	float far_plane_distance = 1000;
 	float field_of_view_vertical = 1;

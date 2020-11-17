@@ -40,6 +40,7 @@ public:
 	GLuint texColorBuffer;
 	GLuint rboDepthStencil;
 	std::vector<AABB> aabbs;
+	std::vector<Frustum> camera_frustums;
 	ComponentCamera* camera_culling = nullptr;
 	ComponentCamera* camera = nullptr;
 
