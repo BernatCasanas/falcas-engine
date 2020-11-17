@@ -70,27 +70,17 @@ void ModuleSceneIntro::Draw(GLuint tex)
 {
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
 	ImGui::Begin("Scene");
-	ImVec2 win = ImGui::GetContentRegionMax();
-	LOG("%f, %f", win.x, win.y);
 	ImVec2 windowSize = ImGui::GetWindowSize();
-	windowSize.y;// -= 35;
 	ImVec2 windowPos = ImGui::GetWindowPos();
-	windowPos.x;// -= 8;
-	windowPos.y;// ; -= 8;
-	x = windowPos.x;
-	y = windowPos.y;
+	ImVec2 min = ImGui::GetWindowContentRegionMin();
+	min.x += windowPos.x;
+	min.y += windowPos.y;
+	windowSize.y -= min.y-windowPos.y;
 	width = windowSize.x;
 	height = windowSize.y;
-	ImVec2 min = ImGui::GetWindowContentRegionMin();
-	ImVec2 max = ImGui::GetWindowContentRegionMax();
-	min.x += x;
-	min.y += y;
-	max.x += x;
-	max.y += y;
-	windowSize.y -= min.y-windowPos.y;
-	ImGui::GetForegroundDrawList()->AddRect(min, max, IM_COL32(255, 255, 0, 255));
+	x = min.x;
+	y = min.y;
 	ImGui::Image((ImTextureID)tex, windowSize, ImVec2(0, 1), ImVec2(1, 0));
-
 	ImGui::End();
 	ImGui::PopStyleVar();
 

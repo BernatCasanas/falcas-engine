@@ -52,22 +52,18 @@ update_status ModuleCamera3D::Update(float dt)
 {
 	if (!camera->camera_active)
 		return UPDATE_CONTINUE;
-
-
 	if (App->input->GetMouseButton(SDL_BUTTON_LEFT)==KEY_DOWN && App->input->GetKey(SDL_SCANCODE_LALT) == KEY_IDLE) {
-		int x = App->input->GetMouseX();
-		int y = App->input->GetMouseY();
+		float x = App->input->GetMouseX();
+		float y = App->input->GetMouseY();
 		float scene_x, scene_y, scene_width, scene_height;
 		App->scene_intro->GetSceneDimensions(scene_x, scene_y, scene_width, scene_height);
 		if (x >= scene_x && x <= scene_width + scene_x && y >= scene_y && y <= scene_height + scene_y) {
-			float x_final = (x - scene_x) / (scene_width*0.5);
-			float y_final = (y - scene_y) / (scene_height*0.5);
+			float x_final = ((float)x - scene_x) / (scene_width*0.5);
+			float y_final = ((float)y - scene_y) / (scene_height*0.5);
 			x_final--;
 			y_final=-y_final + 1;
-			LineSegment picking_ray = camera->frustum.UnProjectLineSegment(x_final, y_final);
+			LineSegment picking_ray = camera->frustum.UnProjectLineSegment(x_final,y_final);
 			App->scene_intro->SelectGameObjectWithRay(picking_ray);
-			App->renderer3D->line_origin = picking_ray.a;
-			App->renderer3D->line_end = picking_ray.b;
 		}
 	}
 
