@@ -192,6 +192,10 @@ void ModuleCentralEditor::Draw()
                 }
                 ImGui::EndMenu();
             }
+            if (ImGui::MenuItem("Create Camera")) {
+                GameObject* game_object= App->scene_intro->CreateGameObject("Camera", App->scene_intro->root);
+                game_object->CreateComponent(Component_Type::Camera);
+            }
             ImGui::EndMenu();
         }
         if (ImGui::BeginMenu("Help")) {
@@ -432,6 +436,11 @@ void ModuleCentralEditor::Draw()
                 }
             }
         }
+        if (App->scene_intro->game_object_selected != nullptr && !App->scene_intro->game_object_selected->HasComponentType(Component_Type::Camera)) {
+            if(ImGui::Button("Create Component Camera")) {
+                App->scene_intro->game_object_selected->CreateComponent(Component_Type::Camera);
+            }
+        }
         ImGui::End();
     }
 
@@ -450,6 +459,7 @@ void ModuleCentralEditor::Draw()
         ImGui::Checkbox("Vertex Normals", &normals_v);
         ImGui::Checkbox("Face Normals", &normals_f);
         ImGui::Checkbox("Grid", &App->scene_intro->root->components.back()->active);
+        ImGui::Checkbox("Camera Frustums", &frustums);
         ImGui::End();
     }
     if (depth) glEnable(GL_DEPTH_TEST);
@@ -542,8 +552,10 @@ void ModuleCentralEditor::HierarchyRecursiveTree(GameObject* game_object, static
             IM_ASSERT(payload->DataSize == sizeof(int));
             int payload_id = *(const int*)payload->Data;
             GameObject* game_obj = App->scene_intro->SearchGameObject(payload_id, App->scene_intro->root);
-            game_obj->RemoveFromParent();
-            game_object->NewChild(game_obj);
+            if (!game_object->CheckParentRecursively(game_obj)) {
+                game_obj->RemoveFromParent();
+                game_object->NewChild(game_obj);
+            }
         }
         ImGui::EndDragDropTarget();
     }

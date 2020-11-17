@@ -196,13 +196,10 @@ update_status ModuleRenderer3D::Update(float dt)
 	}
 	aabbs.clear();
 
-	DrawFrustum(App->scene_intro->camera->frustum);
-	DrawFrustum(App->camera->camera->frustum);
-
-	glBegin(GL_LINES);
-	glVertex3f(line_origin.x, line_origin.y, line_origin.z);
-	glVertex3f(line_end.x, line_end.y, line_end.z);
-	glEnd();
+	for (int i = 0; i < camera_frustums.size(); i++) {
+		DrawFrustum(camera_frustums[i]);
+	}
+	camera_frustums.clear();
 	
 	return update_status::UPDATE_CONTINUE;
 }
@@ -310,7 +307,6 @@ void ModuleRenderer3D::OnResize(int width, int height)
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	glLoadMatrixf(camera->GetProjectionMatrix());
-	//ProjectionMatrix = perspective(60.0f, (float)width / (float)height, 0.125f, 512.0f);
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();

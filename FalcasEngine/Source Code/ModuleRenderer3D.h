@@ -40,12 +40,9 @@ public:
 	GLuint texColorBuffer;
 	GLuint rboDepthStencil;
 	std::vector<AABB> aabbs;
+	std::vector<Frustum> camera_frustums;
 	ComponentCamera* camera_culling = nullptr;
 	ComponentCamera* camera = nullptr;
-
-	///TEMPORAL
-	float3 line_origin = { 0,0,0 };
-	float3 line_end = { 0,0,0 };
 
 private:
 	bool changed_camera = false;

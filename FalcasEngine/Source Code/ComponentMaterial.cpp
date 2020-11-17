@@ -25,6 +25,8 @@ ComponentMaterial::~ComponentMaterial()
 
 void ComponentMaterial::Inspector()
 {
+	bool falsed = false;
+
 	ImGui::PushID(name.c_str());
 	Component::Inspector();
 
@@ -65,7 +67,7 @@ void ComponentMaterial::Inspector()
 	ImGui::Separator();
 
 
-	ImGui::Checkbox("Checkers Texture", &show_default_tex);
+	ImGui::Checkbox("Checkers Texture", active ? &show_default_tex : &falsed);
 
 	ImGui::Separator();
 
