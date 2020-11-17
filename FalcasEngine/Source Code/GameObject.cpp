@@ -47,11 +47,11 @@ void GameObject::Update()
 
 	if (trans->needed_to_update)
 		UpdateAABB();
-	if (parent != nullptr && !parent->culled) {
-		if (id > 0 && App->renderer3D->camera_culling->GetIfIsFrustumCulling() && HasComponentType(Component_Type::Mesh) && !IsInsideFrustumCulling())
-			culled = true;
-		else culled = false;
-	}
+	
+	if (id > 0 && App->renderer3D->camera_culling->GetIfIsFrustumCulling() && HasComponentType(Component_Type::Mesh) && !IsInsideFrustumCulling())
+		culled = true;
+	else culled = false;
+	
 
 	for (int i = 0; i < components.size(); i++) {
 		if(components[i]->active)

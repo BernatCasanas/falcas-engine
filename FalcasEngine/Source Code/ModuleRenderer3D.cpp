@@ -197,6 +197,7 @@ update_status ModuleRenderer3D::Update(float dt)
 	aabbs.clear();
 
 	DrawFrustum(App->scene_intro->camera->frustum);
+	DrawFrustum(App->camera->camera->frustum);
 
 	glBegin(GL_LINES);
 	glVertex3f(line_origin.x, line_origin.y, line_origin.z);

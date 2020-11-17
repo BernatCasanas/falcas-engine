@@ -18,6 +18,7 @@
 #include "Importer.h"
 #include "External Libraries/ImGui/imgui_impl_sdl.h"
 #include "ModuleRenderer3D.h"
+#include "External Libraries/ImGui/imgui_internal.h"
 
 
 
@@ -68,17 +69,34 @@ bool ModuleSceneIntro::CleanUp()
 
 void ModuleSceneIntro::Draw(GLuint tex)
 {
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
 	ImGui::Begin("Scene");
-
+	ImGuiWindow* window = ImGui::GetCurrentWindow();
+	ImVec2 win = ImGui::GetContentRegionMax();
+	LOG("%f, %f", win.x, win.y);
+	window->DC.CursorPos;
 	ImVec2 windowSize = ImGui::GetWindowSize();
+	windowSize.y;// -= 35;
 	ImVec2 windowPos = ImGui::GetWindowPos();
+	windowPos.x;// -= 8;
+	windowPos.y;// ; -= 8;
 	x = windowPos.x;
 	y = windowPos.y;
 	width = windowSize.x;
 	height = windowSize.y;
+	ImVec2 min = ImGui::GetWindowContentRegionMin();
+	ImVec2 max = ImGui::GetWindowContentRegionMax();
+	min.x += x;
+	min.y += y;
+	max.x += x;
+	max.y += y;
+	windowSize.y -= min.y-windowPos.y;
+	ImGui::GetForegroundDrawList()->AddRect(min, max, IM_COL32(255, 255, 0, 255));
 	ImGui::Image((ImTextureID)tex, windowSize, ImVec2(0, 1), ImVec2(1, 0));
 
 	ImGui::End();
+	ImGui::PopStyleVar();
+
 }
 
 bool ModuleSceneIntro::GetDimensionsWindow(float& width, float& height)
