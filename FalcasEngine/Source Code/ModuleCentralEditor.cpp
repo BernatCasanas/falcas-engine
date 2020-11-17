@@ -542,8 +542,10 @@ void ModuleCentralEditor::HierarchyRecursiveTree(GameObject* game_object, static
             IM_ASSERT(payload->DataSize == sizeof(int));
             int payload_id = *(const int*)payload->Data;
             GameObject* game_obj = App->scene_intro->SearchGameObject(payload_id, App->scene_intro->root);
-            game_obj->RemoveFromParent();
-            game_object->NewChild(game_obj);
+            if (!game_object->CheckParentRecursively(game_obj)) {
+                game_obj->RemoveFromParent();
+                game_object->NewChild(game_obj);
+            }
         }
         ImGui::EndDragDropTarget();
     }

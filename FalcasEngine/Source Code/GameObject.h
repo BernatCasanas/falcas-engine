@@ -30,6 +30,7 @@ public:
 	void RemoveFromParent();
 	void NewChild(GameObject* game_obj);
 	void UpdateAABB();
+	bool CheckParentRecursively(GameObject* game_object_to_check);
 	bool IsInsideFrustumCulling();
 	bool IsCulled() const;
 	AABB GetAABB()const;

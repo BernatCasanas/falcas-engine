@@ -197,6 +197,15 @@ void GameObject::UpdateAABB()
 	aabb.Enclose(obb);
 }
 
+bool GameObject::CheckParentRecursively(GameObject* game_object_to_check)
+{
+	if (parent == game_object_to_check)
+		return true;
+	else if (parent == nullptr)
+		return false;
+	return parent->CheckParentRecursively(game_object_to_check);
+}
+
 bool GameObject::IsInsideFrustumCulling()
 {
 	float3 vCorner;
