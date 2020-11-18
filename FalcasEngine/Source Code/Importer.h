@@ -27,3 +27,9 @@ namespace MeshImporter {
 	void Load(const char* fileBuffer, ComponentMesh *mesh);
 }
 
+namespace MaterialImporter {
+	void Import(std::string file, ComponentMaterial* mat);
+	uint Save(const ComponentMaterial* mat, char** filebuffer);
+	void Load(const char* fileBuffer, ComponentMaterial* mat);
+}
+

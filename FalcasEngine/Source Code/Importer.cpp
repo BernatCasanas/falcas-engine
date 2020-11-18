@@ -310,3 +310,16 @@ void MeshImporter::Load(const char* fileBuffer, ComponentMesh *mesh)
 
 
 }
+
+void MaterialImporter::Import(std::string file, ComponentMaterial* mat)
+{
+}
+
+uint MaterialImporter::Save(const ComponentMaterial* mat, char** filebuffer)
+{
+	return uint();
+}
+
+void MaterialImporter::Load(const char* fileBuffer, ComponentMaterial* mat)
+{
+}
