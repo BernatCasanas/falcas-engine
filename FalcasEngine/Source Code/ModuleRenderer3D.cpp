@@ -326,7 +326,7 @@ void ModuleRenderer3D::ChangeCameraActive(ComponentCamera* camera_to_change)
 
 void ModuleRenderer3D::ChangeCullingCamera(ComponentCamera* camera_culling_to_change)
 {
-	camera->frustum_culling = false;
+	camera_culling->frustum_culling = false;
 	if (camera_culling_to_change !=nullptr)
 		camera_culling = camera_culling_to_change;
 	else {

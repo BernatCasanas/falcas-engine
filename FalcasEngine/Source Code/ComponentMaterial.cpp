@@ -3,6 +3,7 @@
 #include "FileSystem.h"
 #include "Application.h"
 #include "Importer.h"
+#include "GameObject.h"
 
 
 
@@ -67,7 +68,7 @@ void ComponentMaterial::Inspector()
 	ImGui::Separator();
 
 
-	ImGui::Checkbox("Checkers Texture", active ? &show_default_tex : &falsed);
+	ImGui::Checkbox("Checkers Texture", (active && owner->active) ? &show_default_tex : &falsed);
 
 	ImGui::Separator();
 

@@ -211,7 +211,7 @@ void ComponentMesh::Inspector()
 	ImGui::Text(std::to_string(num_indices).c_str());
 	
 	ImGui::NextColumn();
-	ImGui::Checkbox("Per Triangle", active?&show_normals_v : &falsed);
+	ImGui::Checkbox("Per Triangle", (active && owner->active) ?&show_normals_v : &falsed);
 	
 	ImGui::NextColumn();
 	ImGui::AlignTextToFramePadding();
@@ -222,7 +222,7 @@ void ComponentMesh::Inspector()
 	ImGui::Text(std::to_string(num_vertices / 3).c_str());
 	
 	ImGui::NextColumn();
-	ImGui::Checkbox("Per Face", active ? &show_normals_f:&falsed);
+	ImGui::Checkbox("Per Face", (active && owner->active) ? &show_normals_f:&falsed);
 	
 	ImGui::NextColumn();
 	ImGui::AlignTextToFramePadding();
@@ -246,7 +246,7 @@ void ComponentMesh::Inspector()
 	
 	ImGui::NextColumn();
 	ImGui::PushItemWidth(120);
-	ImGui::DragFloat("##1", active ? &length_normals:&null, 0.1f);
+	ImGui::DragFloat("##1", (active && owner->active) ? &length_normals:&null, 0.1f);
 	ImGui::PopItemWidth();
 	
 	ImGui::Columns(1, "", false);

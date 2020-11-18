@@ -117,114 +117,115 @@ void ComponentTransform::SetMatricesWithNewParent(float4x4 parent_global_matrix)
 
 void ComponentTransform::Inspector()
 {
+	float null = 0;
 	ImGui::PushID(name.c_str());
 	Component::Inspector();
-	
+
 	ImGui::Separator();
-	
+
 	ImGui::Columns(4, "", false);
-	
+
 	ImGui::AlignTextToFramePadding();
 	ImGui::Text("Position");
-	
+
 	ImGui::NextColumn();
 	ImGui::AlignTextToFramePadding();
 	ImGui::Text("X");
-	
+
 	ImGui::SameLine();
 	ImGui::PushItemWidth(50);
-	if(ImGui::DragFloat("##0", &position.x, 0.01f))
+	if (ImGui::DragFloat("##0", (active && owner->active) ? &position.x : &null, 0.01f) && (active && owner->active))
 		needed_to_update = true;
 	ImGui::PopItemWidth();
-	
+
 	ImGui::NextColumn();
 	ImGui::AlignTextToFramePadding();
 	ImGui::Text("Y");
-	
+
 	ImGui::SameLine();
 	ImGui::PushItemWidth(50);
-	if (ImGui::DragFloat("##1", &position.y, 0.01f))
+	if (ImGui::DragFloat("##1", (active && owner->active) ? &position.y : &null, 0.01f) && (active && owner->active))
 		needed_to_update = true;
 	ImGui::PopItemWidth();
-	
+
 	ImGui::NextColumn();
 	ImGui::AlignTextToFramePadding();
 	ImGui::Text("Z");
 
 	ImGui::SameLine();
 	ImGui::PushItemWidth(50);
-	if(ImGui::DragFloat("##2", &position.z, 0.01f))
+	if (ImGui::DragFloat("##2", (active && owner->active) ? &position.z : &null, 0.01f) && (active && owner->active))
 		needed_to_update = true;
 	ImGui::PopItemWidth();
-	
+
 	ImGui::NextColumn();
 	ImGui::AlignTextToFramePadding();
 	ImGui::Text("Rotation");
-	
+
 	ImGui::NextColumn();
 	ImGui::AlignTextToFramePadding();
 	ImGui::Text("X");
 
 	ImGui::SameLine();
 	ImGui::PushItemWidth(50);
-	if(ImGui::DragFloat("##3", &euler.x, 0.01f))
+	if (ImGui::DragFloat("##3", (active && owner->active) ? &euler.x : &null, 0.01f) && (active && owner->active))
 		needed_to_update = true;
 	ImGui::PopItemWidth();
-	
+
 	ImGui::NextColumn();
 	ImGui::AlignTextToFramePadding();
 	ImGui::Text("Y");
 
 	ImGui::SameLine();
 	ImGui::PushItemWidth(50);
-	if(ImGui::DragFloat("##4", &euler.y, 0.01f))
+	if (ImGui::DragFloat("##4", (active && owner->active) ? &euler.y : &null, 0.01f) && (active && owner->active))
 		needed_to_update = true;
 	ImGui::PopItemWidth();
-	
+
 	ImGui::NextColumn();
 	ImGui::AlignTextToFramePadding();
 	ImGui::Text("Z");
 
 	ImGui::SameLine();
 	ImGui::PushItemWidth(50);
-	if(ImGui::DragFloat("##5", &euler.z, 0.01f))
+	if (ImGui::DragFloat("##5", (active && owner->active) ? &euler.z : &null, 0.01f) && (active && owner->active))
 		needed_to_update = true;
 	ImGui::PopItemWidth();
-	
+
 	ImGui::NextColumn();
 	ImGui::AlignTextToFramePadding();
 	ImGui::Text("Size");
-	
+
 	ImGui::NextColumn();
 	ImGui::AlignTextToFramePadding();
 	ImGui::Text("X");
 
 	ImGui::SameLine();
 	ImGui::PushItemWidth(50);
-	if(ImGui::DragFloat("##6", &size.x, 0.01f))
+	if (ImGui::DragFloat("##6", (active && owner->active) ? &size.x : &null, 0.01f) && (active && owner->active))
 		needed_to_update = true;
 	ImGui::PopItemWidth();
-	
+
 	ImGui::NextColumn();
 	ImGui::AlignTextToFramePadding();
 	ImGui::Text("Y");
 
 	ImGui::SameLine();
 	ImGui::PushItemWidth(50);
-	if(ImGui::DragFloat("##7", &size.y, 0.01f))
+	if (ImGui::DragFloat("##7", (active && owner->active) ? &size.y : &null, 0.01f) && (active && owner->active))
 		needed_to_update = true;
 	ImGui::PopItemWidth();
-	
+
 	ImGui::NextColumn();
 	ImGui::AlignTextToFramePadding();
 	ImGui::Text("Z");
 
 	ImGui::SameLine();
 	ImGui::PushItemWidth(50);
-	if(ImGui::DragFloat("##8", &size.z, 0.01f))
+	if (ImGui::DragFloat("##8", (active && owner->active) ? &size.z : &null, 0.01f) && (active && owner->active))
 		needed_to_update = true;
 	ImGui::PopItemWidth();
-	
+
 	ImGui::Columns(1, "", false);
 	ImGui::Separator();
 	ImGui::PopID();

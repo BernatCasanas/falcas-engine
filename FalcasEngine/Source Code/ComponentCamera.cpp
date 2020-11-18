@@ -77,10 +77,10 @@ void ComponentCamera::Inspector()
 
 	ImGui::Separator();
 
-	ImGui::Checkbox("Show Camera Frustum", active ? &show_frustum : &falsed);
+	ImGui::Checkbox("Show Camera Frustum", (active&&owner->active) ? &show_frustum : &falsed);
 		
-	if (ImGui::Checkbox("View Camera", active ? &camera_active:&falsed) && active) {
-		if (camera_active == true) {
+	if (ImGui::Checkbox("View Camera", (active && owner->active) ? &camera_active:&falsed) && (active && owner->active)) {
+		if (camera_active) {
 			App->renderer3D->ChangeCameraActive(this);
 			show_frustum = false;
 		}
@@ -89,12 +89,23 @@ void ComponentCamera::Inspector()
 			show_frustum = true;
 		}
 	}
+	
 
-	if (ImGui::Checkbox("Camera Culling", active?&frustum_culling:&falsed) && active) {
-		if (frustum_culling == true)
+	if (ImGui::Checkbox("Camera Culling", (active && owner->active) ?&frustum_culling:&falsed) && (active && owner->active)) {
+		if (frustum_culling)
 			App->renderer3D->ChangeCullingCamera(this);
 		else
 			App->renderer3D->ChangeCullingCamera(nullptr);
+	}
+
+	if (active == false || owner->active == false) {
+		if (frustum_culling) {
+			App->renderer3D->ChangeCullingCamera(nullptr);
+			//frustum_culling = false;
+		}
+		if (camera_active) {
+			App->renderer3D->ChangeCameraActive(nullptr);
+		}
 	}
 
 	ImGui::AlignTextToFramePadding();
@@ -102,7 +113,7 @@ void ComponentCamera::Inspector()
 
 	ImGui::SameLine();
 	ImGui::PushItemWidth(50);
-	if (ImGui::DragFloat("##0", active ? &near_plane_distance:&null, 0.01f) && active)
+	if (ImGui::DragFloat("##0", (active && owner->active) ? &near_plane_distance:&null, 0.01f) && (active && owner->active))
 		needed_to_update = true;
 	ImGui::PopItemWidth();
 
@@ -111,7 +122,7 @@ void ComponentCamera::Inspector()
 
 	ImGui::SameLine();
 	ImGui::PushItemWidth(50);
-	if (ImGui::DragFloat("##1", active ? &far_plane_distance : &null, 0.01f) && active)
+	if (ImGui::DragFloat("##1", (active && owner->active) ? &far_plane_distance : &null, 0.01f) && (active && owner->active))
 		needed_to_update = true;
 	ImGui::PopItemWidth();
 
@@ -120,7 +131,7 @@ void ComponentCamera::Inspector()
 
 	ImGui::SameLine();
 	ImGui::PushItemWidth(50);
-	if (ImGui::DragFloat("##2", active ? &field_of_view_vertical : &null, 0.01f) && active)
+	if (ImGui::DragFloat("##2", (active && owner->active) ? &field_of_view_vertical : &null, 0.01f) && (active && owner->active))
 		needed_to_update = true;
 	ImGui::PopItemWidth();
 
