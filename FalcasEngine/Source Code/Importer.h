@@ -17,8 +17,6 @@ void ImportFBX(std::string file);
 
 void ImportGameObjectFromFBX(const aiScene* scene, aiNode* node, GameObject* parent, std::string file, float4x4 transfor_heredated=float4x4::identity);
 
-void ImportTexture(std::string file, ComponentMaterial* mat);
-
 void ImportDefaultTexture(ComponentMaterial* mat);
 
 namespace MeshImporter {
@@ -27,9 +25,9 @@ namespace MeshImporter {
 	void Load(const char* fileBuffer, ComponentMesh *mesh);
 }
 
-namespace MaterialImporter {
-	void Import(std::string file, ComponentMaterial* mat);
+namespace TextureImporter {
+	void Import(ComponentMaterial* mat, std::string file, bool imported);
 	uint Save(const ComponentMaterial* mat, char** filebuffer);
-	void Load(const char* fileBuffer, ComponentMaterial* mat);
+	void Load(const char* fileBuffer, ComponentMaterial* mat, uint size);
 }
 

@@ -73,7 +73,8 @@ void ImportGameObjectFromFBX(const aiScene* scene, aiNode* node, GameObject* par
 	if (node->mNumMeshes > 0) {
 		ComponentMesh* mesh = (ComponentMesh*)game_object->CreateComponent(Component_Type::Mesh);
 		aiMesh* ai_mesh = scene->mMeshes[node->mMeshes[0]];
-		bool imported = false;
+		bool mesh_imported = false;
+		bool tex_imported = false;
 
 		mesh->full_file_name = file;
 		mesh->file_name = App->filesystem->GetFileName(file, true);
@@ -87,12 +88,11 @@ void ImportGameObjectFromFBX(const aiScene* scene, aiNode* node, GameObject* par
 
 		int num_material = ai_mesh->mMaterialIndex;
 
-		name_buff;
 		sprintf_s(name_buff, 200, "Library/Meshes/%s.falcasmesh", mesh->file_name.c_str());
 		if (App->filesystem->FileExists(name_buff)) {
-			imported = true;
+			mesh_imported = true;
 		}
-		MeshImporter::Import(ai_mesh, mesh, name_buff, imported);
+		MeshImporter::Import(ai_mesh, mesh, name_buff, mesh_imported);
 
 		if (num_material != -1 && num_material < scene->mNumMaterials) {
 			ComponentMaterial* mat = (ComponentMaterial*)game_object->CreateComponent(Component_Type::Material);
@@ -101,7 +101,11 @@ void ImportGameObjectFromFBX(const aiScene* scene, aiNode* node, GameObject* par
 			if (material_path.length > 0) {
 				std::string path = App->filesystem->GetPathFile(file);
 				path += material_path.C_Str();
-				ImportTexture(path.c_str(), mat);
+				sprintf_s(name_buff, 200, "Library/Textures/%s.falcastextures", mat->file_name.c_str());
+				if (App->filesystem->FileExists(name_buff)) {
+					tex_imported = true;
+				}
+				TextureImporter::Import(mat, path, tex_imported);
 			}
 		}
 	}
@@ -109,31 +113,6 @@ void ImportGameObjectFromFBX(const aiScene* scene, aiNode* node, GameObject* par
 		
 			ImportGameObjectFromFBX(scene, node->mChildren[i], game_object, file,transform_heredated);
 	}
-}
-
-void ImportTexture(std::string file, ComponentMaterial* mat) {
-	if (file == "") return;
-	mat->full_file_name = file;
-	ilOriginFunc(IL_ORIGIN_LOWER_LEFT);
-
-	ilGenImages(1, &mat->image_name);
-	ilBindImage(mat->image_name);
-
-	char* buffer = nullptr;
-	uint size = App->filesystem->Load(file.c_str(), &buffer);
-
-	if (ilLoadL(IL_TYPE_UNKNOWN, buffer, size)) {
-		ILenum error = ilGetError();
-		LOG("Error loading Texture %s\n", iluErrorString(error));
-	}
-	mat->height = ilGetInteger(IL_IMAGE_HEIGHT);
-	mat->width = ilGetInteger(IL_IMAGE_WIDTH);
-	mat->show_default_tex = false;
-	mat->texture_id = ilutGLBindTexImage();
-	ilDeleteImages(1, &mat->image_name);
-
-	mat->file_name = App->filesystem->GetFileName(mat->full_file_name);
-	
 }
 
 void ImportDefaultTexture(ComponentMaterial* mat) {
@@ -214,7 +193,14 @@ int MeshImporter::Import(const aiMesh* ai_mesh, ComponentMesh* mesh, char* name,
 			}
 			material_index = ai_mesh->mMaterialIndex;
 		}
+
+		char* buffer;
+		uint size = MeshImporter::Save(mesh, &buffer);
+		char name_buff[200];
+		sprintf_s(name_buff, 200, "Library/Meshes/%s.falcasmesh", mesh->file_name.c_str());
+		App->filesystem->SaveInternal(name_buff, buffer, size);
 	}
+
 	else {
 		char* buffer = App->filesystem->ReadPhysFile(name);
 		MeshImporter::Load(buffer, mesh);
@@ -222,11 +208,6 @@ int MeshImporter::Import(const aiMesh* ai_mesh, ComponentMesh* mesh, char* name,
 
 	mesh->Initialization();
 
-	char* buffer;
-	uint size = MeshImporter::Save(mesh, &buffer);
-	char name_buff[200];
-	sprintf_s(name_buff, 200, "Library/Meshes/%s.falcasmesh", mesh->file_name.c_str());
-	App->filesystem->SaveInternal(name_buff, buffer, size);
 
 	return material_index;
 
@@ -311,15 +292,81 @@ void MeshImporter::Load(const char* fileBuffer, ComponentMesh *mesh)
 
 }
 
-void MaterialImporter::Import(std::string file, ComponentMaterial* mat)
+void TextureImporter::Import(ComponentMaterial* mat, std::string file, bool imported)
 {
+	uint size;
+	if (!imported) {
+		mat->full_file_name = file;
+		ilOriginFunc(IL_ORIGIN_LOWER_LEFT);
+
+		ilGenImages(1, &mat->image_name);
+		ilBindImage(mat->image_name);
+
+		char* buffer = nullptr;
+		size = App->filesystem->Load(file.c_str(), &buffer);
+
+		if (ilLoadL(IL_TYPE_UNKNOWN, buffer, size)) {
+			ILenum error = ilGetError();
+			LOG("Error loading Texture %s\n", iluErrorString(error));
+		}
+		mat->height = ilGetInteger(IL_IMAGE_HEIGHT);
+		mat->width = ilGetInteger(IL_IMAGE_WIDTH);
+		mat->show_default_tex = false;
+		mat->texture_id = ilutGLBindTexImage();
+		ilDeleteImages(1, &mat->image_name);
+
+		mat->file_name = App->filesystem->GetFileName(mat->full_file_name);
+
+		char* buffer;
+		size = TextureImporter::Save(mat, &buffer);
+		char name_buff[200];
+		sprintf_s(name_buff, 200, "Library/Meshes/%s.falcastextures", mat->file_name.c_str());
+		App->filesystem->SaveInternal(name_buff, buffer, size);
+	}
+	else {
+		char* buffer = App->filesystem->ReadPhysFile(file);
+		uint size = App->filesystem->GetSizePhysFile(file);
+		TextureImporter::Load(buffer, mat, size);
+	}
 }
 
-uint MaterialImporter::Save(const ComponentMaterial* mat, char** filebuffer)
+uint TextureImporter::Save(const ComponentMaterial* mat, char** filebuffer)
 {
-	return uint();
+	ILuint size;
+	ILubyte* data;
+	ilSetInteger(IL_DXTC_FORMAT, IL_DXT5);// To pick a specific DXT compression use
+	size = ilSaveL(IL_DDS, nullptr, 0); // Get the size of the data buffer
+	if (size > 0) {
+		data = new ILubyte[size]; // allocate data buffer
+		if (ilSaveL(IL_DDS, data, size) > 0) { // Save to buffer with the ilSaveIL function
+			*filebuffer = (char*)data;
+			data = NULL;
+			delete data;
+		}
+	}
 }
 
-void MaterialImporter::Load(const char* fileBuffer, ComponentMaterial* mat)
+void TextureImporter::Load(const char* fileBuffer, ComponentMaterial* mat, uint size)
 {
+	ILuint imageID = 0;
+
+	ilGenImages(1, &imageID);
+	ilBindImage(imageID);
+
+	ilEnable(IL_ORIGIN_SET);
+	ilOriginFunc(IL_ORIGIN_LOWER_LEFT);
+
+	char* buffer = (char*)fileBuffer;
+
+	ilLoadL(IL_DDS, buffer, size);
+	ilBindImage(0);
+	ilDeleteImages(1, &imageID);
+
+	ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
+
+	mat->texture_id = (uint)(imageID);
+	mat->width = ilGetInteger(IL_IMAGE_WIDTH);
+	mat->height = ilGetInteger(IL_IMAGE_HEIGHT);
+
+	ilBindImage(0);
 }

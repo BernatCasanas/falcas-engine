@@ -102,6 +102,14 @@ char* FileSystem::ReadPhysFile(std::string file)
 	return buffer;
 }
 
+uint FileSystem::GetSizePhysFile(std::string file)
+{
+	PHYSFS_file* file_phys = PHYSFS_openRead(file.c_str());
+	PHYSFS_sint32 size = (PHYSFS_sint32)PHYSFS_fileLength(file_phys);
+	PHYSFS_close(file_phys);
+	return size;
+}
+
 void FileSystem::SaveInternal(const char* file, const void* buffer, uint size)
 {
 	PHYSFS_file* file_phys = PHYSFS_openWrite(file);

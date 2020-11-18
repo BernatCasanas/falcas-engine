@@ -33,6 +33,7 @@ public:
 
 	bool FileExists(std::string file);
 	char* ReadPhysFile(std::string file);
+	uint GetSizePhysFile(std::string file);
 
 	void SaveInternal(const char* file, const void* buffer, uint size);
 
