@@ -110,13 +110,13 @@ update_status ModuleCentralEditor::PreUpdate(float dt)
 update_status ModuleCentralEditor::PostUpdate(float dt)
 {
     //SHORTCUTS
-    if (App->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN)
+    if (App->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT)
         show_configuration = !show_configuration;
-    if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+    if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT)
         show_console = !show_console;
-    if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
+    if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT)
         show_hierarchy = !show_hierarchy;
-    if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
+    if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT)
         show_inspector = !show_inspector;
 
     if (wantToExit) update_status::UPDATE_STOP;
@@ -138,16 +138,16 @@ void ModuleCentralEditor::Draw()
             ImGui::EndMenu();
         }
         if (ImGui::BeginMenu("View")) {
-            if (ImGui::MenuItem("Console", "1")) {
+            if (ImGui::MenuItem("Console", "Alt + 1")) {
                 show_console = !show_console;
             }
-            if (ImGui::MenuItem("Hierarchy", "2")) {
+            if (ImGui::MenuItem("Hierarchy", "Alt + 2")) {
                 show_hierarchy = !show_hierarchy;
             }
-            if (ImGui::MenuItem("Inspector", "3")) {
+            if (ImGui::MenuItem("Inspector", "Alt + 3")) {
                 show_inspector = !show_inspector;
             }
-            if (ImGui::MenuItem("Configuration", "4")) {
+            if (ImGui::MenuItem("Configuration", "Alt + 4")) {
                 show_configuration = !show_configuration;
             }
             if (ImGui::MenuItem("OpenGL Options")) {

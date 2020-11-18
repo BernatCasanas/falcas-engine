@@ -13,7 +13,8 @@ ComponentCamera::ComponentCamera(GameObject* owner, ComponentTransform* trans) :
 	frustum.SetPos(trans->GetPosition());
 	frustum.SetFront({ 0,0,1 });
 	frustum.SetUp({ 0,1,0 });
-
+	if (owner->id < 0)
+		show_frustum = false;
 	UpdateFrustum();
 
 }
