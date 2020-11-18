@@ -73,28 +73,26 @@ void ImportGameObjectFromFBX(const aiScene* scene, aiNode* node, GameObject* par
 	if (node->mNumMeshes > 0) {
 		ComponentMesh* mesh = (ComponentMesh*)game_object->CreateComponent(Component_Type::Mesh);
 		aiMesh* ai_mesh = scene->mMeshes[node->mMeshes[0]];
+		bool imported = false;
 
 		mesh->full_file_name = file;
 		mesh->file_name = App->filesystem->GetFileName(file, true);
 
-		char name_buff[100];
+		char name_buff[200];
 		if (App->filesystem->counterMesh != 0) {
-			sprintf_s(name_buff, 100, "%s (%i)", mesh->file_name.c_str(), App->filesystem->counterMesh);
+			sprintf_s(name_buff, 200, "%s (%i)", mesh->file_name.c_str(), App->filesystem->counterMesh);
 			mesh->file_name = name_buff;
 		}
 		App->filesystem->counterMesh++;
 
 		int num_material = ai_mesh->mMaterialIndex;
 
-		if (App->filesystem->FileExists(mesh->file_name.c_str())) {
-			char name_buff[200];
-			sprintf_s(name_buff, 200, "Library/Meshes/%s.falcasmesh", mesh->file_name.c_str());
-			char* buffer = App->filesystem->ReadPhysFile(name_buff);
-			MeshImporter::Load(buffer, mesh);
+		name_buff;
+		sprintf_s(name_buff, 200, "Library/Meshes/%s.falcasmesh", mesh->file_name.c_str());
+		if (App->filesystem->FileExists(name_buff)) {
+			imported = true;
 		}
-		else {
-			MeshImporter::Import(ai_mesh, mesh);
-		}
+		MeshImporter::Import(ai_mesh, mesh, name_buff, imported);
 
 		if (num_material != -1 && num_material < scene->mNumMaterials) {
 			ComponentMaterial* mat = (ComponentMaterial*)game_object->CreateComponent(Component_Type::Material);
@@ -163,57 +161,63 @@ void ImportDefaultTexture(ComponentMaterial* mat) {
 }
 
 
-int MeshImporter::Import(const aiMesh* ai_mesh, ComponentMesh* mesh)
+int MeshImporter::Import(const aiMesh* ai_mesh, ComponentMesh* mesh, char* name, bool imported)
 {
 	int material_index = -1;
-	if (ai_mesh == nullptr)
-	{
-		const char* error = aiGetErrorString();
-		LOG("Error loading FBX: %s", error);
-		return material_index;
-	}
-
-	mesh->num_vertices = ai_mesh->mNumVertices * 3;
-	mesh->vertices = new float[mesh->num_vertices];
-	memcpy(mesh->vertices, ai_mesh->mVertices, sizeof(float) * mesh->num_vertices);
-	LOG("Loading FBX correctly");
-	LOG("New mesh with %d vertices", mesh->num_vertices / 3);
-
-	if (ai_mesh->HasFaces())
-	{
-		mesh->num_indices = ai_mesh->mNumFaces * 3;
-		mesh->indices = new uint[mesh->num_indices];
-		for (uint j = 0; j < ai_mesh->mNumFaces; ++j)
+	if (!imported) {
+		if (ai_mesh == nullptr)
 		{
-			if (ai_mesh->mFaces[j].mNumIndices != 3) {
-				LOG("WARNING, geometry face with != 3 indices!");
-			}
-			else {
-				memcpy(&mesh->indices[j * 3], ai_mesh->mFaces[j].mIndices, 3 * sizeof(uint));
-			}
-
+			const char* error = aiGetErrorString();
+			LOG("Error loading FBX: %s", error);
+			return material_index;
 		}
-		LOG("New mesh with %d index", mesh->num_indices);
-	}
-	mesh->num_normals = mesh->num_vertices;
-	mesh->normals = new float[ai_mesh->mNumVertices * 3];
-	for (int x = 0, y = 0; x < ai_mesh->mNumVertices; x++, y += 3) {
-		if (ai_mesh->HasNormals())
+
+		mesh->num_vertices = ai_mesh->mNumVertices * 3;
+		mesh->vertices = new float[mesh->num_vertices];
+		memcpy(mesh->vertices, ai_mesh->mVertices, sizeof(float) * mesh->num_vertices);
+		LOG("Loading FBX correctly");
+		LOG("New mesh with %d vertices", mesh->num_vertices / 3);
+
+		if (ai_mesh->HasFaces())
 		{
-			mesh->normals[y] = ai_mesh->mNormals[x].x;
-			mesh->normals[y + 1] = ai_mesh->mNormals[x].y;
-			mesh->normals[y + 2] = ai_mesh->mNormals[x].z;
+			mesh->num_indices = ai_mesh->mNumFaces * 3;
+			mesh->indices = new uint[mesh->num_indices];
+			for (uint j = 0; j < ai_mesh->mNumFaces; ++j)
+			{
+				if (ai_mesh->mFaces[j].mNumIndices != 3) {
+					LOG("WARNING, geometry face with != 3 indices!");
+				}
+				else {
+					memcpy(&mesh->indices[j * 3], ai_mesh->mFaces[j].mIndices, 3 * sizeof(uint));
+				}
+
+			}
+			LOG("New mesh with %d index", mesh->num_indices);
+		}
+		mesh->num_normals = mesh->num_vertices;
+		mesh->normals = new float[ai_mesh->mNumVertices * 3];
+		for (int x = 0, y = 0; x < ai_mesh->mNumVertices; x++, y += 3) {
+			if (ai_mesh->HasNormals())
+			{
+				mesh->normals[y] = ai_mesh->mNormals[x].x;
+				mesh->normals[y + 1] = ai_mesh->mNormals[x].y;
+				mesh->normals[y + 2] = ai_mesh->mNormals[x].z;
+			}
+		}
+
+		if (ai_mesh->HasTextureCoords(0)) {
+			mesh->num_textureCoords = ai_mesh->mNumVertices;
+			mesh->texCoords = new float[mesh->num_textureCoords * 2];
+			for (uint i = 0, j = 0; i < mesh->num_textureCoords; i++, j += 2) {
+				mesh->texCoords[j] = ai_mesh->mTextureCoords[0][i].x;
+				mesh->texCoords[j + 1] = ai_mesh->mTextureCoords[0][i].y;
+			}
+			material_index = ai_mesh->mMaterialIndex;
 		}
 	}
-
-	if (ai_mesh->HasTextureCoords(0)) {
-		mesh->num_textureCoords = ai_mesh->mNumVertices;
-		mesh->texCoords = new float[mesh->num_textureCoords * 2];
-		for (uint i = 0, j = 0; i < mesh->num_textureCoords; i++, j += 2) {
-			mesh->texCoords[j] = ai_mesh->mTextureCoords[0][i].x;
-			mesh->texCoords[j + 1] = ai_mesh->mTextureCoords[0][i].y;
-		}
-		material_index = ai_mesh->mMaterialIndex;
+	else {
+		char* buffer = App->filesystem->ReadPhysFile(name);
+		MeshImporter::Load(buffer, mesh);
 	}
 
 	mesh->Initialization();

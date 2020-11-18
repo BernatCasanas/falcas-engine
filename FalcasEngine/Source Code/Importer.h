@@ -22,7 +22,7 @@ void ImportTexture(std::string file, ComponentMaterial* mat);
 void ImportDefaultTexture(ComponentMaterial* mat);
 
 namespace MeshImporter {
-	int Import(const aiMesh* ai_material, ComponentMesh* mesh);
+	int Import(const aiMesh* ai_material, ComponentMesh* mesh, char* name,  bool imported);
 	uint Save(const ComponentMesh* mesh, char** filebuffer);
 	void Load(const char* fileBuffer, ComponentMesh *mesh);
 }
