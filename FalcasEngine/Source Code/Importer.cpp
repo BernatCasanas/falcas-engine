@@ -316,10 +316,10 @@ void TextureImporter::Import(ComponentMaterial* mat, std::string file, bool impo
 		ilDeleteImages(1, &mat->image_name);
 
 		mat->file_name = App->filesystem->GetFileName(mat->full_file_name);
-
+		buffer = nullptr;
 		size = TextureImporter::Save(mat, &buffer);
 		char name_buff[200];
-		sprintf_s(name_buff, 200, "Library/Meshes/%s.falcastextures", mat->file_name.c_str());
+		sprintf_s(name_buff, 200, "Library/Textures/%s", mat->file_name.c_str());
 		App->filesystem->SaveInternal(name_buff, buffer, size);
 	}
 	else {
@@ -333,6 +333,7 @@ uint TextureImporter::Save(const ComponentMaterial* mat, char** filebuffer)
 {
 	ILuint size;
 	ILubyte* data;
+	ilBindImage(mat->texture_id);
 	ilSetInteger(IL_DXTC_FORMAT, IL_DXT5);// To pick a specific DXT compression use
 	size = ilSaveL(IL_DDS, nullptr, 0); // Get the size of the data buffer
 	if (size > 0) {
@@ -343,6 +344,7 @@ uint TextureImporter::Save(const ComponentMaterial* mat, char** filebuffer)
 			delete data;
 		}
 	}
+	ilBindImage(0);
 	return size;
 }
 
