@@ -94,6 +94,9 @@ public:
 
 private:
 	bool selected_through_screen = false;
+	int id_popup_shown = -1;
+	bool is_popup_shown = false;
+	bool delete_game_object = false;
 	std::vector<int> ids_of_parents_selected;
 };
 

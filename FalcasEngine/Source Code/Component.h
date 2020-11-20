@@ -26,5 +26,6 @@ public:
 	bool active = true;
 	GameObject* owner;
 	std::string name;
+	bool to_delete = false;
 
 };

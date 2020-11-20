@@ -7,6 +7,7 @@
 #include "Application.h"
 #include "ModuleRenderer3D.h"
 #include "ModuleCentralEditor.h"
+#include "ModuleSceneIntro.h"
 
 GameObject::GameObject(int id) : name(""), parent(nullptr), id(id)
 {
@@ -26,6 +27,8 @@ GameObject::GameObject(int id, std::string name, GameObject* parent, float3 posi
 
 GameObject::~GameObject()
 {
+	if (App->scene_intro->game_object_selected == this)
+		App->scene_intro->game_object_selected = nullptr;
 	RemoveFromParent();
 	parent = nullptr;
 	int size = children.size();
@@ -52,23 +55,41 @@ void GameObject::Update()
 		culled = true;
 	else culled = false;
 	
-
+	int component_to_delete = 0;
 	for (int i = 0; i < components.size(); i++) {
 		if(components[i]->active)
 			components[i]->Update();
+		if (components[i]->to_delete)
+			component_to_delete++;
+	}
+	for (std::vector<Component*>::iterator it = components.begin(); it != components.end() && component_to_delete > 0; ++it) {
+		if ((*it)->to_delete == true) {
+			std::vector<Component*>::iterator it_to_continue=it;
+			--it_to_continue;
+			delete (*it);
+			components.erase(it);
+			it = it_to_continue;
+			component_to_delete--;
+
+		}
 	}
 	for (int i = 0; i < children.size(); i++) {
-		if (children[i]->active) {
-			if (culled)
-				children[i]->culled;
-			if (trans->needed_to_update_only_children) {
-				children[i]->trans->SetMatricesWithNewParent(trans->GetGlobalMatrix());
-			}
-			if (trans->needed_to_update) {
-				children[i]->trans->needed_to_update = true;
-			}
-			children[i]->Update();
+		if (children[i]->to_delete) {
+			App->scene_intro->game_objects_to_delete.push_back(children[i]->id);
+			continue;
 		}
+		if (!children[i]->active) {
+			continue;
+		}
+		if (culled)
+			children[i]->culled;
+		if (trans->needed_to_update_only_children) {
+			children[i]->trans->SetMatricesWithNewParent(trans->GetGlobalMatrix());
+		}
+		if (trans->needed_to_update) {
+			children[i]->trans->needed_to_update = true;
+		}
+		children[i]->Update();
 	}
 	trans->needed_to_update_only_children = false;
 	trans->needed_to_update = false;

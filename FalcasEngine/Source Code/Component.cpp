@@ -30,4 +30,10 @@ void Component::Disable()
 void Component::Inspector()
 {
 	ImGui::Checkbox("Active", &active);
+	if (type == Component_Type::Transform)
+		return;
+	ImGui::SameLine();
+	if (ImGui::Button("Delete Component")) {
+		to_delete = true;
+	}
 }

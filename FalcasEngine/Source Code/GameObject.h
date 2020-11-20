@@ -44,6 +44,7 @@ public:
 	std::vector<GameObject*> children;
 	std::string name;
 	int id;
+	bool to_delete = false;
 private:
 	ComponentTransform* trans = nullptr;
 	AABB aabb;

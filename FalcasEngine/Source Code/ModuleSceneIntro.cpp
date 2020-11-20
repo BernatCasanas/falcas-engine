@@ -106,6 +106,12 @@ update_status ModuleSceneIntro::Update(float dt)
 {
 	root->Update();
 
+	for (int i = 0; i < game_objects_to_delete.size(); i++) {
+		GameObject* game_object = SearchGameObject(game_objects_to_delete[i], root);
+		game_object->RemoveFromParent();
+		delete game_object;
+	}
+	game_objects_to_delete.clear();
 	
 	if (App->central_editor->wireframe) {
 		glPolygonMode(GL_FRONT, GL_LINE);

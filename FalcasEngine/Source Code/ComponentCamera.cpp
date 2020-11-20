@@ -21,6 +21,12 @@ ComponentCamera::ComponentCamera(GameObject* owner, ComponentTransform* trans) :
 
 ComponentCamera::~ComponentCamera()
 {
+	if (camera_active&& owner->id >= 0) {
+		App->renderer3D->ChangeCameraActive(nullptr);
+	}
+	if (frustum_culling && owner->id >= 0) {
+		App->renderer3D->ChangeCullingCamera(nullptr);
+	}
 }
 
 void ComponentCamera::UpdateFrustum()

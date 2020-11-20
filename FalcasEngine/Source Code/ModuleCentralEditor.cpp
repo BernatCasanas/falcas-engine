@@ -539,6 +539,15 @@ void ModuleCentralEditor::HierarchyRecursiveTree(GameObject* game_object, static
     bool node_open = ImGui::TreeNodeEx((void*)(intptr_t)game_object->id, final_flags, (game_object->id < 0) ? "Main" : game_object->GetName().c_str());
     if (ImGui::IsItemClicked())
         id_node_clicked = game_object->id;
+   
+    if (game_object->id >= 0 && ImGui::BeginPopupContextItem())
+    {
+        if (ImGui::Selectable("Delete Game Object")) {
+            game_object->to_delete = true;
+        }
+        ImGui::EndPopup();
+    }
+
     if (game_object->id >= 0 && ImGui::BeginDragDropSource())
     {
         ImGui::SetDragDropPayload("GAME_OBJECT", &game_object->id, sizeof(int));
