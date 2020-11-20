@@ -101,7 +101,7 @@ void ImportGameObjectFromFBX(const aiScene* scene, aiNode* node, GameObject* par
 			if (material_path.length > 0) {
 				std::string path = App->filesystem->GetPathFile(file);
 				path += material_path.C_Str();
-				sprintf_s(name_buff, 200, "Library/Textures/%s.falcastextures", mesh->file_name.c_str());
+				sprintf_s(name_buff, 200, "Library/Textures/%s", mesh->file_name.c_str());
 				if (App->filesystem->FileExists(name_buff)) {
 					tex_imported = true;
 				}
@@ -302,6 +302,12 @@ void TextureImporter::Import(ComponentMaterial* mat, std::string file, bool impo
 		ilGenImages(1, &mat->image_name);
 		ilBindImage(mat->image_name);
 
+		ilEnable(IL_ORIGIN_SET);
+		ilOriginFunc(IL_ORIGIN_LOWER_LEFT);
+
+		ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
+
+
 		char* buffer = nullptr;
 		size = App->filesystem->Load(file.c_str(), &buffer);
 
@@ -309,18 +315,20 @@ void TextureImporter::Import(ComponentMaterial* mat, std::string file, bool impo
 			ILenum error = ilGetError();
 			LOG("Error loading Texture %s\n", iluErrorString(error));
 		}
+
 		mat->height = ilGetInteger(IL_IMAGE_HEIGHT);
 		mat->width = ilGetInteger(IL_IMAGE_WIDTH);
 		mat->show_default_tex = false;
 		mat->texture_id = ilutGLBindTexImage();
-		ilDeleteImages(1, &mat->image_name);
 
 		mat->file_name = App->filesystem->GetFileName(mat->full_file_name);
 		buffer = nullptr;
+		//problem here
 		size = TextureImporter::Save(mat, &buffer);
 		char name_buff[200];
 		sprintf_s(name_buff, 200, "Library/Textures/%s", mat->file_name.c_str());
 		App->filesystem->SaveInternal(name_buff, buffer, size);
+		ilDeleteImages(1, &mat->image_name);
 	}
 	else {
 		char* buffer = App->filesystem->ReadPhysFile(file);
@@ -340,8 +348,6 @@ uint TextureImporter::Save(const ComponentMaterial* mat, char** filebuffer)
 		data = new ILubyte[size]; // allocate data buffer
 		if (ilSaveL(IL_DDS, data, size) > 0) { // Save to buffer with the ilSaveIL function
 			*filebuffer = (char*)data;
-			data = NULL;
-			delete data;
 		}
 	}
 	ilBindImage(0);
