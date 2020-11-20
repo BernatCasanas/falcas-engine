@@ -101,7 +101,7 @@ void ImportGameObjectFromFBX(const aiScene* scene, aiNode* node, GameObject* par
 			if (material_path.length > 0) {
 				std::string path = App->filesystem->GetPathFile(file);
 				path += material_path.C_Str();
-				sprintf_s(name_buff, 200, "Library/Textures/%s.falcastextures", mat->file_name.c_str());
+				sprintf_s(name_buff, 200, "Library/Textures/%s.falcastextures", mesh->file_name.c_str());
 				if (App->filesystem->FileExists(name_buff)) {
 					tex_imported = true;
 				}
@@ -317,7 +317,6 @@ void TextureImporter::Import(ComponentMaterial* mat, std::string file, bool impo
 
 		mat->file_name = App->filesystem->GetFileName(mat->full_file_name);
 
-		char* buffer;
 		size = TextureImporter::Save(mat, &buffer);
 		char name_buff[200];
 		sprintf_s(name_buff, 200, "Library/Meshes/%s.falcastextures", mat->file_name.c_str());
@@ -344,6 +343,7 @@ uint TextureImporter::Save(const ComponentMaterial* mat, char** filebuffer)
 			delete data;
 		}
 	}
+	return size;
 }
 
 void TextureImporter::Load(const char* fileBuffer, ComponentMaterial* mat, uint size)
