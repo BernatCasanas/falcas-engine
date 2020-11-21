@@ -1,5 +1,6 @@
 #pragma once
 #include "Globals.h"
+#include "Json.h"
 class Application;
 class Module
 {
@@ -7,13 +8,21 @@ private :
 	bool enabled;
 
 public:
+	char* name;
 	Application* App;
 
-	Module(Application* parent, bool start_enabled = true) : App(parent)
-	{}
+	Module(Application* parent, bool start_enabled = true, char* n = "") : App(parent)
+	{
+		name = n;
+	}
 
 	virtual ~Module()
 	{}
+
+	virtual bool LoadConfig(JsonObj& obj) 
+	{
+		return true;
+	}
 
 	virtual bool Init() 
 	{

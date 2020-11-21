@@ -3,7 +3,7 @@
 #include "ModuleWindow.h"
 #include "External Libraries/SDL/include/SDL.h"
 
-ModuleWindow::ModuleWindow(Application* app, bool start_enabled) : Module(app, start_enabled)
+ModuleWindow::ModuleWindow(Application* app, bool start_enabled) : Module(app, start_enabled, "moduleWindow")
 {
 	window = NULL;
 	screen_surface = NULL;
@@ -57,7 +57,7 @@ bool ModuleWindow::Init()
 		SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 		SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 		SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
-		window = SDL_CreateWindow("Falcas Engine", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, window_flags);
+		window = SDL_CreateWindow(appName, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, window_flags);
 		gl_context = SDL_GL_CreateContext(window);
 		SDL_GL_MakeCurrent(window, gl_context);
 		SDL_GL_SetSwapInterval(1); // Enable vsync
@@ -82,6 +82,12 @@ bool ModuleWindow::Init()
 	}
 	
 	return ret;
+}
+
+bool ModuleWindow::LoadConfig(JsonObj* obj)
+{
+	appName = (char*)obj->GetString("engineGame");
+	return true;
 }
 
 // Called before quitting

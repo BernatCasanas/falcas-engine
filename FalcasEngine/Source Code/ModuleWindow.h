@@ -19,6 +19,7 @@ public:
 	virtual ~ModuleWindow();
 
 	bool Init();
+	bool LoadConfig(JsonObj* obj);
 	bool CleanUp();
 
 	void SetTitle(const char* title);
@@ -34,6 +35,10 @@ public:
 	SDL_GLContext gl_context;
 
 	const char* glsl_version;
+
+	int height, width;
+	bool fullscreen, resizeable, border;
+	char* appName;
 };
 
 #endif // __ModuleWindow_H__
