@@ -121,6 +121,7 @@ void FileSystem::CreateFolders()
 {
 	CreateOneFolder("Library/Meshes/");
 	CreateOneFolder("Library/Textures/");
+	CreateOneFolder("Library/Settings");
 }
 
 void FileSystem::CreateOneFolder(char* name)

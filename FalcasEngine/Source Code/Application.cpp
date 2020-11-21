@@ -9,6 +9,7 @@
 #include "ModuleCentralEditor.h"
 #include "Console.h"
 #include "FileSystem.h"
+#include "External Libraries/JSON/parson.h"
 
 Application::Application()
 {
@@ -58,6 +59,10 @@ bool Application::Init()
 {
 	bool ret = true;
 	Module* item;
+
+	char* buffer = nullptr;
+
+	uint size = App->filesystem->Load("Library/Config/config.json", &buffer);
 
 	// Call Init() in all modules
 
