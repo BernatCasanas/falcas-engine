@@ -124,13 +124,7 @@ update_status ModuleCamera3D::Update(float dt)
 		{
 			float DeltaY = (float)dy * Sensitivity;
 			float3 increment_y = (GetRotation().ToFloat3x3() * float3::unitY) * DeltaY;
-			if (increment_y.y < 0.01 && increment_y.y > -0.01) {
-				///NEEDED TO BE CHECKED
-				Reference += increment_y;
-			}
-			else {
-				Reference += increment_y;
-			}
+			Reference += increment_y;
 		}
 
 		
@@ -167,13 +161,7 @@ update_status ModuleCamera3D::Update(float dt)
 		{
 			float DeltaY = (float)dy * Sensitivity;
 			float3 increment_y= (GetRotation().ToFloat3x3() * float3::unitY) * DeltaY;
-			if (increment_y.y < 0.01&& increment_y.y > -0.01) {
-				///NEEDED TO BE CHECKED
-				pos -= increment_y;
-			}
-			else {
-				pos -= increment_y;
-			}
+			pos -= increment_y;
 		}
 		SetPosition(pos);
 		
