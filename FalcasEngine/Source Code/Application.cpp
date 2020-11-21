@@ -10,6 +10,7 @@
 #include "Console.h"
 #include "FileSystem.h"
 #include "External Libraries/JSON/parson.h"
+#include "Json.h"
 
 Application::Application()
 {
@@ -60,14 +61,19 @@ bool Application::Init()
 	bool ret = true;
 	Module* item;
 
-	char* buffer = nullptr;
-
-	uint size = App->filesystem->Load("Library/Config/config.json", &buffer);
+	//char* buffer;
+	//
+	//uint sizeConfig = App->filesystem->LoadConfigFile(&buffer);
+	//JsonObj config(buffer);
+	//
+	//JsonArray arrayModules(config.GetArray("configModules"));
 
 	// Call Init() in all modules
 
 	int size = list_modules.size();
 	for (int i = 0; i < size && ret==true; i++) {
+		//JsonObj configModule(arrayModules.GetObjectInArray(list_modules[i]->name));
+		//ret = list_modules[i]->LoadConfig(configModule);
 		ret = list_modules[i]->Init();
 	}
 	
@@ -101,6 +107,7 @@ update_status Application::Update()
 	update_status ret = UPDATE_CONTINUE;
 	PrepareUpdate();
 	Module* item;
+
 
 
 	int size = list_modules.size();

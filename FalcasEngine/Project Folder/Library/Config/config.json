@@ -1,0 +1,8 @@
+{
+  "configModules": [
+    {
+      "name": "moduleWindow",
+      "engineName": "Falcas Engine",
+    }
+  ]
+}

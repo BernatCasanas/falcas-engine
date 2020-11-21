@@ -17,6 +17,7 @@
     <ClCompile Include="Source Code\ComponentMaterial.cpp" />
     <ClCompile Include="Source Code\ComponentMesh.cpp" />
     <ClCompile Include="Source Code\ComponentTransform.cpp" />
+    <ClCompile Include="Source Code\External Libraries\JSON\parson.c" />
     <ClCompile Include="Source Code\External Libraries\MathGeoLib\include\Algorithm\GJK.cpp" />
     <ClCompile Include="Source Code\External Libraries\MathGeoLib\include\Math\float3.cpp" />
     <ClCompile Include="Source Code\FileSystem.cpp" />
@@ -59,6 +60,7 @@
     <ClCompile Include="Source Code\External Libraries\MathGeoLib\include\Math\TransformOps.cpp" />
     <ClCompile Include="Source Code\External Libraries\MathGeoLib\include\Time\Clock.cpp" />
     <ClCompile Include="Source Code\Importer.cpp" />
+    <ClCompile Include="Source Code\Json.cpp" />
     <ClCompile Include="Source Code\Light.cpp" />
     <ClCompile Include="Source Code\log.cpp" />
     <ClCompile Include="Source Code\Main.cpp" />
@@ -78,6 +80,7 @@
     <ClInclude Include="Source Code\ComponentMaterial.h" />
     <ClInclude Include="Source Code\ComponentMesh.h" />
     <ClInclude Include="Source Code\ComponentTransform.h" />
+    <ClInclude Include="Source Code\External Libraries\JSON\parson.h" />
     <ClInclude Include="Source Code\External Libraries\MathGeoLib\include\Algorithm\GJK.h" />
     <ClInclude Include="Source Code\External Libraries\MathGeoLib\include\Math\float3.h" />
     <ClInclude Include="Source Code\FileSystem.h" />
@@ -184,6 +187,7 @@
     <ClInclude Include="Source Code\External Libraries\MathGeoLib\include\Time\Clock.h" />
     <ClInclude Include="Source Code\Globals.h" />
     <ClInclude Include="Source Code\Importer.h" />
+    <ClInclude Include="Source Code\Json.h" />
     <ClInclude Include="Source Code\Light.h" />
     <ClInclude Include="Source Code\Module.h" />
     <ClInclude Include="Source Code\ModuleCamera3D.h" />

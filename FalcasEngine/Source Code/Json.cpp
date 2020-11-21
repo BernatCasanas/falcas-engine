@@ -2,7 +2,7 @@
 #include "External Libraries/JSON/parson.h"
 #include "Globals.h"
 
-JsonObj::JsonObj(const char* buffer)
+JsonObj::JsonObj(const char* buffer) : obj(nullptr)
 {
 	val = json_parse_string(buffer);
 

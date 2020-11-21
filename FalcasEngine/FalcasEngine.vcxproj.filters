@@ -31,6 +31,9 @@
     <Filter Include="External Libraries\MathGeoLib\Algorithm\Random">
       <UniqueIdentifier>{3810ccb9-053a-4c87-90cf-1d95a3cdcc8e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="External Libraries\JSON">
+      <UniqueIdentifier>{0b9fe58f-540c-43e6-8173-2ea1d53046a2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source Code\Application.cpp">
@@ -209,6 +212,12 @@
     </ClCompile>
     <ClCompile Include="Source Code\External Libraries\MathGeoLib\include\Algorithm\GJK.cpp">
       <Filter>External Libraries\MathGeoLib\Algorithm</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\Json.cpp">
+      <Filter>Source Code</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\External Libraries\JSON\parson.c">
+      <Filter>External Libraries\JSON</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -577,6 +586,12 @@
     </ClInclude>
     <ClInclude Include="Source Code\External Libraries\MathGeoLib\include\Algorithm\GJK.h">
       <Filter>External Libraries\MathGeoLib\Algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\Json.h">
+      <Filter>Source Code</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External Libraries\JSON\parson.h">
+      <Filter>External Libraries\JSON</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
