@@ -101,7 +101,7 @@ void ImportGameObjectFromFBX(const aiScene* scene, aiNode* node, GameObject* par
 			if (material_path.length > 0) {
 				std::string path = App->filesystem->GetPathFile(file);
 				path += material_path.C_Str();
-				sprintf_s(name_buff, 200, "Library/Textures/%s", mesh->file_name.c_str());
+				sprintf_s(name_buff, 200, "Library/Textures/%s.dds", App->filesystem->GetFileName(path,true).c_str());
 				if (App->filesystem->FileExists(name_buff)) {
 					tex_imported = true;
 				}
@@ -206,6 +206,7 @@ int MeshImporter::Import(const aiMesh* ai_mesh, ComponentMesh* mesh, char* name,
 		MeshImporter::Load(buffer, mesh);
 	}
 
+	material_index = ai_mesh->mMaterialIndex;
 	mesh->Initialization();
 
 
@@ -321,14 +322,13 @@ void TextureImporter::Import(ComponentMaterial* mat, std::string file, bool impo
 		mat->show_default_tex = false;
 		mat->texture_id = ilutGLBindTexImage();
 
-		mat->file_name = App->filesystem->GetFileName(mat->full_file_name);
-		buffer = nullptr;
-		//problem here
-		size = TextureImporter::Save(mat, &buffer);
+		mat->file_name = App->filesystem->GetFileName(mat->full_file_name, true);
+		char* texture_buffer = nullptr;
+		size = TextureImporter::Save(mat, &texture_buffer);
 		char name_buff[200];
-		sprintf_s(name_buff, 200, "Library/Textures/%s", mat->file_name.c_str());
-		App->filesystem->SaveInternal(name_buff, buffer, size);
-		ilDeleteImages(1, &mat->image_name);
+		sprintf_s(name_buff, 200, "Library/Textures/%s.dds", mat->file_name.c_str());
+		App->filesystem->SaveInternal(name_buff, texture_buffer, size);
+		ilBindImage(0);
 	}
 	else {
 		char* buffer = App->filesystem->ReadPhysFile(file);
@@ -341,7 +341,7 @@ uint TextureImporter::Save(const ComponentMaterial* mat, char** filebuffer)
 {
 	ILuint size;
 	ILubyte* data;
-	ilBindImage(mat->texture_id);
+	ilBindImage(mat->image_name);
 	ilSetInteger(IL_DXTC_FORMAT, IL_DXT5);// To pick a specific DXT compression use
 	size = ilSaveL(IL_DDS, nullptr, 0); // Get the size of the data buffer
 	if (size > 0) {
