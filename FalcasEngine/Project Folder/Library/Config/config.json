@@ -3,7 +3,12 @@
   "configModules": [
     {
       "name": "moduleWindow",
-      "appName": "Falcas Engine"
+      "appName": "Falcas Engine",
+      "height": 900,
+      "width": 1600,
+      "resizeable": true,
+      "fullscreen": false,
+      "border": true
     }
   ]
 }

@@ -5,6 +5,7 @@
 JsonObj::JsonObj(const char* buffer) : obj(nullptr)
 {
 	val = json_parse_string(buffer);
+	//i had so many errors here. idk why the first item in the list cant be an array.
 	
 	if (val != NULL)
 	{

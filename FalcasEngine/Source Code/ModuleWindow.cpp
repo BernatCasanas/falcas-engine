@@ -45,19 +45,20 @@ bool ModuleWindow::Init()
 		#endif
 
 
-		//Create window
-		int width = SCREEN_WIDTH * SCREEN_SIZE;
-		int height = SCREEN_HEIGHT * SCREEN_SIZE;
 
-		SDL_WindowFlags window_flags = (SDL_WindowFlags)(SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI);
+		SDL_WindowFlags window_flags = (SDL_WindowFlags)(SDL_WINDOW_OPENGL | SDL_WINDOW_ALLOW_HIGHDPI);
 
+		SDL_WindowFlags resize_flag = resizeable ? SDL_WINDOW_RESIZABLE : (SDL_WindowFlags)0x00000000;
+		SDL_WindowFlags fullscreen_flag = fullscreen ? SDL_WINDOW_FULLSCREEN_DESKTOP : (SDL_WindowFlags)0x00000000;
+		SDL_WindowFlags border_flag = !border ? SDL_WINDOW_BORDERLESS : (SDL_WindowFlags)0x00000000;
 
+		
 
 		//Use OpenGL 2.1	
 		SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 		SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 		SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
-		window = SDL_CreateWindow(appName, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, window_flags);
+		window = SDL_CreateWindow(appName, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, window_flags | resize_flag | fullscreen_flag| border_flag);
 		gl_context = SDL_GL_CreateContext(window);
 		SDL_GL_MakeCurrent(window, gl_context);
 		SDL_GL_SetSwapInterval(1); // Enable vsync
@@ -87,6 +88,11 @@ bool ModuleWindow::Init()
 bool ModuleWindow::LoadConfig(JsonObj& obj)
 {
 	appName = (char*)obj.GetString("appName");
+	height = obj.GetInt("height");
+	width = obj.GetInt("width");
+	resizeable = obj.GetBool("resizeable");
+	fullscreen = obj.GetBool("fullscreen");
+	border = obj.GetBool("border");
 	return true;
 }
 
