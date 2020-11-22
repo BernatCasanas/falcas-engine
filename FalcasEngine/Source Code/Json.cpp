@@ -5,7 +5,7 @@
 JsonObj::JsonObj(const char* buffer) : obj(nullptr)
 {
 	val = json_parse_string(buffer);
-
+	
 	if (val != NULL)
 	{
 		obj = json_value_get_object(val);

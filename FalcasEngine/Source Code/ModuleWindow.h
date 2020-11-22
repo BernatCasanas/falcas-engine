@@ -19,7 +19,7 @@ public:
 	virtual ~ModuleWindow();
 
 	bool Init();
-	bool LoadConfig(JsonObj* obj);
+	bool LoadConfig(JsonObj& obj);
 	bool CleanUp();
 
 	void SetTitle(const char* title);

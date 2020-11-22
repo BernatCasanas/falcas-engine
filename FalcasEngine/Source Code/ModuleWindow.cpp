@@ -84,11 +84,12 @@ bool ModuleWindow::Init()
 	return ret;
 }
 
-bool ModuleWindow::LoadConfig(JsonObj* obj)
+bool ModuleWindow::LoadConfig(JsonObj& obj)
 {
-	appName = (char*)obj->GetString("engineGame");
+	appName = (char*)obj.GetString("appName");
 	return true;
 }
+
 
 // Called before quitting
 bool ModuleWindow::CleanUp()
