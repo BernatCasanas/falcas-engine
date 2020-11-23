@@ -324,16 +324,17 @@ void TextureImporter::Import(ComponentMaterial* mat, std::string file, bool impo
 
 		mat->file_name = App->filesystem->GetFileName(mat->full_file_name, true);
 		char* texture_buffer = nullptr;
-		size = TextureImporter::Save(mat, &texture_buffer);
+		mat->size = TextureImporter::Save(mat, &texture_buffer);
 		char name_buff[200];
 		sprintf_s(name_buff, 200, "Library/Textures/%s.dds", mat->file_name.c_str());
-		App->filesystem->SaveInternal(name_buff, texture_buffer, size);
+		App->filesystem->SaveInternal(name_buff, texture_buffer, mat->size);
 		ilBindImage(0);
 	}
 	else {
-		char* buffer = App->filesystem->ReadPhysFile(file);
-		uint size = App->filesystem->GetSizePhysFile(file);
-		TextureImporter::Load(buffer, mat, size);
+		char* buffer = new char[mat->size];
+		ilLoadL(IL_DDS, buffer, mat->size);
+		//do the same order functions as if isnt imported
+		TextureImporter::Load(buffer, mat, mat->size);
 	}
 }
 

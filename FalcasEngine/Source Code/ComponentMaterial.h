@@ -28,6 +28,8 @@ public:
 	int width = 0;
 	int height = 0;
 
+	uint size = 0;
+
 	bool show_default_tex = true;
 
 
