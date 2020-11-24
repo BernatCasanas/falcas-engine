@@ -147,7 +147,7 @@ update_status ModuleInput::PreUpdate(float dt)
 					if (App->scene_intro->game_object_selected != nullptr) {
 						if (App->scene_intro->game_object_selected->HasComponentType(Component_Type::Mesh)) {
 								if (App->scene_intro->game_object_selected->HasComponentType(Component_Type::Material)) {
-									TextureImporter::Import((ComponentMaterial*)App->scene_intro->game_object_selected->GetComponent(Component_Type::Material), e.drop.file, false);
+									TextureImporter::Import((ComponentMaterial*)App->scene_intro->game_object_selected->GetComponent(Component_Type::Material), e.drop.file, false,"");
 								}
 								else {
 									App->scene_intro->game_object_selected->CreateComponent(Component_Type::Material, e.drop.file);

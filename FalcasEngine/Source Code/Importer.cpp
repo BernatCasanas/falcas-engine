@@ -105,7 +105,7 @@ void ImportGameObjectFromFBX(const aiScene* scene, aiNode* node, GameObject* par
 				if (App->filesystem->FileExists(name_buff)) {
 					tex_imported = true;
 				}
-				TextureImporter::Import(mat, path, tex_imported);
+				TextureImporter::Import(mat, path, tex_imported, name_buff);
 			}
 		}
 	}
@@ -293,7 +293,7 @@ void MeshImporter::Load(const char* fileBuffer, ComponentMesh *mesh)
 
 }
 
-void TextureImporter::Import(ComponentMaterial* mat, std::string file, bool imported)
+void TextureImporter::Import(ComponentMaterial* mat, std::string file, bool imported, char* namebuff)
 {
 	uint size;
 	if (!imported) {
@@ -306,16 +306,18 @@ void TextureImporter::Import(ComponentMaterial* mat, std::string file, bool impo
 		ilEnable(IL_ORIGIN_SET);
 		ilOriginFunc(IL_ORIGIN_LOWER_LEFT);
 
-		ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
 
 
 		char* buffer = nullptr;
 		size = App->filesystem->Load(file.c_str(), &buffer);
 
-		if (ilLoadL(IL_TYPE_UNKNOWN, buffer, size)) {
+		if (ilLoadL(IL_TYPE_UNKNOWN, buffer, size) == IL_FALSE) {
 			ILenum error = ilGetError();
 			LOG("Error loading Texture %s\n", iluErrorString(error));
 		}
+
+		ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
+
 
 		mat->height = ilGetInteger(IL_IMAGE_HEIGHT);
 		mat->width = ilGetInteger(IL_IMAGE_WIDTH);
@@ -332,8 +334,7 @@ void TextureImporter::Import(ComponentMaterial* mat, std::string file, bool impo
 	}
 	else {
 		char* buffer = new char[mat->size];
-		ilLoadL(IL_DDS, buffer, mat->size);
-		//do the same order functions as if isnt imported
+		mat->size = App->filesystem->Load(namebuff, &buffer);
 		TextureImporter::Load(buffer, mat, mat->size);
 	}
 }
@@ -357,25 +358,27 @@ uint TextureImporter::Save(const ComponentMaterial* mat, char** filebuffer)
 
 void TextureImporter::Load(const char* fileBuffer, ComponentMaterial* mat, uint size)
 {
-	ILuint imageID = 0;
-
-	ilGenImages(1, &imageID);
-	ilBindImage(imageID);
+	ilGenImages(1, &mat->image_name);
+	ilBindImage(mat->image_name);
 
 	ilEnable(IL_ORIGIN_SET);
 	ilOriginFunc(IL_ORIGIN_LOWER_LEFT);
 
+
 	char* buffer = (char*)fileBuffer;
 
-	ilLoadL(IL_DDS, buffer, size);
-	ilBindImage(0);
-	ilDeleteImages(1, &imageID);
-
+	if (ilLoadL(IL_DDS, buffer, size) == IL_FALSE) {
+		ILenum error = ilGetError();
+		LOG("Error loading Texture %s\n", iluErrorString(error));
+		ilBindImage(0);
+		ilDeleteImages(1, &mat->image_name);
+	}
 	ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
 
-	mat->texture_id = (uint)(imageID);
-	mat->width = ilGetInteger(IL_IMAGE_WIDTH);
 	mat->height = ilGetInteger(IL_IMAGE_HEIGHT);
+	mat->width = ilGetInteger(IL_IMAGE_WIDTH);
+	mat->show_default_tex = false;
+	mat->texture_id = ilutGLBindTexImage();
 
 	ilBindImage(0);
 }
