@@ -110,7 +110,6 @@ void ImportGameObjectFromFBX(const aiScene* scene, aiNode* node, GameObject* par
 		}
 	}
 	for (int i = 0; i < node->mNumChildren; i++) {
-		
 			ImportGameObjectFromFBX(scene, node->mChildren[i], game_object, file,transform_heredated);
 	}
 }
@@ -296,18 +295,16 @@ void MeshImporter::Load(const char* fileBuffer, ComponentMesh *mesh)
 void TextureImporter::Import(ComponentMaterial* mat, std::string file, bool imported, char* namebuff)
 {
 	uint size;
+	mat->full_file_name = file;
+	ilOriginFunc(IL_ORIGIN_LOWER_LEFT);
+
+	ilGenImages(1, &mat->image_name);
+	ilBindImage(mat->image_name);
+
+	ilEnable(IL_ORIGIN_SET);
+	ilOriginFunc(IL_ORIGIN_LOWER_LEFT);
+
 	if (!imported) {
-		mat->full_file_name = file;
-		ilOriginFunc(IL_ORIGIN_LOWER_LEFT);
-
-		ilGenImages(1, &mat->image_name);
-		ilBindImage(mat->image_name);
-
-		ilEnable(IL_ORIGIN_SET);
-		ilOriginFunc(IL_ORIGIN_LOWER_LEFT);
-
-
-
 		char* buffer = nullptr;
 		size = App->filesystem->Load(file.c_str(), &buffer);
 
@@ -330,7 +327,6 @@ void TextureImporter::Import(ComponentMaterial* mat, std::string file, bool impo
 		char name_buff[200];
 		sprintf_s(name_buff, 200, "Library/Textures/%s.dds", mat->file_name.c_str());
 		App->filesystem->SaveInternal(name_buff, texture_buffer, mat->size);
-		ilBindImage(0);
 	}
 	else {
 		char* buffer = new char[mat->size];
@@ -339,6 +335,7 @@ void TextureImporter::Import(ComponentMaterial* mat, std::string file, bool impo
 		mat->size = App->filesystem->LoadPath(namebuff, &buffer);
 		TextureImporter::Load(buffer, mat, mat->size);
 	}
+	ilBindImage(0);
 }
 
 uint TextureImporter::Save(const ComponentMaterial* mat, char** filebuffer)
@@ -360,15 +357,6 @@ uint TextureImporter::Save(const ComponentMaterial* mat, char** filebuffer)
 
 void TextureImporter::Load(const char* fileBuffer, ComponentMaterial* mat, uint size)
 {
-	ilOriginFunc(IL_ORIGIN_LOWER_LEFT);
-
-	ilGenImages(1, &mat->image_name);
-	ilBindImage(mat->image_name);
-
-	ilEnable(IL_ORIGIN_SET);
-	ilOriginFunc(IL_ORIGIN_LOWER_LEFT);
-
-
 	char* buffer = (char*)fileBuffer;
 
 	if (ilLoadL(IL_DDS, buffer, size) == IL_FALSE) {
@@ -383,6 +371,4 @@ void TextureImporter::Load(const char* fileBuffer, ComponentMaterial* mat, uint 
 	mat->width = ilGetInteger(IL_IMAGE_WIDTH);
 	mat->show_default_tex = false;
 	mat->texture_id = ilutGLBindTexImage();
-
-	ilBindImage(0);
 }
