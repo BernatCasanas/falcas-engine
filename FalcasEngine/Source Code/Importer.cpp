@@ -334,7 +334,9 @@ void TextureImporter::Import(ComponentMaterial* mat, std::string file, bool impo
 	}
 	else {
 		char* buffer = new char[mat->size];
-		mat->size = App->filesystem->Load(namebuff, &buffer);
+		mat->full_file_name = namebuff;
+		mat->file_name = App->filesystem->GetFileName(mat->full_file_name, true);
+		mat->size = App->filesystem->LoadPath(namebuff, &buffer);
 		TextureImporter::Load(buffer, mat, mat->size);
 	}
 }
@@ -358,6 +360,8 @@ uint TextureImporter::Save(const ComponentMaterial* mat, char** filebuffer)
 
 void TextureImporter::Load(const char* fileBuffer, ComponentMaterial* mat, uint size)
 {
+	ilOriginFunc(IL_ORIGIN_LOWER_LEFT);
+
 	ilGenImages(1, &mat->image_name);
 	ilBindImage(mat->image_name);
 

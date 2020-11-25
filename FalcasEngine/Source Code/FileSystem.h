@@ -43,6 +43,7 @@ public:
 public:
 	uint Load(const char* path, char** buffer) const;
 	uint LoadConfigFile(char** buffer);
+	uint LoadPath(char* file, char** buffer);
 	int counterMesh;
 };
 
