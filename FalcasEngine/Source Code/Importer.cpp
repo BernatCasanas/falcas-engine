@@ -110,7 +110,7 @@ void ImportGameObjectFromFBX(const aiScene* scene, aiNode* node, GameObject* par
 		}
 	}
 	for (int i = 0; i < node->mNumChildren; i++) {
-			ImportGameObjectFromFBX(scene, node->mChildren[i], game_object, file,transform_heredated);
+		ImportGameObjectFromFBX(scene, node->mChildren[i], game_object, file,transform_heredated);
 	}
 }
 
@@ -168,7 +168,6 @@ int MeshImporter::Import(const aiMesh* ai_mesh, ComponentMesh* mesh, char* name,
 				else {
 					memcpy(&mesh->indices[j * 3], ai_mesh->mFaces[j].mIndices, 3 * sizeof(uint));
 				}
-
 			}
 			LOG("New mesh with %d index", mesh->num_indices);
 		}
@@ -233,12 +232,12 @@ uint MeshImporter::Save(const ComponentMesh* mesh, char** filebuffer)
 	cursor += bytes;
 
 	//store vertices
-	bytes = sizeof(float) * mesh->num_vertices;
+	bytes = sizeof(float) * mesh->num_vertices * 3;
 	memcpy(cursor, mesh->vertices, bytes);
 	cursor += bytes;
 
 	//store normals
-	bytes = sizeof(float) * mesh->num_normals;
+	bytes = sizeof(float) * mesh->num_normals * 3;
 	memcpy(cursor, mesh->normals, bytes);
 	cursor += bytes;
 
@@ -296,7 +295,6 @@ void TextureImporter::Import(ComponentMaterial* mat, std::string file, bool impo
 {
 	uint size;
 	mat->full_file_name = file;
-	ilOriginFunc(IL_ORIGIN_LOWER_LEFT);
 
 	ilGenImages(1, &mat->image_name);
 	ilBindImage(mat->image_name);
@@ -329,7 +327,7 @@ void TextureImporter::Import(ComponentMaterial* mat, std::string file, bool impo
 		App->filesystem->SaveInternal(name_buff, texture_buffer, mat->size);
 	}
 	else {
-		char* buffer = new char[mat->size];
+		char* buffer = nullptr;
 		mat->full_file_name = namebuff;
 		mat->file_name = App->filesystem->GetFileName(mat->full_file_name, true);
 		mat->size = App->filesystem->LoadPath(namebuff, &buffer);
@@ -342,7 +340,6 @@ uint TextureImporter::Save(const ComponentMaterial* mat, char** filebuffer)
 {
 	ILuint size;
 	ILubyte* data;
-	ilBindImage(mat->image_name);
 	ilSetInteger(IL_DXTC_FORMAT, IL_DXT5);// To pick a specific DXT compression use
 	size = ilSaveL(IL_DDS, nullptr, 0); // Get the size of the data buffer
 	if (size > 0) {
@@ -351,7 +348,6 @@ uint TextureImporter::Save(const ComponentMaterial* mat, char** filebuffer)
 			*filebuffer = (char*)data;
 		}
 	}
-	ilBindImage(0);
 	return size;
 }
 
