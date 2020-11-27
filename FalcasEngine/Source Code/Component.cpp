@@ -37,3 +37,13 @@ void Component::Inspector()
 		to_delete = true;
 	}
 }
+
+uint Component::GetUUID()
+{
+	return uuid;
+}
+
+void Component::SetUUID(uint id)
+{
+	uuid = id;
+}

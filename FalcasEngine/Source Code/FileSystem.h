@@ -40,6 +40,8 @@ public:
 	void CreateFolders();
 	void CreateOneFolder(char* name);
 
+	uint GenerateUUID();
+
 public:
 	uint Load(const char* path, char** buffer) const;
 	uint LoadConfigFile(char** buffer);

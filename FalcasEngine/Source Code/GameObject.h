@@ -34,6 +34,9 @@ public:
 	bool IsInsideFrustumCulling();
 	bool IsCulled() const;
 	AABB GetAABB()const;
+
+	uint GetUUID();
+	void SetUUID(uint id);
 	
 
 public:
@@ -50,4 +53,5 @@ private:
 	AABB aabb;
 	OBB obb;
 	bool culled = false;
+	uint uuid;
 };

@@ -255,3 +255,13 @@ AABB GameObject::GetAABB() const
 	return aabb;
 }
 
+uint GameObject::GetUUID()
+{
+	return uuid;
+}
+
+void GameObject::SetUUID(uint id)
+{
+	uuid = id;
+}
+

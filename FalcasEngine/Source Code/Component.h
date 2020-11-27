@@ -22,10 +22,16 @@ public:
 	virtual void Disable();
 	virtual void Inspector();
 
+	uint GetUUID();
+	void SetUUID(uint id);
+
 	Component_Type type;
 	bool active = true;
 	GameObject* owner;
 	std::string name;
 	bool to_delete = false;
+
+private:
+	uint uuid;
 
 };

@@ -6,6 +6,7 @@
 #include "ComponentMaterial.h"
 #include "ComponentMesh.h"
 #include "ComponentTransform.h"
+#include "External Libraries/MathGeoLib/include/MathGeoLib.h"
 
 
 #include "External Libraries/PhysFS/include/physfs.h"
@@ -129,6 +130,11 @@ void FileSystem::CreateOneFolder(char* name)
 	if (PHYSFS_isDirectory(name) == false) {
 		PHYSFS_mkdir(name);
 	}
+}
+
+uint FileSystem::GenerateUUID()
+{
+	return LCG().Int();
 }
 
 
