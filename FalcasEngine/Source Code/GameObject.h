@@ -36,7 +36,7 @@ public:
 	AABB GetAABB()const;
 
 	uint GetUUID();
-	void SetUUID(uint id);
+	void SetUUID();
 	
 
 public:

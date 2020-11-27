@@ -8,6 +8,9 @@
 #include "ModuleRenderer3D.h"
 #include "ModuleCentralEditor.h"
 #include "ModuleSceneIntro.h"
+#include "FileSystem.h"
+#include "Application.h"
+#include "External Libraries/MathGeoLib/include/MathGeoLib.h"
 
 GameObject::GameObject(int id) : name(""), parent(nullptr), id(id)
 {
@@ -117,6 +120,7 @@ Component* GameObject::CreateComponent(Component_Type type)
 			component = new ComponentCamera(this, trans);
 			break;
 		}
+		component->SetUUID();
 		components.push_back(component);
 	}
 	return component;
@@ -132,6 +136,7 @@ Component* GameObject::CreateComponent(Component_Type type, char* file)
 			component = new ComponentMaterial(this, file);
 			break;
 		}
+		component->SetUUID();
 		components.push_back(component);
 	}
 	return component;
@@ -260,8 +265,8 @@ uint GameObject::GetUUID()
 	return uuid;
 }
 
-void GameObject::SetUUID(uint id)
+void GameObject::SetUUID()
 {
-	uuid = id;
+	uuid = LCG().Int();
 }
 

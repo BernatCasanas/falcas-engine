@@ -136,7 +136,7 @@ GameObject* ModuleSceneIntro::CreateGameObject(std::string name, GameObject* par
 		if (parent != nullptr) {
 			parent->children.push_back(game_object);
 		}
-
+		game_object->SetUUID();
 	}
 	return game_object;
 }
@@ -151,6 +151,7 @@ GameObject* ModuleSceneIntro::CreateGameObject(float3 position, Quat rotation, f
 		if (parent != nullptr) {
 			parent->children.push_back(game_object);
 		}
+		game_object->SetUUID();
 	}
 	return game_object;
 }

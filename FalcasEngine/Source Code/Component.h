@@ -23,7 +23,7 @@ public:
 	virtual void Inspector();
 
 	uint GetUUID();
-	void SetUUID(uint id);
+	void SetUUID();
 
 	Component_Type type;
 	bool active = true;

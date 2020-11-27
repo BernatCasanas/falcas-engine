@@ -1,7 +1,7 @@
 #include "Component.h"
 #include "External Libraries/ImGui/imgui.h"
 #include "GameObject.h"
-
+#include "External Libraries/MathGeoLib/include/MathGeoLib.h"
 
 Component::Component(Component_Type type, GameObject* owner, std::string name): owner(owner), type(type), name(name)
 {
@@ -43,7 +43,7 @@ uint Component::GetUUID()
 	return uuid;
 }
 
-void Component::SetUUID(uint id)
+void Component::SetUUID()
 {
-	uuid = id;
+	uuid = LCG().Int();
 }
