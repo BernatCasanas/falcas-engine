@@ -284,6 +284,22 @@ bool GameObject::SaveGameObject(JsonObj& obj)
 		_obj.AddInt("Parent UID", parent->GetUUID());
 		arr.AddObject(_obj);
 	}
+
+	JsonArray transArr = _obj.AddArray("Translation");
+	arr.AddInt(trans->GetPosition().x);
+	arr.AddInt(trans->GetPosition().y);
+	arr.AddInt(trans->GetPosition().z);
+
+	transArr = _obj.AddArray("Scale");
+	arr.AddInt(trans->GetSize().x);
+	arr.AddInt(trans->GetSize().y);
+	arr.AddInt(trans->GetSize().z);
+
+	transArr = _obj.AddArray("Rotation");
+	arr.AddInt(trans->GetRotation().x);
+	arr.AddInt(trans->GetRotation().y);
+	arr.AddInt(trans->GetRotation().z);
+
 	for (std::vector<Component*>::iterator it = components.begin(); it._Ptr != nullptr; it++) {
 		JsonArray arr = _obj.AddArray((*it)->name.c_str());
 		JsonObj componentObject;
