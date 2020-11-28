@@ -63,7 +63,7 @@ bool Application::Init()
 
 	char* buffer;
 	
-	uint sizeConfig = App->filesystem->LoadConfigFile(&buffer);
+	uint sizeConfig = App->filesystem->LoadPath("Library/Config/config.json",&buffer);
 	JsonObj config(buffer);
 	JsonArray arrayModules(config.GetArray("configModules"));
 

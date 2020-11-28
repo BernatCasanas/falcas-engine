@@ -5,7 +5,7 @@
 #include "External Libraries/MathGeoLib/include/Geometry/AABB.h"
 #include "External Libraries/MathGeoLib/include/Geometry/OBB.h"
 #include <vector>
-
+#include "Json.h"
 
 class Component;
 class ComponentTransform;
@@ -38,6 +38,7 @@ public:
 	uint GetUUID();
 	void SetUUID();
 	
+	bool SaveGameObject(JsonObj& obj);
 
 public:
 	bool active=true;

@@ -176,16 +176,6 @@ uint FileSystem::Load(const char* path, char** buffer) const
 	return ret;
 }
 
-uint FileSystem::LoadConfigFile(char** buffer) {
-	PHYSFS_file* fs_file = PHYSFS_openRead("Library/Config/config.json");
-	PHYSFS_sint32 size = (PHYSFS_sint32)PHYSFS_fileLength(fs_file);
-	*buffer = new char[size + 1];
-	PHYSFS_read(fs_file, *buffer, 1, size);
-	(*buffer)[size] = '\0';
-	PHYSFS_close(fs_file);
-	return size;
-}
-
 uint FileSystem::LoadPath(char* file, char** buffer) {
 	PHYSFS_file* fs_file = PHYSFS_openRead(file);
 	PHYSFS_sint32 size = (PHYSFS_sint32)PHYSFS_fileLength(fs_file);

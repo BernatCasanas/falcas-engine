@@ -109,15 +109,19 @@ Component* GameObject::CreateComponent(Component_Type type)
 		{
 		case Component_Type::Transform:
 			component = new ComponentTransform(this, { 0,0,0 }, Quat::identity, { 1,1,1 });
+			component->name = "Transform";
 			break;
 		case Component_Type::Mesh:
 			component = new ComponentMesh(this);
+			component->name = "Mesh";
 			break;
 		case Component_Type::Material:
 			component = new ComponentMaterial(this);
+			component->name = "Material";
 			break;
 		case Component_Type::Camera:
 			component = new ComponentCamera(this, trans);
+			component->name = "Camera";
 			break;
 		}
 		component->SetUUID();
@@ -268,5 +272,24 @@ uint GameObject::GetUUID()
 void GameObject::SetUUID()
 {
 	uuid = LCG().Int();
+}
+
+bool GameObject::SaveGameObject(JsonObj& obj)
+{
+	JsonArray arr = obj.AddArray(this->name.c_str());
+	JsonObj _obj;
+	_obj.AddInt("UID", GetUUID());
+	arr.AddObject(_obj);
+	if (parent->GetUUID() != NULL) {
+		_obj.AddInt("Parent UID", parent->GetUUID());
+		arr.AddObject(_obj);
+	}
+	for (std::vector<Component*>::iterator it = components.begin(); it._Ptr != nullptr; it++) {
+		JsonArray arr = _obj.AddArray((*it)->name.c_str());
+		JsonObj componentObject;
+		arr.AddObject(componentObject);
+		(*it)->SaveComponent(componentObject);
+	}
+	return true;
 }
 
