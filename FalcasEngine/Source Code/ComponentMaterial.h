@@ -13,7 +13,7 @@ public:
 	ComponentMaterial(GameObject* owner, char* file);
 	~ComponentMaterial();
 public:
-
+	bool SaveComponent(JsonObj& obj);
 	void Inspector();
 
 	

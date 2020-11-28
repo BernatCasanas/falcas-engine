@@ -11,6 +11,7 @@ public:
 	
 	void Initialization();
 	void Render();
+	bool SaveComponent(JsonObj& obj);
 
 	void Inspector();
 

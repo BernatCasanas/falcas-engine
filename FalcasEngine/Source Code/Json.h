@@ -35,6 +35,7 @@ public:
 	const char* GetString(const char* name);
 	float3 GetFloat3(const char* name);
 	Quat GetQuaternion(const char* name);
+	float4x4 GetFloat4x4(const char* name);
 
 	//Setters
 	void AddInt(const char* name, int num);
@@ -43,6 +44,7 @@ public:
 	void AddString(const char* name, const char* string);
 	void AddFloat3(const char* name, float3 num);
 	void AddQuat(const char* name, Quat quat);
+	void AddFloat4x4(const char* name, float4x4 num);
 	JsonArray AddArray(const char* name);
 
 private:

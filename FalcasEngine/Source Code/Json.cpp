@@ -109,7 +109,7 @@ float3 JsonObj::GetFloat3(const char* name)
 
 Quat JsonObj::GetQuaternion(const char* name)
 {
-	math::Quat quat;
+	Quat quat;
 
 	JSON_Array* arr;
 	arr = json_object_get_array(obj, name);
@@ -120,6 +120,24 @@ Quat JsonObj::GetQuaternion(const char* name)
 	quat.w = json_array_get_number(arr, 3);
 
 	return quat;
+}
+
+float4x4 JsonObj::GetFloat4x4(const char* name)
+{
+	float4x4 num;
+
+	JSON_Array* arr;
+	arr = json_object_get_array(obj, name);
+	int j = 0;
+	for (int i = 0; i < 4; ++i) {
+		num.At(i, 0) = json_array_get_number(arr, j);
+		num.At(i, 1) = json_array_get_number(arr, j + 1);
+		num.At(i, 2) = json_array_get_number(arr, j + 2);
+		num.At(i, 3) = json_array_get_number(arr, j + 3);
+		j += 4;
+	}
+
+	return num;
 }
 
 void JsonObj::AddInt(const char* name, int num)
@@ -164,6 +182,20 @@ void JsonObj::AddQuat(const char* name, Quat quat)
 	json_array_append_number(arr, quat.y);
 	json_array_append_number(arr, quat.z);
 	json_array_append_number(arr, quat.w);
+}
+
+void JsonObj::AddFloat4x4(const char* name, float4x4 num)
+{
+	JSON_Value* value = json_value_init_array();
+	JSON_Status status = json_object_set_value(obj, name, value);
+	JSON_Array* arr = json_object_get_array(obj, name);
+
+	for (int i = 0; i < 4; ++i) {
+		json_array_append_number(arr, num.At(i,0));
+		json_array_append_number(arr, num.At(i,1));
+		json_array_append_number(arr, num.At(i,2));
+		json_array_append_number(arr, num.At(i,3));
+	}
 }
 
 JsonArray JsonObj::AddArray(const char* name)

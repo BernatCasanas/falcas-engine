@@ -174,6 +174,14 @@ void ComponentMesh::Render()
 	}
 }
 
+bool ComponentMesh::SaveComponent(JsonObj& obj)
+{
+	JsonArray arr = obj.AddArray(this->name.c_str());
+	JsonObj _obj;
+	_obj.AddString("Path", this->file_name.c_str());
+	return true;
+}
+
 
 void ComponentMesh::Inspector()
 {

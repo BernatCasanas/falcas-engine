@@ -70,7 +70,9 @@ float4x4 ComponentTransform::GetGlobalMatrixTransposed() const
 bool ComponentTransform::SaveComponent(JsonObj& obj)
 {
 	JsonArray arr = obj.AddArray(this->name.c_str());
-	
+	JsonObj _obj;
+	_obj.AddFloat4x4("GlobalMatrix",GetGlobalMatrix());
+	arr.AddObject(_obj);
 	return true;
 }
 

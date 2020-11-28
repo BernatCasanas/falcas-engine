@@ -89,6 +89,7 @@ void ImportGameObjectFromFBX(const aiScene* scene, aiNode* node, GameObject* par
 		int num_material = ai_mesh->mMaterialIndex;
 
 		sprintf_s(name_buff, 200, "Library/Meshes/%s.falcasmesh", mesh->file_name.c_str());
+		mesh->file_name = name_buff;
 		if (App->filesystem->FileExists(name_buff)) {
 			mesh_imported = true;
 		}
