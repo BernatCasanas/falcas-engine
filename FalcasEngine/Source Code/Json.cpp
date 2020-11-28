@@ -95,6 +95,33 @@ const char* JsonObj::GetString(const char* name)
 		return "null";
 }
 
+float3 JsonObj::GetFloat3(const char* name)
+{
+	float3 num;
+	JSON_Array* arr;
+	arr = json_object_get_array(obj, name);
+	num.x = json_array_get_number(arr, 0);
+	num.x = json_array_get_number(arr, 0);
+	num.x = json_array_get_number(arr, 0);
+
+	return num;
+}
+
+Quat JsonObj::GetQuaternion(const char* name)
+{
+	math::Quat quat;
+
+	JSON_Array* arr;
+	arr = json_object_get_array(obj, name);
+
+	quat.x = json_array_get_number(arr, 0);
+	quat.y = json_array_get_number(arr, 1);
+	quat.z = json_array_get_number(arr, 2);
+	quat.w = json_array_get_number(arr, 3);
+
+	return quat;
+}
+
 void JsonObj::AddInt(const char* name, int num)
 {
 	json_object_set_number(obj, name, num);
@@ -114,6 +141,29 @@ void JsonObj::AddBool(const char* name, bool b)
 void JsonObj::AddString(const char* name, const char* string)
 {
 	json_object_set_string(obj, name, string);
+}
+
+void JsonObj::AddFloat3(const char* name, float3 num)
+{
+	JSON_Value* value = json_value_init_array();
+	JSON_Status status = json_object_set_value(obj, name, value);
+	JSON_Array* arr = json_object_get_array(obj, name);
+
+	json_array_append_number(arr, num.x);
+	json_array_append_number(arr, num.y);
+	json_array_append_number(arr, num.z);
+}
+
+void JsonObj::AddQuat(const char* name, Quat quat)
+{
+	JSON_Value* value = json_value_init_array();
+	JSON_Status status = json_object_set_value(obj, name, value);
+	JSON_Array* arr = json_object_get_array(obj, name);
+
+	json_array_append_number(arr, quat.x);
+	json_array_append_number(arr, quat.y);
+	json_array_append_number(arr, quat.z);
+	json_array_append_number(arr, quat.w);
 }
 
 JsonArray JsonObj::AddArray(const char* name)

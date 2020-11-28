@@ -67,6 +67,13 @@ float4x4 ComponentTransform::GetGlobalMatrixTransposed() const
 	return global_matrix_transposed;
 }
 
+bool ComponentTransform::SaveComponent(JsonObj& obj)
+{
+	JsonArray arr = obj.AddArray(this->name.c_str());
+	
+	return true;
+}
+
 void ComponentTransform::SetTransformation(float3 pos, Quat rot, float3 size)
 {
 	position = pos;

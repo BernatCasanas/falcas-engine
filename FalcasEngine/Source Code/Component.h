@@ -1,6 +1,8 @@
 #pragma once
 #include "Globals.h"
 #include <string>
+#include "Json.h"
+
 class GameObject;
 
 enum class Component_Type {
@@ -21,6 +23,8 @@ public:
 	virtual void Update();
 	virtual void Disable();
 	virtual void Inspector();
+	virtual bool LoadComponent(JsonObj& obj) { return true; };
+	virtual bool SaveComponent(JsonObj& obj) { return true; };
 
 	uint GetUUID();
 	void SetUUID();

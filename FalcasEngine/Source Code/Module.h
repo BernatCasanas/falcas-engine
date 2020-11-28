@@ -24,6 +24,11 @@ public:
 		return true;
 	}
 
+	virtual bool SaveConfig(JsonObj& obj)
+	{
+		return true;
+	}
+
 	virtual bool Init() 
 	{
 		return true; 

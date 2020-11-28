@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Globals.h"
+#include "External Libraries/MathGeoLib/include/MathGeoLib.h"
 
 class JsonArray;
 
@@ -32,12 +33,16 @@ public:
 	float GetFloat(const char* name);
 	bool GetBool(const char* name);
 	const char* GetString(const char* name);
+	float3 GetFloat3(const char* name);
+	Quat GetQuaternion(const char* name);
 
 	//Setters
 	void AddInt(const char* name, int num);
 	void AddFloat(const char* name, float num);
 	void AddBool(const char* name, bool b);
 	void AddString(const char* name, const char* string);
+	void AddFloat3(const char* name, float3 num);
+	void AddQuat(const char* name, Quat quat);
 	JsonArray AddArray(const char* name);
 
 private:

@@ -42,6 +42,7 @@ public:
 
 	void Draw();
 
+	bool LoadFile();
 
 	bool ProcessEvents(SDL_Event event);
 

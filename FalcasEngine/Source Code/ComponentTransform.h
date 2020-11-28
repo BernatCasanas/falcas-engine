@@ -3,6 +3,7 @@
 #include "External Libraries/MathGeoLib/include/Math/float3.h"
 #include "External Libraries/MathGeoLib/include/Math/float4x4.h"
 #include "External Libraries/MathGeoLib/include/Math/Quat.h"
+#include "Json.h"
 
 class GameObject;
 
@@ -21,6 +22,8 @@ public:
 	Quat EulerToQuaternion(float3 eu);
 	float4x4 GetGlobalMatrix() const;
 	float4x4 GetGlobalMatrixTransposed() const;
+
+	bool SaveComponent(JsonObj& obj);
 
 
 	void SetTransformation(float3 pos, Quat rot, float3 size);

@@ -66,6 +66,8 @@ bool ModuleCentralEditor::Init()
     ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->window->gl_context);
     ImGui_ImplOpenGL3_Init();
 
+
+
 	return ret;
 }
 
@@ -477,6 +479,7 @@ void ModuleCentralEditor::Draw()
     if (stencil) glEnable(GL_AMBIENT);
     else glDisable(GL_AMBIENT);
 
+	//LoadFile();
 
     // Rendering
     ImGui::Render();
@@ -496,6 +499,16 @@ void ModuleCentralEditor::Draw()
         ImGui::RenderPlatformWindowsDefault();
         SDL_GL_MakeCurrent(backup_current_window, backup_current_context);
     }
+}
+
+bool ModuleCentralEditor::LoadFile()
+{
+	bool ret = false;
+	ImGui::OpenPopup("popup");
+	ImGui::BeginPopupModal("popup");
+	ImGui::Text("Lorem ipsum");
+	ImGui::EndPopup();
+	return true;
 }
 
 bool ModuleCentralEditor::ProcessEvents(SDL_Event event)
