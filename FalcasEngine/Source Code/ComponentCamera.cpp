@@ -49,6 +49,21 @@ void ComponentCamera::Update()
 	needed_to_update = false;
 }
 
+bool ComponentCamera::SaveComponent(JsonObj& obj)
+{
+	JsonArray arr = obj.AddArray(this->name.c_str());
+	JsonObj _obj;
+	_obj.AddFloat("FrustumFar", GetFarPlaneDistance());
+	arr.AddObject(_obj);
+	_obj.AddFloat("FrustumNear", GetNearPlaneDistance());
+	arr.AddObject(_obj);
+	_obj.AddFloat("FrustumHfov", GetHorizFov());
+	arr.AddObject(_obj);
+	_obj.AddFloat("FrustumVfov", GetVerticalFov());
+	arr.AddObject(_obj);
+	return true;
+}
+
 bool ComponentCamera::GetIfIsFrustumCulling() const
 {
 	if (active)
@@ -71,6 +86,46 @@ float* ComponentCamera::GetViewMatrix() const
 	ViewMatrix.Transpose();
 	return (float*)ViewMatrix.v;
 	
+}
+
+float ComponentCamera::GetFarPlaneDistance()
+{
+	return far_plane_distance;
+}
+
+float ComponentCamera::GetNearPlaneDistance()
+{
+	return near_plane_distance;
+}
+
+float ComponentCamera::GetHorizFov()
+{
+	return field_of_view_horizontal;
+}
+
+float ComponentCamera::GetVerticalFov()
+{
+	return field_of_view_vertical;
+}
+
+void ComponentCamera::SetFarPlaneDistance(float num)
+{
+	far_plane_distance = num;
+}
+
+void ComponentCamera::SetNearPlaneDistance(float num)
+{
+	near_plane_distance = num;
+}
+
+void ComponentCamera::SetHorizFov(float num)
+{
+	field_of_view_horizontal = num;
+}
+
+void ComponentCamera::SetVerticalFov(float num)
+{
+	field_of_view_vertical = num;
 }
 
 

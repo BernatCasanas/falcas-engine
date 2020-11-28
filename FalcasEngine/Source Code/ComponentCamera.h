@@ -17,9 +17,21 @@ public:
 	void UpdateFrustum();
 	void Inspector();
 	void Update();
+	bool SaveComponent(JsonObj& obj);
 	bool GetIfIsFrustumCulling() const;
 	float* GetProjectionMatrix() const;
 	float* GetViewMatrix() const;
+
+	float GetFarPlaneDistance();
+	float GetNearPlaneDistance();
+	float GetHorizFov();
+	float GetVerticalFov();
+
+	void SetFarPlaneDistance(float num);
+	void SetNearPlaneDistance(float num);
+	void SetHorizFov(float num);
+	void SetVerticalFov(float num);
+
 public:
 	bool update_projection_matrix = false;
 	Frustum frustum;
