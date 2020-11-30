@@ -48,7 +48,7 @@ public:
 	bool ProcessEvents(SDL_Event event);
 
 	void HierarchyRecursiveTree(GameObject* game_object, static ImGuiTreeNodeFlags base_flags, int &node_clicked);
-	void SaveAllGameObjectsTree(GameObject* game_object, JsonObj obj);
+	void SaveAllGameObjectsTree(GameObject* game_object, JsonArray arr);
 
 	void SelectObject(GameObject* game_obj);
 

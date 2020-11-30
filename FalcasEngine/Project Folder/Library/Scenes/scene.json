@@ -2,7 +2,7 @@
     "name": "scene",
     "GameObjects": [
         {
-            "UUID": 1198312324,
+            "UUID": 1729491451,
             "name": "Grid",
             "Translation": [
                 0,
@@ -40,12 +40,216 @@
                         0,
                         1
                     ],
-                    "UUID": 1179514654
+                    "UUID": 1721415415
                 },
                 {
                     "name": "Mesh",
                     "Path": "",
-                    "UUID": 1223027779
+                    "UUID": 1735409236
+                }
+            ]
+        },
+        {
+            "UUID": 1238257067,
+            "Parent UUID": 1729491451,
+            "name": "Camera",
+            "Translation": [
+                0,
+                0,
+                0
+            ],
+            "Scale": [
+                1,
+                1,
+                1
+            ],
+            "Rotation": [
+                0,
+                0,
+                0
+            ],
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1
+                    ],
+                    "UUID": 1230877241
+                },
+                {
+                    "name": "Camera",
+                    "FrustumFar": 1000,
+                    "FrustumNear": 0.10000000149011612,
+                    "FrustumHfov": 1.3767952919006348,
+                    "FrustumVfov": 1,
+                    "UUID": 226152688
+                }
+            ]
+        },
+        {
+            "UUID": 393798276,
+            "Parent UUID": 1729491451,
+            "name": "BakerHouse",
+            "Translation": [
+                0,
+                0,
+                0
+            ],
+            "Scale": [
+                1,
+                1,
+                1
+            ],
+            "Rotation": [
+                0,
+                0,
+                0
+            ],
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1
+                    ],
+                    "UUID": 387532386
+                }
+            ]
+        },
+        {
+            "UUID": 447963414,
+            "Parent UUID": 393798276,
+            "name": "BakerHouse (1)",
+            "Translation": [
+                0,
+                0,
+                0
+            ],
+            "Scale": [
+                100,
+                99,
+                99
+            ],
+            "Rotation": [
+                0,
+                0,
+                0
+            ],
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        100,
+                        0,
+                        0,
+                        0,
+                        0,
+                        -1.1920928045583423e-05,
+                        99.999984741210938,
+                        0,
+                        0,
+                        -99.999984741210938,
+                        -1.1920928045583423e-05,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1
+                    ],
+                    "UUID": 444412743
+                },
+                {
+                    "name": "Mesh",
+                    "Path": "D:\\Github\\Falcas-Engine\\FalcasEngine\\Project Folder\\Assets\\BakerHouse\\BakerHouse.fbx",
+                    "UUID": 451722948
+                },
+                {
+                    "name": "Material",
+                    "Path": "Baker_house",
+                    "UUID": 677223282
+                }
+            ]
+        },
+        {
+            "UUID": 1194436573,
+            "Parent UUID": 393798276,
+            "name": "BakerHouse (2)",
+            "Translation": [
+                0,
+                0,
+                0
+            ],
+            "Scale": [
+                100,
+                99,
+                99
+            ],
+            "Rotation": [
+                0,
+                0,
+                0
+            ],
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        100,
+                        0,
+                        0,
+                        0,
+                        0,
+                        -1.1920928045583423e-05,
+                        99.999984741210938,
+                        0,
+                        0,
+                        -99.999984741210938,
+                        -1.1920928045583423e-05,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1
+                    ],
+                    "UUID": 1188309925
+                },
+                {
+                    "name": "Mesh",
+                    "Path": "D:\\Github\\Falcas-Engine\\FalcasEngine\\Project Folder\\Assets\\BakerHouse\\BakerHouse.fbx",
+                    "UUID": 1198265728
+                },
+                {
+                    "name": "Material",
+                    "Path": "Baker_house",
+                    "UUID": 1661219391
                 }
             ]
         }

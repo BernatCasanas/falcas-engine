@@ -527,9 +527,7 @@ bool ModuleCentralEditor::SaveScene()
 	JsonObj scene;
 	scene.AddString("name", "scene");
 	JsonArray arr = scene.AddArray("GameObjects");
-	JsonObj obj;
-	arr.AddObject(obj);
-	SaveAllGameObjectsTree(App->scene_intro->root, obj);
+	SaveAllGameObjectsTree(App->scene_intro->root, arr);
 	scene.Save(&buffer);
 	char name[40] = "Library/Scenes/scene.json";
 	for (int i = 0; App->filesystem->FileExists(name); i++) {
@@ -621,14 +619,21 @@ void ModuleCentralEditor::HierarchyRecursiveTree(GameObject* game_object, static
         ImGui::Indent(ImGui::GetTreeNodeToLabelSpacing());
 }
 
-void ModuleCentralEditor::SaveAllGameObjectsTree(GameObject* game_object, JsonObj obj)
+void ModuleCentralEditor::SaveAllGameObjectsTree(GameObject* game_object, JsonArray arr)
 {
 	if (game_object == nullptr) {
 		return;
 	}
 	bool hasChildren = true;
 	if (game_object->children.size() == 0) hasChildren = false;
+	JsonObj obj;
 	game_object->SaveGameObject(obj);
+	arr.AddObject(obj);
+	if (hasChildren) {
+		for (std::vector<GameObject*>::iterator it = game_object->children.begin(); it != game_object->children.end(); ++it) {
+			SaveAllGameObjectsTree((*it), arr);
+		}
+	}
 }
 
 void ModuleCentralEditor::SelectObject(GameObject* game_obj)
