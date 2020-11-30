@@ -40,6 +40,7 @@ bool ModuleSceneIntro::Start()
 
 	id_gameobject = -1;
 	root = new GameObject(id_gameobject, "Grid", nullptr, { 0,0,0 }, Quat::identity, { 1,1,1 });
+	root->SetUUID();
 	id_gameobject++;
 	ComponentMesh* mesh = (ComponentMesh*)root->CreateComponent(Component_Type::Mesh);
 	mesh->grid = true;

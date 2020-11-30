@@ -43,10 +43,12 @@ public:
 	void Draw();
 
 	bool LoadFile();
+	bool SaveScene();
 
 	bool ProcessEvents(SDL_Event event);
 
 	void HierarchyRecursiveTree(GameObject* game_object, static ImGuiTreeNodeFlags base_flags, int &node_clicked);
+	void SaveAllGameObjectsTree(GameObject* game_object, JsonObj obj);
 
 	void SelectObject(GameObject* game_obj);
 
@@ -64,6 +66,7 @@ public:
 	bool show_openglOptions = false;
 	bool show_hierarchy = true;
 	bool show_inspector = true;
+	bool show_loadScene = false;
 
 	bool cullface = false;
 	bool colorMaterial = false;

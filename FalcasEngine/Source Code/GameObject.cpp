@@ -276,34 +276,31 @@ void GameObject::SetUUID()
 
 bool GameObject::SaveGameObject(JsonObj& obj)
 {
-	JsonArray arr = obj.AddArray(this->name.c_str());
-	JsonObj _obj;
-	_obj.AddInt("UID", GetUUID());
-	arr.AddObject(_obj);
-	if (parent->GetUUID() != NULL) {
-		_obj.AddInt("Parent UID", parent->GetUUID());
-		arr.AddObject(_obj);
+	obj.AddInt("UUID", GetUUID());
+	if (parent != nullptr) {;
+		obj.AddInt("Parent UUID", parent->GetUUID());
 	}
+	obj.AddString("name", this->name.c_str());
+	JsonArray transArr = obj.AddArray("Translation");
+	transArr.AddInt(trans->GetPosition().x);
+	transArr.AddInt(trans->GetPosition().y);
+	transArr.AddInt(trans->GetPosition().z);
 
-	JsonArray transArr = _obj.AddArray("Translation");
-	arr.AddInt(trans->GetPosition().x);
-	arr.AddInt(trans->GetPosition().y);
-	arr.AddInt(trans->GetPosition().z);
+	transArr = obj.AddArray("Scale");
+	transArr.AddInt(trans->GetSize().x);
+	transArr.AddInt(trans->GetSize().y);
+	transArr.AddInt(trans->GetSize().z);
 
-	transArr = _obj.AddArray("Scale");
-	arr.AddInt(trans->GetSize().x);
-	arr.AddInt(trans->GetSize().y);
-	arr.AddInt(trans->GetSize().z);
+	transArr = obj.AddArray("Rotation");
+	transArr.AddInt(trans->GetRotation().x);
+	transArr.AddInt(trans->GetRotation().y);
+	transArr.AddInt(trans->GetRotation().z);
 
-	transArr = _obj.AddArray("Rotation");
-	arr.AddInt(trans->GetRotation().x);
-	arr.AddInt(trans->GetRotation().y);
-	arr.AddInt(trans->GetRotation().z);
-
-	for (std::vector<Component*>::iterator it = components.begin(); it._Ptr != nullptr; it++) {
-		JsonArray arr = _obj.AddArray((*it)->name.c_str());
+	transArr = obj.AddArray("Components");
+	for (std::vector<Component*>::iterator it = components.begin(); it!=components.end(); it++) {
 		JsonObj componentObject;
-		arr.AddObject(componentObject);
+		transArr.AddObject(componentObject);
+		componentObject.AddString("name", (*it)->name.c_str());
 		(*it)->SaveComponent(componentObject);
 	}
 	return true;

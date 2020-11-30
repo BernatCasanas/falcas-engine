@@ -33,9 +33,7 @@ bool FileSystem::Start()
 		LOG("Failed to load Asset Manager");
 	}
 
-	PHYSFS_setWriteDir(".");
 
-	CreateFolders();
 
 	PHYSFS_mount("Assets.zip", nullptr, 1);
 
@@ -123,6 +121,7 @@ void FileSystem::CreateFolders()
 	CreateOneFolder("Library/Meshes/");
 	CreateOneFolder("Library/Textures/");
 	CreateOneFolder("Library/Config");
+	CreateOneFolder("Library/Scenes");
 }
 
 void FileSystem::CreateOneFolder(char* name)
@@ -130,6 +129,30 @@ void FileSystem::CreateOneFolder(char* name)
 	if (PHYSFS_isDirectory(name) == false) {
 		PHYSFS_mkdir(name);
 	}
+}
+
+JsonObj FileSystem::GenerateConfigContent()
+{
+	JsonObj obj;
+	obj.AddString("icon", "");
+	JsonArray arr = obj.AddArray("configModules");
+	JsonObj _obj;
+	_obj.AddString("name", "moduleWindow");
+	arr.AddObject(_obj);
+	_obj.AddString("appName", "Falcas Engine");
+	arr.AddObject(_obj);
+	_obj.AddInt("height", 900);
+	arr.AddObject(_obj);
+	_obj.AddInt("width", 1600);
+	arr.AddObject(_obj);
+	_obj.AddBool("resizeable", true);
+	arr.AddObject(_obj);
+	_obj.AddBool("fullscreen", false);
+	arr.AddObject(_obj);
+	_obj.AddBool("border", true);
+	arr.AddObject(_obj);
+
+	return obj;
 }
 
 uint FileSystem::GenerateUUID()

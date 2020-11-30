@@ -39,6 +39,7 @@ public:
 
 	void CreateFolders();
 	void CreateOneFolder(char* name);
+	JsonObj GenerateConfigContent();
 
 	uint GenerateUUID();
 

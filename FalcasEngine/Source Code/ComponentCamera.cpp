@@ -51,16 +51,11 @@ void ComponentCamera::Update()
 
 bool ComponentCamera::SaveComponent(JsonObj& obj)
 {
-	JsonArray arr = obj.AddArray(this->name.c_str());
-	JsonObj _obj;
-	_obj.AddFloat("FrustumFar", GetFarPlaneDistance());
-	arr.AddObject(_obj);
-	_obj.AddFloat("FrustumNear", GetNearPlaneDistance());
-	arr.AddObject(_obj);
-	_obj.AddFloat("FrustumHfov", GetHorizFov());
-	arr.AddObject(_obj);
-	_obj.AddFloat("FrustumVfov", GetVerticalFov());
-	arr.AddObject(_obj);
+	obj.AddFloat("FrustumFar", GetFarPlaneDistance());
+	obj.AddFloat("FrustumNear", GetNearPlaneDistance());
+	obj.AddFloat("FrustumHfov", GetHorizFov());
+	obj.AddFloat("FrustumVfov", GetVerticalFov());
+	obj.AddInt("UUID", GetUUID());
 	return true;
 }
 

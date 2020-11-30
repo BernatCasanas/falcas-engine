@@ -23,6 +23,7 @@
 #include "Shape.h"
 #include "External Libraries/ImGui/imconfig.h"
 #include "External Libraries/ImGui/imgui_impl_sdl.h"
+#include "FileSystem.h"
 
 
 ModuleCentralEditor::ModuleCentralEditor(Application* app, bool start_enabled) : Module(app, start_enabled),progress(50.f),progress2(50.f),progress3(50.f), progress4(50.f)
@@ -137,6 +138,9 @@ void ModuleCentralEditor::Draw()
             if (ImGui::MenuItem("Quit", "Esc")) {
                 wantToExit=true;
             }
+			if (ImGui::MenuItem("Save Scene")) {
+				SaveScene();
+			}
             ImGui::EndMenu();
         }
         if (ImGui::BeginMenu("View")) {
@@ -464,6 +468,12 @@ void ModuleCentralEditor::Draw()
         ImGui::Checkbox("Camera Frustums", &frustums);
         ImGui::End();
     }
+
+	if (show_loadScene) {
+		LoadFile();
+	}
+
+
     if (depth) glEnable(GL_DEPTH_TEST);
     else glDisable(GL_DEPTH_TEST);
     if (cullface) glEnable(GL_CULL_FACE);
@@ -479,7 +489,6 @@ void ModuleCentralEditor::Draw()
     if (stencil) glEnable(GL_AMBIENT);
     else glDisable(GL_AMBIENT);
 
-	//LoadFile();
 
     // Rendering
     ImGui::Render();
@@ -508,6 +517,26 @@ bool ModuleCentralEditor::LoadFile()
 	ImGui::BeginPopupModal("popup");
 	ImGui::Text("Lorem ipsum");
 	ImGui::EndPopup();
+	return true;
+}
+
+bool ModuleCentralEditor::SaveScene()
+{
+	char* buffer = nullptr;
+
+	JsonObj scene;
+	scene.AddString("name", "scene");
+	JsonArray arr = scene.AddArray("GameObjects");
+	JsonObj obj;
+	arr.AddObject(obj);
+	SaveAllGameObjectsTree(App->scene_intro->root, obj);
+	scene.Save(&buffer);
+	char name[40] = "Library/Scenes/scene.json";
+	for (int i = 0; App->filesystem->FileExists(name); i++) {
+		if (i != 0) sprintf_s(name, 40, "%s_%i", name);
+		sprintf_s(name, 40, "Library/Scenes/%s.json", name);
+	}
+	App->filesystem->SaveInternal(name, buffer, strlen(buffer));
 	return true;
 }
 
@@ -590,6 +619,16 @@ void ModuleCentralEditor::HierarchyRecursiveTree(GameObject* game_object, static
     }
     if (game_object->id < 0 && !has_children)
         ImGui::Indent(ImGui::GetTreeNodeToLabelSpacing());
+}
+
+void ModuleCentralEditor::SaveAllGameObjectsTree(GameObject* game_object, JsonObj obj)
+{
+	if (game_object == nullptr) {
+		return;
+	}
+	bool hasChildren = true;
+	if (game_object->children.size() == 0) hasChildren = false;
+	game_object->SaveGameObject(obj);
 }
 
 void ModuleCentralEditor::SelectObject(GameObject* game_obj)

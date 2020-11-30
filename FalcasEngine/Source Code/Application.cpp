@@ -9,8 +9,10 @@
 #include "ModuleCentralEditor.h"
 #include "Console.h"
 #include "FileSystem.h"
+#include <string>
 #include "External Libraries/JSON/parson.h"
 #include "Json.h"
+#include "External Libraries/PhysFS/include/physfs.h"
 
 Application::Application()
 {
@@ -61,10 +63,15 @@ bool Application::Init()
 	bool ret = true;
 	Module* item;
 
-	char* buffer;
+	PHYSFS_setWriteDir(".");
+	App->filesystem->CreateFolders();
+
+	char* buffer = nullptr;
 	
+	JsonObj config = App->filesystem->GenerateConfigContent();
+	config.Save(&buffer);
+	App->filesystem->SaveInternal("Library/Config/config.json", buffer, strlen(buffer));
 	uint sizeConfig = App->filesystem->LoadPath("Library/Config/config.json",&buffer);
-	JsonObj config(buffer);
 	JsonArray arrayModules(config.GetArray("configModules"));
 
 	// Call Init() in all modules

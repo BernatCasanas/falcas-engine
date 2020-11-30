@@ -26,10 +26,8 @@ ComponentMaterial::~ComponentMaterial()
 
 bool ComponentMaterial::SaveComponent(JsonObj& obj)
 {
-	JsonArray arr = obj.AddArray(this->name.c_str());
-	JsonObj _obj;
-	_obj.AddString("Path", this->file_name.c_str());
-	arr.AddObject(_obj);
+	obj.AddString("Path", this->file_name.c_str());
+	obj.AddInt("UUID", GetUUID());
 	return true;
 }
 
