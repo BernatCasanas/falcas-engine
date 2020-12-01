@@ -14,7 +14,8 @@ enum class FILE_TYPE
 	UNKNOWN = -1,
 	FBX,
 	PNG,
-	DDS
+	DDS,
+	SCENE
 };
 
 class Application;
@@ -34,6 +35,7 @@ public:
 	bool FileExists(std::string file);
 	char* ReadPhysFile(std::string file);
 	uint GetSizePhysFile(std::string file);
+	void DiscoverFiles(const char* directory, std::vector<std::string>& file_list, std::vector<std::string>& dir_list) const;
 
 	void SaveInternal(const char* file, const void* buffer, uint size);
 

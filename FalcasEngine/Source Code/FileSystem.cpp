@@ -78,6 +78,7 @@ FILE_TYPE FileSystem::GetTypeFile(char* file)
 	if (name == "fbx" || name == "FBX") return FILE_TYPE::FBX;
 	else if (name == "png" || name == "PNG") return FILE_TYPE::PNG;
 	else if (name == "dds" || name == "DDS") return FILE_TYPE::DDS;
+	else if (name == "scenefalcas" || name == "SCENE") return FILE_TYPE::SCENE;
 	else return FILE_TYPE::UNKNOWN;
 }
 
@@ -107,6 +108,24 @@ uint FileSystem::GetSizePhysFile(std::string file)
 	PHYSFS_sint32 size = (PHYSFS_sint32)PHYSFS_fileLength(file_phys);
 	PHYSFS_close(file_phys);
 	return size;
+}
+
+void FileSystem::DiscoverFiles(const char* directory, std::vector<std::string>& file_list, std::vector<std::string>& dir_list) const
+{
+	char** rc = PHYSFS_enumerateFiles(directory);
+	char** i;
+
+	std::string dir(directory);
+
+	for (i = rc; *i != nullptr; i++)
+	{
+		if (PHYSFS_isDirectory((dir + *i).c_str()))
+			dir_list.push_back(*i);
+		else
+			file_list.push_back(*i);
+	}
+
+	PHYSFS_freeList(rc);
 }
 
 void FileSystem::SaveInternal(const char* file, const void* buffer, uint size)

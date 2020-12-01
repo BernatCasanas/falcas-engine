@@ -47,6 +47,7 @@ public:
 
 	bool ProcessEvents(SDL_Event event);
 
+	void FilesRecursiveTree(const char* path);
 	void HierarchyRecursiveTree(GameObject* game_object, static ImGuiTreeNodeFlags base_flags, int &node_clicked);
 	void SaveAllGameObjectsTree(GameObject* game_object, JsonArray arr);
 
@@ -66,7 +67,6 @@ public:
 	bool show_openglOptions = false;
 	bool show_hierarchy = true;
 	bool show_inspector = true;
-	bool show_loadScene = false;
 
 	bool cullface = false;
 	bool colorMaterial = false;
@@ -80,6 +80,7 @@ public:
 	bool lighting = true;
 	bool texture = true;
 	bool frustums = false;
+	bool loading_file = false;
 
 	float progress;
 	float progress2;
@@ -102,6 +103,7 @@ private:
 	bool is_popup_shown = false;
 	bool delete_game_object = false;
 	std::vector<int> ids_of_parents_selected;
+	char selected_file[100] = "";
 };
 
 #endif // __ModuleCentralEditor_H__

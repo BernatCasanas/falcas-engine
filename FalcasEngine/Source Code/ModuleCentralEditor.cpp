@@ -24,7 +24,7 @@
 #include "External Libraries/ImGui/imconfig.h"
 #include "External Libraries/ImGui/imgui_impl_sdl.h"
 #include "FileSystem.h"
-
+#include <algorithm>
 
 ModuleCentralEditor::ModuleCentralEditor(Application* app, bool start_enabled) : Module(app, start_enabled),progress(50.f),progress2(50.f),progress3(50.f), progress4(50.f)
 {
@@ -141,6 +141,9 @@ void ModuleCentralEditor::Draw()
 			if (ImGui::MenuItem("Save Scene")) {
 				SaveScene();
 			}
+            if (ImGui::MenuItem("Load Scene")) {
+                loading_file = !loading_file;
+            }
             ImGui::EndMenu();
         }
         if (ImGui::BeginMenu("View")) {
@@ -469,7 +472,7 @@ void ModuleCentralEditor::Draw()
         ImGui::End();
     }
 
-	if (show_loadScene) {
+	if (loading_file) {
 		LoadFile();
 	}
 
@@ -513,10 +516,30 @@ void ModuleCentralEditor::Draw()
 bool ModuleCentralEditor::LoadFile()
 {
 	bool ret = false;
-	ImGui::OpenPopup("popup");
-	ImGui::BeginPopupModal("popup");
-	ImGui::Text("Lorem ipsum");
-	ImGui::EndPopup();
+	ImGui::OpenPopup("Load File");
+    if (ImGui::BeginPopupModal("Load File")) {
+        ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, 5.0f);
+        ImGui::BeginChild("File Browser", ImVec2(0, 300), true);
+            FilesRecursiveTree("Assets");
+        ImGui::EndChild();
+        ImGui::PopStyleVar();
+        ImGui::PushItemWidth(250.f);
+        if (ImGui::InputText("##file_selector", selected_file, 100, ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
+        ImGui::SameLine();
+        if (ImGui::Button("Ok", ImVec2(50, 20))) {
+            if (App->filesystem->GetTypeFile(selected_file) == FILE_TYPE::SCENE) {
+                loading_file = !loading_file;
+            }
+        }
+        ImGui::SameLine();
+
+        if (ImGui::Button("Cancel", ImVec2(50, 20)))
+        {
+            loading_file = !loading_file;
+            selected_file[0] = '\0';
+        }
+        ImGui::EndPopup();
+    }
 	return true;
 }
 
@@ -547,6 +570,47 @@ bool ModuleCentralEditor::ProcessEvents(SDL_Event event)
     if (event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_CLOSE && event.window.windowID == SDL_GetWindowID(App->window->window))
         done = true;
     return done;
+}
+
+void ModuleCentralEditor::FilesRecursiveTree(const char* path)
+{
+    std::vector<std::string> files;
+    std::vector<std::string> dirs;
+
+    std::string dir((path) ? path : "");
+    dir += "/";
+
+    App->filesystem->DiscoverFiles(dir.c_str(), files, dirs);
+
+    for (std::vector<std::string>::const_iterator it = dirs.begin(); it != dirs.end(); ++it)
+    {
+        if (ImGui::TreeNodeEx((dir + (*it)).c_str(), 0, "%s/", (*it).c_str()))
+        {
+            FilesRecursiveTree((dir + (*it)).c_str());
+            ImGui::TreePop();
+        }
+    }
+
+    std::sort(files.begin(), files.end());
+
+    for (std::vector<std::string>::const_iterator it = files.begin(); it != files.end(); ++it)
+    {
+        const std::string& str = *it;
+
+        if (ImGui::TreeNodeEx(str.c_str(), ImGuiTreeNodeFlags_Leaf))
+        {
+            if (ImGui::IsItemClicked()) {
+                sprintf_s(selected_file, 100, "%s%s", dir.c_str(),str.c_str());
+
+                if (ImGui::IsMouseDoubleClicked(0)) {
+                    sprintf_s(selected_file, 100, "%s", dir.c_str());
+                    loading_file = !loading_file;
+                }
+            }
+
+            ImGui::TreePop();
+        }
+    }
 }
 
 void ModuleCentralEditor::HierarchyRecursiveTree(GameObject* game_object, static ImGuiTreeNodeFlags base_flags, int &id_node_clicked)
