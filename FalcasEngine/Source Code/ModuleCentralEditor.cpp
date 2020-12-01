@@ -529,6 +529,7 @@ bool ModuleCentralEditor::LoadFile()
         if (ImGui::Button("Ok", ImVec2(50, 20))) {
             if (App->filesystem->GetTypeFile(selected_file) == FILE_TYPE::SCENE) {
                 loading_file = !loading_file;
+                LoadScene((const char*)loading_file);
             }
         }
         ImGui::SameLine();
@@ -552,13 +553,31 @@ bool ModuleCentralEditor::SaveScene()
 	JsonArray arr = scene.AddArray("GameObjects");
 	SaveAllGameObjectsTree(App->scene_intro->root, arr);
 	scene.Save(&buffer);
-	char name[40] = "Library/Scenes/scene.json";
+	char name[150] = "Library/Scenes/scene.scenefalcas";
+    std::string fileName = "scene";
+    std::string baseName = "scene";
 	for (int i = 0; App->filesystem->FileExists(name); i++) {
-		if (i != 0) sprintf_s(name, 40, "%s_%i", name);
-		sprintf_s(name, 40, "Library/Scenes/%s.json", name);
+        fileName = App->filesystem->GetFileName(name, true);
+        if (i != 0) fileName =  baseName + std::to_string(i);
+		sprintf_s(name, 150, "Library/Scenes/%s.scenefalcas", fileName.c_str());
 	}
 	App->filesystem->SaveInternal(name, buffer, strlen(buffer));
+    if (App->filesystem->FileExists("Assets/Scenes")) {
+		sprintf_s(name, 150, "Assets/Scenes/%s.scenefalcas", fileName.c_str());
+	    App->filesystem->SaveInternal(name, buffer, strlen(buffer));
+    }
+    else {
+         if(App->filesystem->FileExists("Assets")){
+		    sprintf_s(name, 150, "Assets/%s.scenefalcas", fileName.c_str());
+	        App->filesystem->SaveInternal(name, buffer, strlen(buffer));
+        }
+    }
 	return true;
+}
+
+void ModuleCentralEditor::LoadScene(const char* file)
+{
+
 }
 
 bool ModuleCentralEditor::ProcessEvents(SDL_Event event)

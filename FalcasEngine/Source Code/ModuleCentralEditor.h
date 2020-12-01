@@ -45,6 +45,8 @@ public:
 	bool LoadFile();
 	bool SaveScene();
 
+	void LoadScene(const char* file);
+
 	bool ProcessEvents(SDL_Event event);
 
 	void FilesRecursiveTree(const char* path);

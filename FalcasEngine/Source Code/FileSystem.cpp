@@ -131,6 +131,7 @@ void FileSystem::DiscoverFiles(const char* directory, std::vector<std::string>& 
 void FileSystem::SaveInternal(const char* file, const void* buffer, uint size)
 {
 	PHYSFS_file* file_phys = PHYSFS_openWrite(file);
+	if (file_phys == nullptr) return;
 	PHYSFS_write(file_phys, buffer, 1, size);
 	PHYSFS_close(file_phys);
 }
