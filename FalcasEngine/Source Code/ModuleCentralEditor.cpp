@@ -29,6 +29,7 @@
 #include "ComponentMesh.h"
 #include "ComponentMaterial.h"
 #include "ComponentCamera.h"
+#include "Importer.h"
 
 ModuleCentralEditor::ModuleCentralEditor(Application* app, bool start_enabled) : Module(app, start_enabled),progress(50.f),progress2(50.f),progress3(50.f), progress4(50.f)
 {
@@ -599,18 +600,16 @@ void ModuleCentralEditor::LoadScene(const char* file)
         else {
             parent = App->scene_intro->root;
         }
-        JsonArray translation = obj.GetArray("Translation");
-        float3 position = { translation.GetObjectAt(0).GetVal(),translation.GetObjectAt(1).GetVal(),translation.GetObjectAt(2).GetVal() };
-        JsonArray rotation = obj.GetArray("Rotation");
-        Quat q_rotation = { rotation.GetObjectAt(0).GetVal(),rotation.GetObjectAt(1).GetVal(),rotation.GetObjectAt(2).GetVal(), 1 };
-        JsonArray size = obj.GetArray("Scale");
-        float3 p_size = { size.GetObjectAt(0).GetVal(),size.GetObjectAt(1).GetVal(),size.GetObjectAt(2).GetVal() };
+        float3 position = obj.GetFloat3("Translation");
+        Quat q_rotation = { obj.GetFloat3("Rotation"),1 };
+        float3 p_size = obj.GetFloat3("Scale");
 
         GameObject* gameObject = App->scene_intro->CreateGameObject(position, q_rotation, p_size, obj.GetString("name"), parent);
         gameObject->parent = parent;
         gameObject->SetUUID(obj.GetInt("UUID"));
-    
-        if (obj.GetString("name") == "Grid") {
+        
+        std::string grid = obj.GetString("name");
+        if (grid == "Grid") {
             App->scene_intro->root->SetUUID(obj.GetInt("UUID"));
             continue;
         }
@@ -618,26 +617,28 @@ void ModuleCentralEditor::LoadScene(const char* file)
         JsonArray components = obj.GetArray("Components");
         for(int i = 0; i<components.Size();++i){
             JsonObj comp = components.GetObjectAt(i);
-            if (comp.GetString("name") == "Transform") {
-                ComponentTransform* trans = (ComponentTransform*)gameObject->CreateComponent(Component_Type::Transform);
+            std::string component_name = comp.GetString("name");
+            if (component_name == "Transform") {
+                ComponentTransform* trans = (ComponentTransform*)gameObject->GetComponent(Component_Type::Transform);
                 trans->SetUUID(comp.GetInt("UUID"));
-                JsonArray m = comp.GetArray("GlobalMatrix");
-                //float4x4 matrix = {m.GetObjectAt(0)}
-                //trans->SetMatricesWithNewParent();
-                //get matrix, set matrix. thjats it
+                float4x4 matrix = comp.GetFloat4x4("GlobalMatrix");
+                trans->SetMatricesWithNewParent(matrix);
             }
-            else if (comp.GetString("name") == "Mesh") {
-                ComponentMesh* mesh = (ComponentMesh*)gameObject->CreateComponent(Component_Type::Mesh, (char*)comp.GetString("Path"));
-                mesh->SetUUID(comp.GetInt("UUID"));
+            else if (component_name == "Mesh") {
+                //IDEAS
+                //Pots crear funcions al importer que vagin de forma independent pero q utilitzin el meshimporter
             }
-            else if (comp.GetString("name") == "Material") {
-                //save material path correctly
-                ComponentMaterial* mat = (ComponentMaterial*)gameObject->CreateComponent(Component_Type::Mesh, (char*)comp.GetString("Path"));
-                mat->SetUUID(comp.GetInt("UUID"));
+            else if (component_name == "Material") {
+                //IDEAS
+                //Primer has de carregar el path correcte de materials i despres fer lo mateix que mesh
             }
-            else if (comp.GetString("name") == "Camera") {
+            else if (component_name == "Camera") {
                 ComponentCamera* cam = (ComponentCamera*)gameObject->CreateComponent(Component_Type::Camera);
                 cam->SetUUID(comp.GetInt("UUID"));
+                cam->SetFarPlaneDistance(comp.GetFloat("FrustumFar"));
+                cam->SetNearPlaneDistance(comp.GetFloat("FrustumNear"));
+                cam->SetHorizFov(comp.GetFloat("FrustumHfov"));
+                cam->SetVerticalFov(comp.GetFloat("FrustumVfov"));
             }
         }
 

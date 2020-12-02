@@ -69,7 +69,6 @@ void ImportGameObjectFromFBX(const aiScene* scene, aiNode* node, GameObject* par
 		transform_heredated = float4x4::identity;
 	}
 
-
 	if (node->mNumMeshes > 0) {
 		ComponentMesh* mesh = (ComponentMesh*)game_object->CreateComponent(Component_Type::Mesh);
 		aiMesh* ai_mesh = scene->mMeshes[node->mMeshes[0]];

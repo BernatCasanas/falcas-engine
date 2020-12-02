@@ -100,8 +100,8 @@ float3 JsonObj::GetFloat3(const char* name)
 	JSON_Array* arr;
 	arr = json_object_get_array(obj, name);
 	num.x = json_array_get_number(arr, 0);
-	num.x = json_array_get_number(arr, 0);
-	num.x = json_array_get_number(arr, 0);
+	num.y = json_array_get_number(arr, 1);
+	num.z = json_array_get_number(arr, 2);
 
 	return num;
 }

@@ -172,6 +172,17 @@ GameObject* ModuleSceneIntro::SearchGameObject(int id, GameObject* game_obj)
 	return game_object;
 }
 
+GameObject* ModuleSceneIntro::SearchGameObject(uint uuid, GameObject* game_object)
+{
+	if (game_object->GetUUID() == uuid) {
+		return game_object;
+	}
+	for (int i = 0; i < game_object->children.size(); i++) {
+		game_object = SearchGameObject(uuid, game_object->children[i]);
+	}
+	return game_object;
+}
+
 bool ModuleSceneIntro::IsGameObjectNameRepeated(std::string name, GameObject* game_obj)
 {
 	bool ret = false;

@@ -28,6 +28,7 @@ public:
 
 
 	GameObject* SearchGameObject(int id, GameObject* game_obj);
+	GameObject* SearchGameObject(uint uuid, GameObject* game_object);
 	bool IsGameObjectNameRepeated(std::string name, GameObject* game_obj);
 	std::string CheckNameGameObject(std::string name, bool numbered = false);
 
