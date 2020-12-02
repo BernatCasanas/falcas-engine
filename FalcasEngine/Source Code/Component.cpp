@@ -47,3 +47,8 @@ void Component::SetUUID()
 {
 	uuid = LCG().Int();
 }
+
+void Component::SetUUID(uint uuid)
+{
+	this->uuid = uuid;
+}

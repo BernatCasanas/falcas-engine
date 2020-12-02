@@ -28,6 +28,7 @@ public:
 
 	uint GetUUID();
 	void SetUUID();
+	void SetUUID(uint uuid);
 
 	Component_Type type;
 	bool active = true;

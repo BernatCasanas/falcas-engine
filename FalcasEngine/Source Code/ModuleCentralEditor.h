@@ -51,7 +51,10 @@ public:
 
 	void FilesRecursiveTree(const char* path);
 	void HierarchyRecursiveTree(GameObject* game_object, static ImGuiTreeNodeFlags base_flags, int &node_clicked);
+	void SearchParent(GameObject* game_object, uint uuid);
+
 	void SaveAllGameObjectsTree(GameObject* game_object, JsonArray arr);
+	void DeleteAllGameObjects(GameObject* game_object);
 
 	void SelectObject(GameObject* game_obj);
 
@@ -106,6 +109,11 @@ private:
 	bool delete_game_object = false;
 	std::vector<int> ids_of_parents_selected;
 	char selected_file[100] = "";
+
+private:
+	bool bool_parentFound;
+	GameObject* parentFound;
+
 };
 
 #endif // __ModuleCentralEditor_H__

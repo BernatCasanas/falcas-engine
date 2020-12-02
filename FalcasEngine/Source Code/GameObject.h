@@ -37,6 +37,7 @@ public:
 
 	uint GetUUID();
 	void SetUUID();
+	void SetUUID(uint uuid);
 	
 	bool SaveGameObject(JsonObj& obj);
 

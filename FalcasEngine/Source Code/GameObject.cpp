@@ -274,6 +274,11 @@ void GameObject::SetUUID()
 	uuid = LCG().Int();
 }
 
+void GameObject::SetUUID(uint uuid)
+{
+	this->uuid = uuid;
+}
+
 bool GameObject::SaveGameObject(JsonObj& obj)
 {
 	obj.AddInt("UUID", GetUUID());

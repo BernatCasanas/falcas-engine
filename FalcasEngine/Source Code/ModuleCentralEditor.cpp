@@ -25,6 +25,10 @@
 #include "External Libraries/ImGui/imgui_impl_sdl.h"
 #include "FileSystem.h"
 #include <algorithm>
+#include "ComponentTransform.h"
+#include "ComponentMesh.h"
+#include "ComponentMaterial.h"
+#include "ComponentCamera.h"
 
 ModuleCentralEditor::ModuleCentralEditor(Application* app, bool start_enabled) : Module(app, start_enabled),progress(50.f),progress2(50.f),progress3(50.f), progress4(50.f)
 {
@@ -529,7 +533,7 @@ bool ModuleCentralEditor::LoadFile()
         if (ImGui::Button("Ok", ImVec2(50, 20))) {
             if (App->filesystem->GetTypeFile(selected_file) == FILE_TYPE::SCENE) {
                 loading_file = !loading_file;
-                LoadScene((const char*)loading_file);
+                LoadScene((const char*)selected_file);
             }
         }
         ImGui::SameLine();
@@ -577,7 +581,67 @@ bool ModuleCentralEditor::SaveScene()
 
 void ModuleCentralEditor::LoadScene(const char* file)
 {
+    DeleteAllGameObjects(App->scene_intro->root);
+    char* buffer;
+    App->filesystem->LoadPath((char*)file, &buffer);
+    JsonObj scene(buffer);
+    JsonArray arr_gameObjects(scene.GetArray("GameObjects"));
 
+    for (int i = 0; i < arr_gameObjects.Size(); ++i) {
+        JsonObj obj = arr_gameObjects.GetObjectAt(i);
+
+        GameObject* parent = nullptr;
+        if (obj.GetInt("Parent UUID") != 0) {
+            SearchParent(App->scene_intro->root, obj.GetInt("Parent UUID"));
+            parent = parentFound;
+            parentFound = nullptr;
+        }
+        else {
+            parent = App->scene_intro->root;
+        }
+        JsonArray translation = obj.GetArray("Translation");
+        float3 position = { translation.GetObjectAt(0).GetVal(),translation.GetObjectAt(1).GetVal(),translation.GetObjectAt(2).GetVal() };
+        JsonArray rotation = obj.GetArray("Rotation");
+        Quat q_rotation = { rotation.GetObjectAt(0).GetVal(),rotation.GetObjectAt(1).GetVal(),rotation.GetObjectAt(2).GetVal(), 1 };
+        JsonArray size = obj.GetArray("Scale");
+        float3 p_size = { size.GetObjectAt(0).GetVal(),size.GetObjectAt(1).GetVal(),size.GetObjectAt(2).GetVal() };
+
+        GameObject* gameObject = App->scene_intro->CreateGameObject(position, q_rotation, p_size, obj.GetString("name"), parent);
+        gameObject->parent = parent;
+        gameObject->SetUUID(obj.GetInt("UUID"));
+    
+        if (obj.GetString("name") == "Grid") {
+            App->scene_intro->root->SetUUID(obj.GetInt("UUID"));
+            continue;
+        }
+
+        JsonArray components = obj.GetArray("Components");
+        for(int i = 0; i<components.Size();++i){
+            JsonObj comp = components.GetObjectAt(i);
+            if (comp.GetString("name") == "Transform") {
+                ComponentTransform* trans = (ComponentTransform*)gameObject->CreateComponent(Component_Type::Transform);
+                trans->SetUUID(comp.GetInt("UUID"));
+                JsonArray m = comp.GetArray("GlobalMatrix");
+                //float4x4 matrix = {m.GetObjectAt(0)}
+                //trans->SetMatricesWithNewParent();
+                //get matrix, set matrix. thjats it
+            }
+            else if (comp.GetString("name") == "Mesh") {
+                ComponentMesh* mesh = (ComponentMesh*)gameObject->CreateComponent(Component_Type::Mesh, (char*)comp.GetString("Path"));
+                mesh->SetUUID(comp.GetInt("UUID"));
+            }
+            else if (comp.GetString("name") == "Material") {
+                //save material path correctly
+                ComponentMaterial* mat = (ComponentMaterial*)gameObject->CreateComponent(Component_Type::Mesh, (char*)comp.GetString("Path"));
+                mat->SetUUID(comp.GetInt("UUID"));
+            }
+            else if (comp.GetString("name") == "Camera") {
+                ComponentCamera* cam = (ComponentCamera*)gameObject->CreateComponent(Component_Type::Camera);
+                cam->SetUUID(comp.GetInt("UUID"));
+            }
+        }
+
+    }
 }
 
 bool ModuleCentralEditor::ProcessEvents(SDL_Event event)
@@ -702,6 +766,25 @@ void ModuleCentralEditor::HierarchyRecursiveTree(GameObject* game_object, static
         ImGui::Indent(ImGui::GetTreeNodeToLabelSpacing());
 }
 
+void ModuleCentralEditor::SearchParent(GameObject* game_object, uint uuid)
+{
+    if (game_object == nullptr) {
+        return;
+    }
+    bool hasChildren = true;
+    if (game_object->children.size() == 0) hasChildren = false;
+    if (game_object->GetUUID() == uuid) {
+        parentFound = game_object;
+        bool_parentFound = true;
+    }
+    if (hasChildren) {
+        for (std::vector<GameObject*>::iterator it = game_object->children.begin(); it != game_object->children.end(); ++it) {
+            SearchParent((*it), uuid);
+            if (bool_parentFound) continue;
+        }
+    }
+}
+
 void ModuleCentralEditor::SaveAllGameObjectsTree(GameObject* game_object, JsonArray arr)
 {
 	if (game_object == nullptr) {
@@ -717,6 +800,18 @@ void ModuleCentralEditor::SaveAllGameObjectsTree(GameObject* game_object, JsonAr
 			SaveAllGameObjectsTree((*it), arr);
 		}
 	}
+}
+
+void ModuleCentralEditor::DeleteAllGameObjects(GameObject* game_object)
+{
+    bool hasChildren = true;
+    if (game_object->children.size() == 0) hasChildren = false;
+    game_object->to_delete = true;
+    if (hasChildren) {
+        for (std::vector<GameObject*>::iterator it = game_object->children.begin(); it != game_object->children.end(); ++it) {
+            DeleteAllGameObjects((*it));
+        }
+    }
 }
 
 void ModuleCentralEditor::SelectObject(GameObject* game_obj)
