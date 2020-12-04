@@ -625,8 +625,8 @@ void ModuleCentralEditor::LoadScene(const char* file)
                 trans->SetMatricesWithNewParent(matrix);
             }
             else if (component_name == "Mesh") {
-                //IDEAS
-                //Pots crear funcions al importer que vagin de forma independent pero q utilitzin el meshimporter
+                ComponentMesh* mesh = ImportOnlyMesh(gameObject, comp.GetString("Path"), comp.GetString("AssetPath"), comp.GetInt("MeshNumber"));
+                mesh->materialIndex = comp.GetInt("MaterialIndex");
             }
             else if (component_name == "Material") {
                 //IDEAS

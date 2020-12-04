@@ -19,6 +19,8 @@ void ImportGameObjectFromFBX(const aiScene* scene, aiNode* node, GameObject* par
 
 void ImportDefaultTexture(ComponentMaterial* mat);
 
+ComponentMesh* ImportOnlyMesh(GameObject* game_object, std::string libraryPath, std::string assetPath, int meshNumber);
+
 namespace MeshImporter {
 	int Import(const aiMesh* ai_material, ComponentMesh* mesh, char* name,  bool imported);
 	uint Save(const ComponentMesh* mesh, char** filebuffer);

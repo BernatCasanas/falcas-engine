@@ -72,6 +72,7 @@ void ImportGameObjectFromFBX(const aiScene* scene, aiNode* node, GameObject* par
 	if (node->mNumMeshes > 0) {
 		ComponentMesh* mesh = (ComponentMesh*)game_object->CreateComponent(Component_Type::Mesh);
 		aiMesh* ai_mesh = scene->mMeshes[node->mMeshes[0]];
+		mesh->meshNumber = node->mMeshes[0];
 		bool mesh_imported = false;
 		bool tex_imported = false;
 
@@ -86,12 +87,14 @@ void ImportGameObjectFromFBX(const aiScene* scene, aiNode* node, GameObject* par
 		App->filesystem->counterMesh++;
 
 		int num_material = ai_mesh->mMaterialIndex;
+		mesh->materialIndex = ai_mesh->mMaterialIndex;
 
 		sprintf_s(name_buff, 200, "Library/Meshes/%s.falcasmesh", mesh->file_name.c_str());
 		mesh->file_name = name_buff;
 		if (App->filesystem->FileExists(name_buff)) {
 			mesh_imported = true;
 		}
+		mesh->libraryPath = name_buff;
 		MeshImporter::Import(ai_mesh, mesh, name_buff, mesh_imported);
 
 		if (num_material != -1 && num_material < scene->mNumMaterials) {
@@ -136,6 +139,28 @@ void ImportDefaultTexture(ComponentMaterial* mat) {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 64, 64, 0, GL_RGBA, GL_UNSIGNED_BYTE, checker);
 	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+ComponentMesh* ImportOnlyMesh(GameObject* game_object, std::string libraryPath, std::string assetPath, int meshNumber)
+{
+	char* buffer;
+	const aiScene* scene = nullptr;
+	ComponentMesh* mesh = (ComponentMesh*)game_object->CreateComponent(Component_Type::Mesh);
+	aiMesh* ai_mesh = nullptr;
+	bool imported = true;
+	uint size = App->filesystem->LoadPath((char*)libraryPath.c_str(), &buffer);
+	if (size == 0) {
+		size = App->filesystem->Load(assetPath.c_str(), &buffer);
+		scene = aiImportFileFromMemory(buffer, size, aiProcessPreset_TargetRealtime_MaxQuality, nullptr);
+		aiNode* node = scene->mRootNode;
+		ai_mesh = scene->mMeshes[meshNumber];
+		imported = false;
+		mesh->file_name = libraryPath;
+	}
+	MeshImporter::Import(ai_mesh , mesh, (char*)libraryPath.c_str(), imported);
+
+	aiReleaseImport(scene);
+	return mesh;
 }
 
 
@@ -194,17 +219,17 @@ int MeshImporter::Import(const aiMesh* ai_mesh, ComponentMesh* mesh, char* name,
 
 		char* buffer;
 		uint size = MeshImporter::Save(mesh, &buffer);
-		char name_buff[200];
-		sprintf_s(name_buff, 200, "Library/Meshes/%s.falcasmesh", mesh->file_name.c_str());
-		App->filesystem->SaveInternal(name_buff, buffer, size);
+		App->filesystem->SaveInternal(mesh->file_name.c_str(), buffer, size);
 	}
 
 	else {
 		char* buffer = App->filesystem->ReadPhysFile(name);
 		MeshImporter::Load(buffer, mesh);
 	}
+	
+	if (ai_mesh != nullptr) material_index = ai_mesh->mMaterialIndex;
+	//BERNAT FES UN ESQUEMA DE QUE NECESSITA EL MESH PER SER IMPORTAT DE LES 2 MANERES
 
-	material_index = ai_mesh->mMaterialIndex;
 	mesh->Initialization();
 
 

@@ -176,7 +176,10 @@ void ComponentMesh::Render()
 
 bool ComponentMesh::SaveComponent(JsonObj& obj)
 {
-	obj.AddString("Path", this->full_file_name.c_str());
+	obj.AddString("Path", this->libraryPath.c_str());
+	obj.AddString("AssetPath", this->full_file_name.c_str());
+	obj.AddInt("MaterialIndex", this->materialIndex);
+	obj.AddInt("MeshNumber", this->meshNumber);
 	obj.AddInt("UUID", GetUUID());
 	return true;
 }

@@ -95,6 +95,7 @@ char* FileSystem::ReadPhysFile(std::string file)
 {
 	char* buffer = nullptr;
 	PHYSFS_file* file_phys = PHYSFS_openRead(file.c_str());
+	if (file_phys == nullptr) return"";
 	PHYSFS_sint32 size = (PHYSFS_sint32)PHYSFS_fileLength(file_phys);
 	buffer = new char[size];
 	PHYSFS_read(file_phys, buffer, 1, size);
@@ -221,6 +222,7 @@ uint FileSystem::Load(const char* path, char** buffer) const
 
 uint FileSystem::LoadPath(char* file, char** buffer) {
 	PHYSFS_file* fs_file = PHYSFS_openRead(file);
+	if (fs_file == nullptr) return 0;
 	PHYSFS_sint32 size = (PHYSFS_sint32)PHYSFS_fileLength(fs_file);
 	*buffer = new char[size + 1];
 	PHYSFS_read(fs_file, *buffer, 1, size);

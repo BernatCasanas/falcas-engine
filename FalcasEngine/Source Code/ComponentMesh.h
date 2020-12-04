@@ -37,6 +37,10 @@ public:
 	bool show_normals_f = false;
 	float length_normals = 1;
 	bool grid = false;
+	int materialIndex = 0;
+	int  meshNumber = 0;
+
+	std::string libraryPath;
 
 private:
 	AABB aabb;

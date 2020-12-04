@@ -2,7 +2,7 @@
     "name": "scene",
     "GameObjects": [
         {
-            "UUID": 2077654523,
+            "UUID": 1169985011,
             "name": "Grid",
             "Translation": [
                 0,
@@ -40,18 +40,21 @@
                         0,
                         1
                     ],
-                    "UUID": 2071806359
+                    "UUID": 1164554573
                 },
                 {
                     "name": "Mesh",
                     "Path": "",
-                    "UUID": 2085173591
+                    "AssetPath": "",
+                    "MaterialIndex": 0,
+                    "MeshNumber": 0,
+                    "UUID": 1177016732
                 }
             ]
         },
         {
-            "UUID": 940811129,
-            "Parent UUID": 2077654523,
+            "UUID": 506703659,
+            "Parent UUID": 1169985011,
             "name": "Camera",
             "Translation": [
                 0,
@@ -89,7 +92,7 @@
                         0,
                         1
                     ],
-                    "UUID": 936633869
+                    "UUID": 502804883
                 },
                 {
                     "name": "Camera",
@@ -97,7 +100,165 @@
                     "FrustumNear": 0.10000000149011612,
                     "FrustumHfov": 1.3767952919006348,
                     "FrustumVfov": 1,
-                    "UUID": 1844700572
+                    "UUID": 1339440440
+                }
+            ]
+        },
+        {
+            "UUID": 186211515,
+            "Parent UUID": 1169985011,
+            "name": "BakerHouse",
+            "Translation": [
+                0,
+                0,
+                0
+            ],
+            "Scale": [
+                1,
+                1,
+                1
+            ],
+            "Rotation": [
+                0,
+                0,
+                0
+            ],
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1
+                    ],
+                    "UUID": 181755771
+                }
+            ]
+        },
+        {
+            "UUID": 247547616,
+            "Parent UUID": 186211515,
+            "name": "BakerHouse (1)",
+            "Translation": [
+                0,
+                0,
+                0
+            ],
+            "Scale": [
+                1,
+                1,
+                1
+            ],
+            "Rotation": [
+                0,
+                0,
+                0
+            ],
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        -1.1920928955078125e-07,
+                        0.99999994039535522,
+                        0,
+                        0,
+                        -0.99999994039535522,
+                        -1.1920928955078125e-07,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1
+                    ],
+                    "UUID": 244971639
+                },
+                {
+                    "name": "Mesh",
+                    "Path": "Library\/Meshes\/BakerHouse.falcasmesh",
+                    "AssetPath": "C:\\Users\\berna\\Documents\\GitHub\\Falcas-Engine\\FalcasEngine\\Project Folder\\Assets\\BakerHouse\\BakerHouse.fbx",
+                    "MaterialIndex": 0,
+                    "MeshNumber": 0,
+                    "UUID": 252351465
+                },
+                {
+                    "name": "Material",
+                    "Path": "Baker_house",
+                    "UUID": 619739397
+                }
+            ]
+        },
+        {
+            "UUID": 1630029460,
+            "Parent UUID": 186211515,
+            "name": "BakerHouse (2)",
+            "Translation": [
+                0,
+                0,
+                0
+            ],
+            "Scale": [
+                1,
+                1,
+                1
+            ],
+            "Rotation": [
+                0,
+                0,
+                0
+            ],
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        -1.1920928955078125e-07,
+                        0.99999994039535522,
+                        0,
+                        0,
+                        -0.99999994039535522,
+                        -1.1920928955078125e-07,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1
+                    ],
+                    "UUID": 1616035639
+                },
+                {
+                    "name": "Mesh",
+                    "Path": "Library\/Meshes\/BakerHouse (1).falcasmesh",
+                    "AssetPath": "C:\\Users\\berna\\Documents\\GitHub\\Falcas-Engine\\FalcasEngine\\Project Folder\\Assets\\BakerHouse\\BakerHouse.fbx",
+                    "MaterialIndex": 0,
+                    "MeshNumber": 1,
+                    "UUID": 1639985263
+                },
+                {
+                    "name": "Material",
+                    "Path": "Baker_house",
+                    "UUID": 1560615238
                 }
             ]
         }
