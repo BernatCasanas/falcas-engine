@@ -16,6 +16,7 @@ class ModuleCentralEditor;
 class Console;
 class Module;
 class FileSystem;
+class ModuleResources;
 
 class Application
 {
@@ -28,6 +29,7 @@ public:
 	ModuleCentralEditor* central_editor;
 	Console* console;
 	FileSystem* filesystem;
+	ModuleResources* resources;
 	bool console_active;
 
 private:

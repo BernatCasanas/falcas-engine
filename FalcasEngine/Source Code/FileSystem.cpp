@@ -13,7 +13,7 @@
 
 #pragma comment(lib, "Source Code/External Libraries/PhysFS/libx86/physfs.lib")
 
-FileSystem::FileSystem(Application* app, bool start_enabled) : Module(app, start_enabled)
+FileSystem::FileSystem(Application* app, bool start_enabled) : Module(app, start_enabled, "FileSystem")
 {
 	PHYSFS_init(nullptr);
 	PHYSFS_mount(".", nullptr, 1);
@@ -66,6 +66,7 @@ std::string FileSystem::GetPathFile(std::string file)
 	return file;
 }
 
+
 FILE_TYPE FileSystem::GetTypeFile(char* file)
 {
 	std::string name = file;
@@ -79,6 +80,8 @@ FILE_TYPE FileSystem::GetTypeFile(char* file)
 	else if (name == "png" || name == "PNG") return FILE_TYPE::PNG;
 	else if (name == "dds" || name == "DDS") return FILE_TYPE::DDS;
 	else if (name == "scenefalcas" || name == "SCENE") return FILE_TYPE::SCENE;
+	else if (name == "TGA" || name == "tga")return FILE_TYPE::TGA;
+	else if (name == "meta")return FILE_TYPE::META;
 	else return FILE_TYPE::UNKNOWN;
 }
 
@@ -127,6 +130,30 @@ void FileSystem::DiscoverFiles(const char* directory, std::vector<std::string>& 
 	}
 
 	PHYSFS_freeList(rc);
+}
+
+std::vector<std::string> FileSystem::GetAllFiles(std::string file, std::vector<std::string> vector_file, std::string ignore_files)
+{
+	char** rc = PHYSFS_enumerateFiles(file.c_str());
+	char** i;
+
+
+	for (i = rc; *i != nullptr; i++)
+	{
+		std::string file_with_extension = file + *i;
+		uint size = file_with_extension.find_last_of('.');
+		
+		if (PHYSFS_isDirectory(file_with_extension.c_str()))
+			vector_file = GetAllFiles(file_with_extension + '/', vector_file, ignore_files);
+		else if (file_with_extension.substr(size + 1) != ignore_files)
+			vector_file.push_back(file_with_extension);
+		else
+			LOG("HELLO)");
+	}
+
+	PHYSFS_freeList(rc);
+	return vector_file;
+
 }
 
 void FileSystem::SaveInternal(const char* file, const void* buffer, uint size)

@@ -8,6 +8,7 @@
 #include "ModuleCamera3D.h"
 #include "ModuleCentralEditor.h"
 #include "Console.h"
+#include "ModuleResources.h"
 #include "FileSystem.h"
 #include <string>
 #include "External Libraries/JSON/parson.h"
@@ -25,6 +26,7 @@ Application::Application()
 	camera = new ModuleCamera3D(this);
 	central_editor = new ModuleCentralEditor(this);
 	filesystem = new FileSystem(this);
+	resources = new ModuleResources(this);
 
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
@@ -35,6 +37,7 @@ Application::Application()
 	AddModule(camera);
 	AddModule(input);
 	AddModule(filesystem);
+	AddModule(resources);
 	
 	// Scenes
 	AddModule(scene_intro);
@@ -64,7 +67,7 @@ bool Application::Init()
 	Module* item;
 
 	PHYSFS_setWriteDir(".");
-	App->filesystem->CreateFolders();
+	App->filesystem->CreateOneFolder("Library/Config");
 
 	char* buffer = nullptr;
 	

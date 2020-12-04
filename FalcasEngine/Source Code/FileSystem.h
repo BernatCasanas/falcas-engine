@@ -15,7 +15,9 @@ enum class FILE_TYPE
 	FBX,
 	PNG,
 	DDS,
-	SCENE
+	TGA,
+	SCENE,
+	META
 };
 
 class Application;
@@ -36,6 +38,8 @@ public:
 	char* ReadPhysFile(std::string file);
 	uint GetSizePhysFile(std::string file);
 	void DiscoverFiles(const char* directory, std::vector<std::string>& file_list, std::vector<std::string>& dir_list) const;
+
+	std::vector<std::string> GetAllFiles(std::string file, std::vector<std::string> vector_file, std::string ignore_files = "");
 
 	void SaveInternal(const char* file, const void* buffer, uint size);
 

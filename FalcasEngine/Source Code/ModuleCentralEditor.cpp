@@ -31,7 +31,7 @@
 #include "ComponentCamera.h"
 #include "Importer.h"
 
-ModuleCentralEditor::ModuleCentralEditor(Application* app, bool start_enabled) : Module(app, start_enabled),progress(50.f),progress2(50.f),progress3(50.f), progress4(50.f)
+ModuleCentralEditor::ModuleCentralEditor(Application* app, bool start_enabled) : Module(app, start_enabled, "moduleCentralEditor"),progress(50.f),progress2(50.f),progress3(50.f), progress4(50.f)
 {
 }
 

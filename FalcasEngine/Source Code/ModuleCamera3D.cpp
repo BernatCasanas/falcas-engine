@@ -16,7 +16,7 @@
 
 //////TEMPORAL
 #include "ModuleRenderer3D.h"
-ModuleCamera3D::ModuleCamera3D(Application* app, bool start_enabled) : Module(app, start_enabled)
+ModuleCamera3D::ModuleCamera3D(Application* app, bool start_enabled) : Module(app, start_enabled, "moduleCamera")
 {
 
 	camera = (ComponentCamera*)(new GameObject(-2, "Editor Camera", nullptr))->CreateComponent(Component_Type::Camera);
