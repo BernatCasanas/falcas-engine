@@ -2,7 +2,7 @@
     "name": "scene",
     "GameObjects": [
         {
-            "UUID": 1169985011,
+            "UUID": 1032834502,
             "name": "Grid",
             "Translation": [
                 0,
@@ -40,7 +40,7 @@
                         0,
                         1
                     ],
-                    "UUID": 1164554573
+                    "UUID": 1029144589
                 },
                 {
                     "name": "Mesh",
@@ -48,13 +48,13 @@
                     "AssetPath": "",
                     "MaterialIndex": 0,
                     "MeshNumber": 0,
-                    "UUID": 1177016732
+                    "UUID": 1037568730
                 }
             ]
         },
         {
-            "UUID": 506703659,
-            "Parent UUID": 1169985011,
+            "UUID": 963374561,
+            "Parent UUID": 1032834502,
             "name": "Camera",
             "Translation": [
                 0,
@@ -92,7 +92,7 @@
                         0,
                         1
                     ],
-                    "UUID": 502804883
+                    "UUID": 959127680
                 },
                 {
                     "name": "Camera",
@@ -100,13 +100,13 @@
                     "FrustumNear": 0.10000000149011612,
                     "FrustumHfov": 1.3767952919006348,
                     "FrustumVfov": 1,
-                    "UUID": 1339440440
+                    "UUID": 1780168133
                 }
             ]
         },
         {
-            "UUID": 186211515,
-            "Parent UUID": 1169985011,
+            "UUID": 1399004977,
+            "Parent UUID": 1032834502,
             "name": "BakerHouse",
             "Translation": [
                 0,
@@ -144,13 +144,13 @@
                         0,
                         1
                     ],
-                    "UUID": 181755771
+                    "UUID": 1394618854
                 }
             ]
         },
         {
-            "UUID": 247547616,
-            "Parent UUID": 186211515,
+            "UUID": 1460132215,
+            "Parent UUID": 1399004977,
             "name": "BakerHouse (1)",
             "Translation": [
                 0,
@@ -188,7 +188,7 @@
                         0,
                         1
                     ],
-                    "UUID": 244971639
+                    "UUID": 1457556238
                 },
                 {
                     "name": "Mesh",
@@ -196,18 +196,18 @@
                     "AssetPath": "C:\\Users\\berna\\Documents\\GitHub\\Falcas-Engine\\FalcasEngine\\Project Folder\\Assets\\BakerHouse\\BakerHouse.fbx",
                     "MaterialIndex": 0,
                     "MeshNumber": 0,
-                    "UUID": 252351465
+                    "UUID": 1465005685
                 },
                 {
                     "name": "Material",
-                    "Path": "Baker_house",
-                    "UUID": 619739397
+                    "Path": "Library\/Textures\/Baker_house.dds",
+                    "UUID": 695806890
                 }
             ]
         },
         {
-            "UUID": 1630029460,
-            "Parent UUID": 186211515,
+            "UUID": 1823408338,
+            "Parent UUID": 1399004977,
             "name": "BakerHouse (2)",
             "Translation": [
                 0,
@@ -245,7 +245,7 @@
                         0,
                         1
                     ],
-                    "UUID": 1616035639
+                    "UUID": 1818395626
                 },
                 {
                     "name": "Mesh",
@@ -253,12 +253,12 @@
                     "AssetPath": "C:\\Users\\berna\\Documents\\GitHub\\Falcas-Engine\\FalcasEngine\\Project Folder\\Assets\\BakerHouse\\BakerHouse.fbx",
                     "MaterialIndex": 0,
                     "MeshNumber": 1,
-                    "UUID": 1639985263
+                    "UUID": 1828560292
                 },
                 {
                     "name": "Material",
-                    "Path": "Baker_house",
-                    "UUID": 1560615238
+                    "Path": "Library\/Textures\/Baker_house.dds",
+                    "UUID": 723233394
                 }
             ]
         }

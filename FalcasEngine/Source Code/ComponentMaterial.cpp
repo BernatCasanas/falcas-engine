@@ -26,7 +26,7 @@ ComponentMaterial::~ComponentMaterial()
 
 bool ComponentMaterial::SaveComponent(JsonObj& obj)
 {
-	obj.AddString("Path", this->file_name.c_str());
+	obj.AddString("Path", this->full_file_name.c_str());
 	obj.AddInt("UUID", GetUUID());
 	return true;
 }

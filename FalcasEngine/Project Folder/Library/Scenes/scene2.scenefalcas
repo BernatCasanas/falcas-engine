@@ -1,0 +1,266 @@
+{
+    "name": "scene",
+    "GameObjects": [
+        {
+            "UUID": 1032834502,
+            "name": "Grid",
+            "Translation": [
+                0,
+                0,
+                0
+            ],
+            "Scale": [
+                1,
+                1,
+                1
+            ],
+            "Rotation": [
+                0,
+                0,
+                0
+            ],
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1
+                    ],
+                    "UUID": 1029144589
+                },
+                {
+                    "name": "Mesh",
+                    "Path": "",
+                    "AssetPath": "",
+                    "MaterialIndex": 0,
+                    "MeshNumber": 0,
+                    "UUID": 1037568730
+                }
+            ]
+        },
+        {
+            "UUID": 963374561,
+            "Parent UUID": 1032834502,
+            "name": "Camera",
+            "Translation": [
+                0,
+                0,
+                0
+            ],
+            "Scale": [
+                1,
+                1,
+                1
+            ],
+            "Rotation": [
+                0,
+                0,
+                0
+            ],
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1
+                    ],
+                    "UUID": 959127680
+                },
+                {
+                    "name": "Camera",
+                    "FrustumFar": 1000,
+                    "FrustumNear": 0.10000000149011612,
+                    "FrustumHfov": 1.3767952919006348,
+                    "FrustumVfov": 1,
+                    "UUID": 1780168133
+                }
+            ]
+        },
+        {
+            "UUID": 1399004977,
+            "Parent UUID": 1032834502,
+            "name": "BakerHouse",
+            "Translation": [
+                0,
+                0,
+                0
+            ],
+            "Scale": [
+                1,
+                1,
+                1
+            ],
+            "Rotation": [
+                0,
+                0,
+                0
+            ],
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1
+                    ],
+                    "UUID": 1394618854
+                }
+            ]
+        },
+        {
+            "UUID": 1460132215,
+            "Parent UUID": 1399004977,
+            "name": "BakerHouse (1)",
+            "Translation": [
+                0,
+                0,
+                0
+            ],
+            "Scale": [
+                1,
+                1,
+                1
+            ],
+            "Rotation": [
+                0,
+                0,
+                0
+            ],
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        -1.1920928955078125e-07,
+                        0.99999994039535522,
+                        0,
+                        0,
+                        -0.99999994039535522,
+                        -1.1920928955078125e-07,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1
+                    ],
+                    "UUID": 1457556238
+                },
+                {
+                    "name": "Mesh",
+                    "Path": "Library\/Meshes\/BakerHouse.falcasmesh",
+                    "AssetPath": "C:\\Users\\berna\\Documents\\GitHub\\Falcas-Engine\\FalcasEngine\\Project Folder\\Assets\\BakerHouse\\BakerHouse.fbx",
+                    "MaterialIndex": 0,
+                    "MeshNumber": 0,
+                    "UUID": 1465005685
+                },
+                {
+                    "name": "Material",
+                    "Path": "Library\/Textures\/Baker_house.dds",
+                    "UUID": 695806890
+                }
+            ]
+        },
+        {
+            "UUID": 1823408338,
+            "Parent UUID": 1399004977,
+            "name": "BakerHouse (2)",
+            "Translation": [
+                0,
+                0,
+                0
+            ],
+            "Scale": [
+                1,
+                1,
+                1
+            ],
+            "Rotation": [
+                0,
+                0,
+                0
+            ],
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        -1.1920928955078125e-07,
+                        0.99999994039535522,
+                        0,
+                        0,
+                        -0.99999994039535522,
+                        -1.1920928955078125e-07,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1
+                    ],
+                    "UUID": 1818395626
+                },
+                {
+                    "name": "Mesh",
+                    "Path": "Library\/Meshes\/BakerHouse (1).falcasmesh",
+                    "AssetPath": "C:\\Users\\berna\\Documents\\GitHub\\Falcas-Engine\\FalcasEngine\\Project Folder\\Assets\\BakerHouse\\BakerHouse.fbx",
+                    "MaterialIndex": 0,
+                    "MeshNumber": 1,
+                    "UUID": 1828560292
+                },
+                {
+                    "name": "Material",
+                    "Path": "Library\/Textures\/Baker_house.dds",
+                    "UUID": 723233394
+                }
+            ]
+        }
+    ]
+}

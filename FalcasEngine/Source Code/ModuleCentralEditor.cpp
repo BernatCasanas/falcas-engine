@@ -630,7 +630,7 @@ void ModuleCentralEditor::LoadScene(const char* file)
             }
             else if (component_name == "Material") {
                 //IDEAS
-                //Primer has de carregar el path correcte de materials i despres fer lo mateix que mesh
+                ComponentMaterial* mat = (ComponentMaterial*)gameObject->CreateComponent(Component_Type::Material, (char*)comp.GetString("Path"));
             }
             else if (component_name == "Camera") {
                 ComponentCamera* cam = (ComponentCamera*)gameObject->CreateComponent(Component_Type::Camera);

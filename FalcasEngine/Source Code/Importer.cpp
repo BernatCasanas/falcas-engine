@@ -344,7 +344,7 @@ void TextureImporter::Import(ComponentMaterial* mat, std::string file, bool impo
 		mat->show_default_tex = false;
 		mat->texture_id = ilutGLBindTexImage();
 
-		mat->file_name = App->filesystem->GetFileName(mat->full_file_name, true);
+		//mat->file_name = App->filesystem->GetFileName(mat->full_file_name, true);
 		char* texture_buffer = nullptr;
 		mat->size = TextureImporter::Save(mat, &texture_buffer);
 		char name_buff[200];
@@ -354,7 +354,7 @@ void TextureImporter::Import(ComponentMaterial* mat, std::string file, bool impo
 	else {
 		char* buffer = nullptr;
 		mat->full_file_name = namebuff;
-		mat->file_name = App->filesystem->GetFileName(mat->full_file_name, true);
+		//mat->file_name = App->filesystem->GetFileName(mat->full_file_name, true);
 		mat->size = App->filesystem->LoadPath(namebuff, &buffer);
 		TextureImporter::Load(buffer, mat, mat->size);
 	}
