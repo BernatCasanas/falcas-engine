@@ -33,3 +33,6 @@ namespace TextureImporter {
 	void Load(const char* fileBuffer, ComponentMaterial* mat, uint size);
 }
 
+namespace ModelImporter {
+
+}

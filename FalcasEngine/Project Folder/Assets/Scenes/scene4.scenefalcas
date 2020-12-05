@@ -1,0 +1,1906 @@
+{
+    "name": "scene",
+    "GameObjects": [
+        {
+            "UUID": 796670755,
+            "name": "Grid",
+            "Translation": [
+                0,
+                0,
+                0
+            ],
+            "Scale": [
+                1,
+                1,
+                1
+            ],
+            "Rotation": [
+                0,
+                0,
+                0
+            ],
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1
+                    ],
+                    "UUID": 790613728
+                },
+                {
+                    "name": "Mesh",
+                    "Path": "",
+                    "AssetPath": "",
+                    "MaterialIndex": 0,
+                    "MeshNumber": 0,
+                    "UUID": 803911339
+                }
+            ]
+        },
+        {
+            "UUID": 214358626,
+            "Parent UUID": 796670755,
+            "name": "Camera",
+            "Translation": [
+                0,
+                0,
+                0
+            ],
+            "Scale": [
+                1,
+                1,
+                1
+            ],
+            "Rotation": [
+                0,
+                0,
+                0
+            ],
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1
+                    ],
+                    "UUID": 210668713
+                },
+                {
+                    "name": "Camera",
+                    "FrustumFar": 1000,
+                    "FrustumNear": 0.10000000149011612,
+                    "FrustumHfov": 1.3767952919006348,
+                    "FrustumVfov": 1,
+                    "UUID": 1025025550
+                }
+            ]
+        },
+        {
+            "UUID": 1574341626,
+            "Parent UUID": 796670755,
+            "name": "Street environment_V01",
+            "Translation": [
+                0,
+                0,
+                0
+            ],
+            "Scale": [
+                1,
+                1,
+                1
+            ],
+            "Rotation": [
+                0,
+                0,
+                0
+            ],
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1
+                    ],
+                    "UUID": 1569259293
+                }
+            ]
+        },
+        {
+            "UUID": 1842730581,
+            "Parent UUID": 1574341626,
+            "name": "Street environment_V01 (1)",
+            "Translation": [
+                0,
+                0,
+                0
+            ],
+            "Scale": [
+                1,
+                0,
+                0
+            ],
+            "Rotation": [
+                0,
+                0,
+                0
+            ],
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1.7881392011531716e-07,
+                        0.99999988079071045,
+                        0,
+                        0,
+                        -0.99999988079071045,
+                        1.7881392011531716e-07,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1
+                    ],
+                    "UUID": 1839319152
+                }
+            ]
+        },
+        {
+            "UUID": 1970693979,
+            "Parent UUID": 1842730581,
+            "name": "Street environment_V01 (2)",
+            "Translation": [
+                -41,
+                21,
+                0
+            ],
+            "Scale": [
+                1,
+                1,
+                1
+            ],
+            "Rotation": [
+                0,
+                0,
+                0
+            ],
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        1,
+                        0,
+                        0,
+                        -41.47589111328125,
+                        0,
+                        1.7881392011531716e-07,
+                        0.99999988079071045,
+                        3.7576135127892485e-06,
+                        0,
+                        -0.99999988079071045,
+                        1.7881392011531716e-07,
+                        -21.014097213745117,
+                        0,
+                        0,
+                        0,
+                        1
+                    ],
+                    "UUID": 1967630655
+                },
+                {
+                    "name": "Mesh",
+                    "Path": "Library\/Meshes\/Street environment_V01.falcasmesh",
+                    "AssetPath": "C:\\Users\\berna\\Documents\\GitHub\\Falcas-Engine\\FalcasEngine\\Project Folder\\Assets\\street\\Street environment_V01.FBX",
+                    "MaterialIndex": 0,
+                    "MeshNumber": 0,
+                    "UUID": 1975497828
+                },
+                {
+                    "name": "Material",
+                    "Path": "",
+                    "UUID": 929161734
+                }
+            ]
+        },
+        {
+            "UUID": 1300380906,
+            "Parent UUID": 1842730581,
+            "name": "Street environment_V01 (3)",
+            "Translation": [
+                17,
+                20,
+                0
+            ],
+            "Scale": [
+                1,
+                1,
+                1
+            ],
+            "Rotation": [
+                0,
+                0,
+                0
+            ],
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        1,
+                        0,
+                        0,
+                        17.707164764404297,
+                        0,
+                        1.7881392011531716e-07,
+                        0.99999988079071045,
+                        3.7979123135301052e-06,
+                        0,
+                        -0.99999988079071045,
+                        1.7881392011531716e-07,
+                        -20.053274154663086,
+                        0,
+                        0,
+                        0,
+                        1
+                    ],
+                    "UUID": 1296203646
+                },
+                {
+                    "name": "Mesh",
+                    "Path": "Library\/Meshes\/Street environment_V01 (1).falcasmesh",
+                    "AssetPath": "C:\\Users\\berna\\Documents\\GitHub\\Falcas-Engine\\FalcasEngine\\Project Folder\\Assets\\street\\Street environment_V01.FBX",
+                    "MaterialIndex": 1,
+                    "MeshNumber": 1,
+                    "UUID": 1305323997
+                },
+                {
+                    "name": "Material",
+                    "Path": "",
+                    "UUID": 1760691056
+                }
+            ]
+        },
+        {
+            "UUID": 156390451,
+            "Parent UUID": 1842730581,
+            "name": "Street environment_V01 (4)",
+            "Translation": [
+                16,
+                37,
+                0
+            ],
+            "Scale": [
+                1,
+                1,
+                1
+            ],
+            "Rotation": [
+                0,
+                0,
+                0
+            ],
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        1,
+                        0,
+                        0,
+                        16.010492324829102,
+                        0,
+                        1.7881392011531716e-07,
+                        0.99999988079071045,
+                        5.1936340241809376e-06,
+                        0,
+                        -0.99999988079071045,
+                        1.7881392011531716e-07,
+                        -37.493282318115234,
+                        0,
+                        0,
+                        0,
+                        1
+                    ],
+                    "UUID": 149637214
+                },
+                {
+                    "name": "Mesh",
+                    "Path": "Library\/Meshes\/Street environment_V01 (2).falcasmesh",
+                    "AssetPath": "C:\\Users\\berna\\Documents\\GitHub\\Falcas-Engine\\FalcasEngine\\Project Folder\\Assets\\street\\Street environment_V01.FBX",
+                    "MaterialIndex": 2,
+                    "MeshNumber": 2,
+                    "UUID": 164884213
+                },
+                {
+                    "name": "Material",
+                    "Path": "",
+                    "UUID": 1807034740
+                }
+            ]
+        },
+        {
+            "UUID": 200923989,
+            "Parent UUID": 1842730581,
+            "name": "Street environment_V01 (5)",
+            "Translation": [
+                40,
+                18,
+                0
+            ],
+            "Scale": [
+                0,
+                0,
+                1
+            ],
+            "Rotation": [
+                0,
+                0,
+                0
+            ],
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        -1.1920928244535389e-07,
+                        -1,
+                        0,
+                        40.979995727539063,
+                        1.7881392011531716e-07,
+                        -2.1316278684671217e-14,
+                        0.99999988079071045,
+                        1.2148313999205129e-06,
+                        -0.99999988079071045,
+                        1.1920926823449918e-07,
+                        1.7881392011531716e-07,
+                        -18.270822525024414,
+                        0,
+                        0,
+                        0,
+                        1
+                    ],
+                    "UUID": 196189761
+                },
+                {
+                    "name": "Mesh",
+                    "Path": "Library\/Meshes\/Street environment_V01 (3).falcasmesh",
+                    "AssetPath": "C:\\Users\\berna\\Documents\\GitHub\\Falcas-Engine\\FalcasEngine\\Project Folder\\Assets\\street\\Street environment_V01.FBX",
+                    "MaterialIndex": 3,
+                    "MeshNumber": 3,
+                    "UUID": 206284806
+                },
+                {
+                    "name": "Material",
+                    "Path": "",
+                    "UUID": 1872941925
+                }
+            ]
+        },
+        {
+            "UUID": 286325054,
+            "Parent UUID": 1842730581,
+            "name": "Street environment_V01 (6)",
+            "Translation": [
+                -2,
+                1,
+                0
+            ],
+            "Scale": [
+                0,
+                0,
+                1
+            ],
+            "Rotation": [
+                0,
+                0,
+                0
+            ],
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        -1.1920928244535389e-07,
+                        1,
+                        0,
+                        -2.1597719192504883,
+                        -1.7881392011531716e-07,
+                        -2.1316278684671217e-14,
+                        0.99999988079071045,
+                        3.3149208888971771e-07,
+                        0.99999988079071045,
+                        1.1920926823449918e-07,
+                        1.7881392011531716e-07,
+                        -1.8538379669189453,
+                        0,
+                        0,
+                        0,
+                        1
+                    ],
+                    "UUID": 279571817
+                },
+                {
+                    "name": "Mesh",
+                    "Path": "Library\/Meshes\/Street environment_V01 (4).falcasmesh",
+                    "AssetPath": "C:\\Users\\berna\\Documents\\GitHub\\Falcas-Engine\\FalcasEngine\\Project Folder\\Assets\\street\\Street environment_V01.FBX",
+                    "MaterialIndex": 4,
+                    "MeshNumber": 8,
+                    "UUID": 294192227
+                },
+                {
+                    "name": "Material",
+                    "Path": "",
+                    "UUID": 2001229526
+                }
+            ]
+        },
+        {
+            "UUID": 157432681,
+            "Parent UUID": 1842730581,
+            "name": "Street environment_V01 (7)",
+            "Translation": [
+                0,
+                0,
+                0
+            ],
+            "Scale": [
+                0,
+                0,
+                0
+            ],
+            "Rotation": [
+                0,
+                0,
+                0
+            ],
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        0.99663525819778442,
+                        0,
+                        0,
+                        -0.02860260009765625,
+                        0,
+                        1.7355974080146552e-07,
+                        0.99663513898849487,
+                        4.6549000209950009e-09,
+                        0,
+                        -0.97061634063720703,
+                        1.7821226094838494e-07,
+                        -0.026032086461782455,
+                        0,
+                        0,
+                        0,
+                        1
+                    ],
+                    "UUID": 152976937
+                },
+                {
+                    "name": "Mesh",
+                    "Path": "Library\/Meshes\/Street environment_V01 (5).falcasmesh",
+                    "AssetPath": "C:\\Users\\berna\\Documents\\GitHub\\Falcas-Engine\\FalcasEngine\\Project Folder\\Assets\\street\\Street environment_V01.FBX",
+                    "MaterialIndex": 5,
+                    "MeshNumber": 9,
+                    "UUID": 187508953
+                },
+                {
+                    "name": "Material",
+                    "Path": "",
+                    "UUID": 1986445972
+                }
+            ]
+        },
+        {
+            "UUID": 195978813,
+            "Parent UUID": 1842730581,
+            "name": "Street environment_V01 (8)",
+            "Translation": [
+                25,
+                -39,
+                0
+            ],
+            "Scale": [
+                0,
+                0,
+                1
+            ],
+            "Rotation": [
+                0,
+                0,
+                0
+            ],
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        -1.1920928244535389e-07,
+                        -1,
+                        0,
+                        25.154010772705078,
+                        1.7881392011531716e-07,
+                        -2.1316278684671217e-14,
+                        0.99999988079071045,
+                        -6.1458440541173331e-06,
+                        -0.99999988079071045,
+                        1.1920926823449918e-07,
+                        1.7881392011531716e-07,
+                        39.153717041015625,
+                        0,
+                        0,
+                        0,
+                        1
+                    ],
+                    "UUID": 189991407
+                },
+                {
+                    "name": "Mesh",
+                    "Path": "Library\/Meshes\/Street environment_V01 (6).falcasmesh",
+                    "AssetPath": "C:\\Users\\berna\\Documents\\GitHub\\Falcas-Engine\\FalcasEngine\\Project Folder\\Assets\\street\\Street environment_V01.FBX",
+                    "MaterialIndex": 6,
+                    "MeshNumber": 4,
+                    "UUID": 203497881
+                },
+                {
+                    "name": "Material",
+                    "Path": "",
+                    "UUID": 2138474334
+                }
+            ]
+        },
+        {
+            "UUID": 552066326,
+            "Parent UUID": 1842730581,
+            "name": "Street environment_V01 (9)",
+            "Translation": [
+                30,
+                37,
+                0
+            ],
+            "Scale": [
+                1,
+                1,
+                1
+            ],
+            "Rotation": [
+                0,
+                0,
+                0
+            ],
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        1,
+                        0,
+                        0,
+                        30.134540557861328,
+                        0,
+                        1.7881392011531716e-07,
+                        0.99999988079071045,
+                        5.1936340241809376e-06,
+                        0,
+                        -0.99999988079071045,
+                        1.7881392011531716e-07,
+                        -37.493282318115234,
+                        0,
+                        0,
+                        0,
+                        1
+                    ],
+                    "UUID": 549003002
+                },
+                {
+                    "name": "Mesh",
+                    "Path": "Library\/Meshes\/Street environment_V01 (7).falcasmesh",
+                    "AssetPath": "C:\\Users\\berna\\Documents\\GitHub\\Falcas-Engine\\FalcasEngine\\Project Folder\\Assets\\street\\Street environment_V01.FBX",
+                    "MaterialIndex": 2,
+                    "MeshNumber": 2,
+                    "UUID": 556939796
+                },
+                {
+                    "name": "Material",
+                    "Path": "",
+                    "UUID": 2082823253
+                }
+            ]
+        },
+        {
+            "UUID": 574251523,
+            "Parent UUID": 1842730581,
+            "name": "Street environment_V01 (10)",
+            "Translation": [
+                -42,
+                33,
+                0
+            ],
+            "Scale": [
+                0,
+                0,
+                1
+            ],
+            "Rotation": [
+                0,
+                0,
+                0
+            ],
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        -1.1920928244535389e-07,
+                        -1,
+                        0,
+                        -42.288055419921875,
+                        1.7881392011531716e-07,
+                        -2.1316278684671217e-14,
+                        0.99999988079071045,
+                        6.4383648350485601e-06,
+                        -0.99999988079071045,
+                        1.1920926823449918e-07,
+                        1.7881392011531716e-07,
+                        -33.201572418212891,
+                        0,
+                        0,
+                        0,
+                        1
+                    ],
+                    "UUID": 570770473
+                },
+                {
+                    "name": "Mesh",
+                    "Path": "Library\/Meshes\/Street environment_V01 (8).falcasmesh",
+                    "AssetPath": "C:\\Users\\berna\\Documents\\GitHub\\Falcas-Engine\\FalcasEngine\\Project Folder\\Assets\\street\\Street environment_V01.FBX",
+                    "MaterialIndex": 7,
+                    "MeshNumber": 6,
+                    "UUID": 579403477
+                },
+                {
+                    "name": "Material",
+                    "Path": "",
+                    "UUID": 1461895371
+                }
+            ]
+        },
+        {
+            "UUID": 168870257,
+            "Parent UUID": 1842730581,
+            "name": "Street environment_V01 (11)",
+            "Translation": [
+                -19,
+                32,
+                0
+            ],
+            "Scale": [
+                1,
+                1,
+                1
+            ],
+            "Rotation": [
+                0,
+                0,
+                1
+            ],
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        -1,
+                        8.7422776573475858e-08,
+                        0,
+                        -19.439706802368164,
+                        -1.5632409781788162e-14,
+                        -1.7881392011531716e-07,
+                        0.99999988079071045,
+                        5.7330835261382163e-06,
+                        8.74227694680485e-08,
+                        0.99999988079071045,
+                        1.7881392011531716e-07,
+                        -32.061725616455078,
+                        0,
+                        0,
+                        0,
+                        1
+                    ],
+                    "UUID": 162047399
+                },
+                {
+                    "name": "Mesh",
+                    "Path": "Library\/Meshes\/Street environment_V01 (9).falcasmesh",
+                    "AssetPath": "C:\\Users\\berna\\Documents\\GitHub\\Falcas-Engine\\FalcasEngine\\Project Folder\\Assets\\street\\Street environment_V01.FBX",
+                    "MaterialIndex": 0,
+                    "MeshNumber": 10,
+                    "UUID": 177015914
+                },
+                {
+                    "name": "Material",
+                    "Path": "",
+                    "UUID": 1898580100
+                }
+            ]
+        },
+        {
+            "UUID": 590307987,
+            "Parent UUID": 1842730581,
+            "name": "Street environment_V01 (12)",
+            "Translation": [
+                34,
+                -41,
+                0
+            ],
+            "Scale": [
+                1,
+                1,
+                1
+            ],
+            "Rotation": [
+                0,
+                0,
+                1
+            ],
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        -1,
+                        8.7422776573475858e-08,
+                        0,
+                        34.270423889160156,
+                        -1.5632409781788162e-14,
+                        -1.7881392011531716e-07,
+                        0.99999988079071045,
+                        -6.6499255808594171e-06,
+                        8.74227694680485e-08,
+                        0.99999988079071045,
+                        1.7881392011531716e-07,
+                        41.972743988037109,
+                        0,
+                        0,
+                        0,
+                        1
+                    ],
+                    "UUID": 585225654
+                },
+                {
+                    "name": "Mesh",
+                    "Path": "Library\/Meshes\/Street environment_V01 (10).falcasmesh",
+                    "AssetPath": "C:\\Users\\berna\\Documents\\GitHub\\Falcas-Engine\\FalcasEngine\\Project Folder\\Assets\\street\\Street environment_V01.FBX",
+                    "MaterialIndex": 6,
+                    "MeshNumber": 4,
+                    "UUID": 598244781
+                },
+                {
+                    "name": "Material",
+                    "Path": "",
+                    "UUID": 136981754
+                }
+            ]
+        },
+        {
+            "UUID": 846071639,
+            "Parent UUID": 1842730581,
+            "name": "Street environment_V01 (13)",
+            "Translation": [
+                44,
+                -39,
+                0
+            ],
+            "Scale": [
+                0,
+                0,
+                1
+            ],
+            "Rotation": [
+                0,
+                0,
+                0
+            ],
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        -1.1920928244535389e-07,
+                        -1,
+                        0,
+                        44.260082244873047,
+                        1.7881392011531716e-07,
+                        -2.1316278684671217e-14,
+                        0.99999988079071045,
+                        -6.1458440541173331e-06,
+                        -0.99999988079071045,
+                        1.1920926823449918e-07,
+                        1.7881392011531716e-07,
+                        39.153717041015625,
+                        0,
+                        0,
+                        0,
+                        1
+                    ],
+                    "UUID": 842869073
+                },
+                {
+                    "name": "Mesh",
+                    "Path": "Library\/Meshes\/Street environment_V01 (11).falcasmesh",
+                    "AssetPath": "C:\\Users\\berna\\Documents\\GitHub\\Falcas-Engine\\FalcasEngine\\Project Folder\\Assets\\street\\Street environment_V01.FBX",
+                    "MaterialIndex": 6,
+                    "MeshNumber": 4,
+                    "UUID": 851153972
+                },
+                {
+                    "name": "Material",
+                    "Path": "",
+                    "UUID": 279054313
+                }
+            ]
+        },
+        {
+            "UUID": 937112005,
+            "Parent UUID": 1842730581,
+            "name": "Street environment_V01 (14)",
+            "Translation": [
+                -20,
+                -27,
+                0
+            ],
+            "Scale": [
+                1,
+                1,
+                1
+            ],
+            "Rotation": [
+                0,
+                0,
+                1
+            ],
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        -1,
+                        -3.8941436741879443e-07,
+                        0,
+                        -20.831323623657227,
+                        6.9632708345028493e-14,
+                        -1.7881392011531716e-07,
+                        0.99999988079071045,
+                        -4.9042378122976515e-06,
+                        -3.8941431057537557e-07,
+                        0.99999988079071045,
+                        1.7881392011531716e-07,
+                        27.426485061645508,
+                        0,
+                        0,
+                        0,
+                        1
+                    ],
+                    "UUID": 933143608
+                },
+                {
+                    "name": "Mesh",
+                    "Path": "Library\/Meshes\/Street environment_V01 (12).falcasmesh",
+                    "AssetPath": "C:\\Users\\berna\\Documents\\GitHub\\Falcas-Engine\\FalcasEngine\\Project Folder\\Assets\\street\\Street environment_V01.FBX",
+                    "MaterialIndex": 8,
+                    "MeshNumber": 11,
+                    "UUID": 945396904
+                },
+                {
+                    "name": "Material",
+                    "Path": "",
+                    "UUID": 559439897
+                }
+            ]
+        },
+        {
+            "UUID": 1804332998,
+            "Parent UUID": 1842730581,
+            "name": "Street environment_V01 (15)",
+            "Translation": [
+                42,
+                37,
+                0
+            ],
+            "Scale": [
+                1,
+                1,
+                1
+            ],
+            "Rotation": [
+                0,
+                0,
+                0
+            ],
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        1,
+                        0,
+                        0,
+                        42.130641937255859,
+                        0,
+                        1.7881392011531716e-07,
+                        0.99999988079071045,
+                        5.1936340241809376e-06,
+                        0,
+                        -0.99999988079071045,
+                        1.7881392011531716e-07,
+                        -37.493282318115234,
+                        0,
+                        0,
+                        0,
+                        1
+                    ],
+                    "UUID": 1795630373
+                },
+                {
+                    "name": "Mesh",
+                    "Path": "Library\/Meshes\/Street environment_V01 (13).falcasmesh",
+                    "AssetPath": "C:\\Users\\berna\\Documents\\GitHub\\Falcas-Engine\\FalcasEngine\\Project Folder\\Assets\\street\\Street environment_V01.FBX",
+                    "MaterialIndex": 2,
+                    "MeshNumber": 2,
+                    "UUID": 1814079938
+                },
+                {
+                    "name": "Material",
+                    "Path": "",
+                    "UUID": 1129611985
+                }
+            ]
+        },
+        {
+            "UUID": 1772213815,
+            "Parent UUID": 1842730581,
+            "name": "Street environment_V01 (16)",
+            "Translation": [
+                -20,
+                43,
+                0
+            ],
+            "Scale": [
+                1,
+                1,
+                1
+            ],
+            "Rotation": [
+                0,
+                0,
+                1
+            ],
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        -1,
+                        -8.7422776573475858e-08,
+                        0,
+                        -20.572771072387695,
+                        1.5632409781788162e-14,
+                        -1.7881392011531716e-07,
+                        0.99999988079071045,
+                        -0.069186754524707794,
+                        -8.74227694680485e-08,
+                        0.99999988079071045,
+                        1.7881392011531716e-07,
+                        -43.060825347900391,
+                        0,
+                        0,
+                        0,
+                        1
+                    ],
+                    "UUID": 1769080870
+                },
+                {
+                    "name": "Mesh",
+                    "Path": "Library\/Meshes\/Street environment_V01 (14).falcasmesh",
+                    "AssetPath": "C:\\Users\\berna\\Documents\\GitHub\\Falcas-Engine\\FalcasEngine\\Project Folder\\Assets\\street\\Street environment_V01.FBX",
+                    "MaterialIndex": 3,
+                    "MeshNumber": 3,
+                    "UUID": 1777156906
+                },
+                {
+                    "name": "Material",
+                    "Path": "",
+                    "UUID": 1125619686
+                }
+            ]
+        },
+        {
+            "UUID": 28995413,
+            "Parent UUID": 1842730581,
+            "name": "Street environment_V01 (17)",
+            "Translation": [
+                31,
+                -16,
+                0
+            ],
+            "Scale": [
+                1,
+                1,
+                1
+            ],
+            "Rotation": [
+                0,
+                0,
+                1
+            ],
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        -1,
+                        -8.7422776573475858e-08,
+                        0,
+                        31.51188850402832,
+                        1.5632409781788162e-14,
+                        -1.7881392011531716e-07,
+                        0.99999988079071045,
+                        -2.9407765396172181e-06,
+                        -8.74227694680485e-08,
+                        0.99999988079071045,
+                        1.7881392011531716e-07,
+                        16.446014404296875,
+                        0,
+                        0,
+                        0,
+                        1
+                    ],
+                    "UUID": 24121943
+                },
+                {
+                    "name": "Mesh",
+                    "Path": "Library\/Meshes\/Street environment_V01 (15).falcasmesh",
+                    "AssetPath": "C:\\Users\\berna\\Documents\\GitHub\\Falcas-Engine\\FalcasEngine\\Project Folder\\Assets\\street\\Street environment_V01.FBX",
+                    "MaterialIndex": 8,
+                    "MeshNumber": 12,
+                    "UUID": 36514481
+                },
+                {
+                    "name": "Material",
+                    "Path": "",
+                    "UUID": 1625520283
+                }
+            ]
+        },
+        {
+            "UUID": 238158714,
+            "Parent UUID": 1842730581,
+            "name": "Street environment_V01 (18)",
+            "Translation": [
+                13,
+                -33,
+                0
+            ],
+            "Scale": [
+                1,
+                1,
+                1
+            ],
+            "Rotation": [
+                0,
+                0,
+                0
+            ],
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        1,
+                        0,
+                        0,
+                        13.38798999786377,
+                        0,
+                        1.7881392011531716e-07,
+                        0.99999988079071045,
+                        -6.9742159212182742e-06,
+                        0,
+                        -0.99999988079071045,
+                        1.7881392011531716e-07,
+                        33.755035400390625,
+                        0,
+                        0,
+                        0,
+                        1
+                    ],
+                    "UUID": 235095390
+                },
+                {
+                    "name": "Mesh",
+                    "Path": "Library\/Meshes\/Street environment_V01 (16).falcasmesh",
+                    "AssetPath": "C:\\Users\\berna\\Documents\\GitHub\\Falcas-Engine\\FalcasEngine\\Project Folder\\Assets\\street\\Street environment_V01.FBX",
+                    "MaterialIndex": 9,
+                    "MeshNumber": 7,
+                    "UUID": 243171426
+                },
+                {
+                    "name": "Material",
+                    "Path": "",
+                    "UUID": 1891772804
+                }
+            ]
+        },
+        {
+            "UUID": 557949784,
+            "Parent UUID": 1842730581,
+            "name": "Street environment_V01 (19)",
+            "Translation": [
+                -2,
+                15,
+                0
+            ],
+            "Scale": [
+                1,
+                1,
+                1
+            ],
+            "Rotation": [
+                0,
+                0,
+                0
+            ],
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        1,
+                        0,
+                        0,
+                        -2.5033531188964844,
+                        0,
+                        1.7881392011531716e-07,
+                        0.99999988079071045,
+                        2.8254112294234801e-06,
+                        0,
+                        -0.99999988079071045,
+                        1.7881392011531716e-07,
+                        -15.800844192504883,
+                        0,
+                        0,
+                        0,
+                        1
+                    ],
+                    "UUID": 552658588
+                },
+                {
+                    "name": "Mesh",
+                    "Path": "Library\/Meshes\/Street environment_V01 (17).falcasmesh",
+                    "AssetPath": "C:\\Users\\berna\\Documents\\GitHub\\Falcas-Engine\\FalcasEngine\\Project Folder\\Assets\\street\\Street environment_V01.FBX",
+                    "MaterialIndex": 10,
+                    "MeshNumber": 13,
+                    "UUID": 565329610
+                },
+                {
+                    "name": "Material",
+                    "Path": "",
+                    "UUID": 297334479
+                }
+            ]
+        },
+        {
+            "UUID": 971405001,
+            "Parent UUID": 1842730581,
+            "name": "Street environment_V01 (20)",
+            "Translation": [
+                -42,
+                -41,
+                0
+            ],
+            "Scale": [
+                0,
+                0,
+                1
+            ],
+            "Rotation": [
+                0,
+                0,
+                0
+            ],
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        -1.1920928244535389e-07,
+                        1,
+                        0,
+                        -42.807239532470703,
+                        -1.7881392011531716e-07,
+                        -2.1316278684671217e-14,
+                        0.99999988079071045,
+                        -8.4191260611987673e-06,
+                        0.99999988079071045,
+                        1.1920926823449918e-07,
+                        1.7881392011531716e-07,
+                        41.835559844970703,
+                        0,
+                        0,
+                        0,
+                        1
+                    ],
+                    "UUID": 968341677
+                },
+                {
+                    "name": "Mesh",
+                    "Path": "Library\/Meshes\/Street environment_V01 (18).falcasmesh",
+                    "AssetPath": "C:\\Users\\berna\\Documents\\GitHub\\Falcas-Engine\\FalcasEngine\\Project Folder\\Assets\\street\\Street environment_V01.FBX",
+                    "MaterialIndex": 9,
+                    "MeshNumber": 7,
+                    "UUID": 976278471
+                },
+                {
+                    "name": "Material",
+                    "Path": "",
+                    "UUID": 742164865
+                }
+            ]
+        },
+        {
+            "UUID": 1655522764,
+            "Parent UUID": 1842730581,
+            "name": "Street environment_V01 (21)",
+            "Translation": [
+                -34,
+                -41,
+                0
+            ],
+            "Scale": [
+                0,
+                0,
+                1
+            ],
+            "Rotation": [
+                0,
+                0,
+                0
+            ],
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        -1.1920928244535389e-07,
+                        1,
+                        0,
+                        -34.679481506347656,
+                        -1.7881392011531716e-07,
+                        -2.1316278684671217e-14,
+                        0.99999988079071045,
+                        -8.4191260611987673e-06,
+                        0.99999988079071045,
+                        1.1920926823449918e-07,
+                        1.7881392011531716e-07,
+                        41.835559844970703,
+                        0,
+                        0,
+                        0,
+                        1
+                    ],
+                    "UUID": 1650927778
+                },
+                {
+                    "name": "Mesh",
+                    "Path": "Library\/Meshes\/Street environment_V01 (19).falcasmesh",
+                    "AssetPath": "C:\\Users\\berna\\Documents\\GitHub\\Falcas-Engine\\FalcasEngine\\Project Folder\\Assets\\street\\Street environment_V01.FBX",
+                    "MaterialIndex": 9,
+                    "MeshNumber": 7,
+                    "UUID": 1660674718
+                },
+                {
+                    "name": "Material",
+                    "Path": "",
+                    "UUID": 1269704999
+                }
+            ]
+        },
+        {
+            "UUID": 211720381,
+            "Parent UUID": 1842730581,
+            "name": "Street environment_V01 (22)",
+            "Translation": [
+                -29,
+                21,
+                0
+            ],
+            "Scale": [
+                1,
+                1,
+                1
+            ],
+            "Rotation": [
+                0,
+                0,
+                0
+            ],
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        1,
+                        0,
+                        0,
+                        -29.478403091430664,
+                        0,
+                        1.7881392011531716e-07,
+                        0.99999988079071045,
+                        3.7576135127892485e-06,
+                        0,
+                        -0.99999988079071045,
+                        1.7881392011531716e-07,
+                        -21.014097213745117,
+                        0,
+                        0,
+                        0,
+                        1
+                    ],
+                    "UUID": 208448194
+                },
+                {
+                    "name": "Mesh",
+                    "Path": "Library\/Meshes\/Street environment_V01 (20).falcasmesh",
+                    "AssetPath": "C:\\Users\\berna\\Documents\\GitHub\\Falcas-Engine\\FalcasEngine\\Project Folder\\Assets\\street\\Street environment_V01.FBX",
+                    "MaterialIndex": 0,
+                    "MeshNumber": 0,
+                    "UUID": 217290061
+                },
+                {
+                    "name": "Material",
+                    "Path": "",
+                    "UUID": 1681117305
+                }
+            ]
+        },
+        {
+            "UUID": 583518338,
+            "Parent UUID": 1842730581,
+            "name": "Street environment_V01 (23)",
+            "Translation": [
+                -32,
+                42,
+                0
+            ],
+            "Scale": [
+                1,
+                1,
+                1
+            ],
+            "Rotation": [
+                0,
+                0,
+                0
+            ],
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        1,
+                        0,
+                        0,
+                        -32.361495971679688,
+                        0,
+                        1.7881392011531716e-07,
+                        0.99999988079071045,
+                        8.0778818301041611e-06,
+                        0,
+                        -0.99999988079071045,
+                        1.7881392011531716e-07,
+                        -42.370418548583984,
+                        0,
+                        0,
+                        0,
+                        1
+                    ],
+                    "UUID": 580246151
+                },
+                {
+                    "name": "Mesh",
+                    "Path": "Library\/Meshes\/Street environment_V01 (21).falcasmesh",
+                    "AssetPath": "C:\\Users\\berna\\Documents\\GitHub\\Falcas-Engine\\FalcasEngine\\Project Folder\\Assets\\street\\Street environment_V01.FBX",
+                    "MaterialIndex": 7,
+                    "MeshNumber": 14,
+                    "UUID": 588600671
+                },
+                {
+                    "name": "Material",
+                    "Path": "",
+                    "UUID": 235644018
+                }
+            ]
+        },
+        {
+            "UUID": 1608987864,
+            "Parent UUID": 1842730581,
+            "name": "Street environment_V01 (24)",
+            "Translation": [
+                16,
+                -16,
+                0
+            ],
+            "Scale": [
+                0,
+                0,
+                1
+            ],
+            "Rotation": [
+                0,
+                0,
+                0
+            ],
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        -1.1920928244535389e-07,
+                        0.99999988079071045,
+                        0,
+                        16.049516677856445,
+                        -1.7881390590446244e-07,
+                        -2.1316278684671217e-14,
+                        0.99999988079071045,
+                        -2.9856353194190888e-06,
+                        0.9999997615814209,
+                        1.1920926823449918e-07,
+                        1.7881392011531716e-07,
+                        16.696882247924805,
+                        0,
+                        0,
+                        0,
+                        1
+                    ],
+                    "UUID": 1603766289
+                },
+                {
+                    "name": "Mesh",
+                    "Path": "Library\/Meshes\/Street environment_V01 (22).falcasmesh",
+                    "AssetPath": "C:\\Users\\berna\\Documents\\GitHub\\Falcas-Engine\\FalcasEngine\\Project Folder\\Assets\\street\\Street environment_V01.FBX",
+                    "MaterialIndex": 8,
+                    "MeshNumber": 15,
+                    "UUID": 1617620868
+                },
+                {
+                    "name": "Material",
+                    "Path": "",
+                    "UUID": 755177737
+                }
+            ]
+        },
+        {
+            "UUID": 460100037,
+            "Parent UUID": 1842730581,
+            "name": "Street environment_V01 (25)",
+            "Translation": [
+                13,
+                -40,
+                0
+            ],
+            "Scale": [
+                1,
+                1,
+                1
+            ],
+            "Rotation": [
+                0,
+                0,
+                0
+            ],
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        1,
+                        0,
+                        0,
+                        13.38798999786377,
+                        0,
+                        1.7881392011531716e-07,
+                        0.99999988079071045,
+                        -8.2344031397951767e-06,
+                        0,
+                        -0.99999988079071045,
+                        1.7881392011531716e-07,
+                        40.802513122558594,
+                        0,
+                        0,
+                        0,
+                        1
+                    ],
+                    "UUID": 453764526
+                },
+                {
+                    "name": "Mesh",
+                    "Path": "Library\/Meshes\/Street environment_V01 (23).falcasmesh",
+                    "AssetPath": "C:\\Users\\berna\\Documents\\GitHub\\Falcas-Engine\\FalcasEngine\\Project Folder\\Assets\\street\\Street environment_V01.FBX",
+                    "MaterialIndex": 9,
+                    "MeshNumber": 7,
+                    "UUID": 466017822
+                },
+                {
+                    "name": "Material",
+                    "Path": "",
+                    "UUID": 314753206
+                }
+            ]
+        },
+        {
+            "UUID": 1468721281,
+            "Parent UUID": 1842730581,
+            "name": "Street environment_V01 (26)",
+            "Translation": [
+                -31,
+                33,
+                0
+            ],
+            "Scale": [
+                0,
+                0,
+                1
+            ],
+            "Rotation": [
+                0,
+                0,
+                0
+            ],
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        -1.1920928244535389e-07,
+                        1,
+                        0,
+                        -31.216331481933594,
+                        -1.7881392011531716e-07,
+                        -2.1316278684671217e-14,
+                        0.99999988079071045,
+                        6.4383648350485601e-06,
+                        0.99999988079071045,
+                        1.1920926823449918e-07,
+                        1.7881392011531716e-07,
+                        -33.201572418212891,
+                        0,
+                        0,
+                        0,
+                        1
+                    ],
+                    "UUID": 1465518715
+                },
+                {
+                    "name": "Mesh",
+                    "Path": "Library\/Meshes\/Street environment_V01 (24).falcasmesh",
+                    "AssetPath": "C:\\Users\\berna\\Documents\\GitHub\\Falcas-Engine\\FalcasEngine\\Project Folder\\Assets\\street\\Street environment_V01.FBX",
+                    "MaterialIndex": 7,
+                    "MeshNumber": 6,
+                    "UUID": 1473942856
+                },
+                {
+                    "name": "Material",
+                    "Path": "",
+                    "UUID": 2089786320
+                }
+            ]
+        },
+        {
+            "UUID": 1884519710,
+            "Parent UUID": 1842730581,
+            "name": "Street environment_V01 (27)",
+            "Translation": [
+                -20,
+                -16,
+                0
+            ],
+            "Scale": [
+                1,
+                1,
+                1
+            ],
+            "Rotation": [
+                0,
+                0,
+                1
+            ],
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        -1,
+                        -3.8941436741879443e-07,
+                        0,
+                        -20.317693710327148,
+                        6.9632708345028493e-14,
+                        -1.7881392011531716e-07,
+                        0.99999988079071045,
+                        -2.8902782105433289e-06,
+                        -3.8941431057537557e-07,
+                        0.99999988079071045,
+                        1.7881392011531716e-07,
+                        16.163606643676758,
+                        0,
+                        0,
+                        0,
+                        1
+                    ],
+                    "UUID": 1879019651
+                },
+                {
+                    "name": "Mesh",
+                    "Path": "Library\/Meshes\/Street environment_V01 (25).falcasmesh",
+                    "AssetPath": "C:\\Users\\berna\\Documents\\GitHub\\Falcas-Engine\\FalcasEngine\\Project Folder\\Assets\\street\\Street environment_V01.FBX",
+                    "MaterialIndex": 8,
+                    "MeshNumber": 16,
+                    "UUID": 1892456504
+                },
+                {
+                    "name": "Material",
+                    "Path": "",
+                    "UUID": 680933679
+                }
+            ]
+        },
+        {
+            "UUID": 2053093968,
+            "Parent UUID": 1842730581,
+            "name": "Street environment_V01 (28)",
+            "Translation": [
+                -41,
+                -16,
+                0
+            ],
+            "Scale": [
+                0,
+                0,
+                1
+            ],
+            "Rotation": [
+                0,
+                0,
+                0
+            ],
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        -1.1920928244535389e-07,
+                        0.99999988079071045,
+                        0,
+                        -41.649002075195313,
+                        -1.7881390590446244e-07,
+                        -2.1316278684671217e-14,
+                        0.99999988079071045,
+                        -2.9496059141820297e-06,
+                        0.9999997615814209,
+                        1.1920926823449918e-07,
+                        1.7881392011531716e-07,
+                        16.495391845703125,
+                        0,
+                        0,
+                        0,
+                        1
+                    ],
+                    "UUID": 2049682539
+                },
+                {
+                    "name": "Mesh",
+                    "Path": "Library\/Meshes\/Street environment_V01 (26).falcasmesh",
+                    "AssetPath": "C:\\Users\\berna\\Documents\\GitHub\\Falcas-Engine\\FalcasEngine\\Project Folder\\Assets\\street\\Street environment_V01.FBX",
+                    "MaterialIndex": 8,
+                    "MeshNumber": 17,
+                    "UUID": 2058176301
+                },
+                {
+                    "name": "Material",
+                    "Path": "",
+                    "UUID": 645518407
+                }
+            ]
+        },
+        {
+            "UUID": 1942000669,
+            "Parent UUID": 1842730581,
+            "name": "Street environment_V01 (29)",
+            "Translation": [
+                -42,
+                -30,
+                0
+            ],
+            "Scale": [
+                0,
+                0,
+                1
+            ],
+            "Rotation": [
+                0,
+                0,
+                0
+            ],
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        -1.1920928244535389e-07,
+                        1,
+                        0,
+                        -42.807239532470703,
+                        -1.7881392011531716e-07,
+                        -2.1316278684671217e-14,
+                        0.99999988079071045,
+                        -6.4178989305219147e-06,
+                        0.99999988079071045,
+                        1.1920926823449918e-07,
+                        1.7881392011531716e-07,
+                        30.643884658813477,
+                        0,
+                        0,
+                        0,
+                        1
+                    ],
+                    "UUID": 1938937345
+                },
+                {
+                    "name": "Mesh",
+                    "Path": "Library\/Meshes\/Street environment_V01 (27).falcasmesh",
+                    "AssetPath": "C:\\Users\\berna\\Documents\\GitHub\\Falcas-Engine\\FalcasEngine\\Project Folder\\Assets\\street\\Street environment_V01.FBX",
+                    "MaterialIndex": 9,
+                    "MeshNumber": 7,
+                    "UUID": 1947222244
+                },
+                {
+                    "name": "Material",
+                    "Path": "",
+                    "UUID": 309594997
+                }
+            ]
+        },
+        {
+            "UUID": 121664016,
+            "Parent UUID": 1842730581,
+            "name": "Street environment_V01 (30)",
+            "Translation": [
+                -34,
+                -30,
+                0
+            ],
+            "Scale": [
+                0,
+                0,
+                1
+            ],
+            "Rotation": [
+                0,
+                0,
+                0
+            ],
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        -1.1920928244535389e-07,
+                        1,
+                        0,
+                        -34.679481506347656,
+                        -1.7881392011531716e-07,
+                        -2.1316278684671217e-14,
+                        0.99999988079071045,
+                        -6.4178989305219147e-06,
+                        0.99999988079071045,
+                        1.1920926823449918e-07,
+                        1.7881392011531716e-07,
+                        30.643884658813477,
+                        0,
+                        0,
+                        0,
+                        1
+                    ],
+                    "UUID": 117069030
+                },
+                {
+                    "name": "Mesh",
+                    "Path": "Library\/Meshes\/Street environment_V01 (28).falcasmesh",
+                    "AssetPath": "C:\\Users\\berna\\Documents\\GitHub\\Falcas-Engine\\FalcasEngine\\Project Folder\\Assets\\street\\Street environment_V01.FBX",
+                    "MaterialIndex": 9,
+                    "MeshNumber": 7,
+                    "UUID": 126676728
+                },
+                {
+                    "name": "Material",
+                    "Path": "",
+                    "UUID": 1763581778
+                }
+            ]
+        },
+        {
+            "UUID": 1054467991,
+            "Parent UUID": 1842730581,
+            "name": "Street environment_V01 (31)",
+            "Translation": [
+                30,
+                21,
+                0
+            ],
+            "Scale": [
+                0,
+                0,
+                1
+            ],
+            "Rotation": [
+                0,
+                0,
+                0
+            ],
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        -1.1920928244535389e-07,
+                        -1,
+                        0,
+                        30.695278167724609,
+                        1.7881392011531716e-07,
+                        -2.1316278684671217e-14,
+                        0.99999988079071045,
+                        4.0767495192994829e-06,
+                        -0.99999988079071045,
+                        1.1920926823449918e-07,
+                        1.7881392011531716e-07,
+                        -21.612644195556641,
+                        0,
+                        0,
+                        0,
+                        1
+                    ],
+                    "UUID": 1051126183
+                },
+                {
+                    "name": "Mesh",
+                    "Path": "Library\/Meshes\/Street environment_V01 (29).falcasmesh",
+                    "AssetPath": "C:\\Users\\berna\\Documents\\GitHub\\Falcas-Engine\\FalcasEngine\\Project Folder\\Assets\\street\\Street environment_V01.FBX",
+                    "MaterialIndex": 1,
+                    "MeshNumber": 1,
+                    "UUID": 1059480703
+                },
+                {
+                    "name": "Material",
+                    "Path": "",
+                    "UUID": 1378877949
+                }
+            ]
+        }
+    ]
+}
