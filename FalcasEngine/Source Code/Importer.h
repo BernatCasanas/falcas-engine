@@ -13,16 +13,16 @@ void DevilInit();
 
 void DevilCleanUp();
 
-void ImportFBX(std::string file, bool do_not_import_textures = false);
+void ImportFBX(std::string file);
 
-void ImportGameObjectFromFBX(const aiScene* scene, aiNode* node, GameObject* parent, std::string file, float4x4 transfor_heredated = float4x4::identity, bool do_not_import_textures = false);
+void ImportGameObjectFromFBX(const aiScene* scene, aiNode* node, GameObject* parent, std::string file, float4x4 transfor_heredated = float4x4::identity);
 
 void ImportDefaultTexture(ComponentMaterial* mat);
 
 ComponentMesh* ImportOnlyMesh(GameObject* game_object, std::string libraryPath, std::string assetPath, int meshNumber);
 
 namespace MeshImporter {
-	int Import(const aiMesh* ai_material, ComponentMesh* mesh, char* name,  bool imported);
+	void Import(const aiMesh* ai_material, char* name);
 	uint Save(const ComponentMesh* mesh, char** filebuffer);
 	void Load(const char* fileBuffer, ComponentMesh *mesh);
 }

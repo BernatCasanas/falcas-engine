@@ -34,7 +34,7 @@ void DevilCleanUp()
 	ilDisable(IL_ORIGIN_SET);
 }
 
-void ImportFBX(std::string file, bool do_not_import_textures)
+void ImportFBX(std::string file)
 {
 	const aiScene* scene = nullptr;
 	char* buffer = nullptr;
@@ -42,20 +42,22 @@ void ImportFBX(std::string file, bool do_not_import_textures)
 
 	scene = aiImportFileFromMemory(buffer, file_size, aiProcessPreset_TargetRealtime_MaxQuality, nullptr);
 
+	delete[] buffer;
+
 	aiNode* nod = scene->mRootNode;
 
-	ImportGameObjectFromFBX(scene, nod, App->scene_intro->root, file, float4x4::identity, do_not_import_textures);
+	ImportGameObjectFromFBX(scene, nod, App->scene_intro->root, file, float4x4::identity);
 
 	App->filesystem->counterMesh = 0;
 
 	aiReleaseImport(scene);
 }
 
-void ImportGameObjectFromFBX(const aiScene* scene, aiNode* node, GameObject* parent, std::string file, float4x4 transform_heredated, bool do_not_import_textures)
+void ImportGameObjectFromFBX(const aiScene* scene, aiNode* node, GameObject* parent, std::string file, float4x4 transform_heredated)
 {
 	if (node->mNumMeshes == 0 && node->mNumChildren == 0)
 		return;
-	aiVector3D position_ai, size_ai;
+	/*aiVector3D position_ai, size_ai;
 	aiQuaternion rotation_ai;
 	node->mTransformation.Decompose(size_ai, rotation_ai, position_ai);
 	float3 position = { position_ai.x,position_ai.y,position_ai.z };
@@ -67,53 +69,56 @@ void ImportGameObjectFromFBX(const aiScene* scene, aiNode* node, GameObject* par
 	if (node->mNumChildren > 1 || node->mNumMeshes != 0) {
 		game_object = App->scene_intro->CreateGameObject(position, rotation, size, App->filesystem->GetFileName(file, true), parent);
 		transform_heredated = float4x4::identity;
-	}
+	}*/
 
 	if (node->mNumMeshes > 0) {
-		ComponentMesh* mesh = (ComponentMesh*)game_object->CreateComponent(Component_Type::Mesh);
+		//ComponentMesh* mesh = (ComponentMesh*)game_object->CreateComponent(Component_Type::Mesh);
+		//ComponentMesh* mesh = new ComponentMesh(nullptr);
 		aiMesh* ai_mesh = scene->mMeshes[node->mMeshes[0]];
-		mesh->meshNumber = node->mMeshes[0];
+		/*mesh->meshNumber = node->mMeshes[0];
 		bool mesh_imported = false;
-		bool tex_imported = false;
+		bool tex_imported = false;*/
 
-		mesh->full_file_name = file;
-		mesh->file_name = App->filesystem->GetFileName(file, true);
+		/*mesh->full_file_name = file;
+		mesh->file_name = App->filesystem->GetFileName(file, true);*/
 
+		std::string name_buff2 = App->filesystem->GetFileName(file, true).c_str();
 		char name_buff[200];
 		if (App->filesystem->counterMesh != 0) {
-			sprintf_s(name_buff, 200, "%s (%i)", mesh->file_name.c_str(), App->filesystem->counterMesh);
-			mesh->file_name = name_buff;
+			sprintf_s(name_buff, 200, "%s (%i)", App->filesystem->GetFileName(file, true).c_str(), App->filesystem->counterMesh);
+			name_buff2 = name_buff;
+			//mesh->file_name = name_buff;
 		}
 		App->filesystem->counterMesh++;
 
-		int num_material = ai_mesh->mMaterialIndex;
-		mesh->materialIndex = ai_mesh->mMaterialIndex;
-
-		sprintf_s(name_buff, 200, "Library/Meshes/%s.falcasmesh", mesh->file_name.c_str());
-		mesh->file_name = name_buff;
+		/*int num_material = ai_mesh->mMaterialIndex;
+		mesh->materialIndex = ai_mesh->mMaterialIndex;*/
+		sprintf_s(name_buff, 200, "Library/Meshes/%s.falcasmesh", name_buff2.c_str());
+		/*mesh->file_name = name_buff;
 		if (App->filesystem->FileExists(name_buff)) {
 			mesh_imported = true;
 		}
-		mesh->libraryPath = name_buff;
-		MeshImporter::Import(ai_mesh, mesh, name_buff, mesh_imported);
+		mesh->libraryPath = name_buff;*/
+		MeshImporter::Import(ai_mesh, name_buff);
 
-		if (num_material != -1 && num_material < scene->mNumMaterials && !do_not_import_textures) {
-			ComponentMaterial* mat = (ComponentMaterial*)game_object->CreateComponent(Component_Type::Material);
-			aiString material_path;
-			scene->mMaterials[num_material]->GetTexture(aiTextureType_DIFFUSE, 0, &material_path);
-			if (material_path.length > 0) {
-				std::string path = App->filesystem->GetPathFile(file);
-				path += material_path.C_Str();
-				sprintf_s(name_buff, 200, "Library/Textures/%s.dds", App->filesystem->GetFileName(path,true).c_str());
-				if (App->filesystem->FileExists(name_buff)) {
-					tex_imported = true;
-				}
-				//TextureImporter::Import(mat, path, tex_imported, name_buff);
-			}
-		}
+		//if (num_material != -1 && num_material < scene->mNumMaterials) {
+		//	ComponentMaterial* mat = (ComponentMaterial*)game_object->CreateComponent(Component_Type::Material);
+		//	aiString material_path;
+		//	scene->mMaterials[num_material]->GetTexture(aiTextureType_DIFFUSE, 0, &material_path);
+		//	if (material_path.length > 0) {
+		//		std::string path = App->filesystem->GetPathFile(file);
+		//		path += material_path.C_Str();
+		//		sprintf_s(name_buff, 200, "Library/Textures/%s.dds", App->filesystem->GetFileName(path,true).c_str());
+		//		if (App->filesystem->FileExists(name_buff)) {
+		//			tex_imported = true;
+		//		}
+		//		//TextureImporter::Import(mat, path, tex_imported, name_buff);
+		//	}
+		//}
+		//delete mesh;
 	}
 	for (int i = 0; i < node->mNumChildren; i++) {
-		ImportGameObjectFromFBX(scene, node->mChildren[i], game_object, file,transform_heredated);
+		ImportGameObjectFromFBX(scene, node->mChildren[i], parent, file,transform_heredated);
 	}
 }
 
@@ -157,83 +162,75 @@ ComponentMesh* ImportOnlyMesh(GameObject* game_object, std::string libraryPath, 
 		imported = false;
 		mesh->file_name = libraryPath;
 	}
-	MeshImporter::Import(ai_mesh , mesh, (char*)libraryPath.c_str(), imported);
+	//MeshImporter::Import(ai_mesh , mesh, (char*)libraryPath.c_str(), imported);
 
 	aiReleaseImport(scene);
 	return mesh;
 }
 
 
-int MeshImporter::Import(const aiMesh* ai_mesh, ComponentMesh* mesh, char* name, bool imported)
+void MeshImporter::Import(const aiMesh* ai_mesh, char* name)
 {
-	int material_index = -1;
-	if (!imported) {
-		if (ai_mesh == nullptr)
-		{
-			const char* error = aiGetErrorString();
-			LOG("Error loading FBX: %s", error);
-			return material_index;
-		}
-
-		mesh->num_vertices = ai_mesh->mNumVertices * 3;
-		mesh->vertices = new float[mesh->num_vertices];
-		memcpy(mesh->vertices, ai_mesh->mVertices, sizeof(float) * mesh->num_vertices);
-		LOG("Loading FBX correctly");
-		LOG("New mesh with %d vertices", mesh->num_vertices / 3);
-
-		if (ai_mesh->HasFaces())
-		{
-			mesh->num_indices = ai_mesh->mNumFaces * 3;
-			mesh->indices = new uint[mesh->num_indices];
-			for (uint j = 0; j < ai_mesh->mNumFaces; ++j)
-			{
-				if (ai_mesh->mFaces[j].mNumIndices != 3) {
-					LOG("WARNING, geometry face with != 3 indices!");
-				}
-				else {
-					memcpy(&mesh->indices[j * 3], ai_mesh->mFaces[j].mIndices, 3 * sizeof(uint));
-				}
-			}
-			LOG("New mesh with %d index", mesh->num_indices);
-		}
-		mesh->num_normals = mesh->num_vertices;
-		mesh->normals = new float[ai_mesh->mNumVertices * 3];
-		for (int x = 0, y = 0; x < ai_mesh->mNumVertices; x++, y += 3) {
-			if (ai_mesh->HasNormals())
-			{
-				mesh->normals[y] = ai_mesh->mNormals[x].x;
-				mesh->normals[y + 1] = ai_mesh->mNormals[x].y;
-				mesh->normals[y + 2] = ai_mesh->mNormals[x].z;
-			}
-		}
-
-		if (ai_mesh->HasTextureCoords(0)) {
-			mesh->num_textureCoords = ai_mesh->mNumVertices;
-			mesh->texCoords = new float[mesh->num_textureCoords * 2];
-			for (uint i = 0, j = 0; i < mesh->num_textureCoords; i++, j += 2) {
-				mesh->texCoords[j] = ai_mesh->mTextureCoords[0][i].x;
-				mesh->texCoords[j + 1] = ai_mesh->mTextureCoords[0][i].y;
-			}
-			material_index = ai_mesh->mMaterialIndex;
-		}
-
-		char* buffer;
-		uint size = MeshImporter::Save(mesh, &buffer);
-		App->filesystem->SaveInternal(mesh->file_name.c_str(), buffer, size);
-	}
-
-	else {
-		char* buffer = App->filesystem->ReadPhysFile(name);
-		MeshImporter::Load(buffer, mesh);
-	}
+	ComponentMesh* mesh = new ComponentMesh(nullptr);
+	mesh->materialIndex = -1;
 	
-	if (ai_mesh != nullptr) material_index = ai_mesh->mMaterialIndex;
+	if (ai_mesh == nullptr)
+	{
+		LOG("Error loading FBX: %s", aiGetErrorString());
+	}
+
+	mesh->num_vertices = ai_mesh->mNumVertices * 3;
+	mesh->vertices = new float[mesh->num_vertices];
+	memcpy(mesh->vertices, ai_mesh->mVertices, sizeof(float) * mesh->num_vertices);
+	LOG("Loading FBX correctly");
+	LOG("New mesh with %d vertices", mesh->num_vertices / 3);
+
+	if (ai_mesh->HasFaces())
+	{
+		mesh->num_indices = ai_mesh->mNumFaces * 3;
+		mesh->indices = new uint[mesh->num_indices];
+		for (uint j = 0; j < ai_mesh->mNumFaces; ++j)
+		{
+			if (ai_mesh->mFaces[j].mNumIndices != 3) {
+				LOG("WARNING, geometry face with != 3 indices!");
+			}
+			else {
+				memcpy(&mesh->indices[j * 3], ai_mesh->mFaces[j].mIndices, 3 * sizeof(uint));
+			}
+		}
+		LOG("New mesh with %d index", mesh->num_indices);
+	}
+	mesh->num_normals = mesh->num_vertices;
+	mesh->normals = new float[ai_mesh->mNumVertices * 3];
+	for (int x = 0, y = 0; x < ai_mesh->mNumVertices; x++, y += 3) {
+		if (ai_mesh->HasNormals())
+		{
+			mesh->normals[y] = ai_mesh->mNormals[x].x;
+			mesh->normals[y + 1] = ai_mesh->mNormals[x].y;
+			mesh->normals[y + 2] = ai_mesh->mNormals[x].z;
+		}
+	}
+
+	if (ai_mesh->HasTextureCoords(0)) {
+		mesh->num_textureCoords = ai_mesh->mNumVertices;
+		mesh->texCoords = new float[mesh->num_textureCoords * 2];
+		for (uint i = 0, j = 0; i < mesh->num_textureCoords; i++, j += 2) {
+			mesh->texCoords[j] = ai_mesh->mTextureCoords[0][i].x;
+			mesh->texCoords[j + 1] = ai_mesh->mTextureCoords[0][i].y;
+		}
+		mesh->materialIndex = ai_mesh->mMaterialIndex;
+	}
+	char* buffer;
+	uint size = MeshImporter::Save(mesh, &buffer);
+	App->filesystem->SaveInternal(name, buffer, size);
+	delete[] buffer;
+	
+	//if (ai_mesh != nullptr) material_index = ai_mesh->mMaterialIndex;
 	//BERNAT FES UN ESQUEMA DE QUE NECESSITA EL MESH PER SER IMPORTAT DE LES 2 MANERES
 
-	mesh->Initialization();
+	//mesh->Initialization();
 
 
-	return material_index;
 
 }
 
@@ -241,7 +238,7 @@ uint MeshImporter::Save(const ComponentMesh* mesh, char** filebuffer)
 {
 	uint ranges[4] = { mesh->num_indices, mesh->num_vertices, mesh->num_normals, mesh->num_textureCoords };
 
-	uint size = sizeof(ranges) + sizeof(uint) * mesh->num_indices + sizeof(float) * mesh->num_vertices * 3
+	uint size = sizeof(ranges) + sizeof(uint) * mesh->num_indices + sizeof(float) * mesh->num_vertices
 		+ sizeof(float) * mesh->num_normals * 3 + sizeof(float) * mesh->num_textureCoords * 2;
 
 	char* buffer = new char[size];
@@ -320,7 +317,6 @@ void TextureImporter::Import(std::string file)
 {
 	uint size;
 	ComponentMaterial* mat = new ComponentMaterial(nullptr);
-	mat->full_file_name = file;
 
 	ilGenImages(1, &mat->image_name);
 	ilBindImage(mat->image_name);
@@ -346,11 +342,9 @@ void TextureImporter::Import(std::string file)
 	mat->show_default_tex = false;
 	mat->texture_id = ilutGLBindTexImage();
 
-	//mat->file_name = App->filesystem->GetFileName(mat->full_file_name, true);
 	char* texture_buffer = nullptr;
 	mat->size = TextureImporter::Save(&texture_buffer);
 	char name_buff[200];
-	mat->file_name = App->filesystem->GetFileName(file, false);
 	sprintf_s(name_buff, 200, "Library/Textures/%s.dds", App->filesystem->GetFileName(file, true).c_str());
 	App->filesystem->SaveInternal(name_buff, texture_buffer, mat->size);
 	delete[] texture_buffer;

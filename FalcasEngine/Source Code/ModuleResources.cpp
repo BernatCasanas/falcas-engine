@@ -28,6 +28,7 @@ void ModuleResources::CreateNewMetaFile(std::string file, uint id)
 	switch (App->filesystem->GetTypeFile(file_char)) {
 	case FILE_TYPE::FBX:
 		obj.AddInt("Type", 1);
+		ImportFBX(file);
 		//MeshImporter::Import()
 		break;
 	case FILE_TYPE::DDS:
