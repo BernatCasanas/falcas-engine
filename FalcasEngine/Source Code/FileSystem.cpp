@@ -164,6 +164,11 @@ void FileSystem::SaveInternal(const char* file, const void* buffer, uint size)
 	PHYSFS_close(file_phys);
 }
 
+uint FileSystem::GetLastModificationTime(std::string file)
+{
+	return PHYSFS_getLastModTime(file.c_str());
+}
+
 void FileSystem::CreateFolders()
 {
 	CreateOneFolder("Library/Meshes/");

@@ -43,6 +43,8 @@ public:
 
 	void SaveInternal(const char* file, const void* buffer, uint size);
 
+	uint GetLastModificationTime(std::string file);
+
 	void CreateFolders();
 	void CreateOneFolder(char* name);
 	JsonObj GenerateConfigContent();

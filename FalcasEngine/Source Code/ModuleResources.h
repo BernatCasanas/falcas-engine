@@ -14,7 +14,8 @@ public:
 	update_status Update(float dt) { return UPDATE_CONTINUE; };
 	bool CleanUp() { return true; };
 
-	void CreateNewMetaFile(std::string file, uint id);	
+	void CreateNewMetaFile(std::string file, uint id);
+	void UpdateMetaFile(std::string meta_file, uint id, char* buffer);
 private:
 	std::map<uint, std::string> resources;
 };
