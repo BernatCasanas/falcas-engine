@@ -2,7 +2,6 @@
 #include "Application.h"
 #include "FileSystem.h"
 #include "Importer.h"
-#include "ComponentMaterial.h"
 
 ModuleResources::ModuleResources(Application* app, bool start_enabled) : Module(app, start_enabled, "moduleResources")
 {
@@ -34,11 +33,8 @@ void ModuleResources::CreateNewMetaFile(std::string file, uint id)
 	case FILE_TYPE::DDS:
 	case FILE_TYPE::PNG:
 	case FILE_TYPE::TGA:
-		ComponentMaterial* mat = new ComponentMaterial(nullptr);
 		obj.AddInt("Type", 2);
-		char* s;
-		TextureImporter::Import(mat, file, false, s);
-		delete mat;		
+		TextureImporter::Import(file);
 		break;
 	deafult:
 		obj.AddInt("Type", 3);

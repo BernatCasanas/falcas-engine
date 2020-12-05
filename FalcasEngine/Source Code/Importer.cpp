@@ -108,7 +108,7 @@ void ImportGameObjectFromFBX(const aiScene* scene, aiNode* node, GameObject* par
 				if (App->filesystem->FileExists(name_buff)) {
 					tex_imported = true;
 				}
-				TextureImporter::Import(mat, path, tex_imported, name_buff);
+				//TextureImporter::Import(mat, path, tex_imported, name_buff);
 			}
 		}
 	}
@@ -316,53 +316,50 @@ void MeshImporter::Load(const char* fileBuffer, ComponentMesh *mesh)
 
 }
 
-void TextureImporter::Import(ComponentMaterial* mat, std::string file, bool imported, char* namebuff)
+void TextureImporter::Import(std::string file)
 {
 	uint size;
+	ComponentMaterial* mat = new ComponentMaterial(nullptr);
 	mat->full_file_name = file;
 
 	ilGenImages(1, &mat->image_name);
 	ilBindImage(mat->image_name);
 
-	ilEnable(IL_ORIGIN_SET);
 	ilOriginFunc(IL_ORIGIN_LOWER_LEFT);
 
-	if (!imported) {
-		char* buffer = nullptr;
-		size = App->filesystem->Load(file.c_str(), &buffer);
+	
+	char* buffer = nullptr;
+	size = App->filesystem->Load(file.c_str(), &buffer);
 
-		if (ilLoadL(IL_TYPE_UNKNOWN, buffer, size) == IL_FALSE) {
-			ILenum error = ilGetError();
-			LOG("Error loading Texture %s\n", iluErrorString(error));
-		}
-
-		ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
-
-
-		mat->height = ilGetInteger(IL_IMAGE_HEIGHT);
-		mat->width = ilGetInteger(IL_IMAGE_WIDTH);
-		mat->show_default_tex = false;
-		mat->texture_id = ilutGLBindTexImage();
-
-		//mat->file_name = App->filesystem->GetFileName(mat->full_file_name, true);
-		char* texture_buffer = nullptr;
-		mat->size = TextureImporter::Save(mat, &texture_buffer);
-		char name_buff[200];
-		mat->file_name = App->filesystem->GetFileName(file, false);
-		sprintf_s(name_buff, 200, "Library/Textures/%s.dds", App->filesystem->GetFileName(file, true).c_str());
-		App->filesystem->SaveInternal(name_buff, texture_buffer, mat->size);
+	if (ilLoadL(IL_TYPE_UNKNOWN, buffer, size) == IL_FALSE) {
+		ILenum error = ilGetError();
+		LOG("Error loading Texture %s\n", iluErrorString(error));
 	}
-	else {
-		char* buffer = nullptr;
-		mat->full_file_name = namebuff;
-		//mat->file_name = App->filesystem->GetFileName(mat->full_file_name, true);
-		mat->size = App->filesystem->LoadPath(namebuff, &buffer);
-		TextureImporter::Load(buffer, mat, mat->size);
-	}
+
+	delete[] buffer;
+
+	ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
+
+
+	mat->height = ilGetInteger(IL_IMAGE_HEIGHT);
+	mat->width = ilGetInteger(IL_IMAGE_WIDTH);
+	mat->show_default_tex = false;
+	mat->texture_id = ilutGLBindTexImage();
+
+	//mat->file_name = App->filesystem->GetFileName(mat->full_file_name, true);
+	char* texture_buffer = nullptr;
+	mat->size = TextureImporter::Save(&texture_buffer);
+	char name_buff[200];
+	mat->file_name = App->filesystem->GetFileName(file, false);
+	sprintf_s(name_buff, 200, "Library/Textures/%s.dds", App->filesystem->GetFileName(file, true).c_str());
+	App->filesystem->SaveInternal(name_buff, texture_buffer, mat->size);
+	delete[] texture_buffer;
+	
 	ilBindImage(0);
+	delete mat;
 }
 
-uint TextureImporter::Save(const ComponentMaterial* mat, char** filebuffer)
+uint TextureImporter::Save(char** filebuffer)
 {
 	ILuint size;
 	ILubyte* data;
@@ -372,7 +369,7 @@ uint TextureImporter::Save(const ComponentMaterial* mat, char** filebuffer)
 		data = new ILubyte[size]; // allocate data buffer
 		if (ilSaveL(IL_DDS, data, size) > 0) { // Save to buffer with the ilSaveIL function
 			*filebuffer = (char*)data;
-		}
+		}		
 	}
 	return size;
 }

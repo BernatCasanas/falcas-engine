@@ -28,8 +28,8 @@ namespace MeshImporter {
 }
 
 namespace TextureImporter {
-	void Import(ComponentMaterial* mat, std::string file, bool imported, char* namebuff);
-	uint Save(const ComponentMaterial* mat, char** filebuffer);
+	void Import(std::string file);
+	uint Save(char** filebuffer);
 	void Load(const char* fileBuffer, ComponentMaterial* mat, uint size);
 }
 
