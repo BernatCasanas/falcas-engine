@@ -67,7 +67,8 @@ bool Application::Init()
 	Module* item;
 
 	PHYSFS_setWriteDir(".");
-	App->filesystem->CreateOneFolder("Library/Config");
+	App->filesystem->CreateOneFolder("Library");
+	App->filesystem->CreateFolders();
 
 	char* buffer = nullptr;
 	
