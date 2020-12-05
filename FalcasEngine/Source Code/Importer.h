@@ -13,9 +13,9 @@ void DevilInit();
 
 void DevilCleanUp();
 
-void ImportFBX(std::string file);
+void ImportFBX(std::string file, bool do_not_import_textures = false);
 
-void ImportGameObjectFromFBX(const aiScene* scene, aiNode* node, GameObject* parent, std::string file, float4x4 transfor_heredated=float4x4::identity);
+void ImportGameObjectFromFBX(const aiScene* scene, aiNode* node, GameObject* parent, std::string file, float4x4 transfor_heredated = float4x4::identity, bool do_not_import_textures = false);
 
 void ImportDefaultTexture(ComponentMaterial* mat);
 

@@ -34,7 +34,7 @@ void DevilCleanUp()
 	ilDisable(IL_ORIGIN_SET);
 }
 
-void ImportFBX(std::string file)
+void ImportFBX(std::string file, bool do_not_import_textures)
 {
 	const aiScene* scene = nullptr;
 	char* buffer = nullptr;
@@ -44,14 +44,14 @@ void ImportFBX(std::string file)
 
 	aiNode* nod = scene->mRootNode;
 
-	ImportGameObjectFromFBX(scene, nod, App->scene_intro->root, file);
+	ImportGameObjectFromFBX(scene, nod, App->scene_intro->root, file, float4x4::identity, do_not_import_textures);
 
 	App->filesystem->counterMesh = 0;
 
 	aiReleaseImport(scene);
 }
 
-void ImportGameObjectFromFBX(const aiScene* scene, aiNode* node, GameObject* parent, std::string file, float4x4 transform_heredated)
+void ImportGameObjectFromFBX(const aiScene* scene, aiNode* node, GameObject* parent, std::string file, float4x4 transform_heredated, bool do_not_import_textures)
 {
 	if (node->mNumMeshes == 0 && node->mNumChildren == 0)
 		return;
@@ -97,7 +97,7 @@ void ImportGameObjectFromFBX(const aiScene* scene, aiNode* node, GameObject* par
 		mesh->libraryPath = name_buff;
 		MeshImporter::Import(ai_mesh, mesh, name_buff, mesh_imported);
 
-		if (num_material != -1 && num_material < scene->mNumMaterials) {
+		if (num_material != -1 && num_material < scene->mNumMaterials && !do_not_import_textures) {
 			ComponentMaterial* mat = (ComponentMaterial*)game_object->CreateComponent(Component_Type::Material);
 			aiString material_path;
 			scene->mMaterials[num_material]->GetTexture(aiTextureType_DIFFUSE, 0, &material_path);
@@ -348,7 +348,8 @@ void TextureImporter::Import(ComponentMaterial* mat, std::string file, bool impo
 		char* texture_buffer = nullptr;
 		mat->size = TextureImporter::Save(mat, &texture_buffer);
 		char name_buff[200];
-		sprintf_s(name_buff, 200, "Library/Textures/%s.dds", mat->file_name.c_str());
+		mat->file_name = App->filesystem->GetFileName(file, false);
+		sprintf_s(name_buff, 200, "Library/Textures/%s.dds", App->filesystem->GetFileName(file, true).c_str());
 		App->filesystem->SaveInternal(name_buff, texture_buffer, mat->size);
 	}
 	else {

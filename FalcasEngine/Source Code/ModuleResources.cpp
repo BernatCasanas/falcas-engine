@@ -1,6 +1,8 @@
 #include "ModuleResources.h"
 #include "Application.h"
 #include "FileSystem.h"
+#include "Importer.h"
+#include "ComponentMaterial.h"
 
 ModuleResources::ModuleResources(Application* app, bool start_enabled) : Module(app, start_enabled, "moduleResources")
 {
@@ -27,11 +29,16 @@ void ModuleResources::CreateNewMetaFile(std::string file, uint id)
 	switch (App->filesystem->GetTypeFile(file_char)) {
 	case FILE_TYPE::FBX:
 		obj.AddInt("Type", 1);
+		//MeshImporter::Import()
 		break;
 	case FILE_TYPE::DDS:
 	case FILE_TYPE::PNG:
 	case FILE_TYPE::TGA:
+		ComponentMaterial* mat = new ComponentMaterial(nullptr);
 		obj.AddInt("Type", 2);
+		char* s;
+		TextureImporter::Import(mat, file, false, s);
+		delete mat;		
 		break;
 	deafult:
 		obj.AddInt("Type", 3);
