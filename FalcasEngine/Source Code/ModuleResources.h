@@ -14,6 +14,7 @@ public:
 	update_status Update(float dt) { return UPDATE_CONTINUE; };
 	bool CleanUp() { return true; };
 
+	void ImportFileToLibrary(std::string file, bool drag_and_drop);
 	void CreateNewMetaFile(std::string file, uint id);
 	void UpdateMetaFile(std::string meta_file, uint id, char* buffer);
 private:

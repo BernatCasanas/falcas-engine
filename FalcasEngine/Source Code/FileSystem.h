@@ -36,6 +36,8 @@ public:
 
 	bool FileExists(std::string file);
 	char* ReadPhysFile(std::string file);
+	std::string CopyPhysFile(std::string file);
+
 	uint GetSizePhysFile(std::string file);
 	void DiscoverFiles(const char* directory, std::vector<std::string>& file_list, std::vector<std::string>& dir_list) const;
 

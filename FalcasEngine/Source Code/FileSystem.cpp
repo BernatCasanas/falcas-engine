@@ -7,7 +7,7 @@
 #include "ComponentMesh.h"
 #include "ComponentTransform.h"
 #include "External Libraries/MathGeoLib/include/MathGeoLib.h"
-
+#include <WinBase.h>
 
 #include "External Libraries/PhysFS/include/physfs.h"
 
@@ -97,6 +97,8 @@ bool FileSystem::FileExists(std::string file)
 char* FileSystem::ReadPhysFile(std::string file)
 {
 	char* buffer = nullptr;
+	std::replace(file.begin(), file.end(), ':', '/');
+	std::replace(file.begin(), file.end(), '\\', '/');
 	PHYSFS_file* file_phys = PHYSFS_openRead(file.c_str());
 	if (file_phys == nullptr) return"";
 	PHYSFS_sint32 size = (PHYSFS_sint32)PHYSFS_fileLength(file_phys);
@@ -104,6 +106,24 @@ char* FileSystem::ReadPhysFile(std::string file)
 	PHYSFS_read(file_phys, buffer, 1, size);
 	PHYSFS_close(file_phys);
 	return buffer;
+}
+
+std::string FileSystem::CopyPhysFile(std::string file)
+{
+	std::string actual_location = PHYSFS_getBaseDir();
+#ifdef _DEBUG
+	int pos = actual_location.find_last_of("D");
+	if (pos == -1)
+		pos = actual_location.find_last_of('/');
+	actual_location = actual_location.substr(0, pos);
+	actual_location+="FalcasEngine\\Project Folder\\Assets\\";
+#else
+	actual_location += "Assets\\";
+#endif
+	actual_location += GetFileName(file, false);
+	CopyFile(file.c_str(), actual_location.c_str(), TRUE);
+	return "Assets/" + GetFileName(actual_location, false);
+	
 }
 
 uint FileSystem::GetSizePhysFile(std::string file)

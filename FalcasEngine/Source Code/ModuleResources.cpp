@@ -9,25 +9,35 @@ ModuleResources::ModuleResources(Application* app, bool start_enabled) : Module(
 
 bool ModuleResources::Start()
 {
-	std::vector<std::string> vector_assets_files=App->filesystem->GetAllFiles("Assets/", vector_assets_files, "meta");
+	std::vector<std::string> vector_assets_files;
+	vector_assets_files= App->filesystem->GetAllFiles("Assets/", vector_assets_files, "meta");
 	for (int i = 0; i < vector_assets_files.size(); i++) {
-		uint id = App->filesystem->GenerateUUID();
-		resources.insert(std::pair<uint, std::string>(id, vector_assets_files[i]));
-		int last_modificated = 0;
-		if (App->filesystem->FileExists(vector_assets_files[i] + ".meta")) {
-			char* buffer;
-			App->filesystem->Load((vector_assets_files[i] + ".meta").c_str(), &buffer);
-			JsonObj mod_time(buffer);
-			if (mod_time.GetInt("Date") == App->filesystem->GetLastModificationTime(vector_assets_files[i])) {
-				UpdateMetaFile(vector_assets_files[i], id, buffer);
-				continue;
-			}
-			delete[] buffer;
-		}
-			
-		CreateNewMetaFile(vector_assets_files[i], id);
+		ImportFileToLibrary(vector_assets_files[i], false);
 	}
 	return true;
+}
+
+void ModuleResources::ImportFileToLibrary(std::string file, bool drag_and_drop)
+{
+	if (drag_and_drop) {
+		file=App->filesystem->CopyPhysFile(file);
+	}
+	App->filesystem->ReadPhysFile(file);
+	uint id = App->filesystem->GenerateUUID();
+	resources.insert(std::pair<uint, std::string>(id, file));
+	int last_modificated = 0;
+	if (App->filesystem->FileExists(file + ".meta")) {
+		char* buffer;
+		App->filesystem->Load((file + ".meta").c_str(), &buffer);
+		JsonObj mod_time(buffer);
+		if (mod_time.GetInt("Date") == App->filesystem->GetLastModificationTime(file)) {
+			UpdateMetaFile(file, id, buffer);
+			return;
+		}
+		delete[] buffer;
+	}
+
+	CreateNewMetaFile(file, id);
 }
 
 void ModuleResources::UpdateMetaFile(std::string meta_file, uint id, char* buffer)

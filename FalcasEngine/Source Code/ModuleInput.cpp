@@ -10,6 +10,7 @@
 #include "ComponentMaterial.h"
 #include "ComponentMesh.h"
 #include "Importer.h"
+#include "ModuleResources.h"
 
 #define MAX_KEYS 300
 
@@ -138,11 +139,16 @@ update_status ModuleInput::PreUpdate(float dt)
 				switch (App->filesystem->GetTypeFile(e.drop.file)) {
 				case FILE_TYPE::FBX:
 				{
-					ImportFBX(e.drop.file);
+					//App->filesystem->SaveInternal()
+					App->resources->ImportFileToLibrary(e.drop.file, true);
+					//ImportFBX(e.drop.file);
 					break;
 				}
 				case FILE_TYPE::PNG:
+				case FILE_TYPE::TGA:
 				case FILE_TYPE::DDS:
+				App->resources->ImportFileToLibrary(e.drop.file, true);
+				/*
 				{
 					if (App->scene_intro->game_object_selected != nullptr) {
 						if (App->scene_intro->game_object_selected->HasComponentType(Component_Type::Mesh)) {
@@ -161,7 +167,8 @@ update_status ModuleInput::PreUpdate(float dt)
 						LOG("You must select a game object to put it a texture.")
 					}
 					break;
-				}
+				}*/
+				break;
 				}
 			}
 			break;
