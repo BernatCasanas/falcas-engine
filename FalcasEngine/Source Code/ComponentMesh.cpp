@@ -8,6 +8,7 @@
 #include "ComponentMesh.h"
 #include "Importer.h"
 #include "External Libraries/ImGui/imgui.h"
+#include "ResourceMaterial.h"
 
 ComponentMesh::ComponentMesh(GameObject* owner) :Component(Component_Type::Mesh, owner, "Mesh")
 {
@@ -90,7 +91,7 @@ void ComponentMesh::Render()
 				glBindBuffer(GL_ARRAY_BUFFER, id_texCoords);
 				glTexCoordPointer(2, GL_FLOAT, 0, NULL);
 				if (!mat->show_default_tex) {
-					glBindTexture(GL_TEXTURE_2D, mat->texture_id);
+					glBindTexture(GL_TEXTURE_2D, mat->resource_material->texture_id);
 				}
 				else {
 					glBindTexture(GL_TEXTURE_2D, mat->defaultTex);

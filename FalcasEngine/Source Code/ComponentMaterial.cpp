@@ -4,6 +4,8 @@
 #include "Application.h"
 #include "Importer.h"
 #include "GameObject.h"
+#include "ResourceMaterial.h"
+
 
 
 
@@ -15,7 +17,7 @@ ComponentMaterial::ComponentMaterial(GameObject* owner) : Component(Component_Ty
 ComponentMaterial::ComponentMaterial(GameObject* owner, char* file) : Component(Component_Type::Material, owner, "Material")
 {
 	ImportDefaultTexture(this);
-	//TextureImporter::Import(file, false,"");
+	//MaterialImporter::Import(file, false,"");
 }
 
 ComponentMaterial::~ComponentMaterial()
@@ -26,7 +28,7 @@ ComponentMaterial::~ComponentMaterial()
 
 bool ComponentMaterial::SaveComponent(JsonObj& obj)
 {
-	obj.AddString("Path", this->full_file_name.c_str());
+	obj.AddString("Path", resource_material->full_file_name.c_str());
 	obj.AddInt("UUID", GetUUID());
 	return true;
 }
@@ -44,10 +46,10 @@ void ComponentMaterial::Inspector()
 	ImGui::Text("File: ");
 
 	ImGui::SameLine();
-	ImGui::TextColored(ImVec4(1.0f, 0.0f, 1.0f, 1.0f), file_name.c_str());
+	ImGui::TextColored(ImVec4(1.0f, 0.0f, 1.0f, 1.0f), resource_material != nullptr ? resource_material->file_name.c_str() : "");
 
 	if (ImGui::IsItemHovered()) {
-		ImGui::SetTooltip(full_file_name.c_str());
+		ImGui::SetTooltip(resource_material->full_file_name.c_str());
 	}
 
 	ImGui::Separator();
@@ -58,7 +60,7 @@ void ComponentMaterial::Inspector()
 
 	ImGui::SameLine();
 	ImGui::AlignTextToFramePadding();
-	ImGui::Text(std::to_string(width).c_str());
+	ImGui::Text(std::to_string(resource_material != nullptr ? resource_material->width : 0).c_str());
 
 	ImGui::SameLine();
 	ImGui::AlignTextToFramePadding();
@@ -66,10 +68,10 @@ void ComponentMaterial::Inspector()
 
 	ImGui::SameLine();
 	ImGui::AlignTextToFramePadding();
-	ImGui::Text(std::to_string(height).c_str());
+	ImGui::Text(std::to_string(resource_material != nullptr ? resource_material->height : 0).c_str());
 
-
-	ImGui::Image((void*)(intptr_t)texture_id, ImVec2((float)128, (float)128), ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f));
+	if(resource_material!=nullptr)
+		ImGui::Image((void*)(intptr_t)resource_material->texture_id, ImVec2((float)128, (float)128), ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f));
 
 
 	ImGui::Separator();

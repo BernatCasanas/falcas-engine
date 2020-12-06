@@ -3,6 +3,7 @@
 #include <string>
 #include "External Libraries/MathGeoLib/include/Math/float4x4.h"
 class ComponentMaterial;
+class ResourceMaterial;
 class ComponentMesh;
 class aiScene;
 class aiNode;
@@ -27,10 +28,10 @@ namespace MeshImporter {
 	void Load(const char* fileBuffer, ComponentMesh *mesh);
 }
 
-namespace TextureImporter {
+namespace MaterialImporter {
 	void Import(std::string file, uint ID);
 	uint Save(char** filebuffer);
-	void Load(const char* fileBuffer, ComponentMaterial* mat, uint size);
+	void Load(const char* fileBuffer, ResourceMaterial* res, uint size);
 }
 
 namespace ModelImporter {

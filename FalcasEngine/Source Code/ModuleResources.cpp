@@ -2,7 +2,7 @@
 #include "Application.h"
 #include "FileSystem.h"
 #include "Importer.h"
-#include "Resource.h"
+#include "ResourceMaterial.h"
 
 ModuleResources::ModuleResources(Application* app, bool start_enabled) : Module(app, start_enabled, "moduleResources")
 {
@@ -140,18 +140,22 @@ Resource* ModuleResources::CreateNewResource(uint ID, std::string assets_file)
 	char* file_char = new char[assets_file.length() + 1];
 	strcpy(file_char, assets_file.c_str());
 	Resource_Type res_type=Resource_Type::None;
+	Resource* resource = nullptr;
 	switch (App->filesystem->GetTypeFile(file_char))
 	{
 	case FILE_TYPE::FBX:
 		res_type = Resource_Type::Model;
+		resource = new Resource(ID, res_type, assets_file);
 		break;
 	case FILE_TYPE::PNG:
 	case FILE_TYPE::TGA:
-		res_type = Resource_Type::Texture;
+		res_type = Resource_Type::Material;
+		resource = (Resource*)new ResourceMaterial(ID, res_type, assets_file);
 		break;
 	}
 	delete[] file_char;
-	Resource* resource = new Resource(ID, res_type, assets_file);
+	
+	//Resource* resource = new Resource(ID, res_type, assets_file);
 	return resource;
 }
 
@@ -171,7 +175,7 @@ void ModuleResources::CreateNewMetaFile(std::string file, uint id)
 	case FILE_TYPE::PNG:
 	case FILE_TYPE::TGA:
 		obj.AddInt("Type", 2);
-		TextureImporter::Import(file, id);
+		MaterialImporter::Import(file, id);
 		break;
 	deafult:
 		obj.AddInt("Type", 3);

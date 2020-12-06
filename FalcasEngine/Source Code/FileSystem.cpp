@@ -104,7 +104,6 @@ void FileSystem::DeleteAFile(std::string file)
 char* FileSystem::ReadPhysFile(std::string file)
 {
 	char* buffer = nullptr;
-	std::replace(file.begin(), file.end(), ':', '/');
 	std::replace(file.begin(), file.end(), '\\', '/');
 	PHYSFS_file* file_phys = PHYSFS_openRead(file.c_str());
 	if (file_phys == nullptr) return"";
@@ -141,7 +140,7 @@ uint FileSystem::GetSizePhysFile(std::string file)
 	return size;
 }
 
-void FileSystem::DiscoverFiles(const char* directory, std::vector<std::string>& file_list, std::vector<std::string>& dir_list) const
+void FileSystem::DiscoverFiles(const char* directory, std::vector<std::string>& file_list, std::vector<std::string>& dir_list, std::string extension_to_ignore) const
 {
 	char** rc = PHYSFS_enumerateFiles(directory);
 	char** i;
@@ -152,8 +151,11 @@ void FileSystem::DiscoverFiles(const char* directory, std::vector<std::string>& 
 	{
 		if (PHYSFS_isDirectory((dir + *i).c_str()))
 			dir_list.push_back(*i);
-		else
-			file_list.push_back(*i);
+		else {
+			std::string extension = *i;
+			if(extension.substr(extension.find_last_of('.') + 1)!=extension_to_ignore)
+				file_list.push_back(*i);
+		}
 	}
 
 	PHYSFS_freeList(rc);

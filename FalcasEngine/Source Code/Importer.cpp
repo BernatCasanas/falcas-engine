@@ -6,11 +6,13 @@
 #include "Application.h"
 #include "ModuleSceneIntro.h"
 #include "GameObject.h"
+#include "ResourceMaterial.h"
 #include "External Libraries/Devil/Include/ilut.h"
 #include "External Libraries/Assimp/Assimp/include/cimport.h"
 #include "External Libraries/Assimp/Assimp/include/postprocess.h"
 #include "External Libraries/Assimp/Assimp/include/scene.h"
 #include "External Libraries/MathGeoLib/include/Math/Quat.h"
+
 
 #pragma comment (lib, "Source Code/External Libraries/Devil/lib/DevIL.lib")
 #pragma comment (lib, "Source Code/External Libraries/Devil/lib/ILUT.lib")
@@ -112,7 +114,7 @@ void ImportGameObjectFromFBX(const aiScene* scene, aiNode* node, GameObject* par
 		//		if (App->filesystem->FileExists(name_buff)) {
 		//			tex_imported = true;
 		//		}
-		//		//TextureImporter::Import(mat, path, tex_imported, name_buff);
+		//		//MaterialImporter::Import(mat, path, tex_imported, name_buff);
 		//	}
 		//}
 		//delete mesh;
@@ -313,13 +315,13 @@ void MeshImporter::Load(const char* fileBuffer, ComponentMesh *mesh)
 
 }
 
-void TextureImporter::Import(std::string file, uint ID)
+void MaterialImporter::Import(std::string file, uint ID)
 {
 	uint size;
-	ComponentMaterial* mat = new ComponentMaterial(nullptr);
+	ResourceMaterial* res = new ResourceMaterial(0, Resource_Type::Material, "");
 
-	ilGenImages(1, &mat->image_name);
-	ilBindImage(mat->image_name);
+	ilGenImages(1, &res->image_name);
+	ilBindImage(res->image_name);
 
 	ilOriginFunc(IL_ORIGIN_LOWER_LEFT);
 
@@ -337,23 +339,22 @@ void TextureImporter::Import(std::string file, uint ID)
 	ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
 
 
-	mat->height = ilGetInteger(IL_IMAGE_HEIGHT);
-	mat->width = ilGetInteger(IL_IMAGE_WIDTH);
-	mat->show_default_tex = false;
-	mat->texture_id = ilutGLBindTexImage();
+	res->height = ilGetInteger(IL_IMAGE_HEIGHT);
+	res->width = ilGetInteger(IL_IMAGE_WIDTH);
+	res->texture_id = ilutGLBindTexImage();
 
 	char* texture_buffer = nullptr;
-	mat->size = TextureImporter::Save(&texture_buffer);
+	res->size = MaterialImporter::Save(&texture_buffer);
 	char name_buff[200];
 	sprintf_s(name_buff, 200, "Library/Textures/%s.dds", std::to_string(ID).c_str());
-	App->filesystem->SaveInternal(name_buff, texture_buffer, mat->size);
+	App->filesystem->SaveInternal(name_buff, texture_buffer, res->size);
 	delete[] texture_buffer;
 	
 	ilBindImage(0);
-	delete mat;
+	delete res;
 }
 
-uint TextureImporter::Save(char** filebuffer)
+uint MaterialImporter::Save(char** filebuffer)
 {
 	ILuint size;
 	ILubyte* data;
@@ -368,7 +369,7 @@ uint TextureImporter::Save(char** filebuffer)
 	return size;
 }
 
-void TextureImporter::Load(const char* fileBuffer, ComponentMaterial* mat, uint size)
+void MaterialImporter::Load(const char* fileBuffer, ResourceMaterial* res, uint size)
 {
 	char* buffer = (char*)fileBuffer;
 
@@ -376,12 +377,11 @@ void TextureImporter::Load(const char* fileBuffer, ComponentMaterial* mat, uint 
 		ILenum error = ilGetError();
 		LOG("Error loading Texture %s\n", iluErrorString(error));
 		ilBindImage(0);
-		ilDeleteImages(1, &mat->image_name);
+		ilDeleteImages(1, &res->image_name);
 	}
 	ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
 
-	mat->height = ilGetInteger(IL_IMAGE_HEIGHT);
-	mat->width = ilGetInteger(IL_IMAGE_WIDTH);
-	mat->show_default_tex = false;
-	mat->texture_id = ilutGLBindTexImage();
+	res->height = ilGetInteger(IL_IMAGE_HEIGHT);
+	res->width = ilGetInteger(IL_IMAGE_WIDTH);
+	res->texture_id = ilutGLBindTexImage();
 }

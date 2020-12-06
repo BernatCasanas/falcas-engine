@@ -4,7 +4,7 @@
 
 enum class Resource_Type {
 	None,
-	Texture,
+	Material,
 	Model,
 	Mesh
 };

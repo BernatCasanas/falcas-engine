@@ -7,7 +7,7 @@ Resource::Resource(uint ID, Resource_Type type, std::string assets_file) :ID(ID)
 	std::string extension = "";
 	switch (type)
 	{
-	case Resource_Type::Texture:
+	case Resource_Type::Material:
 		library_file = "Library/Textures/";
 		extension = ".dds";
 		break;

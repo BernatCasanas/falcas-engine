@@ -118,14 +118,16 @@ update_status ModuleCentralEditor::PreUpdate(float dt)
 update_status ModuleCentralEditor::PostUpdate(float dt)
 {
     //SHORTCUTS
-    if (App->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT)
-        show_configuration = !show_configuration;
     if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT)
         show_console = !show_console;
     if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT)
         show_hierarchy = !show_hierarchy;
     if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT)
         show_inspector = !show_inspector;
+    if (App->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT)
+        show_configuration = !show_configuration;
+    if (App->input->GetKey(SDL_SCANCODE_5) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT)
+        show_assets_window = !show_assets_window;
 
     if (wantToExit) update_status::UPDATE_STOP;
    
@@ -163,6 +165,9 @@ void ModuleCentralEditor::Draw()
             }
             if (ImGui::MenuItem("Configuration", "Alt + 4")) {
                 show_configuration = !show_configuration;
+            }
+            if (ImGui::MenuItem("Inspector", "Alt + 5")) {
+                show_assets_window = !show_assets_window;
             }
             if (ImGui::MenuItem("OpenGL Options")) {
                 show_openglOptions = !show_openglOptions;
@@ -452,9 +457,17 @@ void ModuleCentralEditor::Draw()
         }
         if (App->scene_intro->game_object_selected != nullptr && !App->scene_intro->game_object_selected->HasComponentType(Component_Type::Camera)) {
             if(ImGui::Button("Create Component Camera")) {
-                App->scene_intro->game_object_selected->CreateComponent(Component_Type::Camera);
+                App->scene_intro->game_object_selected->CreateComponent(Component_Type::Material);
             }
         }
+        ImGui::End();
+    }
+
+    if (show_assets_window) {
+        ImGui::Begin("Assets", &show_assets_window);
+        static std::string file_assets_selected = "";
+        static ImGuiTreeNodeFlags base_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_SpanAvailWidth;
+        FilesRecursiveTree("Assets", true, true, base_flags, file_assets_selected);
         ImGui::End();
     }
 
@@ -525,7 +538,8 @@ bool ModuleCentralEditor::LoadFile()
     if (ImGui::BeginPopupModal("Load File")) {
         ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, 5.0f);
         ImGui::BeginChild("File Browser", ImVec2(0, 300), true);
-            FilesRecursiveTree("Assets");
+        std::string s = "";
+        FilesRecursiveTree("Assets", false, true, 0, s);
         ImGui::EndChild();
         ImGui::PopStyleVar();
         ImGui::PushItemWidth(250.f);
@@ -656,23 +670,96 @@ bool ModuleCentralEditor::ProcessEvents(SDL_Event event)
     return done;
 }
 
-void ModuleCentralEditor::FilesRecursiveTree(const char* path)
+void ModuleCentralEditor::FilesRecursiveTree(const char* path, bool is_in_dock, bool is_directory, static ImGuiTreeNodeFlags base_flags, std::string& assets_file_clicked)
 {
+    ImGuiTreeNodeFlags final_flags = base_flags;
+    if (!is_directory) {
+        final_flags |= ImGuiTreeNodeFlags_Leaf;
+        std::string file_name = App->filesystem->GetFileName(path, true);
+        if (assets_file_clicked == file_name)
+            final_flags |= ImGuiTreeNodeFlags_Selected;
+        if (ImGui::TreeNodeEx(file_name.c_str(), final_flags)) {
+            if (ImGui::IsItemClicked()) {
+                if (!is_in_dock) {
+                    sprintf_s(selected_file, 100, "%s", path);
+
+                    if (ImGui::IsMouseDoubleClicked(0)) {
+                        sprintf_s(selected_file, 100, "%s", path);
+                        loading_file = !loading_file;
+                    }
+                }
+                else {
+                    assets_file_clicked = file_name;
+                }
+            }
+
+            ImGui::TreePop();
+        }
+        return;
+    }
     std::vector<std::string> files;
     std::vector<std::string> dirs;
 
     std::string dir((path) ? path : "");
     dir += "/";
 
-    App->filesystem->DiscoverFiles(dir.c_str(), files, dirs);
+    App->filesystem->DiscoverFiles(dir.c_str(), files, dirs, "meta");
+    if (dirs.size() == 0 && files.size() == 0) {
+        final_flags |= ImGuiTreeNodeFlags_Leaf;
 
-    for (std::vector<std::string>::const_iterator it = dirs.begin(); it != dirs.end(); ++it)
-    {
-        if (ImGui::TreeNodeEx((dir + (*it)).c_str(), 0, "%s/", (*it).c_str()))
-        {
-            FilesRecursiveTree((dir + (*it)).c_str());
+    }
+    std::string dir_name = App->filesystem->GetFileName(path, false);
+    if (assets_file_clicked == dir_name)
+        final_flags |= ImGuiTreeNodeFlags_Selected;
+
+    bool open = false;
+
+    if (is_in_dock||path!="Assets") {
+        if (ImGui::TreeNodeEx((dir_name).c_str(), final_flags)) {
+            open = true;
+            if (ImGui::IsItemClicked()) {
+                if (!is_in_dock) {
+                    sprintf_s(selected_file, 100, "%s", dir.c_str());
+
+                    if (ImGui::IsMouseDoubleClicked(0)) {
+                        sprintf_s(selected_file, 100, "%s", dir.c_str());
+                        loading_file = !loading_file;
+                    }
+                }
+                else {
+                    assets_file_clicked = dir_name;
+                }
+            }
             ImGui::TreePop();
         }
+    }
+    else {
+        open = true;
+    }
+    if (open == false)
+        return;
+    ImGui::Indent(ImGui::GetTreeNodeToLabelSpacing());
+    for (int i = 0; i < dirs.size(); ++i) {
+        FilesRecursiveTree((dir + dirs[i]).c_str(), is_in_dock, true, base_flags, assets_file_clicked);
+    }
+    for (int i = 0; i < files.size(); ++i) {
+        FilesRecursiveTree((dir + files[i]).c_str(), is_in_dock, true, base_flags, assets_file_clicked);
+    }
+    ImGui::Unindent(ImGui::GetTreeNodeToLabelSpacing());
+
+    /*for (std::vector<std::string>::const_iterator it = dirs.begin(); it != dirs.end(); ++it)
+    {
+        if (selected_file_assets == *it)
+            base_flags |= ImGuiTreeNodeFlags_Selected;
+        if (ImGui::TreeNodeEx(((*it)+"/").c_str(), base_flags))
+        {
+            FilesRecursiveTree((dir + (*it)).c_str(), is_in_dock);
+            ImGui::TreePop();
+        }
+        if (selected_file_assets == *it)
+            base_flags -= ImGuiTreeNodeFlags_Selected;
+        if (ImGui::IsItemClicked() && is_in_dock)
+            selected_file_assets = *it;
     }
 
     std::sort(files.begin(), files.end());
@@ -680,21 +767,29 @@ void ModuleCentralEditor::FilesRecursiveTree(const char* path)
     for (std::vector<std::string>::const_iterator it = files.begin(); it != files.end(); ++it)
     {
         const std::string& str = *it;
-
+        if (selected_file_assets == *it)
+            base_flags |= ImGuiTreeNodeFlags_Selected;
         if (ImGui::TreeNodeEx(str.c_str(), ImGuiTreeNodeFlags_Leaf))
         {
+            if (selected_file_assets == *it)
+                base_flags -= ImGuiTreeNodeFlags_Selected;
             if (ImGui::IsItemClicked()) {
-                sprintf_s(selected_file, 100, "%s%s", dir.c_str(),str.c_str());
+                if (!is_in_dock) {
+                    sprintf_s(selected_file, 100, "%s%s", dir.c_str(), str.c_str());
 
-                if (ImGui::IsMouseDoubleClicked(0)) {
-                    sprintf_s(selected_file, 100, "%s", dir.c_str());
-                    loading_file = !loading_file;
+                    if (ImGui::IsMouseDoubleClicked(0)) {
+                        sprintf_s(selected_file, 100, "%s", dir.c_str());
+                        loading_file = !loading_file;
+                    }
+                }
+                else {
+                    selected_file_assets = *it;
                 }
             }
 
             ImGui::TreePop();
         }
-    }
+    }*/
 }
 
 void ModuleCentralEditor::HierarchyRecursiveTree(GameObject* game_object, static ImGuiTreeNodeFlags base_flags, int &id_node_clicked)

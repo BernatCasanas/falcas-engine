@@ -6,6 +6,7 @@
 
 
 class GameObject;
+class ResourceMaterial;
 
 class ComponentMaterial : public Component {
 public:
@@ -18,19 +19,9 @@ public:
 
 	
 public:
-	uint image_name = 0;
-	uint checkers = 0;
-	uint texture_id = 0;
+	ResourceMaterial* resource_material = nullptr;
 	uint defaultTex = 0;
-	std::string full_file_name = "";
-	std::string file_name = "";
-
-	int width = 0;
-	int height = 0;
-
-	uint size = 0;
-
-	bool show_default_tex = true;
+	bool show_default_tex = false;
 
 
 };
