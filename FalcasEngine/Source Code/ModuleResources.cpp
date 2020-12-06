@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "FileSystem.h"
 #include "Importer.h"
+#include "Resource.h"
 
 ModuleResources::ModuleResources(Application* app, bool start_enabled) : Module(app, start_enabled, "moduleResources")
 {
@@ -34,6 +35,16 @@ update_status ModuleResources::Update(float dt)
 	return UPDATE_CONTINUE;
 }
 
+bool ModuleResources::CleanUp()
+{
+	for (std::map<uint,Resource*>::iterator it = resources.begin(); it != resources.end(); ++it) {
+		delete it->second;
+		it=resources.erase(it);
+	}
+	resources.clear();
+	return true;
+}
+
 void ModuleResources::UpdateLibrary()
 {
 	std::vector<std::string> vector_assets_files, vector_assets_meta_files;
@@ -51,9 +62,14 @@ void ModuleResources::UpdateLibrary()
 			std::string meta_file = vector_assets_meta_files[i];
 			meta_file=meta_file.substr(0,meta_file.find_last_of('.'));
 			if (!App->filesystem->FileExists(meta_file.c_str())) {
-				//DELETE RESOURCE && PART OF MAP
-				LOG("THIS META NEEDS TO BE DELETED: %s", vector_assets_meta_files[i].c_str());
-				App->filesystem->DeleteAFile(vector_assets_meta_files[i]);
+				char* buffer;
+				App->filesystem->Load((vector_assets_meta_files[i]).c_str(), &buffer);
+				JsonObj meta_id(buffer);
+				uint id = meta_id.GetInt("ID");
+				DeleteResourceLibrary(resources.find(id)->second);
+				delete resources.find(id)->second;
+				resources.erase(id);
+				delete[] buffer;
 				difference--;
 			}
 		}
@@ -78,22 +94,24 @@ void ModuleResources::ImportFileToLibrary(std::string file, bool drag_and_drop)
 	if (drag_and_drop) {
 		file=App->filesystem->CopyPhysFile(file);
 	}
-	App->filesystem->ReadPhysFile(file);
-	uint id = App->filesystem->GenerateUUID();
-	resources.insert(std::pair<uint, std::string>(id, file));
-	int last_modificated = 0;
+	uint id;
 	if (App->filesystem->FileExists(file + ".meta")) {
 		char* buffer;
 		App->filesystem->Load((file + ".meta").c_str(), &buffer);
-		JsonObj mod_time(buffer);
-		if (mod_time.GetInt("Date") == App->filesystem->GetLastModificationTime(file)) {
+		JsonObj meta_file(buffer);
+		id = meta_file.GetInt("ID");
+		if (meta_file.GetInt("Date") == App->filesystem->GetLastModificationTime(file)) {
 			UpdateMetaFile(file, id, buffer);
-			return;
 		}
-		delete[] buffer;
+		else {
+			delete[] buffer;
+		}
 	}
-
-	CreateNewMetaFile(file, id);
+	else {
+		id = App->filesystem->GenerateUUID(); 
+		CreateNewMetaFile(file, id);
+	}
+	resources.insert(std::pair<uint, Resource*>(id, CreateNewResource(id,file)));
 }
 
 void ModuleResources::UpdateMetaFile(std::string meta_file, uint id, char* buffer)
@@ -108,7 +126,33 @@ void ModuleResources::UpdateMetaFile(std::string meta_file, uint id, char* buffe
 	obj.Save(&buffer);
 	App->filesystem->SaveInternal((meta_file + ".meta").c_str(), buffer, strlen(buffer));
 	delete[] buffer;
+}
 
+void ModuleResources::DeleteResourceLibrary(Resource* resource)
+{
+	App->filesystem->DeleteAFile(resource->GetLibraryFile());
+	std::string assets_file = resource->GetAssetsFile();
+	App->filesystem->DeleteAFile(assets_file  + ".meta");
+}
+
+Resource* ModuleResources::CreateNewResource(uint ID, std::string assets_file)
+{
+	char* file_char = new char[assets_file.length() + 1];
+	strcpy(file_char, assets_file.c_str());
+	Resource_Type res_type=Resource_Type::None;
+	switch (App->filesystem->GetTypeFile(file_char))
+	{
+	case FILE_TYPE::FBX:
+		res_type = Resource_Type::Model;
+		break;
+	case FILE_TYPE::PNG:
+	case FILE_TYPE::TGA:
+		res_type = Resource_Type::Texture;
+		break;
+	}
+	delete[] file_char;
+	Resource* resource = new Resource(ID, res_type, assets_file);
+	return resource;
 }
 
 void ModuleResources::CreateNewMetaFile(std::string file, uint id)
@@ -121,14 +165,13 @@ void ModuleResources::CreateNewMetaFile(std::string file, uint id)
 	switch (App->filesystem->GetTypeFile(file_char)) {
 	case FILE_TYPE::FBX:
 		obj.AddInt("Type", 1);
-		ImportFBX(file);
+		ImportFBX(file, id);
 		//MeshImporter::Import()
 		break;
-	case FILE_TYPE::DDS:
 	case FILE_TYPE::PNG:
 	case FILE_TYPE::TGA:
 		obj.AddInt("Type", 2);
-		TextureImporter::Import(file);
+		TextureImporter::Import(file, id);
 		break;
 	deafult:
 		obj.AddInt("Type", 3);

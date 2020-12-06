@@ -34,7 +34,7 @@ void DevilCleanUp()
 	ilDisable(IL_ORIGIN_SET);
 }
 
-void ImportFBX(std::string file)
+void ImportFBX(std::string file, uint ID)
 {
 	const aiScene* scene = nullptr;
 	char* buffer = nullptr;
@@ -46,14 +46,14 @@ void ImportFBX(std::string file)
 
 	aiNode* nod = scene->mRootNode;
 
-	ImportGameObjectFromFBX(scene, nod, App->scene_intro->root, file, float4x4::identity);
+	ImportGameObjectFromFBX(scene, nod, App->scene_intro->root, file, ID, float4x4::identity);
 
 	App->filesystem->counterMesh = 0;
 
 	aiReleaseImport(scene);
 }
 
-void ImportGameObjectFromFBX(const aiScene* scene, aiNode* node, GameObject* parent, std::string file, float4x4 transform_heredated)
+void ImportGameObjectFromFBX(const aiScene* scene, aiNode* node, GameObject* parent, std::string file, uint ID, float4x4 transform_heredated)
 {
 	if (node->mNumMeshes == 0 && node->mNumChildren == 0)
 		return;
@@ -82,10 +82,10 @@ void ImportGameObjectFromFBX(const aiScene* scene, aiNode* node, GameObject* par
 		/*mesh->full_file_name = file;
 		mesh->file_name = App->filesystem->GetFileName(file, true);*/
 
-		std::string name_buff2 = App->filesystem->GetFileName(file, true).c_str();
+		std::string name_buff2 = std::to_string(ID).c_str();
 		char name_buff[200];
 		if (App->filesystem->counterMesh != 0) {
-			sprintf_s(name_buff, 200, "%s (%i)", App->filesystem->GetFileName(file, true).c_str(), App->filesystem->counterMesh);
+			sprintf_s(name_buff, 200, "%s (%i)", std::to_string(ID).c_str(), App->filesystem->counterMesh);
 			name_buff2 = name_buff;
 			//mesh->file_name = name_buff;
 		}
@@ -118,7 +118,7 @@ void ImportGameObjectFromFBX(const aiScene* scene, aiNode* node, GameObject* par
 		//delete mesh;
 	}
 	for (int i = 0; i < node->mNumChildren; i++) {
-		ImportGameObjectFromFBX(scene, node->mChildren[i], parent, file,transform_heredated);
+		ImportGameObjectFromFBX(scene, node->mChildren[i], parent, file, ID,transform_heredated);
 	}
 }
 
@@ -313,7 +313,7 @@ void MeshImporter::Load(const char* fileBuffer, ComponentMesh *mesh)
 
 }
 
-void TextureImporter::Import(std::string file)
+void TextureImporter::Import(std::string file, uint ID)
 {
 	uint size;
 	ComponentMaterial* mat = new ComponentMaterial(nullptr);
@@ -345,7 +345,7 @@ void TextureImporter::Import(std::string file)
 	char* texture_buffer = nullptr;
 	mat->size = TextureImporter::Save(&texture_buffer);
 	char name_buff[200];
-	sprintf_s(name_buff, 200, "Library/Textures/%s.dds", App->filesystem->GetFileName(file, true).c_str());
+	sprintf_s(name_buff, 200, "Library/Textures/%s.dds", std::to_string(ID).c_str());
 	App->filesystem->SaveInternal(name_buff, texture_buffer, mat->size);
 	delete[] texture_buffer;
 	

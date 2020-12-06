@@ -146,7 +146,6 @@ update_status ModuleInput::PreUpdate(float dt)
 				}
 				case FILE_TYPE::PNG:
 				case FILE_TYPE::TGA:
-				case FILE_TYPE::DDS:
 				App->resources->ImportFileToLibrary(e.drop.file, true);
 				/*
 				{

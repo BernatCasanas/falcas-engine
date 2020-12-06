@@ -71,6 +71,7 @@
     <ClCompile Include="Source Code\ModuleResources.cpp" />
     <ClCompile Include="Source Code\ModuleSceneIntro.cpp" />
     <ClCompile Include="Source Code\ModuleWindow.cpp" />
+    <ClCompile Include="Source Code\Resource.cpp" />
     <ClCompile Include="Source Code\Shape.cpp" />
     <ClCompile Include="Source Code\Timer.cpp" />
   </ItemGroup>
@@ -198,6 +199,7 @@
     <ClInclude Include="Source Code\ModuleResources.h" />
     <ClInclude Include="Source Code\ModuleSceneIntro.h" />
     <ClInclude Include="Source Code\ModuleWindow.h" />
+    <ClInclude Include="Source Code\Resource.h" />
     <ClInclude Include="Source Code\Shape.h" />
     <ClInclude Include="Source Code\Timer.h" />
   </ItemGroup>

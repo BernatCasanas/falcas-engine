@@ -222,6 +222,9 @@
     <ClCompile Include="Source Code\ModuleResources.cpp">
       <Filter>Source Code</Filter>
     </ClCompile>
+    <ClCompile Include="Source Code\Resource.cpp">
+      <Filter>Source Code</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source Code\Application.h">
@@ -597,6 +600,9 @@
       <Filter>External Libraries\JSON</Filter>
     </ClInclude>
     <ClInclude Include="Source Code\ModuleResources.h">
+      <Filter>Source Code</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\Resource.h">
       <Filter>Source Code</Filter>
     </ClInclude>
   </ItemGroup>

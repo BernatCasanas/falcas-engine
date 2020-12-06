@@ -13,13 +13,17 @@ public:
 
 	bool Start();
 	update_status Update(float dt);
-	bool CleanUp() { return true; };
+	bool CleanUp();
 
 	void UpdateLibrary();
 	void ImportFileToLibrary(std::string file, bool drag_and_drop);
+	void DeleteResourceLibrary(Resource* resource);
+
+private:
 	void CreateNewMetaFile(std::string file, uint id);
 	void UpdateMetaFile(std::string meta_file, uint id, char* buffer);
 private:
-	std::map<uint, std::string> resources;
+	Resource* CreateNewResource(uint ID, std::string assets_file);
+	std::map<uint, Resource*> resources;
 	Timer update_timer;
 };
