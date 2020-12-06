@@ -94,6 +94,13 @@ bool FileSystem::FileExists(std::string file)
 	return ret;
 }
 
+void FileSystem::DeleteAFile(std::string file)
+{
+	if (!FileExists(file.c_str()))
+		return;
+	PHYSFS_delete(file.c_str());
+}
+
 char* FileSystem::ReadPhysFile(std::string file)
 {
 	char* buffer = nullptr;
@@ -152,7 +159,7 @@ void FileSystem::DiscoverFiles(const char* directory, std::vector<std::string>& 
 	PHYSFS_freeList(rc);
 }
 
-std::vector<std::string> FileSystem::GetAllFiles(std::string file, std::vector<std::string> vector_file, std::string ignore_files)
+std::vector<std::string> FileSystem::GetAllFiles(std::string file, std::vector<std::string> vector_file, std::string extension_file, bool ignore_extension, bool only_extension)
 {
 	char** rc = PHYSFS_enumerateFiles(file.c_str());
 	char** i;
@@ -164,11 +171,11 @@ std::vector<std::string> FileSystem::GetAllFiles(std::string file, std::vector<s
 		uint size = file_with_extension.find_last_of('.');
 		
 		if (PHYSFS_isDirectory(file_with_extension.c_str()))
-			vector_file = GetAllFiles(file_with_extension + '/', vector_file, ignore_files);
-		else if (file_with_extension.substr(size + 1) != ignore_files)
+			vector_file = GetAllFiles(file_with_extension + '/', vector_file, extension_file, ignore_extension, only_extension);
+		else if (file_with_extension.substr(size + 1) != extension_file && !only_extension)
 			vector_file.push_back(file_with_extension);
-		else
-			LOG("HELLO)");
+		else if (file_with_extension.substr(size + 1) == extension_file && !ignore_extension)
+			vector_file.push_back(file_with_extension);
 	}
 
 	PHYSFS_freeList(rc);

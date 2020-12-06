@@ -35,13 +35,14 @@ public:
 	FILE_TYPE GetTypeFile(char* file);
 
 	bool FileExists(std::string file);
+	void DeleteAFile(std::string file);
 	char* ReadPhysFile(std::string file);
 	std::string CopyPhysFile(std::string file);
 
 	uint GetSizePhysFile(std::string file);
 	void DiscoverFiles(const char* directory, std::vector<std::string>& file_list, std::vector<std::string>& dir_list) const;
 
-	std::vector<std::string> GetAllFiles(std::string file, std::vector<std::string> vector_file, std::string ignore_files = "");
+	std::vector<std::string> GetAllFiles(std::string file, std::vector<std::string> vector_file, std::string extension_file, bool ignore_extension, bool only_extension);
 
 	void SaveInternal(const char* file, const void* buffer, uint size);
 

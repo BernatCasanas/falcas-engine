@@ -9,7 +9,7 @@ JsonObj::JsonObj(const char* buffer) : obj(nullptr)
 	if (val != NULL)
 	{
 		obj = json_value_get_object(val);
-		LOG("File Loaded");
+		//LOG("File Loaded");
 	}
 	else
 	{

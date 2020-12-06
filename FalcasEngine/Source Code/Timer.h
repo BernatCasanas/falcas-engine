@@ -13,6 +13,8 @@ public:
 	void Start();
 	void Stop();
 
+	bool isStoped() { return !running; };
+
 	Uint32 Read();
 
 private:
