@@ -37,7 +37,7 @@ update_status ModuleResources::Update(float dt)
 
 bool ModuleResources::CleanUp()
 {
-	for (std::map<uint,Resource*>::iterator it = resources.begin(); it != resources.end(); ++it) {
+	for (std::map<uint,Resource*>::iterator it = resources.begin(); it != resources.end(); ) {
 		delete it->second;
 		it=resources.erase(it);
 	}
