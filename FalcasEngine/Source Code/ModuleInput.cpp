@@ -144,6 +144,13 @@ update_status ModuleInput::PreUpdate(float dt)
 					//ImportFBX(e.drop.file);
 					break;
 				}
+				case FILE_TYPE::DDS:
+				{
+					ComponentMaterial* mat = (ComponentMaterial*)App->scene_intro->game_object_selected->GetComponent(Component_Type::Material);
+					mat->resource_material = (ResourceMaterial*)App->resources->RequestResource(std::stoi(App->filesystem->GetFileName(e.drop.file, true)));
+					LOG("HE");
+					break;
+				}
 				case FILE_TYPE::PNG:
 				case FILE_TYPE::TGA:
 				App->resources->ImportFileToLibrary(e.drop.file, true);

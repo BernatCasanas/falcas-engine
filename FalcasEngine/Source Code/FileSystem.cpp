@@ -101,13 +101,13 @@ void FileSystem::DeleteAFile(std::string file)
 	PHYSFS_delete(file.c_str());
 }
 
-char* FileSystem::ReadPhysFile(std::string file)
+char* FileSystem::ReadPhysFile(std::string file, uint& size)
 {
 	char* buffer = nullptr;
 	std::replace(file.begin(), file.end(), '\\', '/');
 	PHYSFS_file* file_phys = PHYSFS_openRead(file.c_str());
 	if (file_phys == nullptr) return"";
-	PHYSFS_sint32 size = (PHYSFS_sint32)PHYSFS_fileLength(file_phys);
+	size = (PHYSFS_sint32)PHYSFS_fileLength(file_phys);
 	buffer = new char[size];
 	PHYSFS_read(file_phys, buffer, 1, size);
 	PHYSFS_close(file_phys);

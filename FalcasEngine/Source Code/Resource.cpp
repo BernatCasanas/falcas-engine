@@ -49,8 +49,3 @@ const char* Resource::GetLibraryFile() const
 {
 	return library_file.c_str();
 }
-
-uint Resource::GetReferenceCount() const
-{
-	return referenceCount;
-}

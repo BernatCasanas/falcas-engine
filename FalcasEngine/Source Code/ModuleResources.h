@@ -15,6 +15,9 @@ public:
 	update_status Update(float dt);
 	bool CleanUp();
 
+	Resource* GetResource(uint ID) const;
+	Resource* RequestResource(uint ID);
+
 	void UpdateLibrary();
 	void ImportFileToLibrary(std::string file, bool drag_and_drop);
 	void DeleteResourceLibrary(Resource* resource);

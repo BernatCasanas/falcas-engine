@@ -3,6 +3,7 @@
 #include "FileSystem.h"
 #include "Importer.h"
 #include "ResourceMaterial.h"
+#include "ResourceModel.h"
 
 ModuleResources::ModuleResources(Application* app, bool start_enabled) : Module(app, start_enabled, "moduleResources")
 {
@@ -43,6 +44,41 @@ bool ModuleResources::CleanUp()
 	}
 	resources.clear();
 	return true;
+}
+
+Resource* ModuleResources::GetResource(uint ID) const
+{
+	return resources.find(ID)->second;
+}
+
+Resource* ModuleResources::RequestResource(uint ID)
+{
+	Resource* resource= resources.find(ID)->second;
+	if (resource->referenceCount != 0) {
+		resource->referenceCount++;
+		return resource;
+	}
+	switch (resource->GetType())
+	{
+	case Resource_Type::Material:
+	{
+		ResourceMaterial* mat = (ResourceMaterial*)resource;
+		uint size;
+		char* buffer = App->filesystem->ReadPhysFile(mat->GetLibraryFile(), size);
+		MaterialImporter::Load(buffer, mat, size);
+		mat->referenceCount++;
+		break;
+	}
+	case Resource_Type::Model:
+		break;
+	case Resource_Type::Mesh:
+		break;
+	default:
+		break;
+	}
+	
+	
+	return resource;
 }
 
 void ModuleResources::UpdateLibrary()
@@ -130,6 +166,12 @@ void ModuleResources::UpdateMetaFile(std::string meta_file, uint id, char* buffe
 
 void ModuleResources::DeleteResourceLibrary(Resource* resource)
 {
+	if (resource->GetType() == Resource_Type::Model) {
+		ResourceModel* model = (ResourceModel*)resource;
+		for (int i = 0; i < model->ids_resources_meshes.size(); i++) {
+			App->filesystem->DeleteAFile(GetResource(model->ids_resources_meshes[i])->GetLibraryFile());
+		}
+	}
 	App->filesystem->DeleteAFile(resource->GetLibraryFile());
 	std::string assets_file = resource->GetAssetsFile();
 	App->filesystem->DeleteAFile(assets_file  + ".meta");
@@ -145,7 +187,7 @@ Resource* ModuleResources::CreateNewResource(uint ID, std::string assets_file)
 	{
 	case FILE_TYPE::FBX:
 		res_type = Resource_Type::Model;
-		resource = new Resource(ID, res_type, assets_file);
+		resource = new ResourceModel(ID, res_type, assets_file);
 		break;
 	case FILE_TYPE::PNG:
 	case FILE_TYPE::TGA:

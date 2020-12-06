@@ -719,10 +719,10 @@ void ModuleCentralEditor::FilesRecursiveTree(const char* path, bool is_in_dock, 
             open = true;
             if (ImGui::IsItemClicked()) {
                 if (!is_in_dock) {
-                    sprintf_s(selected_file, 100, "%s", dir.c_str());
+                    sprintf_s(selected_file, 100, "%s", path);
 
                     if (ImGui::IsMouseDoubleClicked(0)) {
-                        sprintf_s(selected_file, 100, "%s", dir.c_str());
+                        sprintf_s(selected_file, 100, "%s", path);
                         loading_file = !loading_file;
                     }
                 }
@@ -747,49 +747,6 @@ void ModuleCentralEditor::FilesRecursiveTree(const char* path, bool is_in_dock, 
     }
     ImGui::Unindent(ImGui::GetTreeNodeToLabelSpacing());
 
-    /*for (std::vector<std::string>::const_iterator it = dirs.begin(); it != dirs.end(); ++it)
-    {
-        if (selected_file_assets == *it)
-            base_flags |= ImGuiTreeNodeFlags_Selected;
-        if (ImGui::TreeNodeEx(((*it)+"/").c_str(), base_flags))
-        {
-            FilesRecursiveTree((dir + (*it)).c_str(), is_in_dock);
-            ImGui::TreePop();
-        }
-        if (selected_file_assets == *it)
-            base_flags -= ImGuiTreeNodeFlags_Selected;
-        if (ImGui::IsItemClicked() && is_in_dock)
-            selected_file_assets = *it;
-    }
-
-    std::sort(files.begin(), files.end());
-
-    for (std::vector<std::string>::const_iterator it = files.begin(); it != files.end(); ++it)
-    {
-        const std::string& str = *it;
-        if (selected_file_assets == *it)
-            base_flags |= ImGuiTreeNodeFlags_Selected;
-        if (ImGui::TreeNodeEx(str.c_str(), ImGuiTreeNodeFlags_Leaf))
-        {
-            if (selected_file_assets == *it)
-                base_flags -= ImGuiTreeNodeFlags_Selected;
-            if (ImGui::IsItemClicked()) {
-                if (!is_in_dock) {
-                    sprintf_s(selected_file, 100, "%s%s", dir.c_str(), str.c_str());
-
-                    if (ImGui::IsMouseDoubleClicked(0)) {
-                        sprintf_s(selected_file, 100, "%s", dir.c_str());
-                        loading_file = !loading_file;
-                    }
-                }
-                else {
-                    selected_file_assets = *it;
-                }
-            }
-
-            ImGui::TreePop();
-        }
-    }*/
 }
 
 void ModuleCentralEditor::HierarchyRecursiveTree(GameObject* game_object, static ImGuiTreeNodeFlags base_flags, int &id_node_clicked)

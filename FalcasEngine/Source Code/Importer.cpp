@@ -164,7 +164,9 @@ ComponentMesh* ImportOnlyMesh(GameObject* game_object, std::string libraryPath, 
 		imported = false;
 		mesh->file_name = libraryPath;
 	}
-	//MeshImporter::Import(ai_mesh , mesh, (char*)libraryPath.c_str(), imported);
+	std::string s;
+	libraryPath = "Library/Meshes/1860861522.falcasmesh";
+	MeshImporter::Load(App->filesystem->ReadPhysFile(libraryPath, size), mesh);
 
 	aiReleaseImport(scene);
 	return mesh;
@@ -311,7 +313,7 @@ void MeshImporter::Load(const char* fileBuffer, ComponentMesh *mesh)
 	bytes = sizeof(float) * mesh->num_textureCoords * 2;
 	mesh->texCoords = new float[mesh->num_textureCoords * 2];
 	memcpy(mesh->texCoords, cursor, bytes);
-
+	mesh->Initialization();
 
 }
 

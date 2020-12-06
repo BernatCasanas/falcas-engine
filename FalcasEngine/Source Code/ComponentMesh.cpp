@@ -90,7 +90,7 @@ void ComponentMesh::Render()
 				glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 				glBindBuffer(GL_ARRAY_BUFFER, id_texCoords);
 				glTexCoordPointer(2, GL_FLOAT, 0, NULL);
-				if (!mat->show_default_tex) {
+				if (!mat->show_default_tex&& mat->resource_material != nullptr) {
 					glBindTexture(GL_TEXTURE_2D, mat->resource_material->texture_id);
 				}
 				else {

@@ -36,7 +36,7 @@ public:
 
 	bool FileExists(std::string file);
 	void DeleteAFile(std::string file);
-	char* ReadPhysFile(std::string file);
+	char* ReadPhysFile(std::string file, uint& size);
 	std::string CopyPhysFile(std::string file);
 
 	uint GetSizePhysFile(std::string file);
