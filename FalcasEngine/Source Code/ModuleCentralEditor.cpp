@@ -499,6 +499,14 @@ void ModuleCentralEditor::Draw()
 
     if (show_assets_explorer) {
         ImGui::Begin("Assets Explorer", &show_assets_window);
+        float total_icons_per_line=ImGui::GetColumnWidth(-1)/64;
+        total_icons_per_line--;
+        for (int j = 0; j < 4; j++) {
+            for (int i = 0; i < (int)total_icons_per_line; i++) {
+                if (i > 0)ImGui::SameLine();
+                ImGui::Image((void*)(intptr_t)icon_folder->texture_id, ImVec2((float)64, (float)64), ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f));
+            }
+        }
         ImGui::Image((void*)(intptr_t)icon_folder->texture_id, ImVec2((float)64, (float)64), ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f));
         ImGui::SameLine();
         ImGui::Image((void*)(intptr_t)icon_material->texture_id, ImVec2((float)64, (float)64), ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f));
