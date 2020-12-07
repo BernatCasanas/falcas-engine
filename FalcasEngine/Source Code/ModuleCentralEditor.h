@@ -24,6 +24,7 @@ class Application;
 class GameObject;
 typedef int ImGuiTreeNodeFlags; 
 union SDL_Event;
+class ResourceMaterial;
 
 class ModuleCentralEditor : public Module
 {
@@ -35,6 +36,7 @@ public:
 	virtual ~ModuleCentralEditor();
 
 	bool Init();
+	bool Start();
 	bool CleanUp();
 
 	update_status PreUpdate(float dt);
@@ -68,11 +70,12 @@ public:
 	bool show_example = false;
 	bool show_about = false;
 	bool show_configuration = false;
-	bool show_console = true;
+	bool show_console = false;
 	bool show_openglOptions = false;
 	bool show_hierarchy = true;
 	bool show_inspector = true;
 	bool show_assets_window = true;
+	bool show_assets_explorer = true;
 
 	bool cullface = false;
 	bool colorMaterial = false;
@@ -114,7 +117,10 @@ private:
 private:
 	bool bool_parentFound;
 	GameObject* parentFound;
-
+	ResourceMaterial* icon_folder;
+	ResourceMaterial* icon_model;
+	ResourceMaterial* icon_mesh;
+	ResourceMaterial* icon_material;
 };
 
 #endif // __ModuleCentralEditor_H__

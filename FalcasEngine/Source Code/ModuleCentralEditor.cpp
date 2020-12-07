@@ -30,6 +30,8 @@
 #include "ComponentMaterial.h"
 #include "ComponentCamera.h"
 #include "Importer.h"
+#include "ModuleResources.h"
+#include "ResourceMaterial.h"
 
 ModuleCentralEditor::ModuleCentralEditor(Application* app, bool start_enabled) : Module(app, start_enabled, "moduleCentralEditor"),progress(50.f),progress2(50.f),progress3(50.f), progress4(50.f)
 {
@@ -75,6 +77,25 @@ bool ModuleCentralEditor::Init()
 
 
 	return ret;
+}
+
+bool ModuleCentralEditor::Start()
+{
+    char* buffer;
+    App->filesystem->LoadPath("Assets/Icons (read_only)/FolderIcon.png.meta", &buffer);
+    JsonObj icon_obj(buffer);
+    icon_folder = (ResourceMaterial*)App->resources->RequestResource(icon_obj.GetInt("ID"));
+    App->filesystem->LoadPath("Assets/Icons (read_only)/TextureIcon.png.meta", &buffer);
+    icon_obj = JsonObj(buffer);
+    icon_material = (ResourceMaterial*)App->resources->RequestResource(icon_obj.GetInt("ID"));
+    App->filesystem->LoadPath("Assets/Icons (read_only)/ModelIcon.png.meta", &buffer);
+    icon_obj = JsonObj(buffer);
+    icon_model = (ResourceMaterial*)App->resources->RequestResource(icon_obj.GetInt("ID"));
+    App->filesystem->LoadPath("Assets/Icons (read_only)/MeshIcon.png.meta", &buffer);
+    icon_obj = JsonObj(buffer);
+    icon_mesh = (ResourceMaterial*)App->resources->RequestResource(icon_obj.GetInt("ID"));
+    delete[] buffer;
+    return true;
 }
 
 // Called before quitting
@@ -128,6 +149,8 @@ update_status ModuleCentralEditor::PostUpdate(float dt)
         show_configuration = !show_configuration;
     if (App->input->GetKey(SDL_SCANCODE_5) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT)
         show_assets_window = !show_assets_window;
+    if (App->input->GetKey(SDL_SCANCODE_6) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT)
+        show_assets_explorer = !show_assets_explorer;
 
     if (wantToExit) update_status::UPDATE_STOP;
    
@@ -166,8 +189,11 @@ void ModuleCentralEditor::Draw()
             if (ImGui::MenuItem("Configuration", "Alt + 4")) {
                 show_configuration = !show_configuration;
             }
-            if (ImGui::MenuItem("Inspector", "Alt + 5")) {
+            if (ImGui::MenuItem("Assets Window (only-read)", "Alt + 5")) {
                 show_assets_window = !show_assets_window;
+            }
+            if (ImGui::MenuItem("Assets Explorer", "Alt + 6")) {
+                show_assets_explorer = !show_assets_explorer;
             }
             if (ImGui::MenuItem("OpenGL Options")) {
                 show_openglOptions = !show_openglOptions;
@@ -464,10 +490,22 @@ void ModuleCentralEditor::Draw()
     }
 
     if (show_assets_window) {
-        ImGui::Begin("Assets", &show_assets_window);
+        ImGui::Begin("Assets (only-read)", &show_assets_window);
         static std::string file_assets_selected = "";
         static ImGuiTreeNodeFlags base_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_SpanAvailWidth;
         FilesRecursiveTree("Assets", true, true, base_flags, file_assets_selected);
+        ImGui::End();
+    }
+
+    if (show_assets_explorer) {
+        ImGui::Begin("Assets Explorer", &show_assets_window);
+        ImGui::Image((void*)(intptr_t)icon_folder->texture_id, ImVec2((float)64, (float)64), ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f));
+        ImGui::SameLine();
+        ImGui::Image((void*)(intptr_t)icon_material->texture_id, ImVec2((float)64, (float)64), ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f));
+        ImGui::SameLine();
+        ImGui::Image((void*)(intptr_t)icon_mesh->texture_id, ImVec2((float)64, (float)64), ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f));
+        ImGui::SameLine();
+        ImGui::Image((void*)(intptr_t)icon_model->texture_id, ImVec2((float)64, (float)64), ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f));
         ImGui::End();
     }
 
@@ -740,6 +778,8 @@ void ModuleCentralEditor::FilesRecursiveTree(const char* path, bool is_in_dock, 
         return;
     ImGui::Indent(ImGui::GetTreeNodeToLabelSpacing());
     for (int i = 0; i < dirs.size(); ++i) {
+        if (!strcmp(dirs[i].c_str(),"Icons (read_only)"))
+            continue;
         FilesRecursiveTree((dir + dirs[i]).c_str(), is_in_dock, true, base_flags, assets_file_clicked);
     }
     for (int i = 0; i < files.size(); ++i) {
