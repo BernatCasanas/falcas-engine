@@ -14,6 +14,8 @@ void DevilInit();
 
 void DevilCleanUp();
 
+void FreeImage(ResourceMaterial* res);
+
 void ImportFBX(std::string file, uint ID);
 
 void ImportGameObjectFromFBX(const aiScene* scene, aiNode* node, GameObject* parent, std::string file, uint ID, float4x4 transfor_heredated = float4x4::identity);

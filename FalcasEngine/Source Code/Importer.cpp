@@ -36,6 +36,12 @@ void DevilCleanUp()
 	ilDisable(IL_ORIGIN_SET);
 }
 
+void FreeImage(ResourceMaterial* res)
+{
+	ilBindImage(0);
+	ilDeleteImages(1, &res->image_name);
+}
+
 void ImportFBX(std::string file, uint ID)
 {
 	const aiScene* scene = nullptr;
@@ -353,6 +359,7 @@ void MaterialImporter::Import(std::string file, uint ID)
 	delete[] texture_buffer;
 	
 	ilBindImage(0);
+	res->CleanUp();
 	delete res;
 }
 
@@ -386,4 +393,5 @@ void MaterialImporter::Load(const char* fileBuffer, ResourceMaterial* res, uint 
 	res->height = ilGetInteger(IL_IMAGE_HEIGHT);
 	res->width = ilGetInteger(IL_IMAGE_WIDTH);
 	res->texture_id = ilutGLBindTexImage();
+	delete[] buffer;
 }

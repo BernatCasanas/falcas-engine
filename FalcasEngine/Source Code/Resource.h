@@ -14,6 +14,8 @@ public:
 	Resource(uint ID, Resource_Type type, std::string assets_file);
 	virtual ~Resource();
 
+	bool CleanUp() { return true; };
+
 	uint GetID() const;
 	Resource_Type GetType() const;
 	const char* GetAssetsFile() const;

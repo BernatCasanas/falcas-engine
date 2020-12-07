@@ -39,6 +39,8 @@ update_status ModuleResources::Update(float dt)
 bool ModuleResources::CleanUp()
 {
 	for (std::map<uint,Resource*>::iterator it = resources.begin(); it != resources.end(); ) {
+		if(it->second!=nullptr)
+			FreeResource(it->second);
 		delete it->second;
 		it=resources.erase(it);
 	}
@@ -53,7 +55,7 @@ Resource* ModuleResources::GetResource(uint ID) const
 
 Resource* ModuleResources::RequestResource(uint ID)
 {
-	Resource* resource= resources.find(ID)->second;
+	Resource* resource= GetResource(ID);
 	if (resource->referenceCount != 0) {
 		resource->referenceCount++;
 		return resource;
@@ -80,6 +82,36 @@ Resource* ModuleResources::RequestResource(uint ID)
 	
 	return resource;
 }
+
+void ModuleResources::FreeResource(Resource* resource)
+{
+	resource->referenceCount--;
+	if (resource->referenceCount != 0)
+		return;
+	switch (resource->GetType())
+	{
+	case Resource_Type::Material:
+	{
+		ResourceMaterial* mat = (ResourceMaterial*)resource;
+		mat->CleanUp();
+		break;
+	}
+	case Resource_Type::Model:
+		break;
+	case Resource_Type::Mesh:
+		break;
+	default:
+		resource->CleanUp();
+		break;
+	}
+
+}
+
+void ModuleResources::FreeResource(uint ID)
+{
+	FreeResource(GetResource(ID));
+}
+
 
 void ModuleResources::UpdateLibrary()
 {

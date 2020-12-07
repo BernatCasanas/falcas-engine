@@ -5,6 +5,7 @@ class ResourceMaterial :public Resource {
 public:
 	ResourceMaterial(uint ID, Resource_Type type, std::string assets_file);
 	~ResourceMaterial() {};
+	bool CleanUp();
 
 public:
 	uint image_name = 0;
