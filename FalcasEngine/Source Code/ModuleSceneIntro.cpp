@@ -82,6 +82,12 @@ void ModuleSceneIntro::Draw(GLuint tex)
 	x = min.x;
 	y = min.y;
 	ImGui::Image((ImTextureID)tex, windowSize, ImVec2(0, 1), ImVec2(1, 0));
+	if (ImGui::IsItemHovered()) {
+		mouse_on_scene = true;
+	}
+	else {
+		mouse_on_scene = false;
+	}
 	ImGui::End();
 	ImGui::PopStyleVar();
 

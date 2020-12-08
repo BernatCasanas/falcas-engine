@@ -151,6 +151,9 @@ update_status ModuleCentralEditor::PostUpdate(float dt)
         show_assets_window = !show_assets_window;
     if (App->input->GetKey(SDL_SCANCODE_6) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT)
         show_assets_explorer = !show_assets_explorer;
+    if (App->input->GetKey(SDL_SCANCODE_7) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT)
+        show_references_window = !show_references_window;
+    
 
     if (wantToExit) update_status::UPDATE_STOP;
    
@@ -195,9 +198,13 @@ void ModuleCentralEditor::Draw()
             if (ImGui::MenuItem("Assets Explorer", "Alt + 6")) {
                 show_assets_explorer = !show_assets_explorer;
             }
+            if (ImGui::MenuItem("References Window (only-read)", "Alt + 7")) {
+                show_references_window = !show_references_window;
+            }
             if (ImGui::MenuItem("OpenGL Options")) {
                 show_openglOptions = !show_openglOptions;
             }
+            
             ImGui::EndMenu();
         }
         if (ImGui::BeginMenu("GameObject")) {
@@ -493,7 +500,14 @@ void ModuleCentralEditor::Draw()
         ImGui::Begin("Assets (only-read)", &show_assets_window);
         static std::string file_assets_selected = "";
         static ImGuiTreeNodeFlags base_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_SpanAvailWidth;
-        FilesRecursiveTree("Assets", true, true, base_flags, file_assets_selected);
+        FilesRecursiveTree("Assets", true, false, true, base_flags, file_assets_selected);
+        ImGui::End();
+    }
+    if (show_references_window) {
+        ImGui::Begin("References (only-read)", &show_references_window);
+        static std::string file_assets_selected = "";
+        static ImGuiTreeNodeFlags base_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_SpanAvailWidth;
+        FilesRecursiveTree("Library", true, true, true, base_flags, file_assets_selected);
         ImGui::End();
     }
 
@@ -585,7 +599,7 @@ bool ModuleCentralEditor::LoadFile()
         ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, 5.0f);
         ImGui::BeginChild("File Browser", ImVec2(0, 300), true);
         std::string s = "";
-        FilesRecursiveTree("Assets", false, true, 0, s);
+        FilesRecursiveTree("Assets", false, false, true, 0, s);
         ImGui::EndChild();
         ImGui::PopStyleVar();
         ImGui::PushItemWidth(250.f);
@@ -716,7 +730,7 @@ bool ModuleCentralEditor::ProcessEvents(SDL_Event event)
     return done;
 }
 
-void ModuleCentralEditor::FilesRecursiveTree(const char* path, bool is_in_dock, bool is_directory, static ImGuiTreeNodeFlags base_flags, std::string& assets_file_clicked)
+void ModuleCentralEditor::FilesRecursiveTree(const char* path, bool is_in_dock, bool resources_window, bool is_directory, static ImGuiTreeNodeFlags base_flags, std::string& assets_file_clicked)
 {
     ImGuiTreeNodeFlags final_flags = base_flags;
     if (!is_directory) {
@@ -725,6 +739,9 @@ void ModuleCentralEditor::FilesRecursiveTree(const char* path, bool is_in_dock, 
         if (assets_file_clicked == file_name)
             final_flags |= ImGuiTreeNodeFlags_Selected;
         if (ImGui::TreeNodeEx(file_name.c_str(), final_flags)) {
+            if (resources_window && ImGui::IsItemHovered()) {
+                ImGui::SetTooltip("Instances: %d", App->resources->GetResource(std::stoi(file_name))->referenceCount);
+            }
             if (ImGui::IsItemClicked()) {
                 if (!is_in_dock) {
                     sprintf_s(selected_file, 100, "%s", path);
@@ -760,7 +777,7 @@ void ModuleCentralEditor::FilesRecursiveTree(const char* path, bool is_in_dock, 
 
     bool open = false;
 
-    if (is_in_dock||path!="Assets") {
+    if ((is_in_dock||path!="Assets")&&path!="Library") {
         if (ImGui::TreeNodeEx((dir_name).c_str(), final_flags)) {
             open = true;
             if (ImGui::IsItemClicked()) {
@@ -788,10 +805,10 @@ void ModuleCentralEditor::FilesRecursiveTree(const char* path, bool is_in_dock, 
     for (int i = 0; i < dirs.size(); ++i) {
         if (!strcmp(dirs[i].c_str(),"Icons (read_only)"))
             continue;
-        FilesRecursiveTree((dir + dirs[i]).c_str(), is_in_dock, true, base_flags, assets_file_clicked);
+        FilesRecursiveTree((dir + dirs[i]).c_str(), resources_window, is_in_dock, true, base_flags, assets_file_clicked);
     }
     for (int i = 0; i < files.size(); ++i) {
-        FilesRecursiveTree((dir + files[i]).c_str(), is_in_dock, true, base_flags, assets_file_clicked);
+        FilesRecursiveTree((dir + files[i]).c_str(), resources_window, is_in_dock, false, base_flags, assets_file_clicked);
     }
     ImGui::Unindent(ImGui::GetTreeNodeToLabelSpacing());
 

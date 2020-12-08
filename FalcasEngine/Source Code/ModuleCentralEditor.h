@@ -51,7 +51,7 @@ public:
 
 	bool ProcessEvents(SDL_Event event);
 
-	void FilesRecursiveTree(const char* path, bool is_in_dock, bool is_directory, static ImGuiTreeNodeFlags base_flags, std::string& assets_file_clicked);
+	void FilesRecursiveTree(const char* path, bool is_in_dock, bool resources_window, bool is_directory, static ImGuiTreeNodeFlags base_flags, std::string& assets_file_clicked);
 	void HierarchyRecursiveTree(GameObject* game_object, static ImGuiTreeNodeFlags base_flags, int &node_clicked);
 	void SearchParent(GameObject* game_object, uint uuid);
 
@@ -76,6 +76,8 @@ public:
 	bool show_inspector = true;
 	bool show_assets_window = true;
 	bool show_assets_explorer = true;
+	bool show_references_window = true;
+
 
 	bool cullface = false;
 	bool colorMaterial = false;

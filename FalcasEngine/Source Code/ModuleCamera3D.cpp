@@ -52,6 +52,11 @@ update_status ModuleCamera3D::Update(float dt)
 {
 	if (!camera->camera_active)
 		return UPDATE_CONTINUE;
+	camera->owner->Update();
+
+	if(!App->scene_intro->mouse_on_scene)
+		return UPDATE_CONTINUE;
+	
 	if (App->input->GetMouseButton(SDL_BUTTON_LEFT)==KEY_DOWN && App->input->GetKey(SDL_SCANCODE_LALT) == KEY_IDLE) {
 		float x = App->input->GetMouseX();
 		float y = App->input->GetMouseY();
@@ -67,7 +72,6 @@ update_status ModuleCamera3D::Update(float dt)
 		}
 	}
 
-	camera->owner->Update();
 
 	// Implement a debug camera with keys and mouse
 	// Now we can make this movememnt frame rate independant!

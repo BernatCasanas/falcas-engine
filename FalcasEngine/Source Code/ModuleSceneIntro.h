@@ -43,6 +43,7 @@ public:
 	int GetID();
 	int id_gameobject;
 	std::vector<int> game_objects_to_delete;
+	bool mouse_on_scene = true;
 
 private:
 	float width;
