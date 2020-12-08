@@ -80,6 +80,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source Code\Application.h" />
+    <ClInclude Include="Source Code\Clock.h" />
     <ClInclude Include="Source Code\Component.h" />
     <ClInclude Include="Source Code\ComponentCamera.h" />
     <ClInclude Include="Source Code\ComponentMaterial.h" />

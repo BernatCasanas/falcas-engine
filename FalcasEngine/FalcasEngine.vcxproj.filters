@@ -623,6 +623,9 @@
     <ClInclude Include="Source Code\ResourceMaterial.h">
       <Filter>Source Code</Filter>
     </ClInclude>
+    <ClInclude Include="Source Code\Clock.h">
+      <Filter>Source Code</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Source Code\External Libraries\MathGeoLib\include\Geometry\KDTree.inl">

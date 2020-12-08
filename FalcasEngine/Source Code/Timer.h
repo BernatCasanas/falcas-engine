@@ -12,10 +12,12 @@ public:
 
 	void Start();
 	void Stop();
+	void Resume();
 
 	bool isStoped() { return !running; };
 
 	Uint32 Read();
+	float ReadSec();
 
 private:
 
