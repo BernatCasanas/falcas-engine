@@ -234,6 +234,9 @@
     <ClCompile Include="Source Code\ResourceMaterial.cpp">
       <Filter>Source Code</Filter>
     </ClCompile>
+    <ClCompile Include="Source Code\aClock.cpp">
+      <Filter>Source Code</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source Code\Application.h">
@@ -623,7 +626,7 @@
     <ClInclude Include="Source Code\ResourceMaterial.h">
       <Filter>Source Code</Filter>
     </ClInclude>
-    <ClInclude Include="Source Code\Clock.h">
+    <ClInclude Include="Source Code\aClock.h">
       <Filter>Source Code</Filter>
     </ClInclude>
   </ItemGroup>

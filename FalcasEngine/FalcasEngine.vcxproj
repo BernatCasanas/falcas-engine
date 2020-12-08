@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source Code\Application.cpp" />
+    <ClCompile Include="Source Code\aClock.cpp" />
     <ClCompile Include="Source Code\Component.cpp" />
     <ClCompile Include="Source Code\ComponentCamera.cpp" />
     <ClCompile Include="Source Code\ComponentMaterial.cpp" />
@@ -80,7 +81,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source Code\Application.h" />
-    <ClInclude Include="Source Code\Clock.h" />
+    <ClInclude Include="Source Code\aClock.h" />
     <ClInclude Include="Source Code\Component.h" />
     <ClInclude Include="Source Code\ComponentCamera.h" />
     <ClInclude Include="Source Code\ComponentMaterial.h" />

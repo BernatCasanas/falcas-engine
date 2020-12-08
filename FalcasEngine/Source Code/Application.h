@@ -34,8 +34,8 @@ public:
 
 private:
 
-	Timer	ms_timer;
 	float	dt;
+	float	fps;
 	std::vector<Module*> list_modules;
 
 public:

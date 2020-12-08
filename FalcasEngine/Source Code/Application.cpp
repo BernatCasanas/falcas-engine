@@ -14,6 +14,8 @@
 #include "External Libraries/JSON/parson.h"
 #include "Json.h"
 #include "External Libraries/PhysFS/include/physfs.h"
+#include "aClock.h"
+#include "External Libraries/SDL/include/SDL.h"
 
 Application::Application()
 {
@@ -93,20 +95,30 @@ bool Application::Init()
 		ret = list_modules[i]->Start();
 	}
 	
-	ms_timer.Start();
+	Time::realTimer.deltaTimer.Start();
 	return ret;
 }
 
 // ---------------------------------------------
 void Application::PrepareUpdate()
 {
-	dt = (float)ms_timer.Read() / 1000.0f;
-	ms_timer.Start();
+	dt = (float)Time::realTimer.deltaTimer.Read() / 1000;
+	fps = 1.0f / dt;
+
+	Time::realTimer.Step();
+	Time::gameTimer.Step();
 }
 
 // ---------------------------------------------
 void Application::FinishUpdate()
 {
+	Uint32 last_frame_ms = Time::realTimer.deltaTimer.Read();
+	if (last_frame_ms < 16.66)
+	{
+		SDL_Delay(16.66 - last_frame_ms);
+	}
+
+	Time::numFrames++;
 }
 
 // Call PreUpdate, Update and PostUpdate on all modules

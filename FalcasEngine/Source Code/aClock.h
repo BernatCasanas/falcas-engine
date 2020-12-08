@@ -1,3 +1,4 @@
+#pragma once
 #ifndef _CLOCK_
 #define _CLOCK_
 

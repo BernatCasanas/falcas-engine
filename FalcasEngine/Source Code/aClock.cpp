@@ -1,6 +1,7 @@
 #include "aClock.h"
 
 aClock Time::realTimer;
+aClock Time::gameTimer;
 
 int Time::numFrames = 0;
 
