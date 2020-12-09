@@ -7,11 +7,14 @@
 #include "ModuleSceneIntro.h"
 #include "GameObject.h"
 #include "ResourceMaterial.h"
+#include "ResourceModel.h"
 #include "External Libraries/Devil/Include/ilut.h"
 #include "External Libraries/Assimp/Assimp/include/cimport.h"
 #include "External Libraries/Assimp/Assimp/include/postprocess.h"
 #include "External Libraries/Assimp/Assimp/include/scene.h"
+#include "Resource.h"
 #include "External Libraries/MathGeoLib/include/Math/Quat.h"
+#include "ModuleResources.h"
 
 
 #pragma comment (lib, "Source Code/External Libraries/Devil/lib/DevIL.lib")
@@ -178,6 +181,10 @@ ComponentMesh* ImportOnlyMesh(GameObject* game_object, std::string libraryPath, 
 	return mesh;
 }
 
+void ImportModel(std::string file, uint ID)
+{
+}
+
 
 void MeshImporter::Import(const aiMesh* ai_mesh, char* name)
 {
@@ -236,7 +243,6 @@ void MeshImporter::Import(const aiMesh* ai_mesh, char* name)
 	delete[] buffer;
 	
 	//if (ai_mesh != nullptr) material_index = ai_mesh->mMaterialIndex;
-	//BERNAT FES UN ESQUEMA DE QUE NECESSITA EL MESH PER SER IMPORTAT DE LES 2 MANERES
 
 	//mesh->Initialization();
 
@@ -394,4 +400,82 @@ void MaterialImporter::Load(const char* fileBuffer, ResourceMaterial* res, uint 
 	res->width = ilGetInteger(IL_IMAGE_WIDTH);
 	res->texture_id = ilutGLBindTexImage();
 	delete[] buffer;
+}
+
+void ModelImporter::Import(char* buffer, ResourceModel* mod, uint size, uint ID)
+{
+	const aiScene* scene = nullptr;
+	scene = aiImportFileFromMemory(buffer, size, aiProcessPreset_TargetRealtime_MaxQuality, NULL);
+
+	if (scene != nullptr && scene->HasMeshes()) {
+
+		for (int i = 0; i < scene->mNumMeshes; ++i) {
+			aiMesh* ai_mesh = scene->mMeshes[i];
+
+			std::string name_buff2 = std::to_string(ID).c_str();
+			char name_buff[200];
+			if (App->filesystem->counterMesh != 0) {
+				sprintf_s(name_buff, 200, "%s (%i)", std::to_string(ID).c_str(), App->filesystem->counterMesh);
+				name_buff2 = name_buff;
+			}
+			App->filesystem->counterMesh++;
+
+			sprintf_s(name_buff, 200, "Library/Meshes/%s.falcasmesh", name_buff2.c_str());
+			MeshImporter::Import(ai_mesh, (char*)ai_mesh->mName.C_Str());
+
+			mod->meshes.push_back(ID);
+		}
+
+		for (int i = 0; i < scene->mNumMaterials; ++i) {
+			aiMaterial* ai_material = scene->mMaterials[i];
+
+		}
+
+	}
+}
+
+uint ModelImporter::Save(ResourceModel* mod, char** buffer)
+{
+	char* buf;
+
+	JsonObj obj;
+	JsonArray arr = obj.AddArray("items");
+
+	for (int i = 0; i < mod->nodes.size(); ++i) {
+		JsonObj item;
+
+		item.AddString("Name", mod->nodes[i].name.c_str());
+		item.AddInt("Parent UUID", mod->nodes[i].ParentUUID);
+		item.AddInt("UUID", mod->nodes[i].UUID);
+		item.AddFloat4x4("Transform", mod->nodes[i].transform);
+
+		if (mod->meshes[i] != 0)
+		{
+			item.AddInt("MeshID", mod->meshes[i]);
+			item.AddString("libraryFile", App->resources->GetResource(mod->meshes[i])->GetLibraryFile());
+		}
+
+		if (mod->textures[i] != 0)
+		{
+			item.AddInt("MaterialID", mod->textures[i]);
+			item.AddString("libraryFile", App->resources->GetResource(mod->textures[i])->GetLibraryFile());
+		}
+
+		arr.AddObject(item);
+	}
+	uint size = obj.Save(&buf);
+	*buffer = buf;
+	return size;
+}
+
+void ModelImporter::Load(const char* buffer, ResourceModel* mod)
+{
+	JsonObj obj(buffer);
+	JsonArray arr = obj.GetArray("items");
+
+	for (int i = 0; i < arr.Size(); ++i) {
+		JsonObj iterator = arr.GetObjectAt(i);
+
+
+	}
 }

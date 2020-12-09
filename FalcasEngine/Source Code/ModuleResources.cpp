@@ -200,8 +200,8 @@ void ModuleResources::DeleteResourceLibrary(Resource* resource)
 {
 	if (resource->GetType() == Resource_Type::Model) {
 		ResourceModel* model = (ResourceModel*)resource;
-		for (int i = 0; i < model->ids_resources_meshes.size(); i++) {
-			App->filesystem->DeleteAFile(GetResource(model->ids_resources_meshes[i])->GetLibraryFile());
+		for (int i = 0; i < model->meshes.size(); i++) {
+			App->filesystem->DeleteAFile(GetResource(model->meshes[i])->GetLibraryFile());
 		}
 	}
 	App->filesystem->DeleteAFile(resource->GetLibraryFile());

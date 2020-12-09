@@ -4,6 +4,7 @@
 #include "External Libraries/MathGeoLib/include/Math/float4x4.h"
 class ComponentMaterial;
 class ResourceMaterial;
+class ResourceModel;
 class ComponentMesh;
 class aiScene;
 class aiNode;
@@ -24,6 +25,8 @@ void ImportDefaultTexture(ComponentMaterial* mat);
 
 ComponentMesh* ImportOnlyMesh(GameObject* game_object, std::string libraryPath, std::string assetPath, int meshNumber);
 
+void ImportModel(std::string file, uint ID);
+
 namespace MeshImporter {
 	void Import(const aiMesh* ai_material, char* name);
 	uint Save(const ComponentMesh* mesh, char** filebuffer);
@@ -37,5 +40,7 @@ namespace MaterialImporter {
 }
 
 namespace ModelImporter {
-
+	void Import(char* buffer, ResourceModel* mod, uint size, uint ID);
+	uint Save(ResourceModel* mod, char** buffer);
+	void Load(const char* buffer, ResourceModel* mod);
 }
