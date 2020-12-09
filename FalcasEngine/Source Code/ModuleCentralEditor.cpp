@@ -172,7 +172,7 @@ void ModuleCentralEditor::Draw()
                 wantToExit=true;
             }
 			if (ImGui::MenuItem("Save Scene")) {
-				SaveScene();
+				SaveScene("scene");
 			}
             if (ImGui::MenuItem("Load Scene")) {
                 loading_file = !loading_file;
@@ -553,6 +553,33 @@ void ModuleCentralEditor::Draw()
 	if (loading_file) {
 		LoadFile();
 	}
+    bool overlay = true;
+    ImVec4 color;
+    ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav;
+    ImGui::SetNextWindowBgAlpha(0.35f);
+    if (ImGui::Begin("Game", &overlay, window_flags)) {
+        App->isPlaying() ? color = ImColor::ImColor(0, 128, 0): color = ImColor::ImColor(192, 192, 192);
+        ImGui::PushStyleColor(ImGuiCol_Button, color);
+        if (ImGui::Button("Play")) {
+            App->StartGame();
+        }
+        App->isPaused() && App->isPlaying() ? color = ImColor::ImColor(105,105,105) : color = ImColor::ImColor(192, 192, 192);
+        ImGui::SameLine();
+        ImGui::PushStyleColor(ImGuiCol_Button, color);
+        if (ImGui::Button("Pause")) {
+            if (!App->isPaused())
+                App->PauseGame();
+            else App->ResumeGame();
+        }
+        ImGui::SameLine();
+        color = ImColor::ImColor(192, 192, 192);
+        ImGui::PushStyleColor(ImGuiCol_Button, color);
+        if (ImGui::Button("Stop")) {
+            App->StopGame();
+        }
+        ImGui::PopStyleColor(3);
+    }
+    ImGui::End();
 
 
     if (depth) glEnable(GL_DEPTH_TEST);
@@ -623,7 +650,7 @@ bool ModuleCentralEditor::LoadFile()
 	return true;
 }
 
-bool ModuleCentralEditor::SaveScene()
+bool ModuleCentralEditor::SaveScene(const char* name)
 {
 	char* buffer = nullptr;
 
@@ -632,23 +659,23 @@ bool ModuleCentralEditor::SaveScene()
 	JsonArray arr = scene.AddArray("GameObjects");
 	SaveAllGameObjectsTree(App->scene_intro->root, arr);
 	scene.Save(&buffer);
-	char name[150] = "Library/Scenes/scene.scenefalcas";
-    std::string fileName = "scene";
-    std::string baseName = "scene";
+	char file[150] = "Library/Scenes/scene.scenefalcas";
+    std::string fileName = name;
+    std::string baseName = name;
 	for (int i = 0; App->filesystem->FileExists(name); i++) {
         fileName = App->filesystem->GetFileName(name, true);
         if (i != 0) fileName =  baseName + std::to_string(i);
-		sprintf_s(name, 150, "Library/Scenes/%s.scenefalcas", fileName.c_str());
+		sprintf_s(file, 150, "Library/Scenes/%s.scenefalcas", fileName.c_str());
 	}
-	App->filesystem->SaveInternal(name, buffer, strlen(buffer));
+	App->filesystem->SaveInternal(file, buffer, strlen(buffer));
     if (App->filesystem->FileExists("Assets/Scenes")) {
-		sprintf_s(name, 150, "Assets/Scenes/%s.scenefalcas", fileName.c_str());
-	    App->filesystem->SaveInternal(name, buffer, strlen(buffer));
+		sprintf_s(file, 150, "Assets/Scenes/%s.scenefalcas", fileName.c_str());
+	    App->filesystem->SaveInternal(file, buffer, strlen(buffer));
     }
     else {
          if(App->filesystem->FileExists("Assets")){
-		    sprintf_s(name, 150, "Assets/%s.scenefalcas", fileName.c_str());
-	        App->filesystem->SaveInternal(name, buffer, strlen(buffer));
+		    sprintf_s(file, 150, "Assets/%s.scenefalcas", fileName.c_str());
+	        App->filesystem->SaveInternal(file, buffer, strlen(buffer));
         }
     }
 	return true;

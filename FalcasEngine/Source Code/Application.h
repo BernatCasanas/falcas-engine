@@ -38,6 +38,7 @@ private:
 	float	fps;
 	std::vector<Module*> list_modules;
 
+
 public:
 
 	Application();
@@ -47,7 +48,15 @@ public:
 	update_status Update();
 	bool CleanUp();
 
+	void StartGame();
+	void PauseGame();
+	void ResumeGame();
+	void StopGame();
 
+	bool isPlaying();
+	bool isPaused();
+
+	bool inGame;
 
 private:
 

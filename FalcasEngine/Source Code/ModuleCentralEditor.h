@@ -45,7 +45,7 @@ public:
 	void Draw();
 
 	bool LoadFile();
-	bool SaveScene();
+	bool SaveScene(const char* file);
 
 	void LoadScene(const char* file);
 

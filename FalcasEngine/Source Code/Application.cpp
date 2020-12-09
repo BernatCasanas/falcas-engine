@@ -34,6 +34,8 @@ Application::Application()
 	// Modules will Init() Start() and Update in this order
 	// They will CleanUp() in reverse order
 
+	inGame = false;
+
 	// Main Modules
 	AddModule(window);
 	AddModule(camera);
@@ -159,6 +161,54 @@ bool Application::CleanUp()
 		ret = list_modules[i]->CleanUp();
 	}
 
+	return ret;
+}
+
+void Application::StartGame()
+{
+	if (!inGame)
+	{
+		inGame = true;
+		Time::gameTimer.Start();
+		App->central_editor->SaveScene("temp");
+	}
+}
+
+void Application::PauseGame()
+{
+	if (!isPaused()) {
+		Time::gameTimer.Pause();
+	}
+}
+
+void Application::ResumeGame()
+{
+	if (isPaused()) {
+		Time::gameTimer.Resume();
+	}
+}
+
+void Application::StopGame()
+{
+	if (inGame)
+	{
+		inGame = false;
+		Time::gameTimer.Stop();
+		//App->central_editor->LoadScene("Library/Scenes/temp.scenefalcas");
+	}
+}
+
+bool Application::isPlaying()
+{
+	bool ret;
+	Time::gameTimer.started ? ret = true : ret = false;
+	return ret;
+}
+
+bool Application::isPaused()
+{
+	bool ret;
+	Time::gameTimer.paused ? ret = true : ret = false;
 	return ret;
 }
 
