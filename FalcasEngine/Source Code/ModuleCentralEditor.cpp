@@ -32,6 +32,8 @@
 #include "Importer.h"
 #include "ModuleResources.h"
 #include "ResourceMaterial.h"
+#include "aClock.h";
+#include "Timer.h"
 
 ModuleCentralEditor::ModuleCentralEditor(Application* app, bool start_enabled) : Module(app, start_enabled, "moduleCentralEditor"),progress(50.f),progress2(50.f),progress3(50.f), progress4(50.f)
 {
@@ -989,17 +991,25 @@ void ModuleCentralEditor::GameControl()
     ImVec4 color;
     ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav;
     ImGui::SetNextWindowBgAlpha(0.35f);
-    ImGui::SetNextWindowPos({ ImGui::GetMainViewport()->GetCenter().x,40 });
+    ImGui::SetNextWindowPos({ ImGui::GetMainViewport()->GetCenter().x-160,40 });
     if (ImGui::Begin("Game", &overlay, window_flags)) {
+        Time::gameTimer.timeScale == 0.5 ? color = ImColor::ImColor(0, 128, 0) : color = ImColor::ImColor(192, 192, 192);
+        ImGui::PushStyleColor(ImGuiCol_Button, color);
+        if (ImGui::Button("x0.5")) {
+            if (Time::gameTimer.timeScale == 0.5)
+                Time::gameTimer.timeScale = 1.0;
+            else Time::gameTimer.timeScale = 0.5;
+        }
+        ImGui::SameLine();
         App->isPlaying() ? color = ImColor::ImColor(0, 128, 0) : color = ImColor::ImColor(192, 192, 192);
         ImGui::PushStyleColor(ImGuiCol_Button, color);
-        if (ImGui::Button("Play")) {
+        if (ImGui::Button("Play", { 70,30 })) {
             App->StartGame();
         }
         App->isPaused() && App->isPlaying() ? color = ImColor::ImColor(105, 105, 105) : color = ImColor::ImColor(192, 192, 192);
         ImGui::SameLine();
         ImGui::PushStyleColor(ImGuiCol_Button, color);
-        if (ImGui::Button("Pause")) {
+        if (ImGui::Button("Pause", { 70,30 })) {
             if (!App->isPaused())
                 App->PauseGame();
             else App->ResumeGame();
@@ -1007,10 +1017,19 @@ void ModuleCentralEditor::GameControl()
         ImGui::SameLine();
         color = ImColor::ImColor(192, 192, 192);
         ImGui::PushStyleColor(ImGuiCol_Button, color);
-        if (ImGui::Button("Stop")) {
+        if (ImGui::Button("Stop", { 70,30 })) {
             App->StopGame();
         }
-        ImGui::PopStyleColor(3);
+        ImGui::SameLine();
+        Time::gameTimer.timeScale == 2.0 ? color = ImColor::ImColor(0, 128, 0) : color = ImColor::ImColor(192, 192, 192);
+        ImGui::PushStyleColor(ImGuiCol_Button, color);
+        ImGui::SameLine();
+        if (ImGui::Button("x2.0")) {
+            if (Time::gameTimer.timeScale == 2.0)
+                Time::gameTimer.timeScale = 1.0;
+            else Time::gameTimer.timeScale = 2.0;
+        }
+        ImGui::PopStyleColor(5);
     }
     ImGui::End();
 }
