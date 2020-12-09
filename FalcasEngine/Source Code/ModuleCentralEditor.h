@@ -63,6 +63,8 @@ public:
 	void CreateDock();
 	void CreateShape(Shape shape, std::string name);
 
+	void GameControl();
+
 public:
 
 	bool show_demo_window = true;

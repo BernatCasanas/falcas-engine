@@ -169,11 +169,11 @@ void ModuleCentralEditor::Draw()
         ImGui::BeginMainMenuBar();
         if (ImGui::BeginMenu("File")) {
             if (ImGui::MenuItem("Quit", "Esc")) {
-                wantToExit=true;
+                wantToExit = true;
             }
-			if (ImGui::MenuItem("Save Scene")) {
-				SaveScene("scene");
-			}
+            if (ImGui::MenuItem("Save Scene")) {
+                SaveScene("scene");
+            }
             if (ImGui::MenuItem("Load Scene")) {
                 loading_file = !loading_file;
             }
@@ -204,7 +204,7 @@ void ModuleCentralEditor::Draw()
             if (ImGui::MenuItem("OpenGL Options")) {
                 show_openglOptions = !show_openglOptions;
             }
-            
+
             ImGui::EndMenu();
         }
         if (ImGui::BeginMenu("GameObject")) {
@@ -245,7 +245,7 @@ void ModuleCentralEditor::Draw()
                 ImGui::EndMenu();
             }
             if (ImGui::MenuItem("Create Camera")) {
-                GameObject* game_object= App->scene_intro->CreateGameObject("Camera", App->scene_intro->root);
+                GameObject* game_object = App->scene_intro->CreateGameObject("Camera", App->scene_intro->root);
                 game_object->CreateComponent(Component_Type::Camera);
             }
             ImGui::EndMenu();
@@ -270,6 +270,9 @@ void ModuleCentralEditor::Draw()
         }
         ImGui::EndMainMenuBar();
     }
+
+    GameControl();
+
     //Demo Gui
     if (show_example) {
         ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
@@ -386,7 +389,7 @@ void ModuleCentralEditor::Draw()
             ImGui::PlotHistogram("", ms, 50, 0, ms_char, 0.0f, 30.f, ImVec2(0, 80.0f));
         }
         if (ImGui::CollapsingHeader("Input")) {
-            for(int i=0;i<input_list.size();i++)
+            for (int i = 0; i < input_list.size(); i++)
                 ImGui::TextUnformatted(input_list[i]);
             if (need_scroll)
                 ImGui::SetScrollHere(1.0f);
@@ -489,7 +492,7 @@ void ModuleCentralEditor::Draw()
             }
         }
         if (App->scene_intro->game_object_selected != nullptr && !App->scene_intro->game_object_selected->HasComponentType(Component_Type::Camera)) {
-            if(ImGui::Button("Create Component Camera")) {
+            if (ImGui::Button("Create Component Camera")) {
                 App->scene_intro->game_object_selected->CreateComponent(Component_Type::Material);
             }
         }
@@ -513,7 +516,7 @@ void ModuleCentralEditor::Draw()
 
     if (show_assets_explorer) {
         ImGui::Begin("Assets Explorer", &show_assets_window);
-        float total_icons_per_line=ImGui::GetColumnWidth(-1)/64;
+        float total_icons_per_line = ImGui::GetColumnWidth(-1) / 64;
         total_icons_per_line--;
         for (int j = 0; j < 4; j++) {
             for (int i = 0; i < (int)total_icons_per_line; i++) {
@@ -550,36 +553,10 @@ void ModuleCentralEditor::Draw()
         ImGui::End();
     }
 
-	if (loading_file) {
-		LoadFile();
-	}
-    bool overlay = true;
-    ImVec4 color;
-    ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav;
-    ImGui::SetNextWindowBgAlpha(0.35f);
-    if (ImGui::Begin("Game", &overlay, window_flags)) {
-        App->isPlaying() ? color = ImColor::ImColor(0, 128, 0): color = ImColor::ImColor(192, 192, 192);
-        ImGui::PushStyleColor(ImGuiCol_Button, color);
-        if (ImGui::Button("Play")) {
-            App->StartGame();
-        }
-        App->isPaused() && App->isPlaying() ? color = ImColor::ImColor(105,105,105) : color = ImColor::ImColor(192, 192, 192);
-        ImGui::SameLine();
-        ImGui::PushStyleColor(ImGuiCol_Button, color);
-        if (ImGui::Button("Pause")) {
-            if (!App->isPaused())
-                App->PauseGame();
-            else App->ResumeGame();
-        }
-        ImGui::SameLine();
-        color = ImColor::ImColor(192, 192, 192);
-        ImGui::PushStyleColor(ImGuiCol_Button, color);
-        if (ImGui::Button("Stop")) {
-            App->StopGame();
-        }
-        ImGui::PopStyleColor(3);
+    if (loading_file) {
+        LoadFile();
     }
-    ImGui::End();
+    
 
 
     if (depth) glEnable(GL_DEPTH_TEST);
@@ -1004,6 +981,38 @@ void ModuleCentralEditor::CreateShape(Shape shape, std::string name)
         break;
     }
         mesh->Initialization();
+}
+
+void ModuleCentralEditor::GameControl()
+{
+    bool overlay = true;
+    ImVec4 color;
+    ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav;
+    ImGui::SetNextWindowBgAlpha(0.35f);
+    ImGui::SetNextWindowPos({ ImGui::GetMainViewport()->GetCenter().x,40 });
+    if (ImGui::Begin("Game", &overlay, window_flags)) {
+        App->isPlaying() ? color = ImColor::ImColor(0, 128, 0) : color = ImColor::ImColor(192, 192, 192);
+        ImGui::PushStyleColor(ImGuiCol_Button, color);
+        if (ImGui::Button("Play")) {
+            App->StartGame();
+        }
+        App->isPaused() && App->isPlaying() ? color = ImColor::ImColor(105, 105, 105) : color = ImColor::ImColor(192, 192, 192);
+        ImGui::SameLine();
+        ImGui::PushStyleColor(ImGuiCol_Button, color);
+        if (ImGui::Button("Pause")) {
+            if (!App->isPaused())
+                App->PauseGame();
+            else App->ResumeGame();
+        }
+        ImGui::SameLine();
+        color = ImColor::ImColor(192, 192, 192);
+        ImGui::PushStyleColor(ImGuiCol_Button, color);
+        if (ImGui::Button("Stop")) {
+            App->StopGame();
+        }
+        ImGui::PopStyleColor(3);
+    }
+    ImGui::End();
 }
 
 void ModuleCentralEditor::CreateDock()
