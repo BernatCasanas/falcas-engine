@@ -1,4 +1,3 @@
-#include "External Libraries/Glew/include/glew.h"
 #include "Application.h"
 #include "ModuleCentralEditor.h"
 #include "ComponentTransform.h"
@@ -8,7 +7,7 @@
 #include "ComponentMesh.h"
 #include "Importer.h"
 #include "External Libraries/ImGui/imgui.h"
-#include "ResourceMaterial.h"
+#include "ResourceMesh.h"
 
 ComponentMesh::ComponentMesh(GameObject* owner) :Component(Component_Type::Mesh, owner, "Mesh")
 {
@@ -16,18 +15,7 @@ ComponentMesh::ComponentMesh(GameObject* owner) :Component(Component_Type::Mesh,
 
 ComponentMesh::~ComponentMesh()
 {
-	if (vertices != nullptr)
-		delete[] vertices;
-	if (indices != nullptr)
-		delete[] indices;
-	if (normals != nullptr)
-		delete[] normals;
-	if (texCoords != nullptr)
-		delete[]texCoords;
-	glDeleteBuffers(1, &id_indices);
-	glDeleteBuffers(1, &id_vertices);
-	glDeleteBuffers(1, &id_normals);
-	glDeleteBuffers(1, &id_texCoords);
+	
 }
 
 void ComponentMesh::Update()
@@ -41,145 +29,27 @@ void ComponentMesh::Update()
 
 void ComponentMesh::Initialization()
 {
-	glGenBuffers(1, (GLuint*)&(id_vertices));
-	glBindBuffer(GL_ARRAY_BUFFER, id_vertices);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * num_vertices, vertices, GL_STATIC_DRAW);
-
-	glGenBuffers(1, (GLuint*)&(id_indices));
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id_indices);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * num_indices, indices, GL_STATIC_DRAW);
-	if (num_textureCoords > 0 && grid == false) {
-		glGenBuffers(1, (GLuint*)&(id_normals));
-		glBindBuffer(GL_NORMAL_ARRAY, id_normals);
-		glBufferData(GL_NORMAL_ARRAY, sizeof(float) * num_vertices, normals, GL_STATIC_DRAW);
-
-		glGenBuffers(1, (GLuint*)&(id_texCoords));
-		glBindBuffer(GL_ARRAY_BUFFER, id_texCoords);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * num_textureCoords * 2, texCoords, GL_STATIC_DRAW);
-	}
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_NORMAL_ARRAY, 0);
-
-	SetAABB();
+	owner->UpdateAABB();
 }
 
 void ComponentMesh::Render()
 {
-	if (id_indices > 0 && id_vertices > 0) {
-		ComponentTransform* trans = (ComponentTransform*)owner->GetComponent(Component_Type::Transform);
-		glPushMatrix();
-		glMultMatrixf((float*)&trans->GetGlobalMatrixTransposed());
-		//vertices
-		glEnableClientState(GL_VERTEX_ARRAY);
+	if (resource_mesh == nullptr)
+		return;
 
-		glBindBuffer(GL_ARRAY_BUFFER, id_vertices);
-		glVertexPointer(3, GL_FLOAT, 0, NULL);
+	ComponentMaterial* mat = nullptr;
+	if(owner->HasComponentType(Component_Type::Material))
+		mat = (ComponentMaterial*)owner->GetComponent(Component_Type::Material);
 
-
-		//normals
-		if (num_normals > 0) {
-			glEnableClientState(GL_NORMAL_ARRAY);
-			glBindBuffer(GL_NORMAL_ARRAY, id_normals);
-			glNormalPointer(GL_FLOAT, 0, NULL);
-		}
-
-		if (num_textureCoords > 0 &&owner->GetComponent(Component_Type::Material)) {
-			ComponentMaterial* mat = (ComponentMaterial*)owner->GetComponent(Component_Type::Material);
-			if (mat->active == true) {
-				glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-				glBindBuffer(GL_ARRAY_BUFFER, id_texCoords);
-				glTexCoordPointer(2, GL_FLOAT, 0, NULL);
-				if (!mat->show_default_tex&& mat->resource_material != nullptr) {
-					glBindTexture(GL_TEXTURE_2D, mat->resource_material->texture_id);
-				}
-				else {
-					glBindTexture(GL_TEXTURE_2D, mat->defaultTex);
-				}
-			}
-
-		}
-
-		//indices
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id_indices);
-
-
-		//drawing indices
-		if (grid == false) {
-			glDrawElements(GL_TRIANGLES, num_indices, GL_UNSIGNED_INT, NULL);
-		}
-		else
-			glDrawElements(GL_LINES, num_indices, GL_UNSIGNED_INT, NULL);
-
-
-
-		//drawing normals
-		if ((App->central_editor->normals_v || show_normals_v) && normals != nullptr) {
-			if (id_normals == -1)
-				return;
-
-			glBegin(GL_LINES);
-			for (int i = 0; i < num_vertices; i += 3)
-			{
-				glColor3f(0.0f, 1.f, 1.f);
-				glVertex3f(vertices[i], vertices[i + 1], vertices[i + 2]);
-				glVertex3f(vertices[i] + (-normals[i] * length_normals), vertices[i + 1] + (-normals[i + 1] * length_normals), vertices[i + 2] + (-normals[i + 2]) * length_normals);
-			}
-
-			glColor3f(1.0f, 1.0f, 1.0f);
-			glEnd();
-		}
-		if ((App->central_editor->normals_f || show_normals_f) && normals != nullptr) {
-			if (id_normals == -1)
-				return;
-			glBegin(GL_LINES);
-			for (size_t i = 0; i < num_vertices; i += 3)
-			{
-				glColor3f(1.0f, 0.f, 1.f);
-				float vx = (vertices[i] + vertices[i + 3] + vertices[i + 6]) / 3;
-				float vy = (vertices[i + 1] + vertices[i + 4] + vertices[i + 7]) / 3;
-				float vz = (vertices[i + 2] + vertices[i + 5] + vertices[i + 8]) / 3;
-
-				float nx = (normals[i] + normals[i + 3] + normals[i + 6]) / 3;
-				float ny = (normals[i + 1] + normals[i + 4] + normals[i + 7]) / 3;
-				float nz = (normals[i + 2] + normals[i + 5] + normals[i + 8]) / 3;
-
-				glVertex3f(vx, vy, vz);
-
-				glVertex3f(vx + (normals[i] * length_normals),
-					vy + (normals[i + 1] * length_normals),
-					vz + (normals[i + 2]) * length_normals);
-			}
-			glColor3f(1.0f, 1.0f, 1.0f);
-			glEnd();
-		}
-
-
-		//cleaning stuff
-
-		glBindTexture(GL_TEXTURE_2D, 0);
-		glBindBuffer(GL_NORMAL_ARRAY, 0);
-		glBindBuffer(GL_TEXTURE_COORD_ARRAY, 0);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-		if (num_normals > 0) {
-			glDisableClientState(GL_NORMAL_ARRAY);
-		}
-		if (num_textureCoords > 0 && grid == false) {
-			glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-		}
-		glDisableClientState(GL_VERTEX_ARRAY);
-		glDisableClientState(GL_ELEMENT_ARRAY_BUFFER);
-		glPopMatrix();
-	}
+	ComponentTransform* trans = (ComponentTransform*)owner->GetComponent(Component_Type::Transform);
+	resource_mesh->Render((float*)&trans->GetGlobalMatrixTransposed(), mat, show_normals_v, length_normals, show_normals_f);
 }
 
 bool ComponentMesh::SaveComponent(JsonObj& obj)
 {
-	obj.AddString("Path", this->libraryPath.c_str());
-	obj.AddString("AssetPath", this->full_file_name.c_str());
-	obj.AddInt("MaterialIndex", this->materialIndex);
+	//obj.AddString("Path", resource_mesh->libraryPath.c_str());
+	obj.AddString("AssetPath", resource_mesh->full_file_name.c_str());
+	obj.AddInt("MaterialIndex", resource_mesh->materialIndex);
 	obj.AddInt("MeshNumber", this->meshNumber);
 	obj.AddInt("UUID", GetUUID());
 	return true;
@@ -200,10 +70,10 @@ void ComponentMesh::Inspector()
 	ImGui::Text("File: ");
 	
 	ImGui::SameLine();
-	ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), file_name.c_str());
+	ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), resource_mesh->file_name.c_str());
 	
 	if (ImGui::IsItemHovered()) {
-		ImGui::SetTooltip(full_file_name.c_str());
+		ImGui::SetTooltip(resource_mesh->full_file_name.c_str());
 	}
 	
 	ImGui::Separator();
@@ -219,7 +89,7 @@ void ComponentMesh::Inspector()
 	
 	ImGui::SameLine();
 	ImGui::AlignTextToFramePadding();
-	ImGui::Text(std::to_string(num_indices).c_str());
+	ImGui::Text(std::to_string(resource_mesh->num_indices).c_str());
 	
 	ImGui::NextColumn();
 	ImGui::Checkbox("Per Triangle", (active && owner->active) ?&show_normals_v : &falsed);
@@ -230,7 +100,7 @@ void ComponentMesh::Inspector()
 	
 	ImGui::SameLine();
 	ImGui::AlignTextToFramePadding();
-	ImGui::Text(std::to_string(num_vertices / 3).c_str());
+	ImGui::Text(std::to_string(resource_mesh->num_vertices / 3).c_str());
 	
 	ImGui::NextColumn();
 	ImGui::Checkbox("Per Face", (active && owner->active) ? &show_normals_f:&falsed);
@@ -241,7 +111,7 @@ void ComponentMesh::Inspector()
 	
 	ImGui::SameLine();
 	ImGui::AlignTextToFramePadding();
-	ImGui::Text(std::to_string(num_normals / 3).c_str());
+	ImGui::Text(std::to_string(resource_mesh->num_normals / 3).c_str());
 	
 	ImGui::NextColumn();
 	ImGui::AlignTextToFramePadding();
@@ -253,7 +123,7 @@ void ComponentMesh::Inspector()
 	
 	ImGui::SameLine();
 	ImGui::AlignTextToFramePadding();
-	ImGui::Text(std::to_string(num_indices / 3).c_str());
+	ImGui::Text(std::to_string(resource_mesh->num_indices / 3).c_str());
 	
 	ImGui::NextColumn();
 	ImGui::PushItemWidth(120);
@@ -266,14 +136,3 @@ void ComponentMesh::Inspector()
 	ImGui::PopID();
 }
 
-AABB ComponentMesh::GetAABB() const
-{
-	return aabb;
-}
-
-void ComponentMesh::SetAABB()
-{
-	aabb.SetNegativeInfinity();
-	aabb.Enclose((float3*)vertices, num_vertices/3);
-	owner->UpdateAABB();
-}

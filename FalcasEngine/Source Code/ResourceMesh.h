@@ -11,7 +11,7 @@ public:
 
 	void Initialize();
 
-	void Render(float* transform, ComponentMaterial* mat, bool grid, bool show_normals_v, float length_normals, bool show_normals_f);
+	void Render(float* transform, ComponentMaterial* mat, bool show_normals_v, float length_normals, bool show_normals_f);
 
 	AABB GetAABB()const;
 

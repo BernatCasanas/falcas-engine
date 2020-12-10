@@ -42,10 +42,7 @@ bool ModuleSceneIntro::Start()
 	root = new GameObject(id_gameobject, "Grid", nullptr, { 0,0,0 }, Quat::identity, { 1,1,1 });
 	root->SetUUID();
 	id_gameobject++;
-	ComponentMesh* mesh = (ComponentMesh*)root->CreateComponent(Component_Type::Mesh);
-	mesh->grid = true;
-	CreateGrid(mesh->num_vertices, mesh->num_indices, mesh->indices, mesh->vertices, { 0,0,0 }, { 500,1,500 });
-	mesh->Initialization();
+	grid = CreateGrid();
 	camera = (ComponentCamera*)CreateGameObject("Camera", root)->CreateComponent(Component_Type::Camera);
 	App->renderer3D->camera_culling = camera;
 	id_gameobject++;
@@ -279,7 +276,7 @@ void ModuleSceneIntro::SelectGameObjectWithRay(LineSegment ray)
 		LineSegment ray_local = ray;
 		ray_local.Transform(trans->GetGlobalMatrix().Inverted());
 		ComponentMesh* mesh = (ComponentMesh*)it->second->GetComponent(Component_Type::Mesh);
-		for (int i = 0; i < mesh->num_indices; i+=3) {
+		/*for (int i = 0; i < mesh->num_indices; i+=3) {
 			Triangle tri;
 			tri.a = float3(&mesh->vertices[mesh->indices[i]*3]);
 			tri.b = float3(&mesh->vertices[mesh->indices[i+1] * 3]);
@@ -297,7 +294,7 @@ void ModuleSceneIntro::SelectGameObjectWithRay(LineSegment ray)
 					break;
 				}
 			}
-		}
+		}*/
 	}
 	game_object_selected = game_obj_selected;
 	App->central_editor->SelectObject(game_object_selected);

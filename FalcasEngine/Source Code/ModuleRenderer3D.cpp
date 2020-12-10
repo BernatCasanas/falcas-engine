@@ -11,7 +11,9 @@
 #include "ModuleCentralEditor.h"
 #include "ModuleSceneIntro.h"
 #include "ComponentCamera.h"
-
+#include "Shape.h"
+#include "GameObject.h"
+#include "ComponentMesh.h"
 
 
 #pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
@@ -167,6 +169,8 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
 	glLoadIdentity();
 	if (camera->update_projection_matrix || changed_camera) {
 		glMatrixMode(GL_PROJECTION);
@@ -185,12 +189,17 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 		lights[i].Render();
 
 	glLineWidth(1.0f);
+
 	
 	return UPDATE_CONTINUE;
 }
 
 update_status ModuleRenderer3D::Update(float dt)
 {
+
+	//((ComponentMesh*)App->scene_intro->root->GetComponent(Component_Type::Mesh))->grid->DrawGrid();
+	App->scene_intro->grid->DrawGrid();
+	//glColor3f(1, 0, 1);
 	for (int i = 0; i < aabbs.size(); i++) {
 		DrawAABB(aabbs[i]);
 	}
@@ -200,7 +209,7 @@ update_status ModuleRenderer3D::Update(float dt)
 		DrawFrustum(camera_frustums[i]);
 	}
 	camera_frustums.clear();
-	
+
 	return update_status::UPDATE_CONTINUE;
 }
 

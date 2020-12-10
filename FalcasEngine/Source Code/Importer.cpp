@@ -85,7 +85,7 @@ ComponentMesh* ImportOnlyMesh(GameObject* game_object, std::string libraryPath, 
 		aiNode* node = scene->mRootNode;
 		ai_mesh = scene->mMeshes[meshNumber];
 		imported = false;
-		mesh->file_name = libraryPath;
+		//mesh->file_name = libraryPath;
 	}
 	std::string s;
 	libraryPath = "Library/Meshes/1860861522.falcasmesh";

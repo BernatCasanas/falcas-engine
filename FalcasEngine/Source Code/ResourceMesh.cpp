@@ -52,7 +52,7 @@ void ResourceMesh::Initialize()
 
 }
 
-void ResourceMesh::Render(float* transform, ComponentMaterial* mat, bool grid, bool show_normals_v, float length_normals, bool show_normals_f)
+void ResourceMesh::Render(float* transform, ComponentMaterial* mat, bool show_normals_v, float length_normals, bool show_normals_f)
 {
 	if (id_indices > 0 && id_vertices > 0) {
 		glPushMatrix();
@@ -89,11 +89,11 @@ void ResourceMesh::Render(float* transform, ComponentMaterial* mat, bool grid, b
 
 
 		//drawing indices
-		if (grid == false) {
 			glDrawElements(GL_TRIANGLES, num_indices, GL_UNSIGNED_INT, NULL);
+		/*if (grid == false) {
 		}
 		else
-			glDrawElements(GL_LINES, num_indices, GL_UNSIGNED_INT, NULL);
+			glDrawElements(GL_LINES, num_indices, GL_UNSIGNED_INT, NULL);*/
 
 
 
@@ -150,7 +150,7 @@ void ResourceMesh::Render(float* transform, ComponentMaterial* mat, bool grid, b
 		if (num_normals > 0) {
 			glDisableClientState(GL_NORMAL_ARRAY);
 		}
-		if (num_textureCoords > 0 && grid == false) {
+		if (num_textureCoords > 0) {
 			glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 		}
 		glDisableClientState(GL_VERTEX_ARRAY);

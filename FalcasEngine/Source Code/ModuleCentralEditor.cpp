@@ -943,7 +943,7 @@ void ModuleCentralEditor::CreateShape(Shape shape, std::string name)
 {
     GameObject* gm = App->scene_intro->CreateGameObject(name, App->scene_intro->root);
     ComponentMesh* mesh = (ComponentMesh*)gm->CreateComponent(Component_Type::Mesh);
-    switch (shape)
+    /*switch (shape)
     {
     case Shape::Cube:
         CreateCube(mesh->num_vertices, mesh->num_indices, mesh->indices, mesh->vertices);
@@ -972,7 +972,7 @@ void ModuleCentralEditor::CreateShape(Shape shape, std::string name)
     case Shape::Plane:
         CreatePlane(mesh->num_vertices, mesh->num_indices, mesh->indices, mesh->vertices);
         break;
-    }
+    }*/
         mesh->Initialization();
 }
 

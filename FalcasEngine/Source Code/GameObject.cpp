@@ -221,7 +221,7 @@ void GameObject::UpdateAABB()
 	ComponentMesh* mesh = (ComponentMesh*)GetComponent(Component_Type::Mesh);
 	if (mesh == nullptr)
 		return;
-	obb = mesh->GetAABB();
+	//obb = mesh->GetAABB();
 	ComponentTransform* trans = (ComponentTransform*)GetComponent(Component_Type::Transform);
 	obb.Transform(trans->GetGlobalMatrix());
 

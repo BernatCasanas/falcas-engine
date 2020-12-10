@@ -8,6 +8,7 @@
 
 class GameObject;
 class ComponentCamera;
+class Grid;
 class ModuleSceneIntro : public Module
 {
 public:
@@ -40,6 +41,7 @@ public:
 	GameObject* game_object_selected;
 	ComponentCamera* camera;
 	GameObject* root;
+	Grid* grid;
 	int GetID();
 	int id_gameobject;
 	std::vector<int> game_objects_to_delete;
