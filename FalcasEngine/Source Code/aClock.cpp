@@ -15,6 +15,7 @@ void aClock::Start()
 {
 	paused = false;
 	started = true;
+	stopped = false;
 	timeScale = 1.0f;
 	timer.Start();
 }
@@ -23,6 +24,7 @@ void aClock::Stop()
 {
 	paused = false;
 	started = false;
+	stopped = true;
 }
 
 void aClock::Pause()
@@ -43,6 +45,7 @@ void aClock::Reset()
 {
 	timeScale = 1.0f;
 	paused = false;
+	stopped = false;
 }
 
 void aClock::Step()
@@ -68,7 +71,11 @@ void Time::Init()
 {
 	gameTimer.timeScale = 0.0f;
 	gameTimer.started = false;
+	gameTimer.paused = true;
+	gameTimer.stopped = true;
 
 	realTimer.timer.Start();
 	realTimer.started = true;
+	realTimer.paused = false;
+	realTimer.stopped = false;
 }

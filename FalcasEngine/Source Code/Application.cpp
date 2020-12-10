@@ -70,6 +70,7 @@ bool Application::Init()
 	bool ret = true;
 	Module* item;
 
+	Time::Init();
 	PHYSFS_setWriteDir(".");
 	App->filesystem->CreateFolders();
 

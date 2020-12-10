@@ -20,6 +20,7 @@ struct aClock {
 	float timeScale;   
 	bool paused;
 	bool started;
+	bool stopped;
 	float dt;
 
 	Timer timer;

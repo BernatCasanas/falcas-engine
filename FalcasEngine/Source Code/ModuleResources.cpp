@@ -5,6 +5,7 @@
 #include "ResourceMaterial.h"
 #include "ResourceModel.h"
 #include "ResourceMesh.h"
+#include "aClock.h"
 
 ModuleResources::ModuleResources(Application* app, bool start_enabled) : Module(app, start_enabled, "moduleResources")
 {
@@ -23,7 +24,7 @@ bool ModuleResources::Start()
 
 update_status ModuleResources::Update(float dt)
 {
-	if (dt > 0/*BERNAT: HERE WILL GO WHEN THE ENGINE IS OFFLINE!!!!!!!!!!!!!!!!!!*/) {
+	if (Time::gameTimer.stopped/*BERNAT: HERE WILL GO WHEN THE ENGINE IS OFFLINE!!!!!!!!!!!!!!!!!!*/) {
 		if (update_timer.isStoped())
 			update_timer.Start();
 		if (update_timer.Read() >= 5) {
