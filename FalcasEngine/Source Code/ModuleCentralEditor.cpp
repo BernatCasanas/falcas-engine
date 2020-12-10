@@ -647,16 +647,6 @@ bool ModuleCentralEditor::SaveScene(const char* name)
 		sprintf_s(file, 150, "Library/Scenes/%s.scenefalcas", fileName.c_str());
 	}
 	App->filesystem->SaveInternal(file, buffer, strlen(buffer));
-    if (App->filesystem->FileExists("Assets/Scenes")) {
-		sprintf_s(file, 150, "Assets/Scenes/%s.scenefalcas", fileName.c_str());
-	    App->filesystem->SaveInternal(file, buffer, strlen(buffer));
-    }
-    else {
-         if(App->filesystem->FileExists("Assets")){
-		    sprintf_s(file, 150, "Assets/%s.scenefalcas", fileName.c_str());
-	        App->filesystem->SaveInternal(file, buffer, strlen(buffer));
-        }
-    }
 	return true;
 }
 

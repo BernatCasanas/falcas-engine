@@ -203,7 +203,9 @@ void FileSystem::CreateFolders()
 	CreateOneFolder("Library/Meshes/");
 	CreateOneFolder("Library/Textures/");
 	CreateOneFolder("Library/Config");
+	CreateOneFolder("Library/Scenes");
 	CreateOneFolder("Library/Models");
+	CreateOneFolder("/Config");
 }
 
 void FileSystem::CreateOneFolder(char* name)
