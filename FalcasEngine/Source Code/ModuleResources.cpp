@@ -153,11 +153,8 @@ void ModuleResources::UpdateLibrary()
 	}
 	vector_assets_meta_files = App->filesystem->GetAllFiles("Assets/", vector_assets_meta_files, "meta", false, true);
 	
-	bool different = false;
+	bool different;
 	do {
-		if (different == true) {
-			int u = 2;
-		}
 		different = false;
 		if (vector_assets_files.size() != vector_assets_meta_files.size()) {
 			different = true;
