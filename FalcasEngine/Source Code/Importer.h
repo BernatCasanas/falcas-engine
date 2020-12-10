@@ -27,7 +27,6 @@ ComponentMesh* ImportOnlyMesh(GameObject* game_object, std::string libraryPath, 
 
 void GetAllMeshes(ResourceModel* mod, const aiScene* scene, aiNode* node, uint parent, std::string file);
 
-void LoadModelRecusive(JsonArray arr, ResourceModel* mod);
 
 namespace MeshImporter {
 	void Import(const aiMesh* ai_material, char* name);
