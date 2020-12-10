@@ -470,6 +470,12 @@ void ModelImporter::Import(ResourceModel* mod, uint ID, std::string file)
 
 
 	GetAllMeshes(mod, scene, node, ID, file);
+
+	size = ModelImporter::Save(mod, &buffer);
+	char name_buff[200];
+	sprintf_s(name_buff, 200, "Library/Models/%s.falcasmodel", std::to_string(ID).c_str());
+	App->filesystem->SaveInternal(name_buff, buffer, size);
+	delete[] buffer;
 }
 
 uint ModelImporter::Save(ResourceModel* mod, char** buffer)

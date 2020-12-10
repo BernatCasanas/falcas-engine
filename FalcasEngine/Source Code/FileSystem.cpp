@@ -204,6 +204,7 @@ void FileSystem::CreateFolders()
 	CreateOneFolder("Library/Textures/");
 	CreateOneFolder("Library/Config");
 	CreateOneFolder("Library/Scenes");
+	CreateOneFolder("Library/Models");
 }
 
 void FileSystem::CreateOneFolder(char* name)
