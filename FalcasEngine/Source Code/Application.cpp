@@ -77,8 +77,8 @@ bool Application::Init()
 	
 	JsonObj config = App->filesystem->GenerateConfigContent();
 	config.Save(&buffer);
-	App->filesystem->SaveInternal("Library/Config/config.json", buffer, strlen(buffer));
-	uint sizeConfig = App->filesystem->LoadPath("Library/Config/config.json",&buffer);
+	App->filesystem->SaveInternal("Config/config.json", buffer, strlen(buffer));
+	uint sizeConfig = App->filesystem->LoadPath("Config/config.json",&buffer);
 	JsonArray arrayModules(config.GetArray("configModules"));
 
 	// Call Init() in all modules
