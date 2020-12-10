@@ -12,7 +12,6 @@ public:
 	~ResourceModel();
 
 public:
-	uint UUID = 0;
 	std::map<uint, uint> textures;			//mesh, texture
 	std::map<uint, float4x4> transform;		//mesh, transform
 	std::map<uint, uint> meshes;			//mesh, parent

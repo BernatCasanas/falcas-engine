@@ -244,8 +244,7 @@ void ModuleResources::CreateNewMetaFile(std::string file, uint id)
 	switch (App->filesystem->GetTypeFile(file_char)) {
 	case FILE_TYPE::FBX:
 		obj.AddInt("Type", 1);
-		//ImportFBX(file, id);
-		//MeshImporter::Import()
+		ModelImporter::Import(file, id);
 		break;
 	case FILE_TYPE::PNG:
 	case FILE_TYPE::TGA:

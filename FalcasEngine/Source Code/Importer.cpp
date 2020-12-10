@@ -15,6 +15,7 @@
 #include "Resource.h"
 #include "External Libraries/MathGeoLib/include/Math/Quat.h"
 #include "ModuleResources.h"
+#include "ResourceMesh.h"
 #include <map>
 
 
@@ -44,94 +45,6 @@ void FreeImage(ResourceMaterial* res)
 {
 	ilBindImage(0);
 	ilDeleteImages(1, &res->image_name);
-}
-
-void ImportFBX(std::string file, uint ID)
-{
-	const aiScene* scene = nullptr;
-	char* buffer = nullptr;
-	uint file_size = App->filesystem->Load(file.c_str(), &buffer);
-
-	scene = aiImportFileFromMemory(buffer, file_size, aiProcessPreset_TargetRealtime_MaxQuality, nullptr);
-
-	delete[] buffer;
-
-	aiNode* nod = scene->mRootNode;
-
-	ImportGameObjectFromFBX(scene, nod, App->scene_intro->root, file, ID, float4x4::identity);
-
-	App->filesystem->counterMesh = 0;
-
-	aiReleaseImport(scene);
-}
-
-void ImportGameObjectFromFBX(const aiScene* scene, aiNode* node, GameObject* parent, std::string file, uint ID, float4x4 transform_heredated)
-{
-	if (node->mNumMeshes == 0 && node->mNumChildren == 0)
-		return;
-	/*aiVector3D position_ai, size_ai;
-	aiQuaternion rotation_ai;
-	node->mTransformation.Decompose(size_ai, rotation_ai, position_ai);
-	float3 position = { position_ai.x,position_ai.y,position_ai.z };
-	Quat rotation = { rotation_ai.x,rotation_ai.y,rotation_ai.z,rotation_ai.w };
-	float3 size = { size_ai.x,size_ai.y,size_ai.z };
-	GameObject* game_object = parent;
-	transform_heredated = transform_heredated * float4x4::FromTRS(position, rotation, size);
-	transform_heredated.Decompose(position, rotation, size);
-	if (node->mNumChildren > 1 || node->mNumMeshes != 0) {
-		game_object = App->scene_intro->CreateGameObject(position, rotation, size, App->filesystem->GetFileName(file, true), parent);
-		transform_heredated = float4x4::identity;
-	}*/
-
-	if (node->mNumMeshes > 0) {
-		//ComponentMesh* mesh = (ComponentMesh*)game_object->CreateComponent(Component_Type::Mesh);
-		//ComponentMesh* mesh = new ComponentMesh(nullptr);
-		aiMesh* ai_mesh = scene->mMeshes[node->mMeshes[0]];
-		/*mesh->meshNumber = node->mMeshes[0];
-		bool mesh_imported = false;
-		bool tex_imported = false;*/
-
-		/*mesh->full_file_name = file;
-		mesh->file_name = App->filesystem->GetFileName(file, true);*/
-
-		std::string name_buff2 = std::to_string(ID).c_str();
-		char name_buff[200];
-		if (App->filesystem->counterMesh != 0) {
-			sprintf_s(name_buff, 200, "%s (%i)", std::to_string(ID).c_str(), App->filesystem->counterMesh);
-			name_buff2 = name_buff;
-			//mesh->file_name = name_buff;
-		}
-		App->filesystem->counterMesh++;
-
-		/*int num_material = ai_mesh->mMaterialIndex;
-		mesh->materialIndex = ai_mesh->mMaterialIndex;*/
-		sprintf_s(name_buff, 200, "Library/Meshes/%s.falcasmesh", name_buff2.c_str());
-		/*mesh->file_name = name_buff;
-		if (App->filesystem->FileExists(name_buff)) {
-			mesh_imported = true;
-		}
-		mesh->libraryPath = name_buff;*/
-		MeshImporter::Import(ai_mesh, name_buff);
-
-		//if (num_material != -1 && num_material < scene->mNumMaterials) {
-		//	ComponentMaterial* mat = (ComponentMaterial*)game_object->CreateComponent(Component_Type::Material);
-		//	aiString material_path;
-		//	scene->mMaterials[num_material]->GetTexture(aiTextureType_DIFFUSE, 0, &material_path);
-		//	if (material_path.length > 0) {
-		//		std::string path = App->filesystem->GetPathFile(file);
-		//		path += material_path.C_Str();
-		//		sprintf_s(name_buff, 200, "Library/Textures/%s.dds", App->filesystem->GetFileName(path,true).c_str());
-		//		if (App->filesystem->FileExists(name_buff)) {
-		//			tex_imported = true;
-		//		}
-		//		//MaterialImporter::Import(mat, path, tex_imported, name_buff);
-		//	}
-		//}
-		//delete mesh;
-	}
-	for (int i = 0; i < node->mNumChildren; i++) {
-		ImportGameObjectFromFBX(scene, node->mChildren[i], parent, file, ID,transform_heredated);
-	}
 }
 
 void ImportDefaultTexture(ComponentMaterial* mat) {
@@ -176,7 +89,7 @@ ComponentMesh* ImportOnlyMesh(GameObject* game_object, std::string libraryPath, 
 	}
 	std::string s;
 	libraryPath = "Library/Meshes/1860861522.falcasmesh";
-	MeshImporter::Load(App->filesystem->ReadPhysFile(libraryPath, size), mesh);
+	//MeshImporter::Load(App->filesystem->ReadPhysFile(libraryPath, size), mesh);
 
 	aiReleaseImport(scene);
 	return mesh;
@@ -185,9 +98,9 @@ ComponentMesh* ImportOnlyMesh(GameObject* game_object, std::string libraryPath, 
 
 
 
-void MeshImporter::Import(const aiMesh* ai_mesh, char* name)
+void MeshImporter::Import(const aiMesh* ai_mesh, uint ID, char* name)
 {
-	ComponentMesh* mesh = new ComponentMesh(nullptr);
+	ResourceMesh* mesh = new ResourceMesh(ID, Resource_Type::Mesh, name);
 	mesh->materialIndex = -1;
 	
 	if (ai_mesh == nullptr)
@@ -239,6 +152,7 @@ void MeshImporter::Import(const aiMesh* ai_mesh, char* name)
 	char* buffer;
 	uint size = MeshImporter::Save(mesh, &buffer);
 	App->filesystem->SaveInternal(name, buffer, size);
+	delete mesh;
 	delete[] buffer;
 	
 	//if (ai_mesh != nullptr) material_index = ai_mesh->mMaterialIndex;
@@ -249,7 +163,7 @@ void MeshImporter::Import(const aiMesh* ai_mesh, char* name)
 
 }
 
-uint MeshImporter::Save(const ComponentMesh* mesh, char** filebuffer)
+uint MeshImporter::Save(const ResourceMesh* mesh, char** filebuffer)
 {
 	uint ranges[4] = { mesh->num_indices, mesh->num_vertices, mesh->num_normals, mesh->num_textureCoords };
 
@@ -287,7 +201,7 @@ uint MeshImporter::Save(const ComponentMesh* mesh, char** filebuffer)
 	return size;
 }
 
-void MeshImporter::Load(const char* fileBuffer, ComponentMesh *mesh)
+void MeshImporter::Load(const char* fileBuffer, ResourceMesh *mesh)
 {
 
 	char* cursor = (char*)fileBuffer;
@@ -324,7 +238,7 @@ void MeshImporter::Load(const char* fileBuffer, ComponentMesh *mesh)
 	bytes = sizeof(float) * mesh->num_textureCoords * 2;
 	mesh->texCoords = new float[mesh->num_textureCoords * 2];
 	memcpy(mesh->texCoords, cursor, bytes);
-	mesh->Initialization();
+	mesh->Initialize();
 
 }
 
@@ -401,21 +315,24 @@ void MaterialImporter::Load(const char* fileBuffer, ResourceMaterial* res, uint 
 	delete[] buffer;
 }
 
-void GetAllMeshes(ResourceModel* mod, const aiScene* scene, aiNode* node, uint parent, std::string file)
+void GetAllMeshes(ResourceModel* mod, const aiScene* scene, aiNode* node, uint parent, std::string file, float4x4 transform)
 {
 	if (node->mNumMeshes == 0 && node->mChildren == 0)
 		return;
-	uint UUID = LCG().Int();
+
+	aiVector3D position_ai, size_ai;
+	aiQuaternion rotation_ai;
+	node->mTransformation.Decompose(size_ai, rotation_ai, position_ai);
+	float3 position = { position_ai.x,position_ai.y,position_ai.z };
+	Quat rotation = { rotation_ai.x,rotation_ai.y,rotation_ai.z,rotation_ai.w };
+	float3 _size = { size_ai.x,size_ai.y,size_ai.z };
+	transform = transform * float4x4::FromTRS(position, rotation, _size);
+
+
 	if (node->mNumMeshes > 0) {
+		uint UUID = LCG().Int();
 		aiMesh* ai_mesh = scene->mMeshes[node->mMeshes[0]];
 
-		aiVector3D position_ai, size_ai;
-		aiQuaternion rotation_ai;
-		node->mTransformation.Decompose(size_ai, rotation_ai, position_ai);
-		float3 position = { position_ai.x,position_ai.y,position_ai.z };
-		Quat rotation = { rotation_ai.x,rotation_ai.y,rotation_ai.z,rotation_ai.w };
-		float3 _size = { size_ai.x,size_ai.y,size_ai.z };
-		float4x4 transform_heredated = float4x4::identity * float4x4::FromTRS(position, rotation, _size);
 
 
 		//Getting ID Texture
@@ -425,27 +342,24 @@ void GetAllMeshes(ResourceModel* mod, const aiScene* scene, aiNode* node, uint p
 		std::string path = App->filesystem->GetPathFile(file);
 		path += material_path.C_Str();
 		uint texUUID = 0;
-		if (material_path.length > 0) {
-			if (App->filesystem->FileExists(path)) {
-				std::string metapath = path;
-				metapath.insert(metapath.size(), ".meta");
-				if (App->filesystem->FileExists(metapath)) {
-					char* b;
-					App->filesystem->LoadPath((char*)metapath.c_str(), &b);
-					JsonObj obj(b);
-					texUUID = obj.GetInt("ID");
-					delete[] b;
-				}
-				else {
-					texUUID = LCG().Int();
-					App->resources->CreateNewMetaFile(path, texUUID);
-				}
+		if (material_path.length > 0 && App->filesystem->FileExists(path)) {
+			std::string metapath = path + ".meta";
+			if (App->filesystem->FileExists(metapath)) {
+				char* b;
+				App->filesystem->LoadPath((char*)metapath.c_str(), &b);
+				JsonObj obj(b);
+				texUUID = obj.GetInt("ID");
+				delete[] b;
+			}
+			else {
+				texUUID = LCG().Int();
+				App->resources->CreateNewMetaFile(path, texUUID);
 			}
 		}
 		//Insert Texture
 		mod->textures[UUID] = texUUID;
 		//Insert Transform
-		mod->transform[UUID] = transform_heredated;
+		mod->transform[UUID] = transform;
 		//Insert Parent
 		mod->meshes[UUID] = parent;
 
@@ -453,16 +367,17 @@ void GetAllMeshes(ResourceModel* mod, const aiScene* scene, aiNode* node, uint p
 		char name_buff[200];
 		sprintf_s(name_buff, 200, "Library/Meshes/%s.falcasmesh", name_buff2.c_str());
 
-		MeshImporter::Import(ai_mesh, name_buff);
+		MeshImporter::Import(ai_mesh, UUID, name_buff);
 	}
 
 	for (int i = 0; i < node->mNumChildren; ++i) {
-		GetAllMeshes(mod, scene, node->mChildren[i], UUID, file);
+		GetAllMeshes(mod, scene, node->mChildren[i], parent, file, transform);
 	}
 }
 
-void ModelImporter::Import(ResourceModel* mod, uint ID, std::string file)
+void ModelImporter::Import(std::string file, uint ID)
 {
+	ResourceModel* mod = new ResourceModel(ID, Resource_Type::Model, file);
 	char* buffer;
 	uint size = App->filesystem->LoadPath((char*)file.c_str(), &buffer);
 	const aiScene* scene = nullptr;
@@ -470,13 +385,14 @@ void ModelImporter::Import(ResourceModel* mod, uint ID, std::string file)
 	aiNode* node = scene->mRootNode;
 
 
-	GetAllMeshes(mod, scene, node, ID, file);
+	GetAllMeshes(mod, scene, node, ID, file, float4x4::identity);
 
 	size = ModelImporter::Save(mod, &buffer);
 	char name_buff[200];
 	sprintf_s(name_buff, 200, "Library/Models/%s.falcasmodel", std::to_string(ID).c_str());
 	App->filesystem->SaveInternal(name_buff, buffer, size);
 	delete[] buffer;
+	delete mod;
 }
 
 uint ModelImporter::Save(ResourceModel* mod, char** buffer)

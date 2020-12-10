@@ -79,8 +79,9 @@ FILE_TYPE FileSystem::GetTypeFile(char* file)
 	if (name == "fbx" || name == "FBX") return FILE_TYPE::FBX;
 	else if (name == "png" || name == "PNG") return FILE_TYPE::PNG;
 	else if (name == "dds" || name == "DDS") return FILE_TYPE::DDS;
-	else if (name == "scenefalcas" || name == "SCENE") return FILE_TYPE::SCENE;
+	else if (name == "scenefalcas") return FILE_TYPE::SCENE;
 	else if (name == "TGA" || name == "tga")return FILE_TYPE::TGA;
+	else if (name == "falcasmodel")return FILE_TYPE::MODEL;
 	else if (name == "meta")return FILE_TYPE::META;
 	else return FILE_TYPE::UNKNOWN;
 }
@@ -202,7 +203,6 @@ void FileSystem::CreateFolders()
 {
 	CreateOneFolder("Library/Meshes/");
 	CreateOneFolder("Library/Textures/");
-	CreateOneFolder("Library/Config");
 	CreateOneFolder("Library/Scenes");
 	CreateOneFolder("Library/Models");
 	CreateOneFolder("/Config");

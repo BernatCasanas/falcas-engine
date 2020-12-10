@@ -17,6 +17,7 @@ enum class FILE_TYPE
 	DDS,
 	TGA,
 	SCENE,
+	MODEL,
 	META
 };
 

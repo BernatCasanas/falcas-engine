@@ -10,6 +10,7 @@
 #include "ModuleSceneIntro.h"
 #include "FileSystem.h"
 #include "Application.h"
+#include "ResourceMesh.h"
 #include "External Libraries/MathGeoLib/include/MathGeoLib.h"
 
 GameObject::GameObject(int id) : name(""), parent(nullptr), id(id)
@@ -218,6 +219,8 @@ void GameObject::UpdateAABB()
 
 	//obb
 	ComponentMesh* mesh = (ComponentMesh*)GetComponent(Component_Type::Mesh);
+	if (mesh == nullptr)
+		return;
 	obb = mesh->GetAABB();
 	ComponentTransform* trans = (ComponentTransform*)GetComponent(Component_Type::Transform);
 	obb.Transform(trans->GetGlobalMatrix());

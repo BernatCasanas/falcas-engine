@@ -32,6 +32,7 @@
 #include "Importer.h"
 #include "ModuleResources.h"
 #include "ResourceMaterial.h"
+#include "ResourceMesh.h"
 #include "aClock.h";
 #include "Timer.h"
 
@@ -695,8 +696,8 @@ void ModuleCentralEditor::LoadScene(const char* file)
                 trans->SetMatricesWithNewParent(matrix);
             }
             else if (component_name == "Mesh") {
-                ComponentMesh* mesh = ImportOnlyMesh(gameObject, comp.GetString("Path"), comp.GetString("AssetPath"), comp.GetInt("MeshNumber"));
-                mesh->materialIndex = comp.GetInt("MaterialIndex");
+                //ComponentMesh* mesh = ImportOnlyMesh(gameObject, comp.GetString("Path"), comp.GetString("AssetPath"), comp.GetInt("MeshNumber"));
+                //mesh->materialIndex = comp.GetInt("MaterialIndex");
             }
             else if (component_name == "Material") {
                 //IDEAS

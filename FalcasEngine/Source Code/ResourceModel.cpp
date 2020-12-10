@@ -7,7 +7,6 @@
 
 ResourceModel::ResourceModel(uint ID, Resource_Type type, std::string assets_file) : Resource(ID, type, assets_file)
 {
-	ModelImporter::Import(this, ID, assets_file);
 }
 
 ResourceModel::~ResourceModel()
