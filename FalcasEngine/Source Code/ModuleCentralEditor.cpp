@@ -544,7 +544,6 @@ void ModuleCentralEditor::Draw()
     if (stencil) glEnable(GL_AMBIENT);
     else glDisable(GL_AMBIENT);
 
-
     // Rendering
     ImGui::Render();
 
@@ -570,30 +569,47 @@ bool ModuleCentralEditor::LoadFile()
 	bool ret = false;
 	ImGui::OpenPopup("Load File");
     if (ImGui::BeginPopupModal("Load File")) {
-        ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, 5.0f);
-        ImGui::BeginChild("File Browser", ImVec2(0, 300), true);
-        std::string s = "";
-        FilesRecursiveTree("Assets", false, false, true, 0, s);
-        ImGui::EndChild();
-        ImGui::PopStyleVar();
-        ImGui::PushItemWidth(250.f);
-        if (ImGui::InputText("##file_selector", selected_file, 100, ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
-        ImGui::SameLine();
-        if (ImGui::Button("Ok", ImVec2(50, 20))) {
-            if (App->filesystem->GetTypeFile(selected_file) == FILE_TYPE::SCENE) {
+        if (!sure_want_close)
+        {
+            ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, 5.0f);
+            ImGui::BeginChild("File Browser", ImVec2(0, 300), true);
+            std::string s = "";
+            FilesRecursiveTree("Assets", false, false, true, 0, s);
+            ImGui::EndChild();
+            ImGui::PopStyleVar();
+            ImGui::PushItemWidth(250.f);
+            if (ImGui::InputText("##file_selector", selected_file, 100, ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
+                ImGui::SameLine();
+            if (ImGui::Button("Ok", ImVec2(50, 20))) {
+                if (App->filesystem->GetTypeFile(selected_file) == FILE_TYPE::SCENE) {
+                    sure_want_close = true;
+                }
+            }
+            ImGui::SameLine();
+
+            if (ImGui::Button("Cancel", ImVec2(50, 20)))
+            {
+                loading_file = !loading_file;
+                selected_file[0] = '\0';
+            }
+        }
+        else
+        {
+            ImGui::Text("Are you sure?");
+            ImGui::SameLine();
+            if (ImGui::Button("Yes", ImVec2(50, 20))) {
                 loading_file = !loading_file;
                 LoadScene((const char*)selected_file);
             }
-        }
-        ImGui::SameLine();
-
-        if (ImGui::Button("Cancel", ImVec2(50, 20)))
-        {
-            loading_file = !loading_file;
-            selected_file[0] = '\0';
+            ImGui::PushItemWidth(250.f);
+            ImGui::SameLine();
+            if (ImGui::Button("No", ImVec2(50, 20))) {
+                sure_want_close = false;
+            }
         }
         ImGui::EndPopup();
     }
+    
 	return true;
 }
 
@@ -905,6 +921,7 @@ void ModuleCentralEditor::SelectObject(GameObject* game_obj)
     if (game_obj->parent != nullptr)
         SelectObject(game_obj->parent);
 }
+
 
 
 void ModuleCentralEditor::GameControl()

@@ -78,6 +78,7 @@ public:
 	bool show_assets_window = true;
 	bool show_assets_explorer = true;
 	bool show_references_window = true;
+	bool sure_want_close = false;
 
 
 	bool cullface = false;
