@@ -507,8 +507,10 @@ void ModelImporter::Load(const char* buffer, ResourceModel* mod)
 	JsonArray arr = obj.GetArray("items");
 
 	for (int i = 0; i < arr.Size(); ++i) {
-		JsonObj iterator = arr.GetObjectAt(i);
+		JsonObj item = arr.GetObjectAt(i);
 
-
+		mod->meshes[item.GetInt("ID")] = item.GetInt("ParentID");
+		mod->transform[item.GetInt("ID")] = item.GetFloat4x4("Transform");
+		mod->textures[item.GetInt("ID")] = item.GetInt("TexID");
 	}
 }
