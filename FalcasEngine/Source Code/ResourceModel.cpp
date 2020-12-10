@@ -7,9 +7,7 @@
 
 ResourceModel::ResourceModel(uint ID, Resource_Type type, std::string assets_file) : Resource(ID, type, assets_file)
 {
-	char* buffer;
-	uint size = App->filesystem->LoadPath((char*)assets_file.c_str(), &buffer);
-	ModelImporter::Import(buffer, this, size, ID);
+	ModelImporter::Import(this, ID, assets_file);
 }
 
 ResourceModel::~ResourceModel()

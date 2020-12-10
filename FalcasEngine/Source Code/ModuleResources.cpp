@@ -67,6 +67,7 @@ Resource* ModuleResources::RequestResource(uint ID)
 		ResourceMaterial* mat = (ResourceMaterial*)resource;
 		uint size;
 		char* buffer = App->filesystem->ReadPhysFile(mat->GetLibraryFile(), size);
+		if (buffer == "") break;
 		MaterialImporter::Load(buffer, mat, size);
 		mat->referenceCount++;
 		break;
@@ -243,13 +244,13 @@ void ModuleResources::CreateNewMetaFile(std::string file, uint id)
 	switch (App->filesystem->GetTypeFile(file_char)) {
 	case FILE_TYPE::FBX:
 		obj.AddInt("Type", 1);
-		ImportFBX(file, id);
+		//ImportFBX(file, id);
 		//MeshImporter::Import()
 		break;
 	case FILE_TYPE::PNG:
 	case FILE_TYPE::TGA:
 		obj.AddInt("Type", 2);
-		MaterialImporter::Import(file, id);
+		//MaterialImporter::Import(file, id);
 		break;
 	deafult:
 		obj.AddInt("Type", 3);

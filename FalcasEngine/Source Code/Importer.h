@@ -25,7 +25,7 @@ void ImportDefaultTexture(ComponentMaterial* mat);
 
 ComponentMesh* ImportOnlyMesh(GameObject* game_object, std::string libraryPath, std::string assetPath, int meshNumber);
 
-void ImportModel(std::string file, uint ID);
+void GetAllMeshes(ResourceModel* mod, const aiScene* scene, aiNode* node, uint parent, std::string file);
 
 namespace MeshImporter {
 	void Import(const aiMesh* ai_material, char* name);
@@ -34,13 +34,13 @@ namespace MeshImporter {
 }
 
 namespace MaterialImporter {
-	void Import(std::string file, uint ID);
+	void Import(std::string file, uint ID, ResourceMaterial* mat);
 	uint Save(char** filebuffer);
 	void Load(const char* fileBuffer, ResourceMaterial* res, uint size);
 }
 
 namespace ModelImporter {
-	void Import(char* buffer, ResourceModel* mod, uint size, uint ID);
+	void Import(ResourceModel* mod, uint ID, std::string file);
 	uint Save(ResourceModel* mod, char** buffer);
 	void Load(const char* buffer, ResourceModel* mod);
 }

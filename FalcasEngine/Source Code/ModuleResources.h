@@ -24,8 +24,8 @@ public:
 	void ImportFileToLibrary(std::string file, bool drag_and_drop);
 	void DeleteResourceLibrary(Resource* resource);
 
-private:
 	void CreateNewMetaFile(std::string file, uint id);
+private:
 	void UpdateMetaFile(std::string meta_file, uint id, char* buffer);
 private:
 	Resource* CreateNewResource(uint ID, std::string assets_file);

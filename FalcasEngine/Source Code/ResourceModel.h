@@ -2,14 +2,9 @@
 #include "Resource.h"
 #include <vector>
 #include <string>
+#include <map>
 #include "External Libraries/MathGeoLib/include/MathGeoLib.h"
 
-struct ModelInfo {
-	uint UUID = 0;
-	uint ParentUUID = 0;
-	float4x4 transform = float4x4::identity;
-	std::string name = "";
-};
 
 class ResourceModel :public Resource {
 public:
@@ -17,7 +12,8 @@ public:
 	~ResourceModel();
 
 public:
-	std::vector<uint> meshes;
-	std::vector<uint> textures;
-	std::vector<ModelInfo> nodes;
+	uint UUID = 0;
+	std::map<uint, uint> textures;			//mesh, texture
+	std::map<uint, float4x4> transform;		//mesh, transform
+	std::map<uint, uint> meshes;			//mesh, parent
 };
