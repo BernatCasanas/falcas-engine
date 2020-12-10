@@ -34,7 +34,7 @@
 #include "ResourceMaterial.h"
 #include "ResourceMesh.h"
 #include "aClock.h";
-#include "Timer.h"
+#include "Timer.h";
 
 ModuleCentralEditor::ModuleCentralEditor(Application* app, bool start_enabled) : Module(app, start_enabled, "moduleCentralEditor"),progress(50.f),progress2(50.f),progress3(50.f), progress4(50.f)
 {
@@ -712,13 +712,20 @@ bool ModuleCentralEditor::ProcessEvents(SDL_Event event)
 
 void ModuleCentralEditor::FilesRecursiveTree(const char* path, bool is_in_dock, bool resources_window, bool is_directory, static ImGuiTreeNodeFlags base_flags, std::string& assets_file_clicked)
 {
+    if (!strcmp(path, "Library/Scenes"))
+        return;
     ImGuiTreeNodeFlags final_flags = base_flags;
     if (!is_directory) {
         final_flags |= ImGuiTreeNodeFlags_Leaf;
         std::string file_name = App->filesystem->GetFileName(path, true);
+        std::string assets_file_name;
+        if (resources_window) {
+            assets_file_name = App->resources->GetResource(stoi(App->filesystem->GetFileName(path, true)))->GetAssetsFile();
+            assets_file_name = App->filesystem->GetFileName(assets_file_name, false);
+        }
         if (assets_file_clicked == file_name)
             final_flags |= ImGuiTreeNodeFlags_Selected;
-        if (ImGui::TreeNodeEx(file_name.c_str(), final_flags)) {
+        if (ImGui::TreeNodeEx(resources_window ? assets_file_name.c_str() : file_name.c_str(), final_flags)) {
             if (resources_window && ImGui::IsItemHovered()) {
                 ImGui::SetTooltip("Instances: %d", App->resources->GetResource(std::stoi(file_name))->referenceCount);
             }
