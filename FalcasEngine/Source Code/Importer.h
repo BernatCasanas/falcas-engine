@@ -35,7 +35,7 @@ namespace MeshImporter {
 }
 
 namespace MaterialImporter {
-	void Import(std::string file, uint ID, ResourceMaterial* mat);
+	void Import(std::string file, uint ID);
 	uint Save(char** filebuffer);
 	void Load(const char* fileBuffer, ResourceMaterial* res, uint size);
 }

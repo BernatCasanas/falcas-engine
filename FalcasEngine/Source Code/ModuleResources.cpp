@@ -250,7 +250,7 @@ void ModuleResources::CreateNewMetaFile(std::string file, uint id)
 	case FILE_TYPE::PNG:
 	case FILE_TYPE::TGA:
 		obj.AddInt("Type", 2);
-		//MaterialImporter::Import(file, id);
+		MaterialImporter::Import(file, id);
 		break;
 	deafult:
 		obj.AddInt("Type", 3);

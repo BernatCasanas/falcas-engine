@@ -328,8 +328,9 @@ void MeshImporter::Load(const char* fileBuffer, ComponentMesh *mesh)
 
 }
 
-void MaterialImporter::Import(std::string file, uint ID, ResourceMaterial* res)
+void MaterialImporter::Import(std::string file, uint ID)
 {
+	ResourceMaterial* res = new ResourceMaterial(ID,Resource_Type::Material,file);
 	uint size;
 
 	ilGenImages(1, &res->image_name);
