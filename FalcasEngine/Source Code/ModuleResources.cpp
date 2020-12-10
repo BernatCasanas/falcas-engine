@@ -153,26 +153,34 @@ void ModuleResources::UpdateLibrary()
 	}
 	vector_assets_meta_files = App->filesystem->GetAllFiles("Assets/", vector_assets_meta_files, "meta", false, true);
 	
-	if (vector_assets_files.size() != vector_assets_meta_files.size()) {
-		//File Deleted
-		for (int i = 0, difference = vector_assets_meta_files.size() - vector_assets_files.size(); i < vector_assets_meta_files.size() && difference>0; i++) {
-			std::string meta_file = vector_assets_meta_files[i];
-			meta_file=meta_file.substr(0,meta_file.find_last_of('.'));
-			if (!App->filesystem->FileExists(meta_file.c_str())) {
-				char* buffer;
-				App->filesystem->Load((vector_assets_meta_files[i]).c_str(), &buffer);
-				JsonObj meta_id(buffer);
-				uint id = meta_id.GetInt("ID");
-				DeleteResourceLibrary(resources.find(id)->second);
-				delete resources.find(id)->second;
-				resources.erase(id);
-				delete[] buffer;
-				difference--;
-			}
+	bool different = false;
+	do {
+		if (different == true) {
+			int u = 2;
 		}
-		vector_assets_meta_files.clear();
-		vector_assets_meta_files = App->filesystem->GetAllFiles("Assets/", vector_assets_meta_files, "meta", false, true);
-	}
+		different = false;
+		if (vector_assets_files.size() != vector_assets_meta_files.size()) {
+			different = true;
+			//File Deleted
+			for (int i = 0, difference = vector_assets_meta_files.size() - vector_assets_files.size(); i < vector_assets_meta_files.size() && difference>0; i++) {
+				std::string meta_file = vector_assets_meta_files[i];
+				meta_file = meta_file.substr(0, meta_file.find_last_of('.'));
+				if (!App->filesystem->FileExists(meta_file.c_str())) {
+					char* buffer;
+					App->filesystem->Load((vector_assets_meta_files[i]).c_str(), &buffer);
+					JsonObj meta_id(buffer);
+					uint id = meta_id.GetInt("ID");
+					DeleteResourceLibrary(resources.find(id)->second);
+					delete resources.find(id)->second;
+					resources.erase(id);
+					delete[] buffer;
+					difference--;
+				}
+			}
+			vector_assets_meta_files.clear();
+			vector_assets_meta_files = App->filesystem->GetAllFiles("Assets/", vector_assets_meta_files, "meta", false, true);
+		}
+	} while (different == true);
 	for (int i = 0; i < vector_assets_meta_files.size(); i++) {
 		char* buffer;
 		App->filesystem->Load((vector_assets_meta_files[i]).c_str(), &buffer);
