@@ -4,6 +4,7 @@
 #include <map>
 
 class Resource;
+class ResourceMesh;
 
 class ModuleResources : public Module
 {
@@ -15,7 +16,7 @@ public:
 	update_status Update(float dt);
 	bool CleanUp();
 
-	Resource* GetResource(uint ID) const;
+	Resource* GetResource(uint ID);
 	Resource* RequestResource(uint ID);
 	void FreeResource(Resource* resource);
 	void FreeResource(uint ID);
@@ -23,11 +24,10 @@ public:
 	void UpdateLibrary();
 	void ImportFileToLibrary(std::string file, bool drag_and_drop);
 	void DeleteResourceLibrary(Resource* resource);
+	void DeleteMeshResource(ResourceMesh* resource);
 
 	void CreateNewMetaFile(std::string file, uint id);
 	void CreateNewMeshResource(uint ID, std::string model_assets_file);
-private:
-	void UpdateMetaFile(std::string meta_file, uint id, char* buffer);
 private:
 	Resource* CreateNewResource(uint ID, std::string assets_file);
 	std::map<uint, Resource*> resources;

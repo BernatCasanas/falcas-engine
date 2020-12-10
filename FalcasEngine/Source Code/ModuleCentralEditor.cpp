@@ -214,39 +214,6 @@ void ModuleCentralEditor::Draw()
             if (ImGui::MenuItem("Create Empty")) {
                 App->scene_intro->CreateGameObject("GameObject", App->scene_intro->root);
             }
-            if (ImGui::BeginMenu("3D Object")) {
-                if (ImGui::MenuItem("Cube")) {
-                    CreateShape(Shape::Cube, "Cube");
-                }
-                if (ImGui::MenuItem("Rectangular Prism")) {
-                    CreateShape(Shape::Rectangular_Prism, "Rectangular Prism");
-                }
-                if (ImGui::MenuItem("Triangular Pyramid")) {
-                    CreateShape(Shape::Triangular_Pyramid, "Triangular Pyramid");
-                }
-                if (ImGui::MenuItem("Square Pyramid")) {
-                    CreateShape(Shape::Square_Pyramid, "Square Pyramid");
-                }
-                if (ImGui::MenuItem("Rectangular Pyramid")) {
-                    CreateShape(Shape::Rectangular_Pyramid, "Rectangular Pyramid");
-                }
-                if (ImGui::MenuItem("Cilinder")) {
-                    CreateShape(Shape::Cilinder, "Cilinder");
-                }
-                if (ImGui::MenuItem("Cone")) {
-                    CreateShape(Shape::Cone, "Cone");
-                }
-                if (ImGui::MenuItem("Sphere")) {
-                    CreateShape(Shape::Sphere, "Sphere");
-                }
-                ImGui::EndMenu();
-            }
-            if (ImGui::BeginMenu("2D Object")) {
-                if (ImGui::MenuItem("Plane")) {
-                    CreateShape(Shape::Plane, "Plane");
-                }
-                ImGui::EndMenu();
-            }
             if (ImGui::MenuItem("Create Camera")) {
                 GameObject* game_object = App->scene_intro->CreateGameObject("Camera", App->scene_intro->root);
                 game_object->CreateComponent(Component_Type::Camera);
@@ -939,42 +906,6 @@ void ModuleCentralEditor::SelectObject(GameObject* game_obj)
         SelectObject(game_obj->parent);
 }
 
-void ModuleCentralEditor::CreateShape(Shape shape, std::string name)
-{
-    GameObject* gm = App->scene_intro->CreateGameObject(name, App->scene_intro->root);
-    ComponentMesh* mesh = (ComponentMesh*)gm->CreateComponent(Component_Type::Mesh);
-    /*switch (shape)
-    {
-    case Shape::Cube:
-        CreateCube(mesh->num_vertices, mesh->num_indices, mesh->indices, mesh->vertices);
-        break;
-    case Shape::Rectangular_Prism:
-        CreatePrism(mesh->num_vertices, mesh->num_indices, mesh->indices, mesh->vertices);
-        break;
-    case Shape::Triangular_Pyramid:
-        CreateTriPyramid(mesh->num_vertices, mesh->num_indices, mesh->indices, mesh->vertices);
-        break;
-    case Shape::Square_Pyramid:
-        CreateSqrPyramid(mesh->num_vertices, mesh->num_indices, mesh->indices, mesh->vertices);
-        break;
-    case Shape::Rectangular_Pyramid:
-        CreateRectPyramid(mesh->num_vertices, mesh->num_indices, mesh->indices, mesh->vertices);
-        break;
-    case Shape::Cilinder:
-        CreateCilinder(mesh->num_vertices, mesh->num_indices, mesh->indices, mesh->vertices);
-        break;
-    case Shape::Cone:
-        CreateCone(mesh->num_vertices, mesh->num_indices, mesh->indices, mesh->vertices);
-        break;
-    case Shape::Sphere:
-        CreateSphere(mesh->num_vertices, mesh->num_indices, mesh->indices, mesh->vertices);
-        break;
-    case Shape::Plane:
-        CreatePlane(mesh->num_vertices, mesh->num_indices, mesh->indices, mesh->vertices);
-        break;
-    }*/
-        mesh->Initialization();
-}
 
 void ModuleCentralEditor::GameControl()
 {

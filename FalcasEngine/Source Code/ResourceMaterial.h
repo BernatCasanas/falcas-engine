@@ -4,7 +4,7 @@
 class ResourceMaterial :public Resource {
 public:
 	ResourceMaterial(uint ID, Resource_Type type, std::string assets_file);
-	~ResourceMaterial() {};
+	~ResourceMaterial() { CleanUp(); };
 	bool CleanUp();
 
 public:

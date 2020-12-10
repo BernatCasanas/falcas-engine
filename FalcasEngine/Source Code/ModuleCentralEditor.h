@@ -61,7 +61,6 @@ public:
 	void SelectObject(GameObject* game_obj);
 
 	void CreateDock();
-	void CreateShape(Shape shape, std::string name);
 
 	void GameControl();
 

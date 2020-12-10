@@ -9,7 +9,7 @@
 class ResourceModel :public Resource {
 public:
 	ResourceModel(uint ID, Resource_Type type, std::string assets_file);
-	~ResourceModel() {};
+	~ResourceModel() { CleanUp(); };
 
 	bool CleanUp();
 

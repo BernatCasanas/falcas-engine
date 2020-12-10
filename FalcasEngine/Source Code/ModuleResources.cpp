@@ -50,9 +50,12 @@ bool ModuleResources::CleanUp()
 	return true;
 }
 
-Resource* ModuleResources::GetResource(uint ID) const
+Resource* ModuleResources::GetResource(uint ID)
 {
-	return resources.find(ID)->second;
+	std::map<uint, Resource*>::iterator it = resources.find(ID);
+	if (it == resources.end())
+		return nullptr;
+	return it->second;
 }
 
 Resource* ModuleResources::RequestResource(uint ID)
@@ -189,15 +192,21 @@ void ModuleResources::ImportFileToLibrary(std::string file, bool drag_and_drop)
 		file=App->filesystem->CopyPhysFile(file);
 	}
 	uint id;
+	int type = 0;
 	if (App->filesystem->FileExists(file + ".meta")) {
 		char* buffer;
 		App->filesystem->Load((file + ".meta").c_str(), &buffer);
 		JsonObj meta_file(buffer);
 		id = meta_file.GetInt("ID");
+		type = meta_file.GetInt("Type");
 		if (meta_file.GetInt("Date") == App->filesystem->GetLastModificationTime(file)) {
-			UpdateMetaFile(file, id, buffer);
+			delete[] buffer;
 		}
 		else {
+			Resource* resource= CreateNewResource(id, file);
+			DeleteResourceLibrary(resource);
+			delete resource;
+			CreateNewMetaFile(file, id);
 			delete[] buffer;
 		}
 	}
@@ -206,33 +215,38 @@ void ModuleResources::ImportFileToLibrary(std::string file, bool drag_and_drop)
 		CreateNewMetaFile(file, id);
 	}
 	resources.insert(std::pair<uint, Resource*>(id, CreateNewResource(id,file)));
+	if (type != 1)
+		return;
+	ResourceModel* model = (ResourceModel*)RequestResource(id);
+	for (std::map<uint,uint>::iterator it = model->meshes.begin(); it != model->meshes.end(); ++it) {
+		CreateNewMeshResource(it->first, file);
+	}
+	FreeResource(id);
+	
 }
 
-void ModuleResources::UpdateMetaFile(std::string meta_file, uint id, char* buffer)
-{
-	JsonObj obj_meta_existing(buffer);
-	JsonObj obj;
-	obj.AddInt("ID", id);
-	obj.AddString("Name", obj_meta_existing.GetString("Name"));
-	obj.AddInt("Type", obj_meta_existing.GetInt("Type"));
-	obj.AddInt("Date", obj_meta_existing.GetInt("Date"));
-	delete[] buffer;
-	obj.Save(&buffer);
-	App->filesystem->SaveInternal((meta_file + ".meta").c_str(), buffer, strlen(buffer));
-	delete[] buffer;
-}
+
 
 void ModuleResources::DeleteResourceLibrary(Resource* resource)
 {
 	if (resource->GetType() == Resource_Type::Model) {
-		ResourceModel* model = (ResourceModel*)resource;
-		for (int i = 0; i < model->meshes.size(); i++) {
-			App->filesystem->DeleteAFile(GetResource(model->meshes[i])->GetLibraryFile());
+		ResourceModel* model = (ResourceModel*)RequestResource(resource->GetID());
+		for (std::map<uint, uint>::iterator it = model->meshes.begin(); it != model->meshes.end(); ++it) {
+			DeleteMeshResource((ResourceMesh*)GetResource(it->first));
 		}
+		FreeResource(resource->GetID());
 	}
 	App->filesystem->DeleteAFile(resource->GetLibraryFile());
 	std::string assets_file = resource->GetAssetsFile();
 	App->filesystem->DeleteAFile(assets_file  + ".meta");
+}
+
+void ModuleResources::DeleteMeshResource(ResourceMesh* resource)
+{
+	App->filesystem->DeleteAFile(resource->GetLibraryFile());
+	int id = resource->GetID();
+	delete resource;
+	resources.erase(id);
 }
 
 Resource* ModuleResources::CreateNewResource(uint ID, std::string assets_file)

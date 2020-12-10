@@ -7,7 +7,7 @@ class ComponentMaterial;
 class ResourceMesh :public Resource {
 public:
 	ResourceMesh(uint ID, Resource_Type type, std::string assets_file);
-	~ResourceMesh() {};
+	~ResourceMesh() { CleanUp(); };
 
 	bool CleanUp();
 
