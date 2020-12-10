@@ -3,14 +3,16 @@
 #include "ComponentMaterial.h"
 #include "ResourceMaterial.h"
 #include "Application.h"
+#include "FileSystem.h"
 #include "ModuleCentralEditor.h"
 
 
-ResourceMesh::ResourceMesh(uint ID, Resource_Type type, std::string assets_file): Resource(ID,type,assets_file)
+ResourceMesh::ResourceMesh(uint ID, Resource_Type type, std::string assets_file): Resource(ID,type,assets_file), full_file_name(assets_file)
 {
+	file_name = App->filesystem->GetFileName(full_file_name, false);
 }
 
-ResourceMesh::~ResourceMesh()
+bool ResourceMesh::CleanUp()
 {
 	if (vertices != nullptr)
 		delete[] vertices;
@@ -24,6 +26,7 @@ ResourceMesh::~ResourceMesh()
 	glDeleteBuffers(1, &id_vertices);
 	glDeleteBuffers(1, &id_normals);
 	glDeleteBuffers(1, &id_texCoords);
+	return true;
 }
 
 void ResourceMesh::Initialize()
@@ -90,12 +93,7 @@ void ResourceMesh::Render(float* transform, ComponentMaterial* mat, bool show_no
 
 		//drawing indices
 			glDrawElements(GL_TRIANGLES, num_indices, GL_UNSIGNED_INT, NULL);
-		/*if (grid == false) {
-		}
-		else
-			glDrawElements(GL_LINES, num_indices, GL_UNSIGNED_INT, NULL);*/
-
-
+	
 
 		//drawing normals
 		if ((App->central_editor->normals_v || show_normals_v) && normals != nullptr) {

@@ -4,6 +4,7 @@
 #include "Importer.h"
 #include "ResourceMaterial.h"
 #include "ResourceModel.h"
+#include "ResourceMesh.h"
 
 ModuleResources::ModuleResources(Application* app, bool start_enabled) : Module(app, start_enabled, "moduleResources")
 {
@@ -64,18 +65,33 @@ Resource* ModuleResources::RequestResource(uint ID)
 	{
 	case Resource_Type::Material:
 	{
-		ResourceMaterial* mat = (ResourceMaterial*)resource;
 		uint size;
+		ResourceMaterial* mat = (ResourceMaterial*)resource;
 		char* buffer = App->filesystem->ReadPhysFile(mat->GetLibraryFile(), size);
 		if (buffer == "") break;
 		MaterialImporter::Load(buffer, mat, size);
 		mat->referenceCount++;
 		break;
 	}
-	case Resource_Type::Model:
+	case Resource_Type::Model: {
+		ResourceModel* model = (ResourceModel*)resource;
+		uint size;
+		char* buffer = App->filesystem->ReadPhysFile(model->GetLibraryFile(), size);
+		if (buffer == "") break;
+		ModelImporter::Load(buffer, model);
+		model->referenceCount++;
 		break;
+	}
 	case Resource_Type::Mesh:
+	{
+		ResourceMesh* mesh = (ResourceMesh*)resource;
+		uint size;
+		char* buffer = App->filesystem->ReadPhysFile(mesh->GetLibraryFile(), size);
+		if (buffer == "") break;
+		MeshImporter::Load(buffer, mesh);
+		mesh->referenceCount++;
 		break;
+	}
 	default:
 		break;
 	}
@@ -97,10 +113,18 @@ void ModuleResources::FreeResource(Resource* resource)
 		mat->CleanUp();
 		break;
 	}
-	case Resource_Type::Model:
+	case Resource_Type::Model: 
+	{
+		ResourceModel* model = (ResourceModel*)resource;
+		model->CleanUp();
 		break;
+	}
 	case Resource_Type::Mesh:
+	{
+		ResourceMesh* mesh = (ResourceMesh*)resource;
+		mesh->CleanUp();
 		break;
+	}
 	default:
 		resource->CleanUp();
 		break;
@@ -220,7 +244,7 @@ Resource* ModuleResources::CreateNewResource(uint ID, std::string assets_file)
 	{
 	case FILE_TYPE::FBX:
 		res_type = Resource_Type::Model;
-		resource = new ResourceModel(ID, res_type, assets_file);
+		resource = (Resource*)new ResourceModel(ID, res_type, assets_file);
 		break;
 	case FILE_TYPE::PNG:
 	case FILE_TYPE::TGA:
@@ -261,4 +285,12 @@ void ModuleResources::CreateNewMetaFile(std::string file, uint id)
 	obj.Save(&buffer);
 	App->filesystem->SaveInternal((file+".meta").c_str(), buffer, strlen(buffer));
 	delete[] buffer;
+}
+
+void ModuleResources::CreateNewMeshResource(uint ID, std::string model_assets_file)
+{
+
+	Resource* resource = (Resource*)new ResourceMesh(ID, Resource_Type::Mesh, model_assets_file);
+
+	resources.insert(std::pair<uint, Resource*>(ID, resource));
 }

@@ -25,6 +25,7 @@ public:
 	void DeleteResourceLibrary(Resource* resource);
 
 	void CreateNewMetaFile(std::string file, uint id);
+	void CreateNewMeshResource(uint ID, std::string model_assets_file);
 private:
 	void UpdateMetaFile(std::string meta_file, uint id, char* buffer);
 private:

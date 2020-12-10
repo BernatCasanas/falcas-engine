@@ -9,12 +9,10 @@ ResourceModel::ResourceModel(uint ID, Resource_Type type, std::string assets_fil
 {
 }
 
-ResourceModel::~ResourceModel()
+bool ResourceModel::CleanUp()
 {
-	ResourceMesh* mesh;
-	for (int i = 0; i < meshes.size(); i++) {
-		uint id = meshes[i];
-		mesh = (ResourceMesh*)App->resources->GetResource(id);
-		delete mesh;
-	}
+	textures.clear();
+	transform.clear();
+	meshes.clear();
+	return true;
 }

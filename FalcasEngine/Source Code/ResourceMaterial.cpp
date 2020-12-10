@@ -1,8 +1,11 @@
 #include "ResourceMaterial.h"
+#include "Application.h"
+#include "FileSystem.h"
 #include "Importer.h"
 
-ResourceMaterial::ResourceMaterial(uint ID, Resource_Type type, std::string assets_file): Resource(ID,type,assets_file)
+ResourceMaterial::ResourceMaterial(uint ID, Resource_Type type, std::string assets_file) : Resource(ID, type, assets_file), full_file_name(assets_file)
 {
+	file_name = App->filesystem->GetFileName(full_file_name, false);
 }
 
 bool ResourceMaterial::CleanUp()

@@ -13,7 +13,7 @@ Resource::Resource(uint ID, Resource_Type type, std::string assets_file) :ID(ID)
 		break;
 	case Resource_Type::Model:
 		library_file = "Library/Models/";
-		extension = ".dds";
+		extension = ".falcasmodel";
 		break;
 	case Resource_Type::Mesh:
 		library_file = "Library/Meshes/";

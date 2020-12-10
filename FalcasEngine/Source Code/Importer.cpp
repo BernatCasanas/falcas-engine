@@ -154,12 +154,6 @@ void MeshImporter::Import(const aiMesh* ai_mesh, uint ID, char* name)
 	App->filesystem->SaveInternal(name, buffer, size);
 	delete mesh;
 	delete[] buffer;
-	
-	//if (ai_mesh != nullptr) material_index = ai_mesh->mMaterialIndex;
-
-	//mesh->Initialization();
-
-
 
 }
 
@@ -368,6 +362,7 @@ void GetAllMeshes(ResourceModel* mod, const aiScene* scene, aiNode* node, uint p
 		sprintf_s(name_buff, 200, "Library/Meshes/%s.falcasmesh", name_buff2.c_str());
 
 		MeshImporter::Import(ai_mesh, UUID, name_buff);
+		App->resources->CreateNewMeshResource(UUID, file);
 	}
 
 	for (int i = 0; i < node->mNumChildren; ++i) {

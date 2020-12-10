@@ -9,7 +9,9 @@
 class ResourceModel :public Resource {
 public:
 	ResourceModel(uint ID, Resource_Type type, std::string assets_file);
-	~ResourceModel();
+	~ResourceModel() {};
+
+	bool CleanUp();
 
 public:
 	std::map<uint, uint> textures;			//mesh, texture

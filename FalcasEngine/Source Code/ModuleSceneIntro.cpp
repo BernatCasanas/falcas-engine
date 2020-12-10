@@ -57,6 +57,7 @@ bool ModuleSceneIntro::Start()
 bool ModuleSceneIntro::CleanUp()
 {
 	LOG("Unloading Intro scene");
+	delete grid;
 	delete root;
 	game_object_selected = nullptr;
 	DevilCleanUp();
