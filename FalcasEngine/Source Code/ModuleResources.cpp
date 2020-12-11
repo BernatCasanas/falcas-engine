@@ -171,6 +171,7 @@ void ModuleResources::UpdateLibrary()
 					delete resources.find(id)->second;
 					resources.erase(id);
 					delete[] buffer;
+					meta_id.CleanUp();
 					difference--;
 				}
 			}
@@ -187,6 +188,7 @@ void ModuleResources::UpdateLibrary()
 		if (mod_time.GetInt("Date") != App->filesystem->GetLastModificationTime(vector_assets_files[i])) {
 			CreateNewMetaFile(vector_assets_files[i], mod_time.GetInt("ID"));
 		}
+		mod_time.CleanUp();
 		delete[] buffer;
 	}
 }
@@ -214,6 +216,7 @@ void ModuleResources::ImportFileToLibrary(std::string file, bool drag_and_drop)
 			CreateNewMetaFile(file, id);
 			delete[] buffer;
 		}
+		meta_file.CleanUp();
 	}
 	else {
 		id = App->filesystem->GenerateUUID(); 
@@ -305,6 +308,7 @@ void ModuleResources::CreateNewMetaFile(std::string file, uint id)
 	obj.Save(&buffer);
 	App->filesystem->SaveInternal((file+".meta").c_str(), buffer, strlen(buffer));
 	delete[] buffer;
+	obj.CleanUp();
 }
 
 void ModuleResources::CreateNewMeshResource(uint ID, std::string model_assets_file)

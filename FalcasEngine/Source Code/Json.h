@@ -21,6 +21,8 @@ public:
 	JsonObj(JSON_Object* obj);
 	~JsonObj();
 
+	void CleanUp();
+
 	JSON_Object* GetObj();
 	JSON_Value* GetVal();
 
