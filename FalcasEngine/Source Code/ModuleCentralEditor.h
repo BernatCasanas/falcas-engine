@@ -118,14 +118,15 @@ private:
 	std::vector<int> ids_of_parents_selected;
 	char selected_file[100] = "";
 
-private:
 	bool bool_parentFound;
-	GameObject* parentFound;
-	ResourceMaterial* icon_folder;
-	ResourceMaterial* icon_model;
-	ResourceMaterial* icon_mesh;
-	ResourceMaterial* icon_material;
+	GameObject* parentFound = nullptr;
+	ResourceMaterial* icon_folder = nullptr;
+	ResourceMaterial* icon_model = nullptr;
+	ResourceMaterial* icon_mesh = nullptr;
+	ResourceMaterial* icon_material = nullptr;
+	ResourceMaterial* icon_file = nullptr;
 	std::string assets_explorer_path = "Assets/";
+	int assets_explorer_selected = -1;
 };
 
 #endif // __ModuleCentralEditor_H__

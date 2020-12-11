@@ -259,11 +259,9 @@ void ModuleResources::DeleteMeshResource(ResourceMesh* resource)
 
 Resource* ModuleResources::CreateNewResource(uint ID, std::string assets_file)
 {
-	char* file_char = new char[assets_file.length() + 1];
-	strcpy(file_char, assets_file.c_str());
 	Resource_Type res_type=Resource_Type::None;
 	Resource* resource = nullptr;
-	switch (App->filesystem->GetTypeFile(file_char))
+	switch (App->filesystem->GetTypeFile(assets_file))
 	{
 	case FILE_TYPE::FBX:
 		res_type = Resource_Type::Model;
@@ -275,7 +273,6 @@ Resource* ModuleResources::CreateNewResource(uint ID, std::string assets_file)
 		resource = (Resource*)new ResourceMaterial(ID, res_type, assets_file);
 		break;
 	}
-	delete[] file_char;
 	
 	//Resource* resource = new Resource(ID, res_type, assets_file);
 	return resource;
@@ -286,9 +283,7 @@ void ModuleResources::CreateNewMetaFile(std::string file, uint id)
 	JsonObj obj;
 	obj.AddInt("ID", id);
 	obj.AddString("Name", App->filesystem->GetFileName(file,true).c_str());
-	char* file_char = new char[file.length() + 1 ];
-	strcpy(file_char, file.c_str());
-	switch (App->filesystem->GetTypeFile(file_char)) {
+	switch (App->filesystem->GetTypeFile(file)) {
 	case FILE_TYPE::FBX:
 		obj.AddInt("Type", 1);
 		ModelImporter::Import(file, id);
@@ -302,7 +297,6 @@ void ModuleResources::CreateNewMetaFile(std::string file, uint id)
 		obj.AddInt("Type", 3);
 		break;
 	}
-	delete[] file_char;
 	obj.AddInt("Date", App->filesystem->GetLastModificationTime(file));
 	char* buffer;
 	obj.Save(&buffer);

@@ -94,6 +94,9 @@ bool ModuleCentralEditor::Start()
     App->filesystem->LoadPath("Assets/Icons (read_only)/ModelIcon.png.meta", &buffer);
     icon_obj = JsonObj(buffer);
     icon_model = (ResourceMaterial*)App->resources->RequestResource(icon_obj.GetInt("ID"));
+    App->filesystem->LoadPath("Assets/Icons (read_only)/FileIcon.png.meta", &buffer);
+    icon_obj = JsonObj(buffer);
+    icon_file = (ResourceMaterial*)App->resources->RequestResource(icon_obj.GetInt("ID"));
     App->filesystem->LoadPath("Assets/Icons (read_only)/MeshIcon.png.meta", &buffer);
     icon_obj = JsonObj(buffer);
     icon_mesh = (ResourceMaterial*)App->resources->RequestResource(icon_obj.GetInt("ID"));
@@ -487,46 +490,92 @@ void ModuleCentralEditor::Draw()
 
     if (show_assets_explorer) {
         ImGui::Begin("Assets Explorer", &show_assets_window);
+        if (assets_explorer_path != "Assets/"){
+            if(ImGui::Button("Back", { 64, 24 })) {
+                assets_explorer_path = assets_explorer_path.substr(0, assets_explorer_path.size()-1);
+                uint size = assets_explorer_path.find_last_of("/");
+                assets_explorer_path = assets_explorer_path.substr(0, size+1);
+            }
+        }
         float total_icons_per_line = ImGui::GetColumnWidth(-1) / 64;
         total_icons_per_line--;
         std::vector<std::string> files;
+        std::vector<std::string> icons;
         std::vector<std::string> dirs;
         ImGui::Columns(total_icons_per_line, "", false);
         App->filesystem->DiscoverFiles(assets_explorer_path.c_str(), files, dirs, "meta");
+        icons = dirs;
+        for (int i = 0; i < files.size(); i++) {
+            icons.push_back(files[i]);
+        }
         int icon_count = 0;
-        for (int i = 0; i < dirs.size(); i++) {
-            ImGui::Image((void*)(intptr_t)icon_folder->texture_id, ImVec2((float)64, (float)64), ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f));
+        bool print_text = false;
+        bool clicked = false;
+        for (int i = 0; i < icons.size(); i++) {
+            if (!print_text) {
+                FILE_TYPE type = FILE_TYPE::UNKNOWN;
+                if (i < dirs.size()) {
+                    ImGui::Image((void*)(intptr_t)icon_folder->texture_id, ImVec2((float)64, (float)64), ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f));
+                }
+                else {
+                    type= App->filesystem->GetTypeFile(icons[i]);
+                    switch (type)
+                    {
+                    case FILE_TYPE::FBX:
+                        ImGui::Image((void*)(intptr_t)icon_model->texture_id, ImVec2((float)64, (float)64), ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f));
+                        break;
+                    case FILE_TYPE::PNG:
+                    case FILE_TYPE::TGA:
+                        ImGui::Image((void*)(intptr_t)icon_material->texture_id, ImVec2((float)64, (float)64), ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f));
+                        break;
+                    case FILE_TYPE::MODEL:
+                        ImGui::Image((void*)(intptr_t)icon_model->texture_id, ImVec2((float)64, (float)64), ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f));
+                        break;
+                    default:
+                        ImGui::Image((void*)(intptr_t)icon_file->texture_id, ImVec2((float)64, (float)64), ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f));
+                        break;
+                    }
+                }
+                if (ImGui::IsItemClicked()) {
+                    assets_explorer_selected = i;
+                    clicked = true;
+                    if (ImGui::IsMouseDoubleClicked(0)) {
+                        if (i < dirs.size()) {
+                            assets_explorer_path += icons[i];
+                            assets_explorer_path += "/";
+                            assets_explorer_selected = -1;
+                        }
+                    }
+                }
+                else if (ImGui::IsMouseClicked(0) && !clicked) {
+                    assets_explorer_selected = -1;
+                }
+            }
+            else {
+                if (icons[i].size() > 9) {
+                    icons[i] = icons[i].substr(0, 6);
+                    icons[i] += "...";
+                }
+                if(i==assets_explorer_selected)
+                    ImGui::TextColored({0,0,1,1}, icons[i].c_str());
+                else
+                    ImGui::Text(icons[i].c_str());
+            }
             ImGui::NextColumn();
             icon_count++;
-        }
-        for (int i = icon_count+1; i < total_icons_per_line; i++) {
-            ImGui::NextColumn();
-        }
-        icon_count = 0;
-        for (int i = 0; i < dirs.size(); i++) {
-            if (dirs[i].size() > 9) {
-                dirs[i] = dirs[i].substr(0, 6);
-                dirs[i] += "...";
+            if ((!print_text && i + 1 == icons.size()) || icon_count == (int)total_icons_per_line) {
+                print_text = !print_text;
+                if (print_text) {
+                    i -= icon_count;
+                }
+                if (icon_count != (int)total_icons_per_line) {
+                    for (int j = icon_count + 1; j < total_icons_per_line; j++) {
+                        ImGui::NextColumn();
+                    }
+                }
+                icon_count = 0;
             }
-            ImGui::Text(dirs[i].c_str());
-            ImGui::NextColumn();
-            icon_count++;
         }
-        ImGui::Columns(1, "", false);
-
-        /*for (int j = 0; j < 4; j++) {
-            for (int i = 0; i < (int)total_icons_per_line; i++) {
-                if (i > 0)ImGui::SameLine();
-                ImGui::Image((void*)(intptr_t)icon_folder->texture_id, ImVec2((float)64, (float)64), ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f));
-            }
-        }*/
-        ImGui::Image((void*)(intptr_t)icon_folder->texture_id, ImVec2((float)64, (float)64), ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f));
-        ImGui::SameLine();
-        ImGui::Image((void*)(intptr_t)icon_material->texture_id, ImVec2((float)64, (float)64), ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f));
-        ImGui::SameLine();
-        ImGui::Image((void*)(intptr_t)icon_mesh->texture_id, ImVec2((float)64, (float)64), ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f));
-        ImGui::SameLine();
-        ImGui::Image((void*)(intptr_t)icon_model->texture_id, ImVec2((float)64, (float)64), ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f));
         ImGui::End();
     }
 

@@ -70,19 +70,22 @@ std::string FileSystem::GetPathFile(std::string file)
 FILE_TYPE FileSystem::GetTypeFile(char* file)
 {
 	std::string name = file;
+	return GetTypeFile(name);
+}
+
+FILE_TYPE FileSystem::GetTypeFile(std::string file)
+{
+	uint size = file.find_last_of('.');
+	file = file.substr(size + 1);
 
 
-	uint size = name.find_last_of('.');
-	name = name.substr(size + 1);
-
-
-	if (name == "fbx" || name == "FBX") return FILE_TYPE::FBX;
-	else if (name == "png" || name == "PNG") return FILE_TYPE::PNG;
-	else if (name == "dds" || name == "DDS") return FILE_TYPE::DDS;
-	else if (name == "scenefalcas") return FILE_TYPE::SCENE;
-	else if (name == "TGA" || name == "tga")return FILE_TYPE::TGA;
-	else if (name == "falcasmodel")return FILE_TYPE::MODEL;
-	else if (name == "meta")return FILE_TYPE::META;
+	if (file == "fbx" || file == "FBX") return FILE_TYPE::FBX;
+	else if (file == "png" || file == "PNG") return FILE_TYPE::PNG;
+	else if (file == "dds" || file == "DDS") return FILE_TYPE::DDS;
+	else if (file == "scenefalcas") return FILE_TYPE::SCENE;
+	else if (file == "TGA" || file == "tga")return FILE_TYPE::TGA;
+	else if (file == "falcasmodel")return FILE_TYPE::MODEL;
+	else if (file == "meta")return FILE_TYPE::META;
 	else return FILE_TYPE::UNKNOWN;
 }
 
