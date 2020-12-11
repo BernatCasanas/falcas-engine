@@ -150,6 +150,8 @@ void FileSystem::DiscoverFiles(const char* directory, std::vector<std::string>& 
 
 	for (i = rc; *i != nullptr; i++)
 	{
+		if (!strcmp((dir + *i).c_str(), "Assets/Icons (read_only)"))
+			continue;
 		if (PHYSFS_isDirectory((dir + *i).c_str()))
 			dir_list.push_back(*i);
 		else {

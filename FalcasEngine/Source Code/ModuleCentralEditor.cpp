@@ -489,12 +489,37 @@ void ModuleCentralEditor::Draw()
         ImGui::Begin("Assets Explorer", &show_assets_window);
         float total_icons_per_line = ImGui::GetColumnWidth(-1) / 64;
         total_icons_per_line--;
-        for (int j = 0; j < 4; j++) {
+        std::vector<std::string> files;
+        std::vector<std::string> dirs;
+        ImGui::Columns(total_icons_per_line, "", false);
+        App->filesystem->DiscoverFiles(assets_explorer_path.c_str(), files, dirs, "meta");
+        int icon_count = 0;
+        for (int i = 0; i < dirs.size(); i++) {
+            ImGui::Image((void*)(intptr_t)icon_folder->texture_id, ImVec2((float)64, (float)64), ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f));
+            ImGui::NextColumn();
+            icon_count++;
+        }
+        for (int i = icon_count+1; i < total_icons_per_line; i++) {
+            ImGui::NextColumn();
+        }
+        icon_count = 0;
+        for (int i = 0; i < dirs.size(); i++) {
+            if (dirs[i].size() > 9) {
+                dirs[i] = dirs[i].substr(0, 6);
+                dirs[i] += "...";
+            }
+            ImGui::Text(dirs[i].c_str());
+            ImGui::NextColumn();
+            icon_count++;
+        }
+        ImGui::Columns(1, "", false);
+
+        /*for (int j = 0; j < 4; j++) {
             for (int i = 0; i < (int)total_icons_per_line; i++) {
                 if (i > 0)ImGui::SameLine();
                 ImGui::Image((void*)(intptr_t)icon_folder->texture_id, ImVec2((float)64, (float)64), ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f));
             }
-        }
+        }*/
         ImGui::Image((void*)(intptr_t)icon_folder->texture_id, ImVec2((float)64, (float)64), ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f));
         ImGui::SameLine();
         ImGui::Image((void*)(intptr_t)icon_material->texture_id, ImVec2((float)64, (float)64), ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f));
@@ -792,8 +817,6 @@ void ModuleCentralEditor::FilesRecursiveTree(const char* path, bool is_in_dock, 
         return;
     ImGui::Indent(ImGui::GetTreeNodeToLabelSpacing());
     for (int i = 0; i < dirs.size(); ++i) {
-        if (!strcmp(dirs[i].c_str(),"Icons (read_only)"))
-            continue;
         FilesRecursiveTree((dir + dirs[i]).c_str(), resources_window, is_in_dock, true, base_flags, assets_file_clicked);
     }
     for (int i = 0; i < files.size(); ++i) {

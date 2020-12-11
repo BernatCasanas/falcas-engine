@@ -125,6 +125,7 @@ private:
 	ResourceMaterial* icon_model;
 	ResourceMaterial* icon_mesh;
 	ResourceMaterial* icon_material;
+	std::string assets_explorer_path = "Assets/";
 };
 
 #endif // __ModuleCentralEditor_H__
