@@ -539,9 +539,21 @@ void ModuleCentralEditor::Draw()
                     switch (type)
                     {
                          case FILE_TYPE::FBX:
-                             ImGui::SetDragDropPayload("model", &i, sizeof(int));
+                         {
+                             char* buffer;
+                             std::string path_string_meta = assets_explorer_path + icons[i]+".meta";
+                             char* path_meta = new char[path_string_meta.size()+1];
+                             strcpy(path_meta, path_string_meta.c_str());
+                             App->filesystem->LoadPath(path_meta, &buffer);
+                             delete[] path_meta;
+                             JsonObj icon_obj(buffer);
+                             int id = icon_obj.GetInt("ID");
+                             ImGui::SetDragDropPayload("model", &id, sizeof(int));
+                             delete[] buffer;
+                             icon_obj.CleanUp();
                              ImGui::Image((void*)(intptr_t)icon_model->texture_id, ImVec2((float)64, (float)64), ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f));
                              break;
+                         }
                          case FILE_TYPE::PNG:
                          case FILE_TYPE::TGA:
                              ImGui::SetDragDropPayload("texture", &i, sizeof(int));
