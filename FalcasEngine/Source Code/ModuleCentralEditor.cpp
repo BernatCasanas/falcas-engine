@@ -550,6 +550,9 @@ void ModuleCentralEditor::Draw()
                 else if (ImGui::IsMouseClicked(0) && !clicked) {
                     assets_explorer_selected = -1;
                 }
+                if (App->input->GetKey(SDL_SCANCODE_DELETE)== KEY_STATE::KEY_DOWN&& assets_explorer_selected == i) {
+                    App->filesystem->DeleteAFile(assets_explorer_path+icons[i]);
+                }
             }
             else {
                 if (icons[i].size() > 9) {
