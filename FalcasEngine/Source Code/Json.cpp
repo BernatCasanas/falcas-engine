@@ -34,6 +34,11 @@ JsonObj::~JsonObj()
 	val = nullptr;
 }
 
+void JsonObj::CleanUp()
+{
+	json_value_free(val);
+}
+
 JSON_Object* JsonObj::GetObj()
 {
 	return obj;
