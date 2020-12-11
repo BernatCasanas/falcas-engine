@@ -33,6 +33,8 @@ public:
 	bool IsGameObjectNameRepeated(std::string name, GameObject* game_obj);
 	std::string CheckNameGameObject(std::string name, bool numbered = false);
 
+	void LoadModel(ResourceModel* model);
+
 	void GetSceneDimensions(float& x, float& y, float& width, float& height);
 
 	void SelectGameObjectWithRay(LineSegment ray);

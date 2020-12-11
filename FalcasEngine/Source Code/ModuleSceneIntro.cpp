@@ -19,6 +19,8 @@
 #include "External Libraries/ImGui/imgui_impl_sdl.h"
 #include "ModuleRenderer3D.h"
 #include "ResourceMesh.h"
+#include "ModuleResources.h"
+#include "ResourceModel.h"
 
 
 
@@ -90,9 +92,10 @@ void ModuleSceneIntro::Draw(GLuint tex)
 	{
 		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("model"))
 		{
-			///////////////IMPORT GAME OBJECT
 			IM_ASSERT(payload->DataSize == sizeof(int));
 			int payload_id = *(const int*)payload->Data;
+			ResourceModel* model = (ResourceModel*)App->resources->RequestResource(payload_id);
+			LoadModel(model);
 		}
 		ImGui::EndDragDropTarget();
 	}
@@ -104,6 +107,7 @@ void ModuleSceneIntro::Draw(GLuint tex)
 bool ModuleSceneIntro::GetDimensionsWindow(float& width, float& height)
 {
 	if (width == this->width && height == this->height)
+		return false;
 		return false;
 	width = this->width;
 	height = this->height;
@@ -255,6 +259,16 @@ std::string ModuleSceneIntro::CheckNameGameObject(std::string name, bool numbere
 	}
 	return name;
 }
+
+void ModuleSceneIntro::LoadModel(ResourceModel* model)
+{
+	GameObject* parent = CreateGameObject(App->filesystem->GetFileName(model->GetAssetsFile(), true));
+	
+	for (std::map<uint, uint>::iterator it = model->meshes.begin(); it != model->meshes.end(); ++it) {
+		
+	}
+}
+
 
 void ModuleSceneIntro::GetSceneDimensions(float& x, float& y, float& width, float& height)
 {
