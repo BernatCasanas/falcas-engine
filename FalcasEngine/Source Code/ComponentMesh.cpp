@@ -70,10 +70,10 @@ void ComponentMesh::Inspector()
 	ImGui::Text("File: ");
 	
 	ImGui::SameLine();
-	ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), resource_mesh->file_name.c_str());
+	ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), resource_mesh != nullptr ? resource_mesh->file_name.c_str() : "None");
 	
 	if (ImGui::IsItemHovered()) {
-		ImGui::SetTooltip(resource_mesh->full_file_name.c_str());
+		ImGui::SetTooltip(resource_mesh != nullptr ? resource_mesh->full_file_name.c_str() : "");
 	}
 	
 	ImGui::Separator();
@@ -89,7 +89,7 @@ void ComponentMesh::Inspector()
 	
 	ImGui::SameLine();
 	ImGui::AlignTextToFramePadding();
-	ImGui::Text(std::to_string(resource_mesh->num_indices).c_str());
+	ImGui::Text(resource_mesh != nullptr ? std::to_string(resource_mesh->num_indices).c_str() : "0");
 	
 	ImGui::NextColumn();
 	ImGui::Checkbox("Per Triangle", (active && owner->active) ?&show_normals_v : &falsed);
@@ -100,7 +100,7 @@ void ComponentMesh::Inspector()
 	
 	ImGui::SameLine();
 	ImGui::AlignTextToFramePadding();
-	ImGui::Text(std::to_string(resource_mesh->num_vertices / 3).c_str());
+	ImGui::Text(resource_mesh != nullptr ? std::to_string(resource_mesh->num_vertices / 3).c_str() : "0");
 	
 	ImGui::NextColumn();
 	ImGui::Checkbox("Per Face", (active && owner->active) ? &show_normals_f:&falsed);
@@ -111,7 +111,7 @@ void ComponentMesh::Inspector()
 	
 	ImGui::SameLine();
 	ImGui::AlignTextToFramePadding();
-	ImGui::Text(std::to_string(resource_mesh->num_normals / 3).c_str());
+	ImGui::Text(resource_mesh != nullptr ? std::to_string(resource_mesh->num_normals / 3).c_str() : "0");
 	
 	ImGui::NextColumn();
 	ImGui::AlignTextToFramePadding();
@@ -123,7 +123,7 @@ void ComponentMesh::Inspector()
 	
 	ImGui::SameLine();
 	ImGui::AlignTextToFramePadding();
-	ImGui::Text(std::to_string(resource_mesh->num_indices / 3).c_str());
+	ImGui::Text(resource_mesh != nullptr ? std::to_string(resource_mesh->num_indices / 3).c_str() : "0");
 	
 	ImGui::NextColumn();
 	ImGui::PushItemWidth(120);

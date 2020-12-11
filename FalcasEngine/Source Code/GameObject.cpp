@@ -105,29 +105,31 @@ void GameObject::Update()
 Component* GameObject::CreateComponent(Component_Type type)
 {
 	Component* component = nullptr;
-	if (!HasComponentType(type)) {
-		switch (type)
-		{
-		case Component_Type::Transform:
-			component = new ComponentTransform(this, { 0,0,0 }, Quat::identity, { 1,1,1 });
-			component->name = "Transform";
-			break;
-		case Component_Type::Mesh:
-			component = new ComponentMesh(this);
-			component->name = "Mesh";
-			break;
-		case Component_Type::Material:
-			component = new ComponentMaterial(this);
-			component->name = "Material";
-			break;
-		case Component_Type::Camera:
-			component = new ComponentCamera(this, trans);
-			component->name = "Camera";
-			break;
-		}
-		component->SetUUID();
-		components.push_back(component);
+	if (HasComponentType(type))
+		return component;
+
+	switch (type)
+	{
+	case Component_Type::Transform:
+		component = new ComponentTransform(this, { 0,0,0 }, Quat::identity, { 1,1,1 });
+		component->name = "Transform";
+		break;
+	case Component_Type::Mesh:
+		component = new ComponentMesh(this);
+		component->name = "Mesh";
+		break;
+	case Component_Type::Material:
+		component = new ComponentMaterial(this);
+		component->name = "Material";
+		break;
+	case Component_Type::Camera:
+		component = new ComponentCamera(this, trans);
+		component->name = "Camera";
+		break;
 	}
+	component->SetUUID();
+	components.push_back(component);
+	
 	return component;
 }
 

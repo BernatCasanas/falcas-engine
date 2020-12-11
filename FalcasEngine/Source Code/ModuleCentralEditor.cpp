@@ -464,10 +464,20 @@ void ModuleCentralEditor::Draw()
                     game_object_component->Inspector();
                 }
             }
-        }
-        if (App->scene_intro->game_object_selected != nullptr && !App->scene_intro->game_object_selected->HasComponentType(Component_Type::Camera)) {
-            if (ImGui::Button("Create Component Camera")) {
-                App->scene_intro->game_object_selected->CreateComponent(Component_Type::Material);
+            if (ImGui::Button("Create Component"))
+                ImGui::OpenPopup("create_component");
+            if (ImGui::BeginPopup("create_component"))
+            {
+                if (ImGui::Selectable("Component Mesh")) {
+                    App->scene_intro->game_object_selected->CreateComponent(Component_Type::Mesh);
+                }
+                if (ImGui::Selectable("Component Material")) {
+                    App->scene_intro->game_object_selected->CreateComponent(Component_Type::Material);
+                }
+                if (ImGui::Selectable("Component Camera")) {
+                    App->scene_intro->game_object_selected->CreateComponent(Component_Type::Camera);
+                }
+                ImGui::EndPopup();
             }
         }
         ImGui::End();
