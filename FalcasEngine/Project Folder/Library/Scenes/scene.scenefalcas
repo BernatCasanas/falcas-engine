@@ -2,7 +2,7 @@
     "name": "scene",
     "GameObjects": [
         {
-            "UUID": 950737616,
+            "UUID": 492903146,
             "name": "Grid",
             "Translation": [
                 0,
@@ -40,13 +40,13 @@
                         0,
                         1
                     ],
-                    "UUID": 946281872
+                    "UUID": 473200403
                 }
             ]
         },
         {
-            "UUID": 18395001,
-            "Parent UUID": 950737616,
+            "UUID": 1633032204,
+            "Parent UUID": 492903146,
             "name": "Camera",
             "Translation": [
                 0,
@@ -84,7 +84,7 @@
                         0,
                         1
                     ],
-                    "UUID": 14287362
+                    "UUID": 1620778908
                 },
                 {
                     "name": "Camera",
@@ -92,7 +92,7 @@
                     "FrustumNear": 0.10000000149011612,
                     "FrustumHfov": 1.3415324687957764,
                     "FrustumVfov": 1,
-                    "UUID": 809011077
+                    "UUID": 1556007476
                 }
             ]
         }

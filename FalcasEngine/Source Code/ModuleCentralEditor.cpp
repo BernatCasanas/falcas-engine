@@ -935,7 +935,7 @@ void ModuleCentralEditor::GameControl()
 {
     bool overlay = true;
     ImVec4 color;
-    ImGui::SetNextWindowFocus();
+    //ImGui::SetNextWindowFocus();
     ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav;
     ImGui::SetNextWindowBgAlpha(0.35f);
     ImGui::SetNextWindowPos({ ImGui::GetMainViewport()->GetCenter().x-160,40 });
