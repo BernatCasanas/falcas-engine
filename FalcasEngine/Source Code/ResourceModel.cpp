@@ -14,5 +14,6 @@ bool ResourceModel::CleanUp()
 	textures.clear();
 	transform.clear();
 	meshes.clear();
+	mesh_keys.clear();
 	return true;
 }

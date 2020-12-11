@@ -357,6 +357,8 @@ void GetAllMeshes(ResourceModel* mod, const aiScene* scene, aiNode* node, uint p
 		mod->transform[UUID] = transform;
 		//Insert Parent
 		mod->meshes[UUID] = parent;
+		//Insert mesh key
+		mod->mesh_keys.push_back(UUID);
 
 		std::string name_buff2 = std::to_string(UUID).c_str();
 		char name_buff[200];
@@ -406,7 +408,6 @@ uint ModelImporter::Save(ResourceModel* mod, char** buffer)
 		item.AddInt("ParentID", it._Ptr->_Myval.second);
 		item.AddFloat4x4("Transform", mod->transform[it._Ptr->_Myval.first]);
 
-
 		arr.AddObject(item);
 	}
 	uint size = obj.Save(&buf);
@@ -427,7 +428,7 @@ void ModelImporter::Load(const char* buffer, ResourceModel* mod)
 		mod->meshes[item.GetInt("ID")] = item.GetInt("ParentID");
 		mod->transform[item.GetInt("ID")] = item.GetFloat4x4("Transform");
 		mod->textures[item.GetInt("ID")] = item.GetInt("TexID");
-
+		mod->mesh_keys.push_back(item.GetInt("ID"));
 	}
 	obj.CleanUp();
 }
