@@ -408,7 +408,6 @@ uint ModelImporter::Save(ResourceModel* mod, char** buffer)
 
 
 		arr.AddObject(item);
-		item.CleanUp();
 	}
 	uint size = obj.Save(&buf);
 	*buffer = buf;

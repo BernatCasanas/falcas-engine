@@ -696,9 +696,7 @@ void ModuleCentralEditor::LoadScene(const char* file)
                 cam->SetHorizFov(comp.GetFloat("FrustumHfov"));
                 cam->SetVerticalFov(comp.GetFloat("FrustumVfov"));
             }
-            comp.CleanUp();
         }
-        obj.CleanUp();
     }
     scene.CleanUp();
 }
