@@ -86,6 +86,20 @@ void ModuleSceneIntro::Draw(GLuint tex)
 	else {
 		mouse_on_scene = false;
 	}
+	if (ImGui::BeginDragDropTarget())
+	{
+		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("model"))
+		{
+			/*IM_ASSERT(payload->DataSize == sizeof(int));
+			int payload_id = *(const int*)payload->Data;
+			GameObject* game_obj = App->scene_intro->SearchGameObject(payload_id, App->scene_intro->root);
+			if (!game_object->CheckParentRecursively(game_obj)) {
+				game_obj->RemoveFromParent();
+				game_object->NewChild(game_obj);
+			}*/
+		}
+		ImGui::EndDragDropTarget();
+	}
 	ImGui::End();
 	ImGui::PopStyleVar();
 

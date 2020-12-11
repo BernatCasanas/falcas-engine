@@ -516,6 +516,7 @@ void ModuleCentralEditor::Draw()
                 FILE_TYPE type = FILE_TYPE::UNKNOWN;
                 if (i < dirs.size()) {
                     ImGui::Image((void*)(intptr_t)icon_folder->texture_id, ImVec2((float)64, (float)64), ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f));
+                    type = FILE_TYPE::META;
                 }
                 else {
                     type= App->filesystem->GetTypeFile(icons[i]);
@@ -528,13 +529,35 @@ void ModuleCentralEditor::Draw()
                     case FILE_TYPE::TGA:
                         ImGui::Image((void*)(intptr_t)icon_material->texture_id, ImVec2((float)64, (float)64), ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f));
                         break;
-                    case FILE_TYPE::MODEL:
-                        ImGui::Image((void*)(intptr_t)icon_model->texture_id, ImVec2((float)64, (float)64), ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f));
-                        break;
                     default:
                         ImGui::Image((void*)(intptr_t)icon_file->texture_id, ImVec2((float)64, (float)64), ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f));
                         break;
                     }
+                }
+                if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID))
+                {
+                    switch (type)
+                    {
+                         case FILE_TYPE::FBX:
+                             ImGui::SetDragDropPayload("model", &i, sizeof(int));
+                             ImGui::Image((void*)(intptr_t)icon_model->texture_id, ImVec2((float)64, (float)64), ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f));
+                             break;
+                         case FILE_TYPE::PNG:
+                         case FILE_TYPE::TGA:
+                             ImGui::SetDragDropPayload("texture", &i, sizeof(int));
+                             ImGui::Image((void*)(intptr_t)icon_material->texture_id, ImVec2((float)64, (float)64), ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f));
+                             break;
+                         case FILE_TYPE::META:
+                             ImGui::SetDragDropPayload("folder", &i, sizeof(int));
+                             ImGui::Image((void*)(intptr_t)icon_folder->texture_id, ImVec2((float)64, (float)64), ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f));
+                             break;
+                         default:
+                             ImGui::SetDragDropPayload("none", &i, sizeof(int));
+                             ImGui::Image((void*)(intptr_t)icon_file->texture_id, ImVec2((float)64, (float)64), ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f));
+                             break;
+                    }
+                    ImGui::Text("%s", icons[i].c_str());
+                    ImGui::EndDragDropSource();
                 }
                 if (ImGui::IsItemClicked()) {
                     assets_explorer_selected = i;
