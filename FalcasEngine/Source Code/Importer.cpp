@@ -161,7 +161,7 @@ uint MeshImporter::Save(const ResourceMesh* mesh, char** filebuffer)
 {
 	uint ranges[4] = { mesh->num_indices, mesh->num_vertices, mesh->num_normals, mesh->num_textureCoords };
 
-	uint size = sizeof(ranges) + sizeof(uint) * mesh->num_indices + sizeof(float) * mesh->num_vertices
+	uint size = sizeof(ranges) + sizeof(uint) * mesh->num_indices + sizeof(float) * mesh->num_vertices*3
 		+ sizeof(float) * mesh->num_normals * 3 + sizeof(float) * mesh->num_textureCoords * 2;
 
 	char* buffer = new char[size];
@@ -177,12 +177,12 @@ uint MeshImporter::Save(const ResourceMesh* mesh, char** filebuffer)
 	cursor += bytes;
 
 	//store vertices
-	bytes = sizeof(float) * mesh->num_vertices;
+	bytes = sizeof(float) * mesh->num_vertices*3;
 	memcpy(cursor, mesh->vertices, bytes);
 	cursor += bytes;
 
 	//store normals
-	bytes = sizeof(float) * mesh->num_normals;
+	bytes = sizeof(float) * mesh->num_normals*3;
 	memcpy(cursor, mesh->normals, bytes);
 	cursor += bytes;
 

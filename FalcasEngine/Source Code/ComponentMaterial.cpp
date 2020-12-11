@@ -5,6 +5,7 @@
 #include "Importer.h"
 #include "GameObject.h"
 #include "ResourceMaterial.h"
+#include "ModuleResources.h"
 
 
 
@@ -46,10 +47,20 @@ void ComponentMaterial::Inspector()
 	ImGui::Text("File: ");
 
 	ImGui::SameLine();
-	ImGui::TextColored(ImVec4(1.0f, 0.0f, 1.0f, 1.0f), resource_material != nullptr ? resource_material->file_name.c_str() : "");
+	ImGui::TextColored(ImVec4(1.0f, 0.0f, 1.0f, 1.0f), resource_material != nullptr ? resource_material->file_name.c_str() : "None");
+	if (ImGui::BeginDragDropTarget())
+	{
+		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("texture"))
+		{
+			IM_ASSERT(payload->DataSize == sizeof(int));
+			int payload_id = *(const int*)payload->Data;
+			resource_material = (ResourceMaterial*)App->resources->RequestResource(payload_id);
+		}
+		ImGui::EndDragDropTarget();
+	}
 
 	if (ImGui::IsItemHovered()) {
-		ImGui::SetTooltip(resource_material->full_file_name.c_str());
+		ImGui::SetTooltip(resource_material != nullptr ? resource_material->full_file_name.c_str() : "");
 	}
 
 	ImGui::Separator();
