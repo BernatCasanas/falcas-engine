@@ -9,6 +9,7 @@
 class GameObject;
 class ComponentCamera;
 class Grid;
+class ResourceModel;
 class ModuleSceneIntro : public Module
 {
 public:

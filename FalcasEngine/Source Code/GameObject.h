@@ -9,6 +9,7 @@
 
 class Component;
 class ComponentTransform;
+class ResourceModel;
 enum class Component_Type;
 
 class GameObject {
@@ -50,6 +51,7 @@ public:
 	std::string name;
 	int id;
 	bool to_delete = false;
+	ResourceModel* resource_model= nullptr;
 private:
 	ComponentTransform* trans = nullptr;
 	AABB aabb;

@@ -262,11 +262,28 @@ std::string ModuleSceneIntro::CheckNameGameObject(std::string name, bool numbere
 
 void ModuleSceneIntro::LoadModel(ResourceModel* model)
 {
-	GameObject* parent = CreateGameObject(App->filesystem->GetFileName(model->GetAssetsFile(), true));
-	
-	for (std::map<uint, uint>::iterator it = model->meshes.begin(); it != model->meshes.end(); ++it) {
-		
+	std::map<uint, GameObject*> gameobject_final;
+	GameObject* parent = CreateGameObject(App->filesystem->GetFileName(model->GetAssetsFile(), true), root);
+	gameobject_final[model->GetID()] = parent;
+	for (int i = 0; i < model->mesh_keys.size(); i++) {
+		int id_mesh = model->mesh_keys[i];
+		int id_parent = model->meshes[id_mesh];
+		int id_texture= model->textures[id_mesh];
+		float4x4 transform= model->transform[id_mesh];
+		GameObject* child = CreateGameObject(App->filesystem->GetFileName(model->GetAssetsFile(), true), gameobject_final[id_parent]);
+		ComponentTransform* trnas;
+		float3 pos, size;
+		Quat rot;
+		transform.Decompose(pos, rot, size);
+		((ComponentTransform*)child->GetComponent(Component_Type::Transform))->SetTransformation(pos, rot, size);
+		((ComponentMesh*)child->CreateComponent(Component_Type::Mesh))->resource_mesh = (ResourceMesh*)App->resources->RequestResource(id_mesh);
+		if (id_texture != 0) {
+			((ComponentMaterial*)child->CreateComponent(Component_Type::Material))->resource_material = (ResourceMaterial*)App->resources->RequestResource(id_texture);
+		}
+		gameobject_final[id_mesh] = child;
 	}
+	gameobject_final.clear();
+	parent->resource_model = model;
 }
 
 
