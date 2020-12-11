@@ -343,7 +343,6 @@ void GetAllMeshes(ResourceModel* mod, const aiScene* scene, aiNode* node, uint p
 				App->filesystem->LoadPath((char*)metapath.c_str(), &b);
 				JsonObj obj(b);
 				texUUID = obj.GetInt("ID");
-				obj.CleanUp();
 				delete[] b;
 			}
 			else {
@@ -408,11 +407,9 @@ uint ModelImporter::Save(ResourceModel* mod, char** buffer)
 
 
 		arr.AddObject(item);
-		item.CleanUp();
 	}
 	uint size = obj.Save(&buf);
 	*buffer = buf;
-	obj.CleanUp();
 	return size;
 }
 
@@ -420,15 +417,12 @@ void ModelImporter::Load(const char* buffer, ResourceModel* mod)
 {
 	JsonObj obj(buffer);
 	JsonArray arr = obj.GetArray("items");
-	JsonObj item;
 
 	for (int i = 0; i < arr.Size(); ++i) {
-		item = arr.GetObjectAt(i);
+		JsonObj item = arr.GetObjectAt(i);
 
 		mod->meshes[item.GetInt("ID")] = item.GetInt("ParentID");
 		mod->transform[item.GetInt("ID")] = item.GetFloat4x4("Transform");
 		mod->textures[item.GetInt("ID")] = item.GetInt("TexID");
-
 	}
-	obj.CleanUp();
 }

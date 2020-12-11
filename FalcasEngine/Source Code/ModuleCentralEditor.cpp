@@ -98,7 +98,6 @@ bool ModuleCentralEditor::Start()
     icon_obj = JsonObj(buffer);
     icon_mesh = (ResourceMaterial*)App->resources->RequestResource(icon_obj.GetInt("ID"));
     delete[] buffer;
-    icon_obj.CleanUp();
     return true;
 }
 
@@ -632,7 +631,6 @@ bool ModuleCentralEditor::SaveScene(const char* name)
 		sprintf_s(file, 150, "Library/Scenes/%s.scenefalcas", fileName.c_str());
 	}
 	App->filesystem->SaveInternal(file, buffer, strlen(buffer));
-    scene.CleanUp();
 	return true;
 }
 
@@ -696,11 +694,9 @@ void ModuleCentralEditor::LoadScene(const char* file)
                 cam->SetHorizFov(comp.GetFloat("FrustumHfov"));
                 cam->SetVerticalFov(comp.GetFloat("FrustumVfov"));
             }
-            comp.CleanUp();
         }
-        obj.CleanUp();
+
     }
-    scene.CleanUp();
 }
 
 bool ModuleCentralEditor::ProcessEvents(SDL_Event event)
@@ -909,7 +905,6 @@ void ModuleCentralEditor::SaveAllGameObjectsTree(GameObject* game_object, JsonAr
 			SaveAllGameObjectsTree((*it), arr);
 		}
 	}
-    obj.CleanUp();
 }
 
 void ModuleCentralEditor::DeleteAllGameObjects(GameObject* game_object)
