@@ -161,8 +161,8 @@ uint MeshImporter::Save(const ResourceMesh* mesh, char** filebuffer)
 {
 	uint ranges[4] = { mesh->num_indices, mesh->num_vertices, mesh->num_normals, mesh->num_textureCoords };
 
-	uint size = sizeof(ranges) + sizeof(uint) * mesh->num_indices + sizeof(float) * mesh->num_vertices*3
-		+ sizeof(float) * mesh->num_normals * 3 + sizeof(float) * mesh->num_textureCoords * 2;
+	uint size = sizeof(ranges) + sizeof(uint) * mesh->num_indices + sizeof(float) * mesh->num_vertices
+		+ sizeof(float) * mesh->num_normals + sizeof(float) * mesh->num_textureCoords * 2;
 
 	char* buffer = new char[size];
 	char* cursor = buffer;
@@ -177,12 +177,12 @@ uint MeshImporter::Save(const ResourceMesh* mesh, char** filebuffer)
 	cursor += bytes;
 
 	//store vertices
-	bytes = sizeof(float) * mesh->num_vertices*3;
+	bytes = sizeof(float) * mesh->num_vertices;
 	memcpy(cursor, mesh->vertices, bytes);
 	cursor += bytes;
 
 	//store normals
-	bytes = sizeof(float) * mesh->num_normals*3;
+	bytes = sizeof(float) * mesh->num_normals;
 	memcpy(cursor, mesh->normals, bytes);
 	cursor += bytes;
 
@@ -217,14 +217,14 @@ void MeshImporter::Load(const char* fileBuffer, ResourceMesh *mesh)
 	cursor += bytes;
 
 	//load vertices
-	bytes = sizeof(float) * mesh->num_vertices * 3;
-	mesh->vertices = new float[mesh->num_vertices * 3];
+	bytes = sizeof(float) * mesh->num_vertices;
+	mesh->vertices = new float[mesh->num_vertices];
 	memcpy(mesh->vertices, cursor, bytes);
 	cursor += bytes;
 
 	//load normals
-	bytes = sizeof(float) * mesh->num_normals * 3;
-	mesh->normals = new float[mesh->num_normals * 3];
+	bytes = sizeof(float) * mesh->num_normals;
+	mesh->normals = new float[mesh->num_normals];
 	memcpy(mesh->normals, cursor, bytes);
 	cursor += bytes;
 
