@@ -968,6 +968,9 @@ void ModuleCentralEditor::HierarchyRecursiveTree(GameObject* game_object, static
         if (ImGui::Selectable("Delete Game Object")) {
             game_object->to_delete = true;
         }
+        if (ImGui::Selectable("Create Child")) {
+            App->scene_intro->CreateGameObject(game_object->name, game_object);
+        }
         ImGui::EndPopup();
     }
 
