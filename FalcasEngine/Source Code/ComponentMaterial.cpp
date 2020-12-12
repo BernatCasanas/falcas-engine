@@ -27,6 +27,14 @@ ComponentMaterial::~ComponentMaterial()
 		App->resources->FreeResource(resource_material);
 }
 
+void ComponentMaterial::ChangeResourceMaterial(ResourceMaterial* resource_mat)
+{
+	if (resource_material != nullptr) {
+		App->resources->FreeResource(resource_material);
+	}
+	resource_material = resource_mat;
+}
+
 
 bool ComponentMaterial::SaveComponent(JsonObj& obj)
 {
@@ -55,7 +63,7 @@ void ComponentMaterial::Inspector()
 		{
 			IM_ASSERT(payload->DataSize == sizeof(int));
 			int payload_id = *(const int*)payload->Data;
-			resource_material = (ResourceMaterial*)App->resources->RequestResource(payload_id);
+			ChangeResourceMaterial((ResourceMaterial*)App->resources->RequestResource(payload_id));
 		}
 		ImGui::EndDragDropTarget();
 	}

@@ -13,6 +13,8 @@ public:
 	void Render();
 	bool SaveComponent(JsonObj& obj);
 
+	void ChangeResourceMesh(ResourceMesh* resource_m);
+
 	void Inspector();
 
 
@@ -20,7 +22,6 @@ public:
 	bool show_normals_f = false;
 	float length_normals = 1;
 	int  meshNumber = 0;
-
 	ResourceMesh* resource_mesh = nullptr;
 	
 

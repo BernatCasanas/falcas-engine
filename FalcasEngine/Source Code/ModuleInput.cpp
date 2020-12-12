@@ -147,7 +147,7 @@ update_status ModuleInput::PreUpdate(float dt)
 				case FILE_TYPE::DDS:
 				{
 					ComponentMaterial* mat = (ComponentMaterial*)App->scene_intro->game_object_selected->GetComponent(Component_Type::Material);
-					mat->resource_material = (ResourceMaterial*)App->resources->RequestResource(std::stoi(App->filesystem->GetFileName(e.drop.file, true)));
+					mat->ChangeResourceMaterial((ResourceMaterial*)App->resources->RequestResource(std::stoi(App->filesystem->GetFileName(e.drop.file, true))));
 					LOG("HE");
 					break;
 				}

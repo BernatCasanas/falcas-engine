@@ -58,6 +58,14 @@ bool ComponentMesh::SaveComponent(JsonObj& obj)
 	return true;
 }
 
+void ComponentMesh::ChangeResourceMesh(ResourceMesh* resource_m)
+{
+	if (resource_mesh != nullptr) {
+		App->resources->FreeResource(resource_mesh);
+	}
+	resource_mesh = resource_m;
+}
+
 
 void ComponentMesh::Inspector()
 {
