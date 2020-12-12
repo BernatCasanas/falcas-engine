@@ -41,8 +41,6 @@ update_status ModuleResources::Update(float dt)
 bool ModuleResources::CleanUp()
 {
 	for (std::map<uint,Resource*>::iterator it = resources.begin(); it != resources.end(); ) {
-		if(it->second!=nullptr)
-			FreeResource(it->second);
 		delete it->second;
 		it=resources.erase(it);
 	}
