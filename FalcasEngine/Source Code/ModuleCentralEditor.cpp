@@ -458,6 +458,11 @@ void ModuleCentralEditor::Draw()
                     game_object->name = game_object_name;
                 }
             }
+            if (App->scene_intro->game_object_selected->resource_model != nullptr) {
+                if (ImGui::Button("Unlink Model")) {
+                    App->scene_intro->game_object_selected->RemoveResourceModel();
+                }
+            }
             for (int i = 0; i < game_object->components.size(); i++) {
                 Component* game_object_component = game_object->components[i];
                 if (ImGui::CollapsingHeader(game_object_component->name.c_str(), ImGuiTreeNodeFlags_DefaultOpen)) {

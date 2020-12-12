@@ -281,6 +281,14 @@ AABB GameObject::GetAABB() const
 	return aabb;
 }
 
+void GameObject::RemoveResourceModel()
+{
+	if (resource_model != nullptr) {
+		App->resources->FreeResource(resource_model);
+	}
+	resource_model = nullptr;
+}
+
 uint GameObject::GetUUID()
 {
 	return uuid;

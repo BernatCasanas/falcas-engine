@@ -35,6 +35,7 @@ public:
 	bool IsInsideFrustumCulling();
 	bool IsCulled() const;
 	AABB GetAABB()const;
+	void RemoveResourceModel();
 
 	uint GetUUID();
 	void SetUUID();
