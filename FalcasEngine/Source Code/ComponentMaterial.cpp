@@ -23,7 +23,8 @@ ComponentMaterial::ComponentMaterial(GameObject* owner, char* file) : Component(
 
 ComponentMaterial::~ComponentMaterial()
 {
-
+	if (resource_material != nullptr)
+		App->resources->FreeResource(resource_material);
 }
 
 

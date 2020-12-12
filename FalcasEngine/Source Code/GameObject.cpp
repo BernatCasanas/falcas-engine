@@ -11,6 +11,8 @@
 #include "FileSystem.h"
 #include "Application.h"
 #include "ResourceMesh.h"
+#include "ModuleResources.h"
+#include "ResourceModel.h"
 #include "External Libraries/MathGeoLib/include/MathGeoLib.h"
 
 GameObject::GameObject(int id) : name(""), parent(nullptr), id(id)
@@ -31,6 +33,9 @@ GameObject::GameObject(int id, std::string name, GameObject* parent, float3 posi
 
 GameObject::~GameObject()
 {
+	if (resource_model != nullptr) {
+		App->resources->FreeResource(resource_model);
+	}
 	if (App->scene_intro->game_object_selected == this)
 		App->scene_intro->game_object_selected = nullptr;
 	RemoveFromParent();

@@ -8,6 +8,7 @@
 #include "Importer.h"
 #include "External Libraries/ImGui/imgui.h"
 #include "ResourceMesh.h"
+#include "ModuleResources.h"
 
 ComponentMesh::ComponentMesh(GameObject* owner) :Component(Component_Type::Mesh, owner, "Mesh")
 {
@@ -15,7 +16,9 @@ ComponentMesh::ComponentMesh(GameObject* owner) :Component(Component_Type::Mesh,
 
 ComponentMesh::~ComponentMesh()
 {
-	
+	if (resource_mesh != nullptr) {
+		App->resources->FreeResource(resource_mesh);
+	}
 }
 
 void ComponentMesh::Update()
