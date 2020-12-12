@@ -165,6 +165,25 @@ update_status ModuleInput::PreUpdate(float dt)
 					mat->ChangeResourceMaterial((ResourceMaterial*)App->resources->RequestResource(id));
 					break;
 				}
+				case FILE_TYPE::MESH:
+				{
+					uint id = std::stoi(App->filesystem->GetFileName(e.drop.file, true));
+					Resource* resource = App->resources->GetResource(id);
+					if (resource == nullptr)
+						break;
+					
+					GameObject* game_object = App->scene_intro->game_object_selected;
+					if (game_object == nullptr || game_object == App->scene_intro->root) {
+						game_object = App->scene_intro->CreateGameObject(App->filesystem->GetFileName(resource->GetAssetsFile(), true), App->scene_intro->root);
+					}
+					ComponentMesh *mesh;
+					if (game_object->HasComponentType(Component_Type::Mesh))
+						mesh = (ComponentMesh*)App->scene_intro->game_object_selected->GetComponent(Component_Type::Mesh);
+					else
+						mesh = (ComponentMesh*)game_object->CreateComponent(Component_Type::Mesh);
+					mesh->ChangeResourceMesh((ResourceMesh*)App->resources->RequestResource(id));
+					break;
+				}
 				case FILE_TYPE::PNG:
 				case FILE_TYPE::TGA:
 				App->resources->ImportFileToLibrary(e.drop.file, true);

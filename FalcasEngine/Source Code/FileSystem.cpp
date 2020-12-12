@@ -86,6 +86,7 @@ FILE_TYPE FileSystem::GetTypeFile(std::string file)
 	else if (file == "TGA" || file == "tga")return FILE_TYPE::TGA;
 	else if (file == "falcasmodel")return FILE_TYPE::MODEL;
 	else if (file == "meta")return FILE_TYPE::META;
+	else if (file == "falcasmesh")return FILE_TYPE::MESH;
 	else return FILE_TYPE::UNKNOWN;
 }
 
