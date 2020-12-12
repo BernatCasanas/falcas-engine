@@ -11,6 +11,7 @@
 #include "ComponentMesh.h"
 #include "Importer.h"
 #include "ModuleResources.h"
+#include "Resource.h"
 
 #define MAX_KEYS 300
 
@@ -146,9 +147,22 @@ update_status ModuleInput::PreUpdate(float dt)
 				}
 				case FILE_TYPE::DDS:
 				{
-					ComponentMaterial* mat = (ComponentMaterial*)App->scene_intro->game_object_selected->GetComponent(Component_Type::Material);
-					mat->ChangeResourceMaterial((ResourceMaterial*)App->resources->RequestResource(std::stoi(App->filesystem->GetFileName(e.drop.file, true))));
-					LOG("HE");
+					uint id = std::stoi(App->filesystem->GetFileName(e.drop.file, true));
+					Resource* resource = App->resources->GetResource(id);
+					if (resource == nullptr) {
+						App->resources->ImportFileToLibrary(e.drop.file, true);
+						break;
+					}
+					GameObject* game_object = App->scene_intro->game_object_selected;
+					if (game_object == nullptr || game_object == App->scene_intro->root) {
+						game_object = App->scene_intro->CreateGameObject(App->filesystem->GetFileName(resource->GetAssetsFile(), true), App->scene_intro->root);
+					}
+					ComponentMaterial* mat;
+					if (game_object->HasComponentType(Component_Type::Material))
+						mat = (ComponentMaterial*)App->scene_intro->game_object_selected->GetComponent(Component_Type::Material);
+					else
+						mat = (ComponentMaterial*)game_object->CreateComponent(Component_Type::Material);
+					mat->ChangeResourceMaterial((ResourceMaterial*)App->resources->RequestResource(id));
 					break;
 				}
 				case FILE_TYPE::PNG:
