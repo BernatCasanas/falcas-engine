@@ -140,9 +140,7 @@ update_status ModuleInput::PreUpdate(float dt)
 				switch (App->filesystem->GetTypeFile(e.drop.file)) {
 				case FILE_TYPE::FBX:
 				{
-					//App->filesystem->SaveInternal()
 					App->resources->ImportFileToLibrary(e.drop.file, true);
-					//ImportFBX(e.drop.file);
 					break;
 				}
 				case FILE_TYPE::DDS:
@@ -187,26 +185,6 @@ update_status ModuleInput::PreUpdate(float dt)
 				case FILE_TYPE::PNG:
 				case FILE_TYPE::TGA:
 				App->resources->ImportFileToLibrary(e.drop.file, true);
-				/*
-				{
-					if (App->scene_intro->game_object_selected != nullptr) {
-						if (App->scene_intro->game_object_selected->HasComponentType(Component_Type::Mesh)) {
-								if (App->scene_intro->game_object_selected->HasComponentType(Component_Type::Material)) {
-									//MaterialImporter::Import((ComponentMaterial*)App->scene_intro->game_object_selected->GetComponent(Component_Type::Material), e.drop.file, false,"");
-								}
-								else {
-									App->scene_intro->game_object_selected->CreateComponent(Component_Type::Material, e.drop.file);
-								}
-						}
-						else {
-							LOG("The game object must have a mesh in order to have a texture");
-						}
-					}
-					else {
-						LOG("You must select a game object to put it a texture.")
-					}
-					break;
-				}*/
 				break;
 				}
 			}

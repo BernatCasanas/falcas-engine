@@ -45,6 +45,7 @@ public:
 
 	uint GetSizePhysFile(std::string file);
 	void DiscoverFiles(const char* directory, std::vector<std::string>& file_list, std::vector<std::string>& dir_list, std::string extension_to_ignore) const;
+	void DiscoverFilesLibrary(const char* directory, std::vector<std::string>& file_list, std::vector<uint>& ids) const;
 
 	std::vector<std::string> GetAllFiles(std::string file, std::vector<std::string> vector_file, std::string extension_file, bool ignore_extension, bool only_extension);
 

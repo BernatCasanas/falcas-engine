@@ -85,6 +85,32 @@ void ComponentMaterial::Inspector()
 		ImGui::SetTooltip(resource_material != nullptr ? resource_material->full_file_name.c_str() : "");
 	}
 
+	if (ImGui::Button("Load Material")) {
+		ImGui::OpenPopup("load material");
+	}
+	if (ImGui::BeginPopupModal("load material")) {
+		std::vector<std::string> files;
+		std::vector<uint> ids;
+		App->filesystem->DiscoverFilesLibrary("Library/Textures", files, ids);
+
+		ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, 5.0f);
+		ImGui::BeginChild("Textures", ImVec2(0, 300), true);
+		for (int i = 0; i < files.size(); i++) {
+			ImGui::Selectable(files[i].c_str());
+			if (ImGui::IsItemClicked()) {
+				ChangeResourceMaterial((ResourceMaterial*)App->resources->RequestResource(ids[i]));
+				ImGui::CloseCurrentPopup();
+			}
+		}
+		ImGui::EndChild();
+		ImGui::PopStyleVar();
+		if (ImGui::Button("Cancel", ImVec2(50, 20)))
+		{
+			ImGui::CloseCurrentPopup();
+		}
+		ImGui::EndPopup();
+	}
+
 	ImGui::Separator();
 
 

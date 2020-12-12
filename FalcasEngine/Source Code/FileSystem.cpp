@@ -6,6 +6,8 @@
 #include "ComponentMaterial.h"
 #include "ComponentMesh.h"
 #include "ComponentTransform.h"
+#include "ModuleResources.h"
+#include "Resource.h"
 #include "External Libraries/MathGeoLib/include/MathGeoLib.h"
 #include <WinBase.h>
 
@@ -163,6 +165,24 @@ void FileSystem::DiscoverFiles(const char* directory, std::vector<std::string>& 
 			if(extension.substr(extension.find_last_of('.') + 1)!=extension_to_ignore)
 				file_list.push_back(*i);
 		}
+	}
+
+	PHYSFS_freeList(rc);
+}
+
+void FileSystem::DiscoverFilesLibrary(const char* directory, std::vector<std::string>& file_list, std::vector<uint>& ids) const
+{
+	char** rc = PHYSFS_enumerateFiles(directory);
+	char** i;
+
+	std::string dir(directory);
+
+	for (i = rc; *i != nullptr; i++)
+	{	
+		uint id = std::stoi(App->filesystem->GetFileName(*i, true));
+		ids.push_back(id);
+		std::string assets_name = App->resources->GetResource(id)->GetAssetsFile();
+		file_list.push_back(App->filesystem->GetFileName(assets_name,true));
 	}
 
 	PHYSFS_freeList(rc);

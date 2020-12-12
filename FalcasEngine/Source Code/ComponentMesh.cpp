@@ -9,6 +9,7 @@
 #include "External Libraries/ImGui/imgui.h"
 #include "ResourceMesh.h"
 #include "ModuleResources.h"
+#include "FileSystem.h"
 
 ComponentMesh::ComponentMesh(GameObject* owner) :Component(Component_Type::Mesh, owner, "Mesh")
 {
@@ -96,7 +97,31 @@ void ComponentMesh::Inspector()
 	if (ImGui::IsItemHovered()) {
 		ImGui::SetTooltip(resource_mesh != nullptr ? resource_mesh->full_file_name.c_str() : "");
 	}
-	
+	if (ImGui::Button("Load Mesh")) {
+		ImGui::OpenPopup("load mesh");
+	}
+	if (ImGui::BeginPopupModal("load mesh")) {
+		std::vector<std::string> files;
+		std::vector<uint> ids;
+		App->filesystem->DiscoverFilesLibrary("Library/Meshes", files, ids);
+		
+		ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, 5.0f);
+		ImGui::BeginChild("Meshes", ImVec2(0, 300), true);
+		for (int i = 0; i < files.size(); i++) {
+			ImGui::Selectable(files[i].c_str());
+			if(ImGui::IsItemClicked()) {
+				ChangeResourceMesh((ResourceMesh*)App->resources->RequestResource(ids[i]));
+				ImGui::CloseCurrentPopup();
+			}
+		}
+		ImGui::EndChild();
+		ImGui::PopStyleVar();
+		if (ImGui::Button("Cancel", ImVec2(50, 20)))
+		{
+			ImGui::CloseCurrentPopup();
+		}
+		ImGui::EndPopup();
+	}
 	ImGui::Separator();
 	
 	ImGui::Columns(2, "", true);
