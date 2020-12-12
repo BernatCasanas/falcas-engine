@@ -551,16 +551,19 @@ void ModuleCentralEditor::Draw()
                 }
                 if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID))
                 {
-                    char* buffer;
-                    std::string path_string_meta = assets_explorer_path + icons[i] + ".meta";
-                    char* path_meta = new char[path_string_meta.size() + 1];
-                    strcpy(path_meta, path_string_meta.c_str());
-                    App->filesystem->LoadPath(path_meta, &buffer);
-                    delete[] path_meta;
-                    JsonObj icon_obj(buffer);
-                    int id = icon_obj.GetInt("ID");
-                    delete[] buffer;
-                    icon_obj.CleanUp();
+                    int id = 0;
+                    if (i > dirs.size()) {
+                        char* buffer;
+                        std::string path_string_meta = assets_explorer_path + icons[i] + ".meta";
+                        char* path_meta = new char[path_string_meta.size() + 1];
+                        strcpy(path_meta, path_string_meta.c_str());
+                        App->filesystem->LoadPath(path_meta, &buffer);
+                        delete[] path_meta;
+                        JsonObj icon_obj(buffer);
+                        id = icon_obj.GetInt("ID");
+                        delete[] buffer;
+                        icon_obj.CleanUp();
+                    }
                     switch (type)
                     {
                          case FILE_TYPE::FBX:
@@ -644,9 +647,10 @@ void ModuleCentralEditor::Draw()
         ImGui::Checkbox("Stencil", &stencil);
         ImGui::Checkbox("Wireframe", &wireframe);
         ImGui::Checkbox("AABBs", &aabbs);
+        ImGui::Checkbox("Raycast", &raycast);
         ImGui::Checkbox("Vertex Normals", &normals_v);
         ImGui::Checkbox("Face Normals", &normals_f);
-        ImGui::Checkbox("Grid", &App->scene_intro->root->components.back()->active);
+        ImGui::Checkbox("Grid", &grid);
         ImGui::Checkbox("Camera Frustums", &frustums);
         ImGui::End();
     }

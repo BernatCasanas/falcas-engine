@@ -321,11 +321,11 @@ void ModuleSceneIntro::SelectGameObjectWithRay(LineSegment ray)
 		LineSegment ray_local = ray;
 		ray_local.Transform(trans->GetGlobalMatrix().Inverted());
 		ComponentMesh* mesh = (ComponentMesh*)it->second->GetComponent(Component_Type::Mesh);
-		/*for (int i = 0; i < mesh->num_indices; i+=3) {
+		for (int i = 0; i < mesh->resource_mesh->num_indices; i+=3) {
 			Triangle tri;
-			tri.a = float3(&mesh->vertices[mesh->indices[i]*3]);
-			tri.b = float3(&mesh->vertices[mesh->indices[i+1] * 3]);
-			tri.c = float3(&mesh->vertices[mesh->indices[i+2] * 3]);
+			tri.a = float3(&mesh->resource_mesh->vertices[mesh->resource_mesh->indices[i]*3]);
+			tri.b = float3(&mesh->resource_mesh->vertices[mesh->resource_mesh->indices[i+1] * 3]);
+			tri.c = float3(&mesh->resource_mesh->vertices[mesh->resource_mesh->indices[i+2] * 3]);
 			float3 point;
 			float distance_local;
 			if (ray_local.Intersects(tri, &distance_local, &point)) {
@@ -339,7 +339,7 @@ void ModuleSceneIntro::SelectGameObjectWithRay(LineSegment ray)
 					break;
 				}
 			}
-		}*/
+		}
 	}
 	game_object_selected = game_obj_selected;
 	App->central_editor->SelectObject(game_object_selected);
@@ -347,7 +347,7 @@ void ModuleSceneIntro::SelectGameObjectWithRay(LineSegment ray)
 
 std::map<float, GameObject*> ModuleSceneIntro::CheckIfGameObjectIsSelectable(GameObject* game_obj, std::map<float, GameObject*> map, LineSegment ray)
 {
-	if (game_obj->id >= 0 && game_obj->HasComponentType(Component_Type::Mesh)) {
+	if (game_obj->id >= 0 && game_obj->HasComponentType(Component_Type::Mesh) && ((ComponentMesh*)game_obj->GetComponent(Component_Type::Mesh))->resource_mesh != nullptr) {
 		if (ray.Intersects(game_obj->GetAABB())) {
 			float distance = Length(game_obj->GetAABB().ClosestPoint(ray.a) - ray.a);
 			map.insert(std::pair<float, GameObject*>(distance, game_obj));

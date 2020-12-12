@@ -16,17 +16,21 @@ ComponentMesh::ComponentMesh(GameObject* owner) :Component(Component_Type::Mesh,
 
 ComponentMesh::~ComponentMesh()
 {
-	if (resource_mesh != nullptr) {
+	if (resource_mesh != nullptr && !App->resources->isResourcesMapEmpty()) {
 		App->resources->FreeResource(resource_mesh);
 	}
+	resource_mesh = nullptr;
+	owner->UpdateAABB();
 }
 
 void ComponentMesh::Update()
 {
 	for (int i = 0; i < App->scene_intro->resources_mesh_to_delete.size(); i++) {
-		if (resource_mesh == App->scene_intro->resources_mesh_to_delete[i]);
-		resource_mesh = nullptr;
-		break;
+		if (resource_mesh == App->scene_intro->resources_mesh_to_delete[i]) {
+			resource_mesh = nullptr;
+			owner->UpdateAABB();
+			break;
+		}
 	}
 	if(!owner->IsCulled())
 		Render();
@@ -69,6 +73,7 @@ void ComponentMesh::ChangeResourceMesh(ResourceMesh* resource_m)
 		App->resources->FreeResource(resource_mesh);
 	}
 	resource_mesh = resource_m;
+	owner->UpdateAABB();
 }
 
 

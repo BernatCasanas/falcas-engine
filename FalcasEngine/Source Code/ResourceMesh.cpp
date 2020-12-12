@@ -14,14 +14,22 @@ ResourceMesh::ResourceMesh(uint ID, Resource_Type type, std::string assets_file)
 
 bool ResourceMesh::CleanUp()
 {
-	if (vertices != nullptr)
+	if (vertices != nullptr) {
 		delete[] vertices;
-	if (indices != nullptr)
+		vertices = nullptr;
+	}
+	if (indices != nullptr) {
 		delete[] indices;
-	if (normals != nullptr)
+		indices = nullptr;
+	}
+	if (normals != nullptr) {
 		delete[] normals;
-	if (texCoords != nullptr)
+		normals = nullptr;
+	}
+	if (texCoords != nullptr) {
 		delete[]texCoords;
+		texCoords = nullptr;
+	}
 	glDeleteBuffers(1, &id_indices);
 	glDeleteBuffers(1, &id_vertices);
 	glDeleteBuffers(1, &id_normals);

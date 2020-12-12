@@ -24,16 +24,19 @@ ComponentMaterial::ComponentMaterial(GameObject* owner, char* file) : Component(
 
 ComponentMaterial::~ComponentMaterial()
 {
-	if (resource_material != nullptr)
+	if (resource_material != nullptr && !App->resources->isResourcesMapEmpty()) {
 		App->resources->FreeResource(resource_material);
+	}
+	resource_material = nullptr;
 }
 
 void ComponentMaterial::Update()
 {
 	for (int i = 0; i < App->scene_intro->resources_material_to_delete.size(); i++) {
-		if (resource_material == App->scene_intro->resources_material_to_delete[i]);
-		resource_material = nullptr;
-		return;
+		if (resource_material == App->scene_intro->resources_material_to_delete[i]) {
+			resource_material = nullptr;
+			return;
+		}
 	}
 }
 

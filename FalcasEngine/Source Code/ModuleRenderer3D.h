@@ -43,7 +43,9 @@ public:
 	std::vector<Frustum> camera_frustums;
 	ComponentCamera* camera_culling = nullptr;
 	ComponentCamera* camera = nullptr;
+	LineSegment raycast;
 
 private:
+	bool CheckIfRaycastIsNull(float3 a, float3 b);
 	bool changed_camera = false;
 };

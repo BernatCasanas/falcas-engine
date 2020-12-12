@@ -196,10 +196,9 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 
 update_status ModuleRenderer3D::Update(float dt)
 {
+	if(App->central_editor->grid)
+		App->scene_intro->grid->DrawGrid();
 
-	//((ComponentMesh*)App->scene_intro->root->GetComponent(Component_Type::Mesh))->grid->DrawGrid();
-	App->scene_intro->grid->DrawGrid();
-	//glColor3f(1, 0, 1);
 	for (int i = 0; i < aabbs.size(); i++) {
 		DrawAABB(aabbs[i]);
 	}
@@ -209,6 +208,13 @@ update_status ModuleRenderer3D::Update(float dt)
 		DrawFrustum(camera_frustums[i]);
 	}
 	camera_frustums.clear();
+
+	if (App->central_editor->raycast && !CheckIfRaycastIsNull(raycast.a, raycast.b)) {
+		glBegin(GL_LINES);
+		glVertex3f(raycast.a.x, raycast.a.y, raycast.a.z);
+		glVertex3f(raycast.b.x, raycast.b.y, raycast.b.z);
+		glEnd();
+	}
 
 	return update_status::UPDATE_CONTINUE;
 }
@@ -342,4 +348,11 @@ void ModuleRenderer3D::ChangeCullingCamera(ComponentCamera* camera_culling_to_ch
 		camera_culling = App->camera->camera;
 	}
 	camera_culling->frustum_culling = true;
+}
+
+bool ModuleRenderer3D::CheckIfRaycastIsNull(float3 a, float3 b)
+{
+	if (a.x == 0 && a.y == 0 && a.z == 0 && b.x == 0 && b.y == 0 && b.z == 0)
+		return true;
+	return false;
 }

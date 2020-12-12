@@ -16,6 +16,8 @@ public:
 	update_status Update(float dt);
 	bool CleanUp();
 
+	bool isResourcesMapEmpty() { return resources.empty(); }
+
 	Resource* GetResource(uint ID);
 	Resource* RequestResource(uint ID);
 	void FreeResource(Resource* resource);

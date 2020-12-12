@@ -94,6 +94,8 @@ public:
 	bool texture = true;
 	bool frustums = false;
 	bool loading_file = false;
+	bool grid = true;
+	bool raycast = false;
 
 	float progress;
 	float progress2;

@@ -33,9 +33,10 @@ GameObject::GameObject(int id, std::string name, GameObject* parent, float3 posi
 
 GameObject::~GameObject()
 {
-	if (resource_model != nullptr) {
+	if (resource_model != nullptr && !App->resources->isResourcesMapEmpty()) {
 		App->resources->FreeResource(resource_model);
 	}
+	resource_model = nullptr;
 	if (App->scene_intro->game_object_selected == this)
 		App->scene_intro->game_object_selected = nullptr;
 	RemoveFromParent();
@@ -228,14 +229,18 @@ void GameObject::NewChild(GameObject* game_obj)
 
 void GameObject::UpdateAABB()
 {
-	if (!HasComponentType(Component_Type::Mesh))
+	if (!HasComponentType(Component_Type::Mesh)) {
+		aabb.SetNegativeInfinity();
 		return;
+	}
 
 	//obb
 	ComponentMesh* mesh = (ComponentMesh*)GetComponent(Component_Type::Mesh);
-	if (mesh == nullptr)
+	if (mesh == nullptr || mesh->resource_mesh == nullptr) {
+		aabb.SetNegativeInfinity();
 		return;
-	//obb = mesh->GetAABB();
+	}
+	obb = mesh->resource_mesh->GetAABB();
 	ComponentTransform* trans = (ComponentTransform*)GetComponent(Component_Type::Transform);
 	obb.Transform(trans->GetGlobalMatrix());
 
