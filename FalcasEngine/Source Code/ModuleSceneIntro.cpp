@@ -141,6 +141,9 @@ update_status ModuleSceneIntro::Update(float dt)
 		glPolygonMode(GL_BACK, GL_FILL);
 	}
 	
+	resources_material_to_delete.clear();
+	resources_mesh_to_delete.clear();
+	resources_model_to_delete.clear();
 
 	return UPDATE_CONTINUE;
 }

@@ -54,6 +54,13 @@ GameObject::~GameObject()
 
 void GameObject::Update()
 {
+	for (int i = 0; i < App->scene_intro->resources_model_to_delete.size(); i++) {
+		if (resource_model == App->scene_intro->resources_model_to_delete[i]) {
+			App->scene_intro->game_objects_to_delete.push_back(id);
+			break;
+		}
+	}
+
 	if (!active)
 		return;
 

@@ -10,6 +10,8 @@ class GameObject;
 class ComponentCamera;
 class Grid;
 class ResourceModel;
+class ResourceMesh;
+class ResourceMaterial;
 class ModuleSceneIntro : public Module
 {
 public:
@@ -49,6 +51,10 @@ public:
 	int id_gameobject;
 	std::vector<int> game_objects_to_delete;
 	bool mouse_on_scene = true;
+
+	std::vector<ResourceMesh*> resources_mesh_to_delete;
+	std::vector<ResourceMaterial*> resources_material_to_delete;
+	std::vector<ResourceModel*> resources_model_to_delete;
 
 private:
 	float width;

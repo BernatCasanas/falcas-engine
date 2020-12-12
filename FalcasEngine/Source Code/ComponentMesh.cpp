@@ -23,6 +23,11 @@ ComponentMesh::~ComponentMesh()
 
 void ComponentMesh::Update()
 {
+	for (int i = 0; i < App->scene_intro->resources_mesh_to_delete.size(); i++) {
+		if (resource_mesh == App->scene_intro->resources_mesh_to_delete[i]);
+		resource_mesh = nullptr;
+		break;
+	}
 	if(!owner->IsCulled())
 		Render();
 }

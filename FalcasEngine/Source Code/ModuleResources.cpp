@@ -6,6 +6,7 @@
 #include "ResourceModel.h"
 #include "ResourceMesh.h"
 #include "aClock.h"
+#include "ModuleSceneIntro.h"
 
 ModuleResources::ModuleResources(Application* app, bool start_enabled) : Module(app, start_enabled, "moduleResources")
 {
@@ -24,7 +25,7 @@ bool ModuleResources::Start()
 
 update_status ModuleResources::Update(float dt)
 {
-	if (Time::gameTimer.stopped/*BERNAT: HERE WILL GO WHEN THE ENGINE IS OFFLINE!!!!!!!!!!!!!!!!!!*/) {
+	if (Time::gameTimer.stopped) {
 		if (update_timer.isStoped())
 			update_timer.Start();
 		if (update_timer.Read() >= 5) {
@@ -237,11 +238,13 @@ void ModuleResources::DeleteResourceLibrary(Resource* resource)
 {
 	if (resource->GetType() == Resource_Type::Model) {
 		ResourceModel* model = (ResourceModel*)RequestResource(resource->GetID());
+		App->scene_intro->resources_model_to_delete.push_back(model);
 		for (std::map<uint, uint>::iterator it = model->meshes.begin(); it != model->meshes.end(); ++it) {
 			DeleteMeshResource((ResourceMesh*)GetResource(it->first));
 		}
-		FreeResource(resource->GetID());
 	}
+	else if (resource->GetType() == Resource_Type::Material)
+		App->scene_intro->resources_material_to_delete.push_back((ResourceMaterial*)resource);
 	App->filesystem->DeleteAFile(resource->GetLibraryFile());
 	std::string assets_file = resource->GetAssetsFile();
 	App->filesystem->DeleteAFile(assets_file  + ".meta");
@@ -249,6 +252,7 @@ void ModuleResources::DeleteResourceLibrary(Resource* resource)
 
 void ModuleResources::DeleteMeshResource(ResourceMesh* resource)
 {
+	App->scene_intro->resources_mesh_to_delete.push_back(resource);
 	App->filesystem->DeleteAFile(resource->GetLibraryFile());
 	int id = resource->GetID();
 	delete resource;

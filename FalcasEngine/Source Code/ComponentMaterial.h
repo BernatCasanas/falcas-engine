@@ -13,6 +13,8 @@ public:
 	ComponentMaterial(GameObject* owner);
 	ComponentMaterial(GameObject* owner, char* file);
 	~ComponentMaterial();
+	void Update();
+
 
 	void ChangeResourceMaterial(ResourceMaterial* resource_mat);
 public:

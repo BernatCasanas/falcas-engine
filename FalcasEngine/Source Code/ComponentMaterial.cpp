@@ -6,6 +6,7 @@
 #include "GameObject.h"
 #include "ResourceMaterial.h"
 #include "ModuleResources.h"
+#include "ModuleSceneIntro.h"
 
 
 
@@ -25,6 +26,15 @@ ComponentMaterial::~ComponentMaterial()
 {
 	if (resource_material != nullptr)
 		App->resources->FreeResource(resource_material);
+}
+
+void ComponentMaterial::Update()
+{
+	for (int i = 0; i < App->scene_intro->resources_material_to_delete.size(); i++) {
+		if (resource_material == App->scene_intro->resources_material_to_delete[i]);
+		resource_material = nullptr;
+		return;
+	}
 }
 
 void ComponentMaterial::ChangeResourceMaterial(ResourceMaterial* resource_mat)
