@@ -8,13 +8,21 @@
 * F: Object Focus
 * Shift + WASD: x2 Speed
 * Alt + Right Click: Orbitate Selected Object
+* Hierarchy Left Mouse Button (Create camera and child)
 
 ## Funcionality 
-* Drag and Drop:
-** FBX
-** PNG
-** DDS
-* Create Primitives in the upside menu
+* Play/Pause/Seed up,down/Stop Game
+* Create Empty Game Object with "+" button
+* Delete, reparent and create game object children
+* Drop Assets files
+* Save Load Scenes
+* View Menu to show stuff (example: console and cameras)
+* Mouse Picking
+* Bounding Volume
+* Frustum culling
+* Library Folder with Models, Textures, Meshes and Scenes
+* Resource System
+* Explorer Windows
 
 ## License
 
