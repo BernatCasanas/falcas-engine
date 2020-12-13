@@ -53,8 +53,13 @@ bool ModuleSceneIntro::Start()
 	game_object_selected = nullptr;
 	int num = 0;
 
-	App->central_editor->LoadScene("streetview_intro.scenefalcas");
-
+	char* buffer;
+	App->filesystem->LoadPath("Assets/street/street_view.FBX.meta", &buffer);
+	JsonObj icon_obj(buffer);
+	ResourceModel* model = (ResourceModel*)App->resources->RequestResource(icon_obj.GetInt("ID"));
+	delete[] buffer;
+	icon_obj.CleanUp();
+	LoadModel(model);
 	return ret;
 }
 
