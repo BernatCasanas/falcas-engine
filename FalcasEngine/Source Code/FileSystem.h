@@ -32,6 +32,8 @@ public:
 	update_status Update(float dt) { return UPDATE_CONTINUE; };
 	bool CleanUp() { return true; };
 
+	void SetWritenDir();
+
 	std::string GetFileName(std::string file, bool has_filename_extension = false);
 	std::string GetPathFile(std::string file);
 	FILE_TYPE GetTypeFile(char* file);

@@ -5,10 +5,9 @@ aClock Time::gameTimer;
 
 int Time::numFrames = 0;
 
-aClock::aClock()
+aClock::aClock() :timeScale(1.0f), paused(false)
 {
-	timeScale = 1.0f;
-	paused = false;
+
 }
 
 void aClock::Start()

@@ -1,5 +1,4 @@
 #include "Application.h"
-#include "Timer.h"
 #include "Module.h"
 #include "ModuleWindow.h"
 #include "ModuleInput.h"
@@ -10,10 +9,7 @@
 #include "Console.h"
 #include "ModuleResources.h"
 #include "FileSystem.h"
-#include <string>
-#include "External Libraries/JSON/parson.h"
 #include "Json.h"
-#include "External Libraries/PhysFS/include/physfs.h"
 #include "aClock.h"
 #include "External Libraries/SDL/include/SDL.h"
 
@@ -71,7 +67,7 @@ bool Application::Init()
 	Module* item;
 
 	Time::Init();
-	PHYSFS_setWriteDir(".");
+	App->filesystem->SetWritenDir();
 	App->filesystem->CreateFolders();
 
 	char* buffer = nullptr;

@@ -44,6 +44,11 @@ bool FileSystem::Start()
 	return true;
 }
 
+void FileSystem::SetWritenDir()
+{
+	PHYSFS_setWriteDir(".");
+}
+
 std::string FileSystem::GetFileName(std::string file, bool has_filename_extension)
 {
 	if (has_filename_extension) {
