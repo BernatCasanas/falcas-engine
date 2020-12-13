@@ -46,13 +46,13 @@ float3 ComponentTransform::GetSize()const
 float3 ComponentTransform::QuaternionToEuler(Quat q)
 {
 	float3 rotation_euler = q.ToEulerXYZ();
-	//rotation_euler *= RADTODEG;
+	rotation_euler *= RADTODEG;
 	return rotation_euler;
 }
 
 Quat ComponentTransform::EulerToQuaternion(float3 eu)
 {
-	//eu *= DEGTORAD;
+	eu *= DEGTORAD;
 	Quat q = Quat::FromEulerXYZ(eu.x, eu.y, eu.z);	
 	return q;
 }
@@ -80,6 +80,7 @@ void ComponentTransform::SetTransformation(float3 pos, Quat rot, float3 size)
 	euler = QuaternionToEuler(rotation);
 	this->size = size;
 	SetMatrices();
+	needed_to_update = true;
 
 }
 
@@ -119,8 +120,6 @@ void ComponentTransform::SetMatrices()
 		global_matrix = parent_trans->GetGlobalMatrix() * local_matrix;
 	}
 	else global_matrix = local_matrix;
-	if (!global_matrix.Equals(global_matrix2)&&needed_to_update_only_children)
-		LOG("HEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
 	global_matrix_transposed = global_matrix.Transposed();
 }
 
@@ -128,9 +127,6 @@ void ComponentTransform::SetMatricesWithNewParent(float4x4 parent_global_matrix)
 {
 	local_matrix = parent_global_matrix.Inverted() * global_matrix;
 	local_matrix.Decompose(position, rotation, size);
-	global_matrix2 = parent_global_matrix * local_matrix;
-	if (!global_matrix.Equals(global_matrix2))
-		LOG("HEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
 	euler = QuaternionToEuler(rotation);
 	needed_to_update=true;
 	needed_to_update_only_children = true;
@@ -156,7 +152,7 @@ void ComponentTransform::Inspector()
 	ImGui::SameLine();
 	ImGui::PushItemWidth(50);
 	if (ImGui::DragFloat("##0", (active && owner->active) ? &position.x : &null, 0.01f) && (active && owner->active))
-		SetPositionToChilds(owner, position);
+		needed_to_update = true;
 	ImGui::PopItemWidth();
 
 	ImGui::NextColumn();
@@ -166,7 +162,7 @@ void ComponentTransform::Inspector()
 	ImGui::SameLine();
 	ImGui::PushItemWidth(50);
 	if (ImGui::DragFloat("##1", (active && owner->active) ? &position.y : &null, 0.01f) && (active && owner->active))
-		SetPositionToChilds(owner, position);
+		needed_to_update = true;
 	ImGui::PopItemWidth();
 
 	ImGui::NextColumn();
@@ -176,7 +172,7 @@ void ComponentTransform::Inspector()
 	ImGui::SameLine();
 	ImGui::PushItemWidth(50);
 	if (ImGui::DragFloat("##2", (active && owner->active) ? &position.z : &null, 0.01f) && (active && owner->active))
-		SetPositionToChilds(owner, position);
+		needed_to_update = true;
 	ImGui::PopItemWidth();
 
 	ImGui::NextColumn();
@@ -190,7 +186,7 @@ void ComponentTransform::Inspector()
 	ImGui::SameLine();
 	ImGui::PushItemWidth(50);
 	if (ImGui::DragFloat("##3", (active && owner->active) ? &euler.x : &null, 0.01f) && (active && owner->active))
-		SetRotationToChilds(owner, euler);
+		needed_to_update = true;
 	ImGui::PopItemWidth();
 
 	ImGui::NextColumn();
@@ -200,7 +196,7 @@ void ComponentTransform::Inspector()
 	ImGui::SameLine();
 	ImGui::PushItemWidth(50);
 	if (ImGui::DragFloat("##4", (active && owner->active) ? &euler.y : &null, 0.01f) && (active && owner->active))
-		SetRotationToChilds(owner, euler);
+		needed_to_update = true;
 	ImGui::PopItemWidth();
 
 	ImGui::NextColumn();
@@ -210,7 +206,7 @@ void ComponentTransform::Inspector()
 	ImGui::SameLine();
 	ImGui::PushItemWidth(50);
 	if (ImGui::DragFloat("##5", (active && owner->active) ? &euler.z : &null, 0.01f) && (active && owner->active))
-		SetRotationToChilds(owner, euler);
+		needed_to_update = true;
 	ImGui::PopItemWidth();
 
 	ImGui::NextColumn();
@@ -224,7 +220,7 @@ void ComponentTransform::Inspector()
 	ImGui::SameLine();
 	ImGui::PushItemWidth(50);
 	if (ImGui::DragFloat("##6", (active && owner->active) ? &size.x : &null, 0.01f) && (active && owner->active))
-		SetSizeToChilds(owner, size);
+		needed_to_update = true;
 	ImGui::PopItemWidth();
 
 	ImGui::NextColumn();
@@ -234,7 +230,7 @@ void ComponentTransform::Inspector()
 	ImGui::SameLine();
 	ImGui::PushItemWidth(50);
 	if (ImGui::DragFloat("##7", (active && owner->active) ? &size.y : &null, 0.01f) && (active && owner->active))
-		SetSizeToChilds(owner, size);
+		needed_to_update = true;
 	ImGui::PopItemWidth();
 
 	ImGui::NextColumn();
@@ -244,46 +240,10 @@ void ComponentTransform::Inspector()
 	ImGui::SameLine();
 	ImGui::PushItemWidth(50);
 	if (ImGui::DragFloat("##8", (active && owner->active) ? &size.z : &null, 0.01f) && (active && owner->active))
-		SetSizeToChilds(owner, size);
+		needed_to_update = true;
 	ImGui::PopItemWidth();
 
 	ImGui::Columns(1, "", false);
 	ImGui::Separator();
 	ImGui::PopID();
-}
-
-void ComponentTransform::SetPositionToChilds(GameObject* game_object, float3 pos)
-{
-	bool has_children = false;
-	ComponentTransform* trans = (ComponentTransform*)game_object->GetComponent(Component_Type::Transform);
-	trans->SetPositionFloat(pos);
-	trans->needed_to_update = true;
-	if (!game_object->children.empty()) has_children = true;
-	for (std::vector<GameObject*>::iterator it = game_object->children.begin(); it != game_object->children.end(); ++it) {
-		SetPositionToChilds((*it), pos);
-	}
-}
-
-void ComponentTransform::SetRotationToChilds(GameObject* game_object, float3 rot)
-{
-	bool has_children = false;
-	ComponentTransform* trans = (ComponentTransform*)game_object->GetComponent(Component_Type::Transform);
-	trans->SetRotationFloat(rot);
-	trans->needed_to_update = true;
-	if (!game_object->children.empty()) has_children = true;
-	for (std::vector<GameObject*>::iterator it = game_object->children.begin(); it != game_object->children.end(); ++it) {
-		SetRotationToChilds((*it), rot);
-	}
-}
-
-void ComponentTransform::SetSizeToChilds(GameObject* game_object, float3 size)
-{
-	bool has_children = false;
-	ComponentTransform* trans = (ComponentTransform*)game_object->GetComponent(Component_Type::Transform);
-	trans->SetSizeFloat(size);
-	trans->needed_to_update = true;
-	if (!game_object->children.empty()) has_children = true;
-	for (std::vector<GameObject*>::iterator it = game_object->children.begin(); it != game_object->children.end(); ++it) {
-		SetSizeToChilds((*it), size);
-	}
 }
