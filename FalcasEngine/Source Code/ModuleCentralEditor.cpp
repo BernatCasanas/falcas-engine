@@ -1069,6 +1069,8 @@ void ModuleCentralEditor::FilesRecursiveTree(const char* path, bool is_in_dock, 
         return;
     ImGui::Indent(ImGui::GetTreeNodeToLabelSpacing());
     for (int i = 0; i < dirs.size(); ++i) {
+        if (resources_window && dirs[i] == "Scenes")
+            continue;
         FilesRecursiveTree((dir + dirs[i]).c_str(), resources_window, is_in_dock, true, base_flags, assets_file_clicked);
     }
     for (int i = 0; i < files.size(); ++i) {
