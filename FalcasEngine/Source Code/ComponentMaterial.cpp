@@ -89,7 +89,7 @@ void ComponentMaterial::Inspector()
 	if (ImGui::BeginPopupModal("load material")) {
 		std::vector<std::string> files;
 		std::vector<uint> ids;
-		App->filesystem->DiscoverFilesLibrary("Library/Textures", files, ids);
+		App->filesystem->DiscoverFilesLibrary("Library/Textures/", files, ids);
 
 		ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, 5.0f);
 		ImGui::BeginChild("Textures", ImVec2(0, 300), true);
