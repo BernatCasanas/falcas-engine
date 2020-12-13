@@ -56,6 +56,7 @@ public:
 	std::vector<ResourceMaterial*> resources_material_to_delete;
 	std::vector<ResourceModel*> resources_model_to_delete;
 
+
 private:
 	float width;
 	float height;

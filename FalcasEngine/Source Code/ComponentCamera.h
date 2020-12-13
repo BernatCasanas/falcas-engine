@@ -32,6 +32,8 @@ public:
 	void SetHorizFov(float num);
 	void SetVerticalFov(float num);
 
+	void ShowFrustrum(bool b);
+
 public:
 	bool update_projection_matrix = false;
 	Frustum frustum;

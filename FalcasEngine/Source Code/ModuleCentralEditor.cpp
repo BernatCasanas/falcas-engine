@@ -35,6 +35,7 @@
 #include "ResourceMesh.h"
 #include "aClock.h";
 #include "Timer.h";
+#include "ModuleCamera3D.h"
 
 ModuleCentralEditor::ModuleCentralEditor(Application* app, bool start_enabled) : Module(app, start_enabled, "moduleCentralEditor"),progress(50.f),progress2(50.f),progress3(50.f), progress4(50.f)
 {
@@ -211,6 +212,10 @@ void ModuleCentralEditor::Draw()
             if (ImGui::MenuItem("OpenGL Options")) {
                 show_openglOptions = !show_openglOptions;
             }
+			if (ImGui::MenuItem("View Camera")) {
+				ViewCameras(show_cameras, App->scene_intro->root);
+				show_cameras = !show_cameras;
+			}
 
             ImGui::EndMenu();
         }
@@ -1120,6 +1125,20 @@ void ModuleCentralEditor::GameControl()
         ImGui::PopStyleColor(5);
     }
     ImGui::End();
+}
+
+void ModuleCentralEditor::ViewCameras(bool active, GameObject* game_object)
+{
+	if (game_object->HasComponentType(Component_Type::Camera))
+	{
+		ComponentCamera* cam = (ComponentCamera*)game_object->GetComponent(Component_Type::Camera);
+		cam->ShowFrustrum(active);
+	}
+	if (game_object->children.size() > 0) {
+		for (std::vector<GameObject*>::iterator it = game_object->children.begin(); it != game_object->children.end(); ++it) {
+			ViewCameras(active, (*it));
+		}
+	}
 }
 
 void ModuleCentralEditor::CreateDock()

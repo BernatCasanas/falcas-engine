@@ -25,6 +25,7 @@ public:
 
 public:
 	ComponentCamera* camera=nullptr;
+
 private:
 	float3 Reference;
 };

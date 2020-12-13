@@ -64,6 +64,8 @@ public:
 
 	void GameControl();
 
+	void ViewCameras(bool active, GameObject* game_object);
+
 public:
 
 	bool show_demo_window = true;
@@ -80,7 +82,7 @@ public:
 	bool show_references_window = true;
 	bool sure_want_close = false;
 
-
+	bool show_cameras = false;
 	bool cullface = false;
 	bool colorMaterial = false;
 	bool ambient = false;

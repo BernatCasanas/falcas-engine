@@ -14,6 +14,7 @@
 #include "ModuleResources.h"
 #include "ResourceModel.h"
 #include "External Libraries/MathGeoLib/include/MathGeoLib.h"
+#include "ModuleCamera3D.h"
 
 GameObject::GameObject(int id) : name(""), parent(nullptr), id(id)
 {

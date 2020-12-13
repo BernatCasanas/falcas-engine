@@ -123,6 +123,11 @@ void ComponentCamera::SetVerticalFov(float num)
 	field_of_view_vertical = num;
 }
 
+void ComponentCamera::ShowFrustrum(bool b)
+{
+	show_frustum = b;
+}
+
 
 void ComponentCamera::Inspector()
 {
