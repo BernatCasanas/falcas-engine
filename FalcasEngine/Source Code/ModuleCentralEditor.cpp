@@ -793,19 +793,16 @@ void ModuleCentralEditor::LoadScene(const char* file)
         else {
             parent = App->scene_intro->root;
         }
-        float3 position = obj.GetFloat3("Translation");
-        Quat q_rotation = { obj.GetFloat3("Rotation"),1 };
-        float3 p_size = obj.GetFloat3("Scale");
 
-        GameObject* gameObject = App->scene_intro->CreateGameObject(position, q_rotation, p_size, obj.GetString("name"), parent);
-        gameObject->parent = parent;
-        gameObject->SetUUID(obj.GetInt("UUID"));
-        
         std::string grid = obj.GetString("name");
         if (grid == "Grid") {
             App->scene_intro->root->SetUUID(obj.GetInt("UUID"));
             continue;
         }
+		GameObject* gameObject = App->scene_intro->CreateGameObject(obj.GetString("name"), parent);
+        gameObject->parent = parent;
+        gameObject->SetUUID(obj.GetInt("UUID"));
+        
 
         JsonArray components = obj.GetArray("Components");
         for(int i = 0; i<components.Size();++i){
@@ -818,14 +815,14 @@ void ModuleCentralEditor::LoadScene(const char* file)
                 trans->SetMatricesWithNewParent(matrix);
             }
             else if (component_name == "Mesh") {
-				ResourceMesh* mesh = (ResourceMesh*)gameObject->CreateComponent(Component_Type::Mesh);
+				ResourceMesh* mesh = (ResourceMesh*)gameObject->CreateComponent(Component_Type::Mesh,comp.GetInt("UUID"));
 				std::string fileName = "Library/Meshes/";
 				fileName += std::to_string(comp.GetInt("UUID"));
 				fileName += ".falcasmesh";
-				char* buffer;
-				App->filesystem->LoadPath((char*)fileName.c_str(),&buffer);
-				MeshImporter::Load(buffer, mesh);
-				delete[] buffer;
+				char* buf;
+				App->filesystem->LoadPath((char*)fileName.c_str(),&buf);
+				if(buf != nullptr) MeshImporter::Load(buf, mesh);
+				delete[] buf;
             }
             else if (component_name == "Material") {
                 ComponentMaterial* mat = (ComponentMaterial*)gameObject->CreateComponent(Component_Type::Material, (char*)comp.GetString("Path"));
@@ -840,7 +837,7 @@ void ModuleCentralEditor::LoadScene(const char* file)
             }
         }
     }
-    scene.CleanUp();
+    //scene.CleanUp();
 }
 
 bool ModuleCentralEditor::ProcessEvents(SDL_Event event)

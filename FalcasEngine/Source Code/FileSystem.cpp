@@ -311,7 +311,10 @@ uint FileSystem::Load(const char* path, char** buffer) const
 
 uint FileSystem::LoadPath(char* file, char** buffer) {
 	PHYSFS_file* fs_file = PHYSFS_openRead(file);
-	if (fs_file == nullptr) return 0;
+	if (fs_file == nullptr) {
+		*buffer = nullptr;
+		return 0;
+	}
 	PHYSFS_sint32 size = (PHYSFS_sint32)PHYSFS_fileLength(fs_file);
 	*buffer = new char[size + 1];
 	PHYSFS_read(fs_file, *buffer, 1, size);

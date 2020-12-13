@@ -116,7 +116,7 @@ void GameObject::Update()
 	
 }
 
-Component* GameObject::CreateComponent(Component_Type type)
+Component* GameObject::CreateComponent(Component_Type type, uint UUID)
 {
 	Component* component = nullptr;
 	if (HasComponentType(type))
@@ -141,7 +141,8 @@ Component* GameObject::CreateComponent(Component_Type type)
 		component->name = "Camera";
 		break;
 	}
-	component->SetUUID();
+	if (UUID == 0) component->SetUUID();
+	else component->SetUUID(UUID);
 	components.push_back(component);
 	
 	return component;

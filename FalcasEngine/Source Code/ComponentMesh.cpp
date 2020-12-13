@@ -60,10 +60,6 @@ void ComponentMesh::Render()
 
 bool ComponentMesh::SaveComponent(JsonObj& obj)
 {
-	//obj.AddString("Path", resource_mesh->libraryPath.c_str());
-	obj.AddString("AssetPath", resource_mesh->full_file_name.c_str());
-	obj.AddInt("MaterialIndex", resource_mesh->materialIndex);
-	obj.AddInt("MeshNumber", this->meshNumber);
 	obj.AddInt("UUID", GetUUID());
 	return true;
 }
