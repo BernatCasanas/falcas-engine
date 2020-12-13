@@ -1,6 +1,5 @@
 #include "Resource.h"
 #include "Application.h"
-#include "FileSystem.h"
 
 Resource::Resource(uint ID, Resource_Type type, std::string assets_file) :ID(ID), type(type), assets_file(assets_file)
 {

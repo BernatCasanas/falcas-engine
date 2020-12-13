@@ -174,5 +174,4 @@ void ResourceMesh::SetAABB()
 {
 	aabb.SetNegativeInfinity();
 	aabb.Enclose((float3*)vertices, num_vertices / 3);
-	//owner->UpdateAABB();
 }

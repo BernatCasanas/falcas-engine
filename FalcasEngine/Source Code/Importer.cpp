@@ -12,6 +12,7 @@
 #include "External Libraries/Assimp/Assimp/include/scene.h"
 #include "Resource.h"
 #include "External Libraries/MathGeoLib/include/Math/Quat.h"
+#include "External Libraries/MathGeoLib/include/Algorithm/Random/LCG.h"
 #include "ModuleResources.h"
 #include "ResourceMesh.h"
 #include <map>
@@ -100,7 +101,6 @@ ComponentMesh* ImportOnlyMesh(GameObject* game_object, std::string libraryPath, 
 void MeshImporter::Import(const aiMesh* ai_mesh, uint ID, char* name)
 {
 	ResourceMesh* mesh = new ResourceMesh(ID, Resource_Type::Mesh, name);
-	mesh->materialIndex = -1;
 	
 	if (ai_mesh == nullptr)
 	{
@@ -146,7 +146,6 @@ void MeshImporter::Import(const aiMesh* ai_mesh, uint ID, char* name)
 			mesh->texCoords[j] = ai_mesh->mTextureCoords[0][i].x;
 			mesh->texCoords[j + 1] = ai_mesh->mTextureCoords[0][i].y;
 		}
-		mesh->materialIndex = ai_mesh->mMaterialIndex;
 	}
 	char* buffer;
 	uint size = MeshImporter::Save(mesh, &buffer);
