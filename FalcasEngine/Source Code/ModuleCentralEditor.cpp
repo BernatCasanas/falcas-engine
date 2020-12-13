@@ -706,7 +706,7 @@ bool ModuleCentralEditor::LoadFile()
             ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, 5.0f);
             ImGui::BeginChild("File Browser", ImVec2(0, 300), true);
             std::string s = "";
-            FilesRecursiveTree("Assets", false, false, true, 0, s);
+            FilesRecursiveTree("Library/Scenes", false, false, true, 0, s);
             ImGui::EndChild();
             ImGui::PopStyleVar();
             ImGui::PushItemWidth(250.f);
@@ -731,6 +731,7 @@ bool ModuleCentralEditor::LoadFile()
             ImGui::SameLine();
             if (ImGui::Button("Yes", ImVec2(50, 20))) {
                 loading_file = !loading_file;
+				sure_want_close = false;
                 LoadScene((const char*)selected_file);
             }
             ImGui::PushItemWidth(250.f);
@@ -754,16 +755,16 @@ bool ModuleCentralEditor::SaveScene(const char* name)
 	JsonArray arr = scene.AddArray("GameObjects");
 	SaveAllGameObjectsTree(App->scene_intro->root, arr);
 	scene.Save(&buffer);
-	char file[150] = "Library/Scenes/scene.scenefalcas";
-    std::string fileName = name;
-    std::string baseName = name;
-	for (int i = 0; App->filesystem->FileExists(name); i++) {
-        fileName = App->filesystem->GetFileName(name, true);
-        if (i != 0) fileName =  baseName + std::to_string(i);
+	char file[150];
+	sprintf_s(file, 150, "Library/Scenes/%s.scenefalcas", name);
+    std::string fileName = file;
+	for (int i = 0; App->filesystem->FileExists(file); i++) {
+        fileName = App->filesystem->GetFileName(file, true);
+        if (i != 0) fileName =  name + std::to_string(i);
 		sprintf_s(file, 150, "Library/Scenes/%s.scenefalcas", fileName.c_str());
 	}
 	App->filesystem->SaveInternal(file, buffer, strlen(buffer));
-    scene.CleanUp();
+	scene.CleanUp();
 	return true;
 }
 
@@ -812,11 +813,16 @@ void ModuleCentralEditor::LoadScene(const char* file)
                 trans->SetMatricesWithNewParent(matrix);
             }
             else if (component_name == "Mesh") {
-                //ComponentMesh* mesh = ImportOnlyMesh(gameObject, comp.GetString("Path"), comp.GetString("AssetPath"), comp.GetInt("MeshNumber"));
-                //mesh->materialIndex = comp.GetInt("MaterialIndex");
+				ResourceMesh* mesh = (ResourceMesh*)gameObject->CreateComponent(Component_Type::Mesh);
+				std::string fileName = "Library/Meshes/";
+				fileName += std::to_string(comp.GetInt("UUID"));
+				fileName += ".falcasmesh";
+				char* buffer;
+				App->filesystem->LoadPath((char*)fileName.c_str(),&buffer);
+				MeshImporter::Load(buffer, mesh);
+				delete[] buffer;
             }
             else if (component_name == "Material") {
-                //IDEAS
                 ComponentMaterial* mat = (ComponentMaterial*)gameObject->CreateComponent(Component_Type::Material, (char*)comp.GetString("Path"));
             }
             else if (component_name == "Camera") {
@@ -845,8 +851,6 @@ bool ModuleCentralEditor::ProcessEvents(SDL_Event event)
 
 void ModuleCentralEditor::FilesRecursiveTree(const char* path, bool is_in_dock, bool resources_window, bool is_directory, static ImGuiTreeNodeFlags base_flags, std::string& assets_file_clicked)
 {
-    if (!strcmp(path, "Library/Scenes"))
-        return;
     ImGuiTreeNodeFlags final_flags = base_flags;
     if (!is_directory) {
         final_flags |= ImGuiTreeNodeFlags_Leaf;
@@ -1039,7 +1043,6 @@ void ModuleCentralEditor::SaveAllGameObjectsTree(GameObject* game_object, JsonAr
 			SaveAllGameObjectsTree((*it), arr);
 		}
 	}
-    obj.CleanUp();
 }
 
 void ModuleCentralEditor::DeleteAllGameObjects(GameObject* game_object)
