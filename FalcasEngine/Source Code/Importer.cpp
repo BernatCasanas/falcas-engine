@@ -335,7 +335,7 @@ void GetAllMeshes(ResourceModel* mod, const aiScene* scene, aiNode* node, uint p
 		int num_material = ai_mesh->mMaterialIndex;
 		scene->mMaterials[num_material]->GetTexture(aiTextureType_DIFFUSE, 0, &material_path);
 		std::string path = App->filesystem->GetPathFile(file);
-		path += material_path.C_Str();
+		path += App->filesystem->GetFileName(material_path.C_Str(), false);
 		uint texUUID = 0;
 		if (material_path.length > 0 && App->filesystem->FileExists(path)) {
 			std::string metapath = path + ".meta";
