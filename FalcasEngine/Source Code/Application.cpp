@@ -171,7 +171,7 @@ void Application::StartGame()
 	{
 		inGame = true;
 		Time::gameTimer.Start();
-		//App->central_editor->SaveScene("temp");
+		App->central_editor->SaveScene("temp");
 	}
 }
 
@@ -195,7 +195,7 @@ void Application::StopGame()
 	{
 		inGame = false;
 		Time::gameTimer.Stop();
-		//App->central_editor->LoadScene("Library/Scenes/temp.scenefalcas");
+		App->central_editor->LoadScene("Library/Scenes/temp.scenefalcas");
 	}
 }
 
