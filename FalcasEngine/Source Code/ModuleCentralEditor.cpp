@@ -7,6 +7,7 @@
 #include "External Libraries/ImGui/imgui_impl_opengl3.h"
 #include "External Libraries/SDL/include/SDL.h"
 #include "External Libraries/SDL/include/SDL_opengl.h"
+#include "External Libraries/ImGuizmo/ImGuizmo.h"
 #include <string>
 #include <Windows.h>
 #include <stdio.h>
@@ -123,6 +124,8 @@ update_status ModuleCentralEditor::PreUpdate(float dt)
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplSDL2_NewFrame(App->window->window);
     ImGui::NewFrame();
+    ImGuizmo::BeginFrame();
+
     int i = 0;
     
     if (fr_arr.size() >= 50) {
@@ -143,9 +146,84 @@ update_status ModuleCentralEditor::PreUpdate(float dt)
 
     return UPDATE_CONTINUE;
 }
+void EditTransform(const float* cameraView, float* cameraProjection, float* matrix, bool editTransformDecomposition)
+{
+    static ImGuizmo::OPERATION mCurrentGizmoOperation(ImGuizmo::TRANSLATE);
+    static ImGuizmo::MODE mCurrentGizmoMode(ImGuizmo::LOCAL);
+    static bool useSnap = false;
+    static float snap[3] = { 1.f, 1.f, 1.f };
+    static float bounds[] = { -0.5f, -0.5f, -0.5f, 0.5f, 0.5f, 0.5f };
+    static float boundsSnap[] = { 0.1f, 0.1f, 0.1f };
+    static bool boundSizing = false;
+    static bool boundSizingSnap = false;
+
+    if (editTransformDecomposition)
+    {
+        if (ImGui::IsKeyPressed(90))
+            mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
+        if (ImGui::IsKeyPressed(69))
+            mCurrentGizmoOperation = ImGuizmo::ROTATE;
+        if (ImGui::IsKeyPressed(82)) // r Key
+            mCurrentGizmoOperation = ImGuizmo::SCALE;
+        if (ImGui::RadioButton("Translate", mCurrentGizmoOperation == ImGuizmo::TRANSLATE))
+            mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
+        ImGui::SameLine();
+        if (ImGui::RadioButton("Rotate", mCurrentGizmoOperation == ImGuizmo::ROTATE))
+            mCurrentGizmoOperation = ImGuizmo::ROTATE;
+        ImGui::SameLine();
+        if (ImGui::RadioButton("Scale", mCurrentGizmoOperation == ImGuizmo::SCALE))
+            mCurrentGizmoOperation = ImGuizmo::SCALE;
+        float matrixTranslation[3], matrixRotation[3], matrixScale[3];
+        ImGuizmo::DecomposeMatrixToComponents(matrix, matrixTranslation, matrixRotation, matrixScale);
+        ImGui::InputFloat3("Tr", matrixTranslation);
+        ImGui::InputFloat3("Rt", matrixRotation);
+        ImGui::InputFloat3("Sc", matrixScale);
+        ImGuizmo::RecomposeMatrixFromComponents(matrixTranslation, matrixRotation, matrixScale, matrix);
+
+        if (mCurrentGizmoOperation != ImGuizmo::SCALE)
+        {
+            if (ImGui::RadioButton("Local", mCurrentGizmoMode == ImGuizmo::LOCAL))
+                mCurrentGizmoMode = ImGuizmo::LOCAL;
+            ImGui::SameLine();
+            if (ImGui::RadioButton("World", mCurrentGizmoMode == ImGuizmo::WORLD))
+                mCurrentGizmoMode = ImGuizmo::WORLD;
+        }
+        if (ImGui::IsKeyPressed(83))
+            useSnap = !useSnap;
+        ImGui::Checkbox("", &useSnap);
+        ImGui::SameLine();
+
+        switch (mCurrentGizmoOperation)
+        {
+        case ImGuizmo::TRANSLATE:
+            ImGui::InputFloat3("Snap", &snap[0]);
+            break;
+        case ImGuizmo::ROTATE:
+            ImGui::InputFloat("Angle Snap", &snap[0]);
+            break;
+        case ImGuizmo::SCALE:
+            ImGui::InputFloat("Scale Snap", &snap[0]);
+            break;
+        }
+        ImGui::Checkbox("Bound Sizing", &boundSizing);
+        if (boundSizing)
+        {
+            ImGui::PushID(3);
+            ImGui::Checkbox("", &boundSizingSnap);
+            ImGui::SameLine();
+            ImGui::InputFloat3("Snap", boundsSnap);
+            ImGui::PopID();
+        }
+    }
+    ImGuiIO& io = ImGui::GetIO();
+    ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.y);
+    ImGuizmo::Manipulate(cameraView, cameraProjection, mCurrentGizmoOperation, mCurrentGizmoMode, matrix, NULL, useSnap ? &snap[0] : NULL, boundSizing ? bounds : NULL, boundSizingSnap ? boundsSnap : NULL);
+}
 
 update_status ModuleCentralEditor::PostUpdate(float dt)
 {
+  
+   
     //SHORTCUTS
     if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT)
         show_console = !show_console;
@@ -170,8 +248,11 @@ update_status ModuleCentralEditor::PostUpdate(float dt)
     return UPDATE_CONTINUE;
 }
 
+
 void ModuleCentralEditor::Draw()
 {
+    
+
 
     { // UPSIDE BAR
         ImGui::BeginMainMenuBar();
@@ -557,7 +638,7 @@ void ModuleCentralEditor::Draw()
                 if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID))
                 {
                     int id = 0;
-                    if (i > dirs.size()) {
+                    if (i >= dirs.size()) {
                         char* buffer;
                         std::string path_string_meta = assets_explorer_path + icons[i] + ".meta";
                         char* path_meta = new char[path_string_meta.size() + 1];
@@ -689,7 +770,6 @@ void ModuleCentralEditor::Draw()
     // Update and Render additional Platform Windows
         // (Platform functions may change the current OpenGL context, so we save/restore it to make it easier to paste this code elsewhere.
         //  For this specific demo app we could also call SDL_GL_MakeCurrent(window, gl_context) directly)
-
     ImGuiIO& io = ImGui::GetIO();
     if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
     {
@@ -698,6 +778,63 @@ void ModuleCentralEditor::Draw()
         ImGui::UpdatePlatformWindows();
         ImGui::RenderPlatformWindowsDefault();
         SDL_GL_MakeCurrent(backup_current_window, backup_current_context);
+    }
+
+
+    
+}
+
+void ModuleCentralEditor::DrawImGuizmo()
+{
+    App->camera->stop_selecting = false;
+    if (App->scene_intro->game_object_selected == nullptr)
+        return;
+  
+    float4x4 matrix = ((ComponentTransform*)App->scene_intro->game_object_selected->GetComponent(Component_Type::Transform))->GetGlobalMatrixTransposed();
+    ImGuizmo::SetDrawlist();
+
+
+    ImVec2 windowSize = ImGui::GetWindowSize();
+    ImVec2 windowPos = ImGui::GetWindowPos();
+    ImVec2 min = ImGui::GetWindowContentRegionMin();
+    min.x += windowPos.x;
+    min.y += windowPos.y;
+    windowSize.y -= min.y - windowPos.y;
+
+    ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, ImGui::GetWindowSize().x, ImGui::GetWindowSize().y);
+
+    float mat[16];
+    memcpy(mat, matrix.ptr(), 16 * sizeof(float));
+    
+    ImGuizmo::OPERATION operation;
+    switch (App->scene_intro->input_letter) {
+    case Guizmos_Input_Letters::W:
+        operation = ImGuizmo::TRANSLATE;
+        break;
+    case Guizmos_Input_Letters::E:
+        operation = ImGuizmo::ROTATE;
+        break;
+    case Guizmos_Input_Letters::R:
+        operation = ImGuizmo::SCALE;
+        break;
+    }
+
+    ImGuizmo::Manipulate(App->renderer3D->camera->GetViewMatrix(), App->renderer3D->camera->GetProjectionMatrix(), operation, ImGuizmo::LOCAL, mat);
+
+    if (ImGuizmo::IsOver()) {
+        App->camera->stop_selecting = true;
+    }
+    else {
+        App->camera->stop_selecting = false;
+    }
+    if (ImGuizmo::IsUsing()) {
+        float4x4 matrix_updated;
+        matrix_updated.Set(mat);
+        matrix = matrix_updated.Transposed();
+        float3 translation, size;
+        Quat rotation;
+        matrix.Decompose(translation, rotation, size);
+        ((ComponentTransform*)App->scene_intro->game_object_selected->GetComponent(Component_Type::Transform))->SetTransformation(translation, rotation, size);
     }
 }
 
@@ -929,6 +1066,8 @@ void ModuleCentralEditor::FilesRecursiveTree(const char* path, bool is_in_dock, 
         return;
     ImGui::Indent(ImGui::GetTreeNodeToLabelSpacing());
     for (int i = 0; i < dirs.size(); ++i) {
+        if (resources_window && dirs[i] == "Scenes")
+            continue;
         FilesRecursiveTree((dir + dirs[i]).c_str(), resources_window, is_in_dock, true, base_flags, assets_file_clicked);
     }
     for (int i = 0; i < files.size(); ++i) {

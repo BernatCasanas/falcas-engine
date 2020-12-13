@@ -12,6 +12,13 @@ class Grid;
 class ResourceModel;
 class ResourceMesh;
 class ResourceMaterial;
+
+enum class Guizmos_Input_Letters {
+	W,
+	E,
+	R,
+};
+
 class ModuleSceneIntro : public Module
 {
 public:
@@ -56,7 +63,7 @@ public:
 	std::vector<ResourceMaterial*> resources_material_to_delete;
 	std::vector<ResourceModel*> resources_model_to_delete;
 
-
+	Guizmos_Input_Letters input_letter = Guizmos_Input_Letters::W;
 private:
 	float width;
 	float height;

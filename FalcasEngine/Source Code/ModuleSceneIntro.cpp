@@ -7,6 +7,7 @@
 #include "External Libraries/MathGeoLib/include/Math/Quat.h"
 #include "External Libraries/MathGeoLib/include/Geometry/LineSegment.h"
 #include "External Libraries/MathGeoLib/include/Geometry/Triangle.h"
+#include "External Libraries/SDL/include/SDL_scancode.h"
 #include "ComponentMesh.h"
 #include "ComponentMaterial.h"
 #include "ComponentCamera.h"
@@ -21,6 +22,7 @@
 #include "ResourceMesh.h"
 #include "ModuleResources.h"
 #include "ResourceModel.h"
+#include "ModuleInput.h"
 
 
 
@@ -99,6 +101,8 @@ void ModuleSceneIntro::Draw(GLuint tex)
 		}
 		ImGui::EndDragDropTarget();
 	}
+
+	App->central_editor->DrawImGuizmo();
 	ImGui::End();
 	ImGui::PopStyleVar();
 
@@ -124,6 +128,14 @@ int ModuleSceneIntro::GetID()
 update_status ModuleSceneIntro::Update(float dt)
 {
 	root->Update();
+	if (App->input->GetMouseButton(3) == KEY_IDLE) {
+		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN|| App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+			input_letter = Guizmos_Input_Letters::W;
+		if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT)
+			input_letter = Guizmos_Input_Letters::E;
+		if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT)
+			input_letter = Guizmos_Input_Letters::R;
+	}
 
 	for (int i = 0; i < game_objects_to_delete.size(); i++) {
 		GameObject* game_object = SearchGameObject(game_objects_to_delete[i], root);

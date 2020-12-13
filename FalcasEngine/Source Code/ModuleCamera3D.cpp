@@ -57,7 +57,7 @@ update_status ModuleCamera3D::Update(float dt)
 	if(!App->scene_intro->mouse_on_scene)
 		return UPDATE_CONTINUE;
 	
-	if (App->input->GetMouseButton(SDL_BUTTON_LEFT)==KEY_DOWN && App->input->GetKey(SDL_SCANCODE_LALT) == KEY_IDLE) {
+	if (App->input->GetMouseButton(SDL_BUTTON_LEFT)==KEY_DOWN && App->input->GetKey(SDL_SCANCODE_LALT) == KEY_IDLE&&!stop_selecting) {
 		float x = App->input->GetMouseX();
 		float y = App->input->GetMouseY();
 		float scene_x, scene_y, scene_width, scene_height;

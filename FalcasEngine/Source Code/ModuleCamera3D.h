@@ -25,6 +25,7 @@ public:
 
 public:
 	ComponentCamera* camera=nullptr;
+	bool stop_selecting = false;
 
 private:
 	float3 Reference;

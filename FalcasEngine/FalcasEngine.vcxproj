@@ -18,6 +18,10 @@
     <ClCompile Include="Source Code\ComponentMaterial.cpp" />
     <ClCompile Include="Source Code\ComponentMesh.cpp" />
     <ClCompile Include="Source Code\ComponentTransform.cpp" />
+    <ClCompile Include="Source Code\External Libraries\ImGuizmo\ImCurveEdit.cpp" />
+    <ClCompile Include="Source Code\External Libraries\ImGuizmo\ImGradient.cpp" />
+    <ClCompile Include="Source Code\External Libraries\ImGuizmo\ImGuizmo.cpp" />
+    <ClCompile Include="Source Code\External Libraries\ImGuizmo\ImSequencer.cpp" />
     <ClCompile Include="Source Code\External Libraries\JSON\parson.c" />
     <ClCompile Include="Source Code\External Libraries\MathGeoLib\include\Algorithm\GJK.cpp" />
     <ClCompile Include="Source Code\External Libraries\MathGeoLib\include\Math\float3.cpp" />
@@ -87,6 +91,11 @@
     <ClInclude Include="Source Code\ComponentMaterial.h" />
     <ClInclude Include="Source Code\ComponentMesh.h" />
     <ClInclude Include="Source Code\ComponentTransform.h" />
+    <ClInclude Include="Source Code\External Libraries\ImGuizmo\ImCurveEdit.h" />
+    <ClInclude Include="Source Code\External Libraries\ImGuizmo\ImGradient.h" />
+    <ClInclude Include="Source Code\External Libraries\ImGuizmo\ImGuizmo.h" />
+    <ClInclude Include="Source Code\External Libraries\ImGuizmo\ImSequencer.h" />
+    <ClInclude Include="Source Code\External Libraries\ImGuizmo\ImZoomSlider.h" />
     <ClInclude Include="Source Code\External Libraries\JSON\parson.h" />
     <ClInclude Include="Source Code\External Libraries\MathGeoLib\include\Algorithm\GJK.h" />
     <ClInclude Include="Source Code\External Libraries\MathGeoLib\include\Math\float3.h" />

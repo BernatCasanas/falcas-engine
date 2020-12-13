@@ -43,6 +43,7 @@ public:
 	update_status PostUpdate(float dt);
 
 	void Draw();
+	void DrawImGuizmo();
 
 	bool LoadFile();
 	bool SaveScene(const char* file);
