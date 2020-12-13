@@ -34,8 +34,7 @@ public:
 	float* vertices = nullptr;
 	float* normals = nullptr;
 	uint* indices = nullptr;
-	//COULD BE TEMPORAL
-	int materialIndex = -1;
+
 private:
 	AABB aabb;
 

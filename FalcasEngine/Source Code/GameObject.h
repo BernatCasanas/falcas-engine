@@ -58,5 +58,5 @@ private:
 	AABB aabb;
 	OBB obb;
 	bool culled = false;
-	uint uuid;
+	uint uuid = 0;
 };

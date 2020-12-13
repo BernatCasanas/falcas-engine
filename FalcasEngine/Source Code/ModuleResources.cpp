@@ -276,7 +276,6 @@ Resource* ModuleResources::CreateNewResource(uint ID, std::string assets_file)
 		break;
 	}
 	
-	//Resource* resource = new Resource(ID, res_type, assets_file);
 	return resource;
 }
 

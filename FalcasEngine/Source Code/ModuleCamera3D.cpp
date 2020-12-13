@@ -11,10 +11,6 @@
 #include "ComponentTransform.h"
 #include "ComponentCamera.h"
 #include "ModuleWindow.h"
-
-
-
-//////TEMPORAL
 #include "ModuleRenderer3D.h"
 ModuleCamera3D::ModuleCamera3D(Application* app, bool start_enabled) : Module(app, start_enabled, "moduleCamera")
 {

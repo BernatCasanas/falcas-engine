@@ -100,10 +100,10 @@ public:
 	bool grid = true;
 	bool raycast = false;
 
-	float progress;
-	float progress2;
-	float progress3;
-	float progress4;
+	float progress = 0;
+	float progress2 = 0;
+	float progress3 = 0;
+	float progress4 = 0;
 
 	std::list<float> fr_arr;
 	std::list<float> ms_arr;
