@@ -61,10 +61,8 @@ public:
 
 	uint GenerateUUID();
 
-public:
 	uint Load(const char* path, char** buffer) const;
 	uint LoadPath(char* file, char** buffer);
-	int counterMesh;
 };
 
 

@@ -5,6 +5,7 @@
 #include "External Libraries/Glew/include/glew.h"
 #include "External Libraries/MathGeoLib/include/Geometry/AABB.h"
 #include "External Libraries/MathGeoLib/include/Math/float3x3.h"
+#include "External Libraries/MathGeoLib/include/Geometry/LineSegment.h"
 
 
 #define MAX_LIGHTS 8

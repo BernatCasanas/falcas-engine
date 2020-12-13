@@ -1,16 +1,10 @@
 #include "FileSystem.h"
 #include <algorithm>
 #include "Application.h"
-#include "GameObject.h"
-#include "ModuleSceneIntro.h"
-#include "ComponentMaterial.h"
-#include "ComponentMesh.h"
-#include "ComponentTransform.h"
 #include "ModuleResources.h"
 #include "Resource.h"
-#include "External Libraries/MathGeoLib/include/MathGeoLib.h"
 #include <WinBase.h>
-
+#include "External Libraries/MathGeoLib/include/Algorithm/Random/LCG.h"
 #include "External Libraries/PhysFS/include/physfs.h"
 
 #pragma comment(lib, "Source Code/External Libraries/PhysFS/libx86/physfs.lib")
@@ -39,7 +33,6 @@ bool FileSystem::Start()
 
 	PHYSFS_mount("Assets.zip", nullptr, 1);
 
-	counterMesh = 0;
 
 	return true;
 }

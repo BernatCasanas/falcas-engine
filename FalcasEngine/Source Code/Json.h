@@ -1,7 +1,9 @@
 #pragma once
 
 #include "Globals.h"
-#include "External Libraries/MathGeoLib/include/MathGeoLib.h"
+#include "External Libraries/MathGeoLib/include/Math/float4x4.h"
+#include "External Libraries/MathGeoLib/include/Math/Quat.h"
+
 
 class JsonArray;
 
