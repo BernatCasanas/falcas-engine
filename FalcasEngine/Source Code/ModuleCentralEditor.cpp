@@ -557,7 +557,7 @@ void ModuleCentralEditor::Draw()
                 if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID))
                 {
                     int id = 0;
-                    if (i > dirs.size()) {
+                    if (i >= dirs.size()) {
                         char* buffer;
                         std::string path_string_meta = assets_explorer_path + icons[i] + ".meta";
                         char* path_meta = new char[path_string_meta.size() + 1];
