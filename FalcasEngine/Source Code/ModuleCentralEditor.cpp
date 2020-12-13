@@ -1070,10 +1070,9 @@ void ModuleCentralEditor::GameControl()
 {
     bool overlay = true;
     ImVec4 color;
-    //ImGui::SetNextWindowFocus();
     ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav;
     ImGui::SetNextWindowBgAlpha(0.35f);
-    ImGui::SetNextWindowPos({ ImGui::GetMainViewport()->GetCenter().x-160,40 });
+	ImGui::SetNextWindowPos({ ImGui::GetMainViewport()->GetCenter().x-160,40 });
     if (ImGui::Begin("Game", &overlay, window_flags)) {
         Time::gameTimer.timeScale == 0.5 ? color = ImColor::ImColor(0, 128, 0) : color = ImColor::ImColor(192, 192, 192);
         ImGui::PushStyleColor(ImGuiCol_Button, color);

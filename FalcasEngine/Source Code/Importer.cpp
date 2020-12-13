@@ -92,6 +92,7 @@ ComponentMesh* ImportOnlyMesh(GameObject* game_object, std::string libraryPath, 
 	//MeshImporter::Load(App->filesystem->ReadPhysFile(libraryPath, size), mesh);
 
 	aiReleaseImport(scene);
+	delete[] buffer;
 	return mesh;
 }
 

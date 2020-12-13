@@ -28,13 +28,19 @@ public:
 
 	void SetTransformation(float3 pos, Quat rot, float3 size);
 	void SetPosition(float3 pos);
+	void SetPositionFloat(float3 pos);
+	void SetRotationFloat(float3 rotation);
+	void SetSizeFloat(float3 size);
 	void SetRotation(Quat rot);
 	void SetMatrices();
 	void SetMatricesWithNewParent(float4x4 parent_global_matrix);
 	void Inspector();
-
+	void SetPositionToChilds(GameObject* game_object,float3 pos);
+	void SetRotationToChilds(GameObject* game_object, float3 rot);
+	void SetSizeToChilds(GameObject* game_object, float3 size);
 	bool needed_to_update = false;
 	bool needed_to_update_only_children = false;
+
 
 private:
 	float4x4 local_matrix;
