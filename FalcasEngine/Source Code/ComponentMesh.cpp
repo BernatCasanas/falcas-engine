@@ -60,7 +60,7 @@ void ComponentMesh::Render()
 
 bool ComponentMesh::SaveComponent(JsonObj& obj)
 {
-	obj.AddInt("UUID", GetUUID());
+	obj.AddInt("Resource_ID", resource_mesh != nullptr ? resource_mesh->GetID() : 0);
 	return true;
 }
 

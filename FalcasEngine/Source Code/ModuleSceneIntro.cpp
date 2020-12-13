@@ -291,7 +291,7 @@ void ModuleSceneIntro::LoadModel(ResourceModel* model)
 		Quat rot;
 		transform.Decompose(pos, rot, size);
 		((ComponentTransform*)child->GetComponent(Component_Type::Transform))->SetTransformation(pos, rot, size);
-		((ComponentMesh*)child->CreateComponent(Component_Type::Mesh,id_mesh))->ChangeResourceMesh((ResourceMesh*)App->resources->RequestResource(id_mesh));
+		((ComponentMesh*)child->CreateComponent(Component_Type::Mesh))->ChangeResourceMesh((ResourceMesh*)App->resources->RequestResource(id_mesh));
 		if (id_texture != 0) {
 			((ComponentMaterial*)child->CreateComponent(Component_Type::Material))->ChangeResourceMaterial((ResourceMaterial*)App->resources->RequestResource(id_texture));
 		}

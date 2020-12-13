@@ -21,7 +21,7 @@ public:
 
 	void Update();
 
-	Component* CreateComponent(Component_Type type, uint UUID = 0);
+	Component* CreateComponent(Component_Type type);
 	Component* CreateComponent(Component_Type type, char* file);
 	Component* GetComponent(Component_Type type) const;
 	void DeleteComponent(Component_Type type);

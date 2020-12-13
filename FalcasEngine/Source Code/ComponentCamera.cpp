@@ -55,7 +55,6 @@ bool ComponentCamera::SaveComponent(JsonObj& obj)
 	obj.AddFloat("FrustumNear", GetNearPlaneDistance());
 	obj.AddFloat("FrustumHfov", GetHorizFov());
 	obj.AddFloat("FrustumVfov", GetVerticalFov());
-	obj.AddInt("UUID", GetUUID());
 	return true;
 }
 

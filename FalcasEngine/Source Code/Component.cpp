@@ -37,18 +37,3 @@ void Component::Inspector()
 		to_delete = true;
 	}
 }
-
-uint Component::GetUUID()
-{
-	return uuid;
-}
-
-void Component::SetUUID()
-{
-	uuid = LCG().Int();
-}
-
-void Component::SetUUID(uint uuid)
-{
-	this->uuid = uuid;
-}

@@ -600,6 +600,8 @@ void ModuleCentralEditor::Draw()
         }
         float total_icons_per_line = ImGui::GetColumnWidth(-1) / 64;
         total_icons_per_line--;
+        if (total_icons_per_line < 1)
+            total_icons_per_line = 1;
         std::vector<std::string> files;
         std::vector<std::string> icons;
         std::vector<std::string> dirs;
@@ -912,7 +914,8 @@ bool ModuleCentralEditor::SaveScene(const char* name)
 
 void ModuleCentralEditor::LoadScene(const char* file)
 {
-    DeleteAllGameObjects(App->scene_intro->root);
+    delete App->scene_intro->root;
+    App->scene_intro->root = App->scene_intro->CreateGameObject("Grid");
     char* buffer;
     App->filesystem->LoadPath((char*)file, &buffer);
     JsonObj scene(buffer);
@@ -947,26 +950,23 @@ void ModuleCentralEditor::LoadScene(const char* file)
             std::string component_name = comp.GetString("name");
             if (component_name == "Transform") {
                 ComponentTransform* trans = (ComponentTransform*)gameObject->GetComponent(Component_Type::Transform);
-                trans->SetUUID(comp.GetInt("UUID"));
                 float4x4 matrix = comp.GetFloat4x4("GlobalMatrix");
                 trans->SetMatricesWithNewParent(matrix);
             }
             else if (component_name == "Mesh") {
-				ResourceMesh* mesh = (ResourceMesh*)gameObject->CreateComponent(Component_Type::Mesh,comp.GetInt("UUID"));
-				std::string fileName = "Library/Meshes/";
-				fileName += std::to_string(comp.GetInt("UUID"));
-				fileName += ".falcasmesh";
-				char* buf;
-				App->filesystem->LoadPath((char*)fileName.c_str(),&buf);
-				if(buf != nullptr) MeshImporter::Load(buf, mesh);
-				delete[] buf;
+				ComponentMesh* mesh = (ComponentMesh*)gameObject->CreateComponent(Component_Type::Mesh);
+                uint id=comp.GetInt("Resource_ID");
+                if (id != 0)
+                    mesh->ChangeResourceMesh((ResourceMesh*)App->resources->RequestResource(id));
             }
             else if (component_name == "Material") {
-                ComponentMaterial* mat = (ComponentMaterial*)gameObject->CreateComponent(Component_Type::Material, (char*)comp.GetString("Path"));
+                ComponentMaterial* mat = (ComponentMaterial*)gameObject->CreateComponent(Component_Type::Material);
+                uint id = comp.GetInt("Resource_ID");
+                if (id != 0)
+                    mat->ChangeResourceMaterial((ResourceMaterial*)App->resources->RequestResource(id));
             }
             else if (component_name == "Camera") {
                 ComponentCamera* cam = (ComponentCamera*)gameObject->CreateComponent(Component_Type::Camera);
-                cam->SetUUID(comp.GetInt("UUID"));
                 cam->SetFarPlaneDistance(comp.GetFloat("FrustumFar"));
                 cam->SetNearPlaneDistance(comp.GetFloat("FrustumNear"));
                 cam->SetHorizFov(comp.GetFloat("FrustumHfov"));

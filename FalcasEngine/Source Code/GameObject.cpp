@@ -116,7 +116,7 @@ void GameObject::Update()
 	
 }
 
-Component* GameObject::CreateComponent(Component_Type type, uint UUID)
+Component* GameObject::CreateComponent(Component_Type type)
 {
 	Component* component = nullptr;
 	if (HasComponentType(type))
@@ -141,8 +141,6 @@ Component* GameObject::CreateComponent(Component_Type type, uint UUID)
 		component->name = "Camera";
 		break;
 	}
-	if (UUID == 0) component->SetUUID();
-	else component->SetUUID(UUID);
 	components.push_back(component);
 	
 	return component;
@@ -158,7 +156,6 @@ Component* GameObject::CreateComponent(Component_Type type, char* file)
 			component = new ComponentMaterial(this, file);
 			break;
 		}
-		component->SetUUID();
 		components.push_back(component);
 	}
 	return component;
@@ -318,22 +315,8 @@ bool GameObject::SaveGameObject(JsonObj& obj)
 		obj.AddInt("Parent UUID", parent->GetUUID());
 	}
 	obj.AddString("name", this->name.c_str());
-	JsonArray transArr = obj.AddArray("Translation");
-	transArr.AddInt(trans->GetPosition().x);
-	transArr.AddInt(trans->GetPosition().y);
-	transArr.AddInt(trans->GetPosition().z);
-
-	transArr = obj.AddArray("Scale");
-	transArr.AddInt(trans->GetSize().x);
-	transArr.AddInt(trans->GetSize().y);
-	transArr.AddInt(trans->GetSize().z);
-
-	transArr = obj.AddArray("Rotation");
-	transArr.AddInt(trans->GetRotation().x);
-	transArr.AddInt(trans->GetRotation().y);
-	transArr.AddInt(trans->GetRotation().z);
-
-	transArr = obj.AddArray("Components");
+	
+	 JsonArray transArr = obj.AddArray("Components");
 	for (std::vector<Component*>::iterator it = components.begin(); it!=components.end(); it++) {
 		JsonObj componentObject;
 		transArr.AddObject(componentObject);
