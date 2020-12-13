@@ -845,7 +845,10 @@ bool ModuleCentralEditor::SaveScene(const char* name)
 void ModuleCentralEditor::LoadScene(const char* file)
 {
     delete App->scene_intro->root;
-    App->scene_intro->root = App->scene_intro->CreateGameObject("Grid");
+    App->scene_intro->id_gameobject = -1;
+    App->scene_intro->root = new GameObject(App->scene_intro->id_gameobject, "Grid", nullptr, { 0,0,0 }, Quat::identity, { 1,1,1 });
+    App->scene_intro->root->SetUUID();
+    App->scene_intro->id_gameobject++;
     char* buffer;
     App->filesystem->LoadPath((char*)file, &buffer);
     JsonObj scene(buffer);
@@ -881,7 +884,10 @@ void ModuleCentralEditor::LoadScene(const char* file)
             if (component_name == "Transform") {
                 ComponentTransform* trans = (ComponentTransform*)gameObject->GetComponent(Component_Type::Transform);
                 float4x4 matrix = comp.GetFloat4x4("GlobalMatrix");
-                trans->SetMatricesWithNewParent(matrix);
+                float3 pos, size;
+                Quat rot;
+                matrix.Decompose(pos, rot, size);
+                trans->SetTransformation(pos, rot, size);
             }
             else if (component_name == "Mesh") {
 				ComponentMesh* mesh = (ComponentMesh*)gameObject->CreateComponent(Component_Type::Mesh);
