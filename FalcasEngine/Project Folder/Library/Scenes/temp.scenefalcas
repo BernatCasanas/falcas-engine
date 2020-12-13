@@ -1,0 +1,223 @@
+{
+    "name": "scene",
+    "GameObjects": [
+        {
+            "UUID": 1379650495,
+            "name": "Grid",
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1
+                    ]
+                }
+            ]
+        },
+        {
+            "UUID": 2057032668,
+            "Parent UUID": 1379650495,
+            "name": "Camera",
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1
+                    ]
+                },
+                {
+                    "name": "Camera",
+                    "FrustumFar": 1000,
+                    "FrustumNear": 0.10000000149011612,
+                    "FrustumHfov": 1.5415822267532349,
+                    "FrustumVfov": 1
+                }
+            ]
+        },
+        {
+            "UUID": 1950782473,
+            "Parent UUID": 1379650495,
+            "name": "Futuristic combat jet",
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1
+                    ]
+                }
+            ]
+        },
+        {
+            "UUID": 2015321140,
+            "Parent UUID": 1950782473,
+            "name": "Futuristic combat jet (1)",
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        -1.1920928244535389e-07,
+                        0.99999988079071045,
+                        0,
+                        0,
+                        -0.99999988079071045,
+                        -1.1920928244535389e-07,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1
+                    ]
+                },
+                {
+                    "name": "Mesh",
+                    "Resource_ID": 64595888
+                }
+            ]
+        },
+        {
+            "UUID": 731601338,
+            "Parent UUID": 1950782473,
+            "name": "Futuristic combat jet (2)",
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        -1.1920928244535389e-07,
+                        0.99999988079071045,
+                        0,
+                        0,
+                        -0.99999988079071045,
+                        -1.1920928244535389e-07,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1
+                    ]
+                },
+                {
+                    "name": "Mesh",
+                    "Resource_ID": 144536509
+                }
+            ]
+        },
+        {
+            "UUID": 980357171,
+            "Parent UUID": 1950782473,
+            "name": "Futuristic combat jet (3)",
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        -1.1920928244535389e-07,
+                        0.99999988079071045,
+                        0,
+                        0,
+                        -0.99999988079071045,
+                        -1.1920928244535389e-07,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1
+                    ]
+                },
+                {
+                    "name": "Mesh",
+                    "Resource_ID": 1508958291
+                }
+            ]
+        },
+        {
+            "UUID": 1327905203,
+            "Parent UUID": 1950782473,
+            "name": "Futuristic combat jet (4)",
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        -1.1920928244535389e-07,
+                        0.99999988079071045,
+                        0,
+                        0,
+                        -0.99999988079071045,
+                        -1.1920928244535389e-07,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1
+                    ]
+                },
+                {
+                    "name": "Mesh",
+                    "Resource_ID": 1524797703
+                }
+            ]
+        }
+    ]
+}
