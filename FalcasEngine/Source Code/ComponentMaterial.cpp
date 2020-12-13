@@ -19,7 +19,6 @@ ComponentMaterial::ComponentMaterial(GameObject* owner) : Component(Component_Ty
 ComponentMaterial::ComponentMaterial(GameObject* owner, char* file) : Component(Component_Type::Material, owner, "Material")
 {
 	ImportDefaultTexture(this);
-	//MaterialImporter::Import(file, false,"");
 }
 
 ComponentMaterial::~ComponentMaterial()

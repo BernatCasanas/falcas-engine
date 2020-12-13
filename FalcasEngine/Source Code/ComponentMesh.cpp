@@ -5,7 +5,6 @@
 #include "GameObject.h"
 #include "ComponentMaterial.h"
 #include "ComponentMesh.h"
-#include "Importer.h"
 #include "External Libraries/ImGui/imgui.h"
 #include "ResourceMesh.h"
 #include "ModuleResources.h"

@@ -21,7 +21,6 @@ public:
 	bool show_normals_v = false;
 	bool show_normals_f = false;
 	float length_normals = 1;
-	int  meshNumber = 0;
 	ResourceMesh* resource_mesh = nullptr;
 	
 
