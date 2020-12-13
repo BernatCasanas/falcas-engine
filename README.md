@@ -15,7 +15,7 @@
 * Create Empty Game Object with "+" button
 * Delete, reparent and create game object children
 * Drop Assets files
-* Save Load Scenes
+* Save/Load Scenes
 * View Menu to show stuff (example: console and cameras)
 * Mouse Picking
 * Bounding Volume
