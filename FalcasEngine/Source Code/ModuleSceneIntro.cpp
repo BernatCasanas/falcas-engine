@@ -53,6 +53,7 @@ bool ModuleSceneIntro::Start()
 	game_object_selected = nullptr;
 	int num = 0;
 
+	App->central_editor->LoadScene("Library/Scenes/streetview_intro.scenefalcas");
 
 	return ret;
 }
