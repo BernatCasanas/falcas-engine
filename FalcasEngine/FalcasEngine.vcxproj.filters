@@ -34,6 +34,9 @@
     <Filter Include="External Libraries\JSON">
       <UniqueIdentifier>{0b9fe58f-540c-43e6-8173-2ea1d53046a2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="External Libraries\ImGuizmo">
+      <UniqueIdentifier>{568666c4-1cc6-4332-adac-15c46467cb31}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source Code\Application.cpp">
@@ -236,6 +239,18 @@
     </ClCompile>
     <ClCompile Include="Source Code\aClock.cpp">
       <Filter>Source Code</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\External Libraries\ImGuizmo\ImCurveEdit.cpp">
+      <Filter>External Libraries\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\External Libraries\ImGuizmo\ImGradient.cpp">
+      <Filter>External Libraries\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\External Libraries\ImGuizmo\ImGuizmo.cpp">
+      <Filter>External Libraries\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\External Libraries\ImGuizmo\ImSequencer.cpp">
+      <Filter>External Libraries\ImGuizmo</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -628,6 +643,21 @@
     </ClInclude>
     <ClInclude Include="Source Code\aClock.h">
       <Filter>Source Code</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External Libraries\ImGuizmo\ImCurveEdit.h">
+      <Filter>External Libraries\ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External Libraries\ImGuizmo\ImGradient.h">
+      <Filter>External Libraries\ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External Libraries\ImGuizmo\ImGuizmo.h">
+      <Filter>External Libraries\ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External Libraries\ImGuizmo\ImSequencer.h">
+      <Filter>External Libraries\ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External Libraries\ImGuizmo\ImZoomSlider.h">
+      <Filter>External Libraries\ImGuizmo</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
