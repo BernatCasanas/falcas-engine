@@ -8,6 +8,7 @@ class GameObject;
 enum class Component_Type {
 	Uknown = -1,
 	Transform,
+	Transform2D,
 	Mesh,
 	Material,
 	Camera,

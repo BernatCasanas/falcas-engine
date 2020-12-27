@@ -9,14 +9,15 @@
 
 class Component;
 class ComponentTransform;
+class ComponentTransform2D;
 class ResourceModel;
 enum class Component_Type;
 
 class GameObject {
 public:
-	GameObject(int id);
-	GameObject(int id, std::string name, GameObject* parent);
-	GameObject(int id, std::string name, GameObject* parent, float3 position, Quat rotation, float3 size);
+	GameObject(int id, bool is_ui = false);
+	GameObject(int id, std::string name, GameObject* parent, bool is_ui = false);
+	GameObject(int id, std::string name, GameObject* parent, float3 position, Quat rotation, float3 size, bool is_ui = false);
 	~GameObject();
 
 	void Update();
@@ -34,6 +35,7 @@ public:
 	bool CheckParentRecursively(GameObject* game_object_to_check);
 	bool IsInsideFrustumCulling();
 	bool IsCulled() const;
+	bool IsUI() const { return is_ui; } 
 	AABB GetAABB()const;
 	void RemoveResourceModel();
 
@@ -55,6 +57,8 @@ public:
 	ResourceModel* resource_model= nullptr;
 private:
 	ComponentTransform* trans = nullptr;
+	ComponentTransform2D* trans2D = nullptr;
+	bool is_ui = false;
 	AABB aabb;
 	OBB obb;
 	bool culled = false;

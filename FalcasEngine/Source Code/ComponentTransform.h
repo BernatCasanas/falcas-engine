@@ -28,9 +28,6 @@ public:
 
 	void SetTransformation(float3 pos, Quat rot, float3 size);
 	void SetPosition(float3 pos);
-	void SetPositionFloat(float3 pos);
-	void SetRotationFloat(float3 rotation);
-	void SetSizeFloat(float3 size);
 	void SetRotation(Quat rot);
 	void SetMatrices();
 	void SetMatricesWithNewParent(float4x4 parent_global_matrix);

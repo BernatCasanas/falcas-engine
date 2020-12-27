@@ -27,6 +27,7 @@
 #include "FileSystem.h"
 #include <algorithm>
 #include "ComponentTransform.h"
+#include "ComponentTransform2D.h"
 #include "ComponentMesh.h"
 #include "ComponentMaterial.h"
 #include "ComponentCamera.h"
@@ -228,8 +229,14 @@ void ModuleCentralEditor::Draw()
             ImGui::EndMenu();
         }
         if (ImGui::BeginMenu("GameObject")) {
-            if (ImGui::MenuItem("Create Empty")) {
-                App->scene_intro->CreateGameObject("GameObject", App->scene_intro->root);
+            if (ImGui::BeginMenu("Create Empty")) {
+                if (ImGui::MenuItem("Empty 3D Gameobject")) {
+                    App->scene_intro->CreateGameObject("GameObject", App->scene_intro->root);
+                }
+                if (ImGui::MenuItem("Empty 2D Gameobject (UI)")) {
+                    App->scene_intro->CreateGameObject("GameObject 2D", App->scene_intro->root, true);
+                }
+                ImGui::EndMenu();
             }
             if (ImGui::MenuItem("Create Camera")) {
                 GameObject* game_object = App->scene_intro->CreateGameObject("Camera", App->scene_intro->root);
@@ -486,14 +493,16 @@ void ModuleCentralEditor::Draw()
                 ImGui::OpenPopup("create_component");
             if (ImGui::BeginPopup("create_component"))
             {
-                if (ImGui::Selectable("Component Mesh")) {
-                    App->scene_intro->game_object_selected->CreateComponent(Component_Type::Mesh);
-                }
-                if (ImGui::Selectable("Component Material")) {
-                    App->scene_intro->game_object_selected->CreateComponent(Component_Type::Material);
-                }
-                if (ImGui::Selectable("Component Camera")) {
-                    App->scene_intro->game_object_selected->CreateComponent(Component_Type::Camera);
+                if (!App->scene_intro->game_object_selected->IsUI()) {
+                    if (ImGui::Selectable("Component Mesh")) {
+                        App->scene_intro->game_object_selected->CreateComponent(Component_Type::Mesh);
+                    }
+                    if (ImGui::Selectable("Component Material")) {
+                        App->scene_intro->game_object_selected->CreateComponent(Component_Type::Material);
+                    }
+                    if (ImGui::Selectable("Component Camera")) {
+                        App->scene_intro->game_object_selected->CreateComponent(Component_Type::Camera);
+                    }
                 }
                 ImGui::EndPopup();
             }
@@ -718,8 +727,14 @@ void ModuleCentralEditor::DrawImGuizmo()
     App->camera->stop_selecting = false;
     if (App->scene_intro->game_object_selected == nullptr)
         return;
-  
-    float4x4 matrix = ((ComponentTransform*)App->scene_intro->game_object_selected->GetComponent(Component_Type::Transform))->GetGlobalMatrixTransposed();
+    
+    float4x4 matrix;
+    if (App->scene_intro->game_object_selected->IsUI()) {
+        matrix = ((ComponentTransform2D*)App->scene_intro->game_object_selected->GetComponent(Component_Type::Transform2D))->GetGlobalMatrixTransposed();
+    }
+    else {
+        matrix = ((ComponentTransform*)App->scene_intro->game_object_selected->GetComponent(Component_Type::Transform))->GetGlobalMatrixTransposed();
+    }
     ImGuizmo::SetDrawlist();
 
 

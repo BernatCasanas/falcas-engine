@@ -166,11 +166,11 @@ update_status ModuleSceneIntro::Update(float dt)
 	return UPDATE_CONTINUE;
 }
 
-GameObject* ModuleSceneIntro::CreateGameObject(std::string name, GameObject* parent)
+GameObject* ModuleSceneIntro::CreateGameObject(std::string name, GameObject* parent, bool is_ui)
 {
 	GameObject* game_object = nullptr;
 	name = CheckNameGameObject(name);
-	game_object = new GameObject(App->scene_intro->id_gameobject, name, parent);
+	game_object = new GameObject(App->scene_intro->id_gameobject, name, parent, is_ui);
 	if (game_object != nullptr) {
 		App->scene_intro->id_gameobject++;
 		if (parent != nullptr) {
@@ -181,20 +181,6 @@ GameObject* ModuleSceneIntro::CreateGameObject(std::string name, GameObject* par
 	return game_object;
 }
 
-GameObject* ModuleSceneIntro::CreateGameObject(float3 position, Quat rotation, float3 size, std::string name, GameObject* parent)
-{
-	GameObject* game_object = nullptr;
-	name = CheckNameGameObject(name);
-	game_object = new GameObject(App->scene_intro->id_gameobject, name, parent, position, rotation, size);
-	if (game_object != nullptr) {
-		App->scene_intro->id_gameobject++;
-		if (parent != nullptr) {
-			parent->children.push_back(game_object);
-		}
-		game_object->SetUUID();
-	}
-	return game_object;
-}
 
 
 

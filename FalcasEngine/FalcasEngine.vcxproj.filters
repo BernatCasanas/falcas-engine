@@ -252,6 +252,12 @@
     <ClCompile Include="Source Code\External Libraries\ImGuizmo\ImSequencer.cpp">
       <Filter>External Libraries\ImGuizmo</Filter>
     </ClCompile>
+    <ClCompile Include="Source Code\ModuleUI.cpp">
+      <Filter>Source Code</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\ComponentTransform2D.cpp">
+      <Filter>Source Code</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source Code\Application.h">
@@ -658,6 +664,12 @@
     </ClInclude>
     <ClInclude Include="Source Code\External Libraries\ImGuizmo\ImZoomSlider.h">
       <Filter>External Libraries\ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\ModuleUI.h">
+      <Filter>Source Code</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\ComponentTransform2D.h">
+      <Filter>Source Code</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

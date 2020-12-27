@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "Component.h"
 #include "ComponentTransform.h"
+#include "ComponentTransform2D.h"
 #include "ComponentCamera.h"
 #include "ComponentMesh.h"
 #include "Application.h"
@@ -16,19 +17,35 @@
 #include "External Libraries/MathGeoLib/include/MathGeoLib.h"
 #include "ModuleCamera3D.h"
 
-GameObject::GameObject(int id) : name(""), parent(nullptr), id(id)
+GameObject::GameObject(int id, bool is_ui) : name(""), parent(nullptr), id(id), is_ui(is_ui)
 {
-	trans= (ComponentTransform*)CreateComponent(Component_Type::Transform);
+	if (is_ui) {
+		trans2D = (ComponentTransform2D*)CreateComponent(Component_Type::Transform2D);
+	}
+	else {
+		trans = (ComponentTransform*)CreateComponent(Component_Type::Transform);
+	}
 }
-GameObject::GameObject(int id, std::string name, GameObject* parent) : name(name), parent(parent), id(id)
+GameObject::GameObject(int id, std::string name, GameObject* parent, bool is_ui) : name(name), parent(parent), id(id), is_ui(is_ui)
 {
-	trans= (ComponentTransform*)CreateComponent(Component_Type::Transform);
+	if (is_ui) {
+		trans2D = (ComponentTransform2D*)CreateComponent(Component_Type::Transform2D);
+	}
+	else {
+		trans = (ComponentTransform*)CreateComponent(Component_Type::Transform);
+	}
 }
 
-GameObject::GameObject(int id, std::string name, GameObject* parent, float3 position, Quat rotation, float3 size) : name(name), parent(parent), id(id)
+GameObject::GameObject(int id, std::string name, GameObject* parent, float3 position, Quat rotation, float3 size, bool is_ui) : name(name), parent(parent), id(id), is_ui(is_ui)
 {
-	AddComponentToGameObject(new ComponentTransform(this, position, rotation, size));
-	trans = (ComponentTransform*)GetComponent(Component_Type::Transform);
+	if (is_ui) {
+		AddComponentToGameObject(new ComponentTransform2D(this, { position.x,position.y }, { rotation.x,rotation.y }, { size.x,size.y }));
+		trans2D = (ComponentTransform2D*)GetComponent(Component_Type::Transform2D);
+	}
+	else {
+		AddComponentToGameObject(new ComponentTransform(this, position, rotation, size));
+		trans = (ComponentTransform*)GetComponent(Component_Type::Transform);
+	}
 }
 
 
@@ -66,7 +83,7 @@ void GameObject::Update()
 	if (!active)
 		return;
 
-	if (trans->needed_to_update)
+	if (!is_ui && trans->needed_to_update)
 		UpdateAABB();
 	
 	if (id > 0 && App->renderer3D->camera_culling->GetIfIsFrustumCulling() && HasComponentType(Component_Type::Mesh) && !IsInsideFrustumCulling())
@@ -101,16 +118,32 @@ void GameObject::Update()
 		}
 		if (culled)
 			children[i]->culled;
-		if (trans->needed_to_update_only_children) {
-			children[i]->trans->SetMatricesWithNewParent(trans->GetGlobalMatrix());
+		if (!is_ui) {
+			if (trans->needed_to_update_only_children) {
+				children[i]->trans->SetMatricesWithNewParent(trans->GetGlobalMatrix());
+			}
+			if (trans->needed_to_update) {
+				children[i]->trans->needed_to_update = true;
+			}
 		}
-		if (trans->needed_to_update) {
-			children[i]->trans->needed_to_update = true;
+		else {
+			if (trans2D->needed_to_update_only_children) {
+				children[i]->trans2D->SetMatricesWithNewParent(trans2D->GetGlobalMatrix());
+			}
+			if (trans2D->needed_to_update) {
+				children[i]->trans2D->needed_to_update = true;
+			}
 		}
 		children[i]->Update();
 	}
-	trans->needed_to_update_only_children = false;
-	trans->needed_to_update = false;
+	if (is_ui) {
+		trans2D->needed_to_update_only_children = false;
+		trans2D->needed_to_update = false;
+	}
+	else {
+		trans->needed_to_update_only_children = false;
+		trans->needed_to_update = false;
+	}
 	if (App->central_editor->aabbs)
 		App->renderer3D->aabbs.push_back(aabb);
 	
@@ -127,6 +160,10 @@ Component* GameObject::CreateComponent(Component_Type type)
 	case Component_Type::Transform:
 		component = new ComponentTransform(this, { 0,0,0 }, Quat::identity, { 1,1,1 });
 		component->name = "Transform";
+		break;
+	case Component_Type::Transform2D:
+		component = new ComponentTransform2D(this, { 0,0 }, { 0,0 }, { 1,1 });
+		component->name = "Transform2D";
 		break;
 	case Component_Type::Mesh:
 		component = new ComponentMesh(this);
@@ -179,7 +216,6 @@ void GameObject::DeleteComponent(Component_Type type)
 	if (!HasComponentType(type)) {
 		return;
 	}
-	ComponentTransform* t = (ComponentTransform*)components.front();
 	for (std::vector<Component*>::iterator it = components.begin(); it != components.end(); ++it) {
 		if ((*it)->type == type) {
 			delete (*it);
@@ -223,7 +259,13 @@ void GameObject::NewChild(GameObject* game_obj)
 {
 	children.push_back(game_obj);
 	game_obj->parent = this;
-	game_obj->trans->SetMatricesWithNewParent(trans->GetGlobalMatrix());
+	if (is_ui) {
+		game_obj->trans2D->SetMatricesWithNewParent(trans->GetGlobalMatrix());
+
+	}
+	else {
+		game_obj->trans->SetMatricesWithNewParent(trans->GetGlobalMatrix());
+	}
 }
 
 void GameObject::UpdateAABB()

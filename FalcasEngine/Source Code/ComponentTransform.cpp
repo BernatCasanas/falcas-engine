@@ -1,4 +1,5 @@
 #include "ComponentTransform.h"
+#include "ComponentTransform2D.h"
 #include "External Libraries/ImGui/imgui.h"
 #include "External Libraries/MathGeoLib/include/Math/float3x3.h"
 #include "GameObject.h"
@@ -90,21 +91,6 @@ void ComponentTransform::SetPosition(float3 pos)
 	SetMatrices();
 }
 
-void ComponentTransform::SetPositionFloat(float3 pos)
-{
-	this->position = pos;
-}
-
-void ComponentTransform::SetRotationFloat(float3 rotation)
-{
-	this->euler = rotation;
-}
-
-void ComponentTransform::SetSizeFloat(float3 size)
-{
-	this->size = size;
-}
-
 void ComponentTransform::SetRotation(Quat rot)
 {
 	rotation = rot;
@@ -116,8 +102,14 @@ void ComponentTransform::SetMatrices()
 {
 	local_matrix = local_matrix.FromTRS(position, rotation, size);
 	if (owner->parent != nullptr) {
-		ComponentTransform* parent_trans = (ComponentTransform*)owner->parent->GetComponent(Component_Type::Transform);
-		global_matrix = parent_trans->GetGlobalMatrix() * local_matrix;
+		if (owner->parent->IsUI()) {
+			ComponentTransform2D* parent_trans = (ComponentTransform2D*)owner->parent->GetComponent(Component_Type::Transform2D);
+			global_matrix = parent_trans->GetGlobalMatrix() * local_matrix;
+		}
+		else {
+			ComponentTransform* parent_trans = (ComponentTransform*)owner->parent->GetComponent(Component_Type::Transform);
+			global_matrix = parent_trans->GetGlobalMatrix() * local_matrix;
+		}
 	}
 	else global_matrix = local_matrix;
 	global_matrix_transposed = global_matrix.Transposed();
