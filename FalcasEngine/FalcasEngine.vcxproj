@@ -14,7 +14,11 @@
     <ClCompile Include="Source Code\Application.cpp" />
     <ClCompile Include="Source Code\aClock.cpp" />
     <ClCompile Include="Source Code\Component.cpp" />
+    <ClCompile Include="Source Code\ComponentButton.cpp" />
     <ClCompile Include="Source Code\ComponentCamera.cpp" />
+    <ClCompile Include="Source Code\ComponentCheckbox.cpp" />
+    <ClCompile Include="Source Code\ComponentImage.cpp" />
+    <ClCompile Include="Source Code\ComponentInputbox.cpp" />
     <ClCompile Include="Source Code\ComponentMaterial.cpp" />
     <ClCompile Include="Source Code\ComponentMesh.cpp" />
     <ClCompile Include="Source Code\ComponentTransform.cpp" />
@@ -89,7 +93,11 @@
     <ClInclude Include="Source Code\Application.h" />
     <ClInclude Include="Source Code\aClock.h" />
     <ClInclude Include="Source Code\Component.h" />
+    <ClInclude Include="Source Code\ComponentButton.h" />
     <ClInclude Include="Source Code\ComponentCamera.h" />
+    <ClInclude Include="Source Code\ComponentCheckbox.h" />
+    <ClInclude Include="Source Code\ComponentImage.h" />
+    <ClInclude Include="Source Code\ComponentInputbox.h" />
     <ClInclude Include="Source Code\ComponentMaterial.h" />
     <ClInclude Include="Source Code\ComponentMesh.h" />
     <ClInclude Include="Source Code\ComponentTransform.h" />

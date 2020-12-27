@@ -12,6 +12,10 @@ enum class Component_Type {
 	Mesh,
 	Material,
 	Camera,
+	Image,
+	Button,
+	Checkbox,
+	Inputbox,
 	Max,
 };
 

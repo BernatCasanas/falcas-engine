@@ -5,6 +5,10 @@
 #include "ComponentTransform2D.h"
 #include "ComponentCamera.h"
 #include "ComponentMesh.h"
+#include "ComponentImage.h"
+#include "ComponentCheckbox.h"
+#include "ComponentButton.h"
+#include "ComponentInputbox.h"
 #include "Application.h"
 #include "ModuleRenderer3D.h"
 #include "ModuleCentralEditor.h"
@@ -120,18 +124,38 @@ void GameObject::Update()
 			children[i]->culled;
 		if (!is_ui) {
 			if (trans->needed_to_update_only_children) {
-				children[i]->trans->SetMatricesWithNewParent(trans->GetGlobalMatrix());
+				if (children[i]->is_ui) {
+					children[i]->trans2D->SetMatricesWithNewParent(trans->GetGlobalMatrix());
+				}
+				else {
+					children[i]->trans->SetMatricesWithNewParent(trans->GetGlobalMatrix());
+				}
 			}
 			if (trans->needed_to_update) {
-				children[i]->trans->needed_to_update = true;
+				if (children[i]->is_ui) {
+					children[i]->trans2D->needed_to_update = true;
+				}
+				else {
+					children[i]->trans->needed_to_update = true;
+				}
 			}
 		}
 		else {
 			if (trans2D->needed_to_update_only_children) {
-				children[i]->trans2D->SetMatricesWithNewParent(trans2D->GetGlobalMatrix());
+				if (children[i]->is_ui) {
+					children[i]->trans2D->SetMatricesWithNewParent(trans2D->GetGlobalMatrix());
+				}
+				else {
+					children[i]->trans->SetMatricesWithNewParent(trans2D->GetGlobalMatrix());
+				}
 			}
 			if (trans2D->needed_to_update) {
-				children[i]->trans2D->needed_to_update = true;
+				if (children[i]->is_ui) {
+					children[i]->trans2D->needed_to_update = true;
+				}
+				else {
+					children[i]->trans->needed_to_update = true;
+				}
 			}
 		}
 		children[i]->Update();
@@ -176,6 +200,22 @@ Component* GameObject::CreateComponent(Component_Type type)
 	case Component_Type::Camera:
 		component = new ComponentCamera(this, trans);
 		component->name = "Camera";
+		break;
+	case Component_Type::Image:
+		component = new ComponentImage(this);
+		component->name = "Image";
+		break;
+	case Component_Type::Button:
+		component = new ComponentButton(this);
+		component->name = "Button";
+		break;
+	case Component_Type::Checkbox:
+		component = new ComponentCheckbox(this);
+		component->name = "Check Box";
+		break;
+	case Component_Type::Inputbox:
+		component = new ComponentInputbox(this);
+		component->name = "Input Box";
 		break;
 	}
 	components.push_back(component);
@@ -260,11 +300,21 @@ void GameObject::NewChild(GameObject* game_obj)
 	children.push_back(game_obj);
 	game_obj->parent = this;
 	if (is_ui) {
-		game_obj->trans2D->SetMatricesWithNewParent(trans->GetGlobalMatrix());
+		if (game_obj->IsUI()) {
+			game_obj->trans2D->SetMatricesWithNewParent(trans2D->GetGlobalMatrix());
+		}
+		else {
+			game_obj->trans->SetMatricesWithNewParent(trans2D->GetGlobalMatrix());
+		}
 
 	}
 	else {
-		game_obj->trans->SetMatricesWithNewParent(trans->GetGlobalMatrix());
+		if (game_obj->IsUI()) {
+			game_obj->trans2D->SetMatricesWithNewParent(trans->GetGlobalMatrix());
+		}
+		else {
+			game_obj->trans->SetMatricesWithNewParent(trans->GetGlobalMatrix());
+		}
 	}
 }
 

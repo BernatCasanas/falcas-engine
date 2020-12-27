@@ -504,6 +504,20 @@ void ModuleCentralEditor::Draw()
                         App->scene_intro->game_object_selected->CreateComponent(Component_Type::Camera);
                     }
                 }
+                else {
+                    if (ImGui::Selectable("Component Image")) {
+                        App->scene_intro->game_object_selected->CreateComponent(Component_Type::Image);
+                    }
+                    if (ImGui::Selectable("Component Button")) {
+                        App->scene_intro->game_object_selected->CreateComponent(Component_Type::Button);
+                    }
+                    if (ImGui::Selectable("Component Check Box")) {
+                        App->scene_intro->game_object_selected->CreateComponent(Component_Type::Checkbox);
+                    }
+                    if (ImGui::Selectable("Component Input Box")) {
+                        App->scene_intro->game_object_selected->CreateComponent(Component_Type::Inputbox);
+                    }
+                }
                 ImGui::EndPopup();
             }
         }
@@ -781,7 +795,16 @@ void ModuleCentralEditor::DrawImGuizmo()
         float3 translation, size;
         Quat rotation;
         matrix.Decompose(translation, rotation, size);
-        ((ComponentTransform*)App->scene_intro->game_object_selected->GetComponent(Component_Type::Transform))->SetTransformation(translation, rotation, size);
+        if (App->scene_intro->game_object_selected->IsUI()) {
+            float2 pos = { translation.x,translation.y };
+            float2 s = { size.x,size.y };
+            float3 rotate= rotation.ToEulerXYZ();
+            rotate *= RADTODEG;
+            ((ComponentTransform2D*)App->scene_intro->game_object_selected->GetComponent(Component_Type::Transform2D))->SetTransformation(pos, { rotate.x,rotate.y }, s);
+        }
+        else {
+            ((ComponentTransform*)App->scene_intro->game_object_selected->GetComponent(Component_Type::Transform))->SetTransformation(translation, rotation, size);
+        }
     }
 }
 

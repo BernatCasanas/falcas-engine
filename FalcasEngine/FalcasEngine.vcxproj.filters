@@ -258,6 +258,18 @@
     <ClCompile Include="Source Code\ComponentTransform2D.cpp">
       <Filter>Source Code</Filter>
     </ClCompile>
+    <ClCompile Include="Source Code\ComponentImage.cpp">
+      <Filter>Source Code</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\ComponentButton.cpp">
+      <Filter>Source Code</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\ComponentCheckbox.cpp">
+      <Filter>Source Code</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\ComponentInputbox.cpp">
+      <Filter>Source Code</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source Code\Application.h">
@@ -669,6 +681,18 @@
       <Filter>Source Code</Filter>
     </ClInclude>
     <ClInclude Include="Source Code\ComponentTransform2D.h">
+      <Filter>Source Code</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\ComponentImage.h">
+      <Filter>Source Code</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\ComponentButton.h">
+      <Filter>Source Code</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\ComponentCheckbox.h">
+      <Filter>Source Code</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\ComponentInputbox.h">
       <Filter>Source Code</Filter>
     </ClInclude>
   </ItemGroup>
