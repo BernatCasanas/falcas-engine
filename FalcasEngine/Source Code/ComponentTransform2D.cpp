@@ -2,13 +2,17 @@
 #include "ComponentTransform.h"
 #include "External Libraries/ImGui/imgui.h"
 #include "External Libraries/MathGeoLib/include/Math/float3x3.h"
+#include "Application.h"
+#include "ModuleRenderer3D.h"
 #include "GameObject.h"
+#include "ComponentCamera.h"
 
 #define M_PI 3.14159265358979323846f
 
 ComponentTransform2D::ComponentTransform2D(GameObject* owner, float2 position, float2 rotation, float2 size) :Component(Component_Type::Transform2D, owner, "Transform2D"), position(position), rotation(rotation), size(size)
 {
 	SetMatrices();
+	float* camera_view_matrix = App->renderer3D->camera->GetViewMatrix();
 }
 
 ComponentTransform2D::~ComponentTransform2D()
@@ -17,8 +21,7 @@ ComponentTransform2D::~ComponentTransform2D()
 
 void ComponentTransform2D::Update()
 {
-	if (!needed_to_update)
-		return;
+	
 	SetMatrices();
 }
 
@@ -83,11 +86,16 @@ void ComponentTransform2D::SetSize(float2 size)
 }
 void ComponentTransform2D::SetMatrices()
 {
+	
+
+	float3 movement= { 0, 0, 20 };
+	Quat rot= ((ComponentTransform*)App->renderer3D->camera->owner->GetComponent(Component_Type::Transform))->GetRotation();
+	movement = rot * movement;
 	float3 pos, s;
-	Quat rot;
-	pos = { position.x,position.y,0 };
+	pos = ((ComponentTransform*)App->renderer3D->camera->owner->GetComponent(Component_Type::Transform))->GetPosition();
+	pos += movement;
 	s = { size.x,size.y,1 };
-	rot = EulerToQuaternion({ rotation.x,rotation.y,0 });
+	
 	local_matrix = local_matrix.FromTRS(pos, rot, s);
 	if (owner->parent != nullptr) {
 		if (owner->parent->IsUI()) {
@@ -129,6 +137,17 @@ Quat ComponentTransform2D::EulerToQuaternion(float3 eu)
 	eu *= DEGTORAD;
 	Quat q = Quat::FromEulerXYZ(eu.x, eu.y, eu.z);
 	return q;
+}
+
+Quat ComponentTransform2D::LookAt(const float3& point)
+{
+
+	float3 vector = {position.x, position.x, 0};
+	vector = point - vector;
+
+	float3x3 matrix = float3x3::LookAt(float3::unitZ, vector.Normalized(), float3::unitY, float3::unitY);
+	return matrix.ToQuat();
+	
 }
 
 void ComponentTransform2D::Inspector()

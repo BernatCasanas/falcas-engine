@@ -3,6 +3,7 @@
 #include "ModuleResources.h"
 #include "FileSystem.h"
 #include "ResourceModel.h"
+#include "ModuleRenderer3D.h"
 
 ModuleUI::ModuleUI(Application* app, bool start_enabled) : Module(app, start_enabled, "moduleUI")
 {
@@ -88,6 +89,7 @@ update_status ModuleUI::PreUpdate(float dt)
 // Called after all Updates
 update_status ModuleUI::Update(float dt)
 {
+	App->renderer3D->RenderUI();
 	/*for (std::list<UI*>::iterator it = UIs.begin(); it != UIs.end(); it++)
 	{
 		it._Ptr->_Myval->Update(dt);

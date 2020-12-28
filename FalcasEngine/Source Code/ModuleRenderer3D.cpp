@@ -200,6 +200,7 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 
 update_status ModuleRenderer3D::Update(float dt)
 {
+
 	if(App->central_editor->grid)
 		App->scene_intro->grid->DrawGrid();
 
@@ -219,14 +220,7 @@ update_status ModuleRenderer3D::Update(float dt)
 		glVertex3f(raycast.b.x, raycast.b.y, raycast.b.z);
 		glEnd();
 	}
-	/*glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(0.0f, 640, 480, 0.0f, 1.0f, -1.0f);*/
-	App->scene_intro->image->Render();
-	///TEMPORAL
-	/*glMatrixMode(GL_PROJECTION);
-	glLoadMatrixf(camera->GetProjectionMatrix());
-	glMatrixMode(GL_MODELVIEW);*/
+	
 
 	return update_status::UPDATE_CONTINUE;
 }
@@ -234,6 +228,7 @@ update_status ModuleRenderer3D::Update(float dt)
 // PostUpdate present buffer to screen
 update_status ModuleRenderer3D::PostUpdate(float dt)
 {
+
 	glBindVertexArray(0);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glClear(GL_COLOR_BUFFER_BIT);
@@ -337,6 +332,20 @@ void ModuleRenderer3D::OnResize(int width, int height)
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
+}
+
+void ModuleRenderer3D::RenderUI()
+{
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	glOrtho(-10.0f, 10.0f, -10.0f, 10.0f, -0.1f, 100.0f);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadMatrixf(camera->GetViewMatrix());
+	App->scene_intro->image->Render();
+	///TEMPORAL
+	glMatrixMode(GL_PROJECTION);
+	glLoadMatrixf(camera->GetProjectionMatrix());
+	glMatrixMode(GL_MODELVIEW);
 }
 
 void ModuleRenderer3D::ChangeCameraActive(ComponentCamera* camera_to_change)

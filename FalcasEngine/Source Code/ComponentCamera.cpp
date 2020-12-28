@@ -82,6 +82,7 @@ float* ComponentCamera::GetViewMatrix() const
 	
 }
 
+
 float ComponentCamera::GetFarPlaneDistance()
 {
 	return far_plane_distance;

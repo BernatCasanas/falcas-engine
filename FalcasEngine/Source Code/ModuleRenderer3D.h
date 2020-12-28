@@ -28,6 +28,8 @@ public:
 
 	void OnResize(int width, int height);
 
+	void RenderUI();
+
 	void ChangeCameraActive(ComponentCamera* camera);
 	void ChangeCullingCamera(ComponentCamera* camera_culling);
 

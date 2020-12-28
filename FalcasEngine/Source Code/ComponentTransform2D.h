@@ -24,6 +24,8 @@ public:
 	float3 QuaternionToEuler(Quat q);
 	Quat EulerToQuaternion(float3 eu);
 
+	Quat LookAt(const float3& point);
+	
 	void SetTransformation(float2 pos, float2 rot, float2 size);
 	void SetPosition(float2 pos);
 	void SetRotation(float2 rot);
@@ -31,6 +33,10 @@ public:
 	void SetMatrices();
 	void SetMatricesWithNewParent(float4x4 parent_global_matrix);
 	void Inspector();
+
+
+
+public:
 	bool needed_to_update = false;
 	bool needed_to_update_only_children = false;
 

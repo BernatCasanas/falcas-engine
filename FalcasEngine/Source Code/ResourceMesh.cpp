@@ -87,7 +87,7 @@ void ResourceMesh::Render(float* transform, ComponentMaterial* mat, bool show_no
 			glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 			glBindBuffer(GL_ARRAY_BUFFER, id_texCoords);
 			glTexCoordPointer(2, GL_FLOAT, 0, NULL);
-			if (res_mat != nullptr||(!mat->show_default_tex && mat->resource_material != nullptr) ) {
+			if (res_mat != nullptr || (!mat->show_default_tex && mat->resource_material != nullptr)) {
 				if (mat == nullptr) {
 					glBindTexture(GL_TEXTURE_2D, res_mat->texture_id);
 				}

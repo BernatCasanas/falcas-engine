@@ -50,16 +50,6 @@ void ComponentImage::Initialization()
 
 void ComponentImage::Render()
 {
-	float2 pos = trans->GetPosition();
-	float2 size = trans->GetSize();
-	glBegin(GL_QUADS);
-	glVertex3f(pos.x, pos.y + size.y, 0);
-	glVertex3f(pos.x + size.x, pos.y + size.y, 0);
-	glVertex3f(pos.x + size.x, pos.y, 0);
-	glVertex3f(pos.x, pos.y, 0);
-	glEnd();
-	glBindTexture(GL_TEXTURE_2D, resource_material->texture_id);
-	glBindTexture(GL_TEXTURE_2D, 0);
 	resource_mesh->Render((float*)&trans->GetGlobalMatrixTransposed(), nullptr, false, false, false, resource_material);
 }
 
