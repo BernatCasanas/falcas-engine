@@ -378,6 +378,7 @@ void ModelImporter::Import(std::string file, uint ID)
 	uint size = App->filesystem->LoadPath((char*)file.c_str(), &buffer);
 	const aiScene* scene = nullptr;
 	scene = aiImportFileFromMemory(buffer, size, aiProcessPreset_TargetRealtime_MaxQuality, nullptr);
+	std::string error = aiGetErrorString();
 	aiNode* node = scene->mRootNode;
 
 

@@ -186,7 +186,7 @@ Component* GameObject::CreateComponent(Component_Type type)
 		component->name = "Transform";
 		break;
 	case Component_Type::Transform2D:
-		component = new ComponentTransform2D(this, { 0,0 }, { 0,0 }, { 1,1 });
+		component = new ComponentTransform2D(this, { 0,0 }, { 0,0 }, { 10,10 });///TEMPORAL
 		component->name = "Transform2D";
 		break;
 	case Component_Type::Mesh:
@@ -202,7 +202,7 @@ Component* GameObject::CreateComponent(Component_Type type)
 		component->name = "Camera";
 		break;
 	case Component_Type::Image:
-		component = new ComponentImage(this);
+		component = new ComponentImage(this, trans2D);
 		component->name = "Image";
 		break;
 	case Component_Type::Button:

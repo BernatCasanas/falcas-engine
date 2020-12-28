@@ -13,6 +13,11 @@ class ResourceModel;
 class ResourceMesh;
 class ResourceMaterial;
 
+
+
+///TEMPORAL
+class ComponentImage;
+
 enum class Guizmos_Input_Letters {
 	W,
 	E,
@@ -63,6 +68,12 @@ public:
 	std::vector<ResourceModel*> resources_model_to_delete;
 
 	Guizmos_Input_Letters input_letter = Guizmos_Input_Letters::W;
+
+
+
+	///TEMPORAL
+	GameObject* image_go;
+	ComponentImage* image=nullptr;
 private:
 	float width;
 	float height;

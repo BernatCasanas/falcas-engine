@@ -21,6 +21,10 @@
 #pragma comment (lib, "Source Code/External Libraries/Glew/libx86/glew32.lib")
 
 
+
+///TEMPORAL
+#include "ComponentImage.h"
+
 ModuleRenderer3D::ModuleRenderer3D(Application* app, bool start_enabled) : Module(app, start_enabled, "moduleRenderer3D")
 {
 }
@@ -215,6 +219,14 @@ update_status ModuleRenderer3D::Update(float dt)
 		glVertex3f(raycast.b.x, raycast.b.y, raycast.b.z);
 		glEnd();
 	}
+	/*glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	glOrtho(0.0f, 640, 480, 0.0f, 1.0f, -1.0f);*/
+	App->scene_intro->image->Render();
+	///TEMPORAL
+	/*glMatrixMode(GL_PROJECTION);
+	glLoadMatrixf(camera->GetProjectionMatrix());
+	glMatrixMode(GL_MODELVIEW);*/
 
 	return update_status::UPDATE_CONTINUE;
 }

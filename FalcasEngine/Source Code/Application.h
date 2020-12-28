@@ -17,6 +17,7 @@ class Console;
 class Module;
 class FileSystem;
 class ModuleResources;
+class ModuleUI;
 
 class Application
 {
@@ -30,6 +31,7 @@ public:
 	Console* console;
 	FileSystem* filesystem;
 	ModuleResources* resources;
+	ModuleUI* UI;
 	bool console_active;
 
 private:

@@ -1,4 +1,8 @@
 #include "ModuleUI.h"
+#include "Application.h"
+#include "ModuleResources.h"
+#include "FileSystem.h"
+#include "ResourceModel.h"
 
 ModuleUI::ModuleUI(Application* app, bool start_enabled) : Module(app, start_enabled, "moduleUI")
 {
@@ -35,7 +39,14 @@ bool ModuleUI::Start()
 	cursor_tex = App->tex->Load("gui/cursors.png");
 
 	winlose_tex = App->tex->Load("gui/WinLoseBackground.png");*/
-
+	char* buffer;
+	App->filesystem->LoadPath("Assets/Icons (read_only)/plane.obj.meta", &buffer);
+	JsonObj plane_obj(buffer);
+	ResourceModel* model_plane = (ResourceModel*)App->resources->RequestResource(plane_obj.GetInt("ID"));
+	delete[] buffer;
+	plane_obj.CleanUp();
+	mesh_plane_id = model_plane->mesh_keys.back();
+	App->resources->FreeResource(model_plane);
 	return true;
 }
 

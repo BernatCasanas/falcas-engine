@@ -79,7 +79,7 @@ FILE_TYPE FileSystem::GetTypeFile(std::string file)
 	file = file.substr(size + 1);
 
 
-	if (file == "fbx" || file == "FBX") return FILE_TYPE::FBX;
+	if (file == "fbx" || file == "FBX" || file == "obj") return FILE_TYPE::FBX;
 	else if (file == "png" || file == "PNG") return FILE_TYPE::PNG;
 	else if (file == "dds" || file == "DDS") return FILE_TYPE::DDS;
 	else if (file == "scenefalcas") return FILE_TYPE::SCENE;

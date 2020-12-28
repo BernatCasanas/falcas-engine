@@ -9,6 +9,7 @@
 #include "Console.h"
 #include "ModuleResources.h"
 #include "FileSystem.h"
+#include "ModuleUI.h"
 #include "Json.h"
 #include "aClock.h"
 #include "External Libraries/SDL/include/SDL.h"
@@ -25,6 +26,7 @@ Application::Application()
 	central_editor = new ModuleCentralEditor(this);
 	filesystem = new FileSystem(this);
 	resources = new ModuleResources(this);
+	UI = new ModuleUI(this);
 
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
@@ -41,6 +43,7 @@ Application::Application()
 	
 	// Scenes
 	AddModule(scene_intro);
+	AddModule(UI);
 
 
 	AddModule(central_editor);

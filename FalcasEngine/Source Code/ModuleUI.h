@@ -1,5 +1,7 @@
 #pragma once
 #include "Module.h"
+
+
 class ModuleUI : public Module
 {
 public:
@@ -58,6 +60,6 @@ private:
 	//fPoint global_pos;
 
 public:
-
+	uint mesh_plane_id;
 
 };

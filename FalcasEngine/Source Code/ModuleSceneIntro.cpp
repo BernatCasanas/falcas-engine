@@ -24,7 +24,8 @@
 #include "ResourceModel.h"
 #include "ModuleInput.h"
 
-
+///TEMPORAL
+#include "ComponentImage.h"
 
 
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled, "moduleSceneIntro")
@@ -52,7 +53,6 @@ bool ModuleSceneIntro::Start()
 	id_gameobject++;
 	game_object_selected = nullptr;
 	int num = 0;
-
 	char* buffer;
 	App->filesystem->LoadPath("Assets/street/street_view.FBX.meta", &buffer);
 	JsonObj icon_obj(buffer);
@@ -133,6 +133,12 @@ int ModuleSceneIntro::GetID()
 // Update: draw background
 update_status ModuleSceneIntro::Update(float dt)
 {
+	///TEMPORAL
+	if (image == nullptr){
+		image_go = CreateGameObject("Image", root, true);
+		image = (ComponentImage*)image_go->CreateComponent(Component_Type::Image);
+		image->ChangeResourceMaterial((ResourceMaterial*)App->resources->RequestResource(502634535));
+	}
 	root->Update();
 	if (App->input->GetMouseButton(3) == KEY_IDLE) {
 		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN|| App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)

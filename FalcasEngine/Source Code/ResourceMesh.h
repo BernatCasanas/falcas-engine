@@ -4,6 +4,7 @@
 
 
 class ComponentMaterial;
+class ResourceMaterial;
 class ResourceMesh :public Resource {
 public:
 	ResourceMesh(uint ID, Resource_Type type, std::string assets_file);
@@ -13,7 +14,7 @@ public:
 
 	void Initialize();
 
-	void Render(float* transform, ComponentMaterial* mat, bool show_normals_v, float length_normals, bool show_normals_f);
+	void Render(float* transform, ComponentMaterial* mat, bool show_normals_v, float length_normals, bool show_normals_f, ResourceMaterial* res_mat = nullptr);
 
 	AABB GetAABB()const;
 

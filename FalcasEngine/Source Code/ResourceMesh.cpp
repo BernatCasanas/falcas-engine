@@ -63,7 +63,7 @@ void ResourceMesh::Initialize()
 
 }
 
-void ResourceMesh::Render(float* transform, ComponentMaterial* mat, bool show_normals_v, float length_normals, bool show_normals_f)
+void ResourceMesh::Render(float* transform, ComponentMaterial* mat, bool show_normals_v, float length_normals, bool show_normals_f, ResourceMaterial* res_mat)
 {
 	if (id_indices > 0 && id_vertices > 0) {
 		glPushMatrix();
@@ -82,13 +82,18 @@ void ResourceMesh::Render(float* transform, ComponentMaterial* mat, bool show_no
 			glNormalPointer(GL_FLOAT, 0, NULL);
 		}
 
-		if (num_textureCoords > 0 && mat != nullptr && mat->active == true) {
+		if (num_textureCoords > 0 && ((mat != nullptr && mat->active == true) || res_mat != nullptr)) {
 			
 			glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 			glBindBuffer(GL_ARRAY_BUFFER, id_texCoords);
 			glTexCoordPointer(2, GL_FLOAT, 0, NULL);
-			if (!mat->show_default_tex && mat->resource_material != nullptr) {
-				glBindTexture(GL_TEXTURE_2D, mat->resource_material->texture_id);
+			if (res_mat != nullptr||(!mat->show_default_tex && mat->resource_material != nullptr) ) {
+				if (mat == nullptr) {
+					glBindTexture(GL_TEXTURE_2D, res_mat->texture_id);
+				}
+				else {
+					glBindTexture(GL_TEXTURE_2D, mat->resource_material->texture_id);
+				}
 			}
 			else {
 				glBindTexture(GL_TEXTURE_2D, mat->defaultTex);
