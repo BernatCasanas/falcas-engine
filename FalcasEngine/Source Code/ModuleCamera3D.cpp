@@ -48,7 +48,6 @@ update_status ModuleCamera3D::Update(float dt)
 {
 	if (!camera->camera_active)
 		return UPDATE_CONTINUE;
-	camera->owner->Update();
 
 	if(!App->scene_intro->mouse_on_scene)
 		return UPDATE_CONTINUE;
@@ -186,6 +185,8 @@ update_status ModuleCamera3D::Update(float dt)
 		}
 	}
 	LookAt(Reference);
+
+	camera->owner->Update();
 
 	return UPDATE_CONTINUE;
 }

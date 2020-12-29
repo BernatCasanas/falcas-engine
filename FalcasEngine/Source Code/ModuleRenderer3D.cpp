@@ -198,10 +198,13 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	return UPDATE_CONTINUE;
 }
 
-update_status ModuleRenderer3D::Update(float dt)
+
+
+// PostUpdate present buffer to screen
+update_status ModuleRenderer3D::PostUpdate(float dt)
 {
 
-	if(App->central_editor->grid)
+	if (App->central_editor->grid)
 		App->scene_intro->grid->DrawGrid();
 
 	for (int i = 0; i < aabbs.size(); i++) {
@@ -220,14 +223,7 @@ update_status ModuleRenderer3D::Update(float dt)
 		glVertex3f(raycast.b.x, raycast.b.y, raycast.b.z);
 		glEnd();
 	}
-	
 
-	return update_status::UPDATE_CONTINUE;
-}
-
-// PostUpdate present buffer to screen
-update_status ModuleRenderer3D::PostUpdate(float dt)
-{
 
 	glBindVertexArray(0);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
