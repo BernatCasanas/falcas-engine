@@ -43,7 +43,7 @@ GameObject::GameObject(int id, std::string name, GameObject* parent, bool is_ui)
 GameObject::GameObject(int id, std::string name, GameObject* parent, float3 position, Quat rotation, float3 size, bool is_ui) : name(name), parent(parent), id(id), is_ui(is_ui)
 {
 	if (is_ui) {
-		AddComponentToGameObject(new ComponentTransform2D(this, { position.x,position.y }, { rotation.x,rotation.y }, { size.x,size.y }));
+		AddComponentToGameObject(new ComponentTransform2D(this, { position.x,position.y }, rotation, { size.x,size.y }));
 		trans2D = (ComponentTransform2D*)GetComponent(Component_Type::Transform2D);
 	}
 	else {
@@ -186,7 +186,7 @@ Component* GameObject::CreateComponent(Component_Type type)
 		component->name = "Transform";
 		break;
 	case Component_Type::Transform2D:
-		component = new ComponentTransform2D(this, { 0,0 }, { 0,0 }, { 10,10 });///TEMPORAL
+		component = new ComponentTransform2D(this, { 0,0 }, Quat::identity, { 10,10 });///TEMPORAL
 		component->name = "Transform2D";
 		break;
 	case Component_Type::Mesh:

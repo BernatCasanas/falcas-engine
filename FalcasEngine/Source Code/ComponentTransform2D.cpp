@@ -9,7 +9,8 @@
 
 #define M_PI 3.14159265358979323846f
 
-ComponentTransform2D::ComponentTransform2D(GameObject* owner, float2 position, float2 rotation, float2 size) :Component(Component_Type::Transform2D, owner, "Transform2D"), position(position), rotation(rotation), size(size)
+ComponentTransform2D::ComponentTransform2D(GameObject* owner, float2 position, Quat rotation, float2 size) :Component(Component_Type::Transform2D, owner, "Transform2D"), position(position), quat_rotation(rotation),
+size(size), z_depth(20), rotation(QuaternionToEuler(quat_rotation))
 {
 	SetMatrices();
 	float* camera_view_matrix = App->renderer3D->camera->GetViewMatrix();
@@ -30,9 +31,14 @@ float2 ComponentTransform2D::GetPosition()const
 	return position;
 }
 
-float2 ComponentTransform2D::GetRotation()const
+float3 ComponentTransform2D::GetRotation()const
 {
 	return rotation;
+}
+
+Quat ComponentTransform2D::GetRotationQuaternion()const
+{
+	return quat_rotation;
 }
 
 float2 ComponentTransform2D::GetSize()const
@@ -56,10 +62,11 @@ bool ComponentTransform2D::SaveComponent(JsonObj& obj)
 	return true;
 }
 
-void ComponentTransform2D::SetTransformation(float2 pos, float2 rot, float2 size)
+void ComponentTransform2D::SetTransformation(float2 pos, Quat rot, float2 size)
 {
 	position = pos;
-	rotation = rot;
+	quat_rotation = rot;
+	rotation = QuaternionToEuler(rot);
 	this->size = size;
 	SetMatrices();
 	needed_to_update = true;
@@ -73,9 +80,17 @@ void ComponentTransform2D::SetPosition(float2 pos)
 }
 
 
-void ComponentTransform2D::SetRotation(float2 rot)
+void ComponentTransform2D::SetRotation(Quat rot)
+{
+	quat_rotation = rot;
+	rotation = QuaternionToEuler(rot);
+	SetMatrices();
+}
+
+void ComponentTransform2D::SetRotation(float3 rot)
 {
 	rotation = rot;
+	quat_rotation = EulerToQuaternion(rot);
 	SetMatrices();
 }
 
@@ -86,14 +101,19 @@ void ComponentTransform2D::SetSize(float2 size)
 }
 void ComponentTransform2D::SetMatrices()
 {
-	
-
-	float3 movement= { 0, 0, 20 };
+	float3 movement= { position.x, position.y, z_depth };
 	Quat rot= ((ComponentTransform*)App->renderer3D->camera->owner->GetComponent(Component_Type::Transform))->GetRotation();
+	//rot = rot.RotateX(rotation.x);
 	movement = rot * movement;
 	float3 pos, s;
 	pos = ((ComponentTransform*)App->renderer3D->camera->owner->GetComponent(Component_Type::Transform))->GetPosition();
 	pos += movement;
+	Quat rot2 = Quat::identity;
+	Quat rotx = rot2.RotateX(rotation.x);
+	Quat roty = rot2.RotateY(rotation.y);
+	Quat rotz = rot2.RotateZ(rotation.z);
+	rot = rot*rot2 * rotx * roty * rotz;
+	
 	s = { size.x,size.y,1 };
 	
 	local_matrix = local_matrix.FromTRS(pos, rot, s);
@@ -109,6 +129,7 @@ void ComponentTransform2D::SetMatrices()
 	}
 	else global_matrix = local_matrix;
 	global_matrix_transposed = global_matrix.Transposed();
+	
 }
 
 void ComponentTransform2D::SetMatricesWithNewParent(float4x4 parent_global_matrix)
@@ -119,7 +140,7 @@ void ComponentTransform2D::SetMatricesWithNewParent(float4x4 parent_global_matri
 	local_matrix.Decompose(pos, rot, s);
 	position = { pos.x,pos.y };
 	float3 rotate = QuaternionToEuler(rot);
-	rotation = { rotate.x,rotate.y };
+	rotation = rotate;
 	size = { s.x,s.y };
 	needed_to_update = true;
 	needed_to_update_only_children = true;
@@ -158,7 +179,7 @@ void ComponentTransform2D::Inspector()
 
 	ImGui::Separator();
 
-	ImGui::Columns(3, "", false);
+	ImGui::Columns(4, "", false);
 
 	ImGui::AlignTextToFramePadding();
 	ImGui::Text("Position");
@@ -185,6 +206,17 @@ void ComponentTransform2D::Inspector()
 
 	ImGui::NextColumn();
 	ImGui::AlignTextToFramePadding();
+	ImGui::Text("Z");
+
+	ImGui::SameLine();
+	ImGui::PushItemWidth(50);
+	if (ImGui::DragFloat("##2", (active && owner->active) ? &z_depth : &null, 0.01f) && (active && owner->active))
+		needed_to_update = true;
+	ImGui::PopItemWidth();
+
+	
+	ImGui::NextColumn();
+	ImGui::AlignTextToFramePadding();
 	ImGui::Text("Rotation");
 
 	ImGui::NextColumn();
@@ -208,6 +240,17 @@ void ComponentTransform2D::Inspector()
 	ImGui::PopItemWidth();
 
 	ImGui::NextColumn();
+	ImGui::AlignTextToFramePadding();
+	ImGui::Text("Z");
+
+	ImGui::SameLine();
+	ImGui::PushItemWidth(50);
+	if (ImGui::DragFloat("##5", (active && owner->active) ? &rotation.z : &null, 0.01f) && (active && owner->active))
+		needed_to_update = true;
+	ImGui::PopItemWidth();
+
+	ImGui::Columns(3, "", false);
+
 	ImGui::AlignTextToFramePadding();
 	ImGui::Text("Size");
 

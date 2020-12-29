@@ -10,12 +10,13 @@ class GameObject;
 
 class ComponentTransform2D : public Component {
 public:
-	ComponentTransform2D(GameObject* owner, float2 position, float2 rotation, float2 size);
+	ComponentTransform2D(GameObject* owner, float2 position, Quat rotation, float2 size);
 	~ComponentTransform2D();
 	void Update();
 
 	float2 GetPosition()const;
-	float2 GetRotation()const;
+	float3 GetRotation()const;
+	Quat GetRotationQuaternion()const;
 	float2 GetSize()const;
 	float4x4 GetGlobalMatrix() const;
 	float4x4 GetGlobalMatrixTransposed() const;
@@ -26,9 +27,10 @@ public:
 
 	Quat LookAt(const float3& point);
 	
-	void SetTransformation(float2 pos, float2 rot, float2 size);
+	void SetTransformation(float2 pos, Quat rot, float2 size);
 	void SetPosition(float2 pos);
-	void SetRotation(float2 rot);
+	void SetRotation(Quat rot);
+	void SetRotation(float3 rot);
 	void SetSize(float2 size);
 	void SetMatrices();
 	void SetMatricesWithNewParent(float4x4 parent_global_matrix);
@@ -47,7 +49,9 @@ private:
 	float4x4 global_matrix2;
 	float4x4 global_matrix_transposed;
 	float2 position;
+	float z_depth;
 	float2 pivot_position;
 	float2 size;
-	float2 rotation;
+	float3 rotation;
+	Quat quat_rotation;
 };
