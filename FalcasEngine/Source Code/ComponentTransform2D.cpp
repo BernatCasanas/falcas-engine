@@ -10,8 +10,9 @@
 #define M_PI 3.14159265358979323846f
 
 ComponentTransform2D::ComponentTransform2D(GameObject* owner, float2 position, Quat rotation, float2 size) :Component(Component_Type::Transform2D, owner, "Transform2D"), position(position), quat_rotation(rotation),
-size(size), z_depth(20), rotation(QuaternionToEuler(quat_rotation))
+size(size), z_depth(20)
 {
+	this->rotation = QuaternionToEuler(quat_rotation);
 	SetMatrices();
 	float* camera_view_matrix = App->renderer3D->camera->GetViewMatrix();
 }
@@ -103,16 +104,12 @@ void ComponentTransform2D::SetMatrices()
 {
 	float3 movement= { position.x, position.y, z_depth };
 	Quat rot= ((ComponentTransform*)App->renderer3D->camera->owner->GetComponent(Component_Type::Transform))->GetRotation();
-	//rot = rot.RotateX(rotation.x);
 	movement = rot * movement;
 	float3 pos, s;
 	pos = ((ComponentTransform*)App->renderer3D->camera->owner->GetComponent(Component_Type::Transform))->GetPosition();
 	pos += movement;
-	Quat rot2 = Quat::identity;
-	Quat rotx = rot2.RotateX(rotation.x);
-	Quat roty = rot2.RotateY(rotation.y);
-	Quat rotz = rot2.RotateZ(rotation.z);
-	rot = rot*rot2 * rotx * roty * rotz;
+
+	rot = rot * Quat::identity.RotateX(rotation.x) * Quat::identity.RotateY(rotation.y) * Quat::identity.RotateZ(rotation.z);
 	
 	s = { size.x,size.y,1 };
 	
