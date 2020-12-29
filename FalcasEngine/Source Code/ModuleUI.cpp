@@ -89,7 +89,7 @@ update_status ModuleUI::PreUpdate(float dt)
 // Called after all Updates
 update_status ModuleUI::Update(float dt)
 {
-	App->renderer3D->RenderUI();
+	//App->renderer3D->RenderUI();
 	/*for (std::list<UI*>::iterator it = UIs.begin(); it != UIs.end(); it++)
 	{
 		it._Ptr->_Myval->Update(dt);

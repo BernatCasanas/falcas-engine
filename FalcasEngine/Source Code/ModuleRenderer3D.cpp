@@ -24,6 +24,7 @@
 
 ///TEMPORAL
 #include "ComponentImage.h"
+#include "ModuleInput.h"
 
 ModuleRenderer3D::ModuleRenderer3D(Application* app, bool start_enabled) : Module(app, start_enabled, "moduleRenderer3D")
 {
@@ -232,7 +233,7 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 	App->central_editor->CreateDock();
 	App->scene_intro->Draw(texColorBuffer);
 
-	
+	if(App->input->GetKey(SDL_SCANCODE_H)==KEY_REPEAT)RenderUI();
 
 	App->central_editor->Draw();
 
@@ -332,6 +333,9 @@ void ModuleRenderer3D::OnResize(int width, int height)
 
 void ModuleRenderer3D::RenderUI()
 {
+	glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
+	glClear(GL_DEPTH_BUFFER_BIT);
+
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	glOrtho(-10.0f, 10.0f, -10.0f, 10.0f, -0.1f, 100.0f);
@@ -342,6 +346,8 @@ void ModuleRenderer3D::RenderUI()
 	glMatrixMode(GL_PROJECTION);
 	glLoadMatrixf(camera->GetProjectionMatrix());
 	glMatrixMode(GL_MODELVIEW);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
 }
 
 void ModuleRenderer3D::ChangeCameraActive(ComponentCamera* camera_to_change)
