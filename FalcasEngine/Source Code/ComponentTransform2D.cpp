@@ -24,8 +24,6 @@ ComponentTransform2D::~ComponentTransform2D()
 
 void ComponentTransform2D::Update()
 {
-	last_position = position;
-	pivot_position_world = pivot_position + position;
 	SetMatrices();
 }
 
@@ -107,9 +105,8 @@ void ComponentTransform2D::SetMatrices()
 {
 	UpdateMatrixBillboard();
 
-
 	float3 pivot_world = { pivot_position.x + position.x, pivot_position.y + position.y, 0 };
-	float3 rotation_in_gradians = rotation;// *DEGTORAD;
+	float3 rotation_in_gradians = rotation *DEGTORAD;
 	Quat rotate = Quat::identity * Quat::identity.RotateX(rotation_in_gradians.x) * Quat::identity.RotateY(rotation_in_gradians.y) * Quat::identity.RotateZ(rotation_in_gradians.z);
 	
 	matrix_pivot = matrix_pivot.FromTRS(pivot_world, rotate, { 1,1,1 });
@@ -135,32 +132,23 @@ void ComponentTransform2D::SetMatrices()
 
 void ComponentTransform2D::SetMatricesWithNewParent(float4x4 parent_global_matrix)
 {
-	local_matrix = parent_global_matrix.Inverted() * global_matrix;
+	float4x4 local_matrix_with_rotation = matrix_billboard.Inverted() * parent_global_matrix.Inverted() * global_matrix;
 	float3 pos, s;
 	Quat rot;
+	local_matrix_with_rotation.Decompose(pos, rot, s);
+	rotation = QuaternionToEuler(rot);
+
+	local_matrix = matrix_pivot.Inverted() * local_matrix_with_rotation;
+	
 	local_matrix.Decompose(pos, rot, s);
 
-	
 	position = { pos.x,pos.y };
 	z_depth = pos.z;
-	rotation = QuaternionToEuler(rot);
 	size = { s.x,s.y };
 	needed_to_update = true;
 	needed_to_update_only_children = true;
 }
 
-void ComponentTransform2D::ChangePivot()
-{
-	/*matrix_pivot.SetCol3(3, pivot_position.x, pivot_position.y, z_depth);
-	local_matrix = matrix_pivot.Inverted() * matrix_billboard.Inverted() * matrix_parent.Inverted() * global_matrix;
-	float3 pos, s;
-	Quat rot;
-	local_matrix.Decompose(pos, rot, s);*/
-
-
-	//position = pivot_position_world-pivot_position;
-	
-}
 
 float3 ComponentTransform2D::QuaternionToEuler(Quat q)
 {
@@ -292,7 +280,7 @@ void ComponentTransform2D::Inspector()
 	ImGui::SameLine();
 	ImGui::PushItemWidth(50);
 	if (ImGui::DragFloat("##8", (active && owner->active) ? &pivot_position.x : &null, 0.01f) && (active && owner->active))
-		ChangePivot();
+		needed_to_update = true;
 	ImGui::PopItemWidth();
 
 	ImGui::NextColumn();
@@ -302,7 +290,7 @@ void ComponentTransform2D::Inspector()
 	ImGui::SameLine();
 	ImGui::PushItemWidth(50);
 	if (ImGui::DragFloat("##9", (active && owner->active) ? &pivot_position.y : &null, 0.01f) && (active && owner->active)) 
-		ChangePivot();
+		needed_to_update = true;
 	ImGui::PopItemWidth();
 
 	ImGui::Columns(1, "", false);

@@ -36,7 +36,6 @@ public:
 	void UpdateMatrixBillboard();
 	void SetMatrices();
 	void SetMatricesWithNewParent(float4x4 parent_global_matrix);
-	void ChangePivot();
 	void Inspector();
 
 
@@ -58,7 +57,4 @@ private:
 	float2 pivot_position = { 0,0 };
 	float2 size;
 	float3 rotation;
-
-	float2 last_position;
-	float2 pivot_position_world;
 };
