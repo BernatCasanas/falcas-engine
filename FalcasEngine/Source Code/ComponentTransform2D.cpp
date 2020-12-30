@@ -8,7 +8,6 @@
 #include "ComponentCamera.h"
 
 #define M_PI 3.14159265358979323846f
-///START WITH CHANGING EVERYTHING
 
 ComponentTransform2D::ComponentTransform2D(GameObject* owner, float2 position, Quat rotation, float2 size) :Component(Component_Type::Transform2D, owner, "Transform2D"), position(position),
 size(size), z_depth(20)
@@ -58,12 +57,25 @@ bool ComponentTransform2D::SaveComponent(JsonObj& obj)
 	return true;
 }
 
-void ComponentTransform2D::SetTransformation(float3 pos, Quat rot, float2 size)
+void ComponentTransform2D::SetTransformation(float3 pos, Quat rot, float2 size, bool guizmo_size)
 {
-	position = { pos.x,pos.y };
-	z_depth = pos.z;
-	rotation = QuaternionToEuler(rot);
-	size = { size.x,size.y };
+
+	float3 new_pos, dummy;
+	Quat new_rot;
+	global_matrix.Decompose(new_pos, new_rot, dummy);
+	
+	new_pos -= pos;
+	position.x += new_pos.x;
+	position.y -= new_pos.y;
+	z_depth += new_pos.z;
+
+	if (!guizmo_size) {
+		float rot_z = QuaternionToEuler(rot).z;
+		float new_rot_z = QuaternionToEuler(new_rot).z;
+		rotation.z += rot_z - new_rot_z;
+	}
+	
+	this->size = size;
 	needed_to_update = true;
 
 }
@@ -107,7 +119,7 @@ void ComponentTransform2D::SetMatrices()
 
 	float3 pivot_world = { pivot_position.x + position.x, pivot_position.y + position.y, 0 };
 	float3 rotation_in_gradians = rotation *DEGTORAD;
-	Quat rotate = Quat::identity * Quat::identity.RotateX(rotation_in_gradians.x) * Quat::identity.RotateY(rotation_in_gradians.y) * Quat::identity.RotateZ(rotation_in_gradians.z);
+	Quat rotate = Quat::identity * Quat::identity.RotateZ(rotation_in_gradians.z);
 	
 	matrix_pivot = matrix_pivot.FromTRS(pivot_world, rotate, { 1,1,1 });
 
