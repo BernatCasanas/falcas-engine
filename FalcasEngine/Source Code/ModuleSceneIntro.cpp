@@ -118,7 +118,6 @@ bool ModuleSceneIntro::GetDimensionsWindow(float& width, float& height)
 {
 	if (width == this->width && height == this->height)
 		return false;
-		return false;
 	width = this->width;
 	height = this->height;
 	return true;
