@@ -9,10 +9,10 @@
 
 #define M_PI 3.14159265358979323846f
 
-ComponentTransform2D::ComponentTransform2D(GameObject* owner, float2 position, Quat rotation, float2 size) :Component(Component_Type::Transform2D, owner, "Transform2D"), position(position), quat_rotation(rotation),
+ComponentTransform2D::ComponentTransform2D(GameObject* owner, float2 position, Quat rotation, float2 size) :Component(Component_Type::Transform2D, owner, "Transform2D"), position(position),
 size(size), z_depth(20)
 {
-	this->rotation = QuaternionToEuler(quat_rotation);
+	this->rotation = QuaternionToEuler(rotation);
 	SetMatrices();
 	float* camera_view_matrix = App->renderer3D->camera->GetViewMatrix();
 }
@@ -37,11 +37,6 @@ float3 ComponentTransform2D::GetRotation()const
 	return rotation;
 }
 
-Quat ComponentTransform2D::GetRotationQuaternion()const
-{
-	return quat_rotation;
-}
-
 float2 ComponentTransform2D::GetSize()const
 {
 	return size;
@@ -63,11 +58,19 @@ bool ComponentTransform2D::SaveComponent(JsonObj& obj)
 	return true;
 }
 
-void ComponentTransform2D::SetTransformation(float2 pos, Quat rot, float2 size)
+void ComponentTransform2D::SetTransformation(float3 pos, Quat rot, float2 size)
 {
-	position = pos;
-	quat_rotation = rot;
-	rotation = QuaternionToEuler(rot);
+	float3 new_pos, dummy;
+	Quat new_rot;
+	global_matrix.Decompose(new_pos, new_rot, dummy);
+	new_pos -= pos;
+	position.x += new_pos.x;
+	position.y -= new_pos.y;
+	z_depth += new_pos.z;
+	new_rot.Inverse();
+	Quat quat_rotation = EulerToQuaternion(rotation);
+	quat_rotation = (rot * new_rot) * quat_rotation;
+	rotation = QuaternionToEuler(quat_rotation);
 	this->size = size;
 	SetMatrices();
 	needed_to_update = true;
@@ -83,7 +86,6 @@ void ComponentTransform2D::SetPosition(float2 pos)
 
 void ComponentTransform2D::SetRotation(Quat rot)
 {
-	quat_rotation = rot;
 	rotation = QuaternionToEuler(rot);
 	SetMatrices();
 }
@@ -91,7 +93,6 @@ void ComponentTransform2D::SetRotation(Quat rot)
 void ComponentTransform2D::SetRotation(float3 rot)
 {
 	rotation = rot;
-	quat_rotation = EulerToQuaternion(rot);
 	SetMatrices();
 }
 
@@ -108,8 +109,8 @@ void ComponentTransform2D::SetMatrices()
 	float3 pos, s;
 	pos = ((ComponentTransform*)App->renderer3D->camera->owner->GetComponent(Component_Type::Transform))->GetPosition();
 	pos += movement;
-
-	rot = rot * Quat::identity.RotateX(rotation.x) * Quat::identity.RotateY(rotation.y) * Quat::identity.RotateZ(rotation.z);
+	float3 rotation_in_gradians = rotation * DEGTORAD;
+	rot = rot * Quat::identity.RotateX(rotation_in_gradians.x) * Quat::identity.RotateY(rotation_in_gradians.y) * Quat::identity.RotateZ(rotation_in_gradians.z);
 	
 	s = { size.x,size.y,1 };
 	

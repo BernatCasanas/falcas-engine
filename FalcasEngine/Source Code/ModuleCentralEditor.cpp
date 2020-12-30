@@ -796,9 +796,8 @@ void ModuleCentralEditor::DrawImGuizmo()
         Quat rotation;
         matrix.Decompose(translation, rotation, size);
         if (App->scene_intro->game_object_selected->IsUI()) {
-            float2 pos = { translation.x,translation.y };
             float2 s = { size.x,size.y };
-            ((ComponentTransform2D*)App->scene_intro->game_object_selected->GetComponent(Component_Type::Transform2D))->SetTransformation(pos, rotation, s);
+            ((ComponentTransform2D*)App->scene_intro->game_object_selected->GetComponent(Component_Type::Transform2D))->SetTransformation(translation, rotation, s);
         }
         else {
             ((ComponentTransform*)App->scene_intro->game_object_selected->GetComponent(Component_Type::Transform))->SetTransformation(translation, rotation, size);

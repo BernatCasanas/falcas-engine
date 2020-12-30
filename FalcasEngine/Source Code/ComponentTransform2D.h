@@ -16,7 +16,6 @@ public:
 
 	float2 GetPosition()const;
 	float3 GetRotation()const;
-	Quat GetRotationQuaternion()const;
 	float2 GetSize()const;
 	float4x4 GetGlobalMatrix() const;
 	float4x4 GetGlobalMatrixTransposed() const;
@@ -27,7 +26,7 @@ public:
 
 	Quat LookAt(const float3& point);
 	
-	void SetTransformation(float2 pos, Quat rot, float2 size);
+	void SetTransformation(float3 pos, Quat rot, float2 size);
 	void SetPosition(float2 pos);
 	void SetRotation(Quat rot);
 	void SetRotation(float3 rot);
@@ -53,5 +52,4 @@ private:
 	float2 pivot_position;
 	float2 size;
 	float3 rotation;
-	Quat quat_rotation;
 };
