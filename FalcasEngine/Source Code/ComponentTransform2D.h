@@ -26,13 +26,17 @@ public:
 
 	Quat LookAt(const float3& point);
 	
+	float2 CalculateMovement(float4x4 matrix, float2 goal);
+
 	void SetTransformation(float3 pos, Quat rot, float2 size);
 	void SetPosition(float2 pos);
 	void SetRotation(Quat rot);
 	void SetRotation(float3 rot);
 	void SetSize(float2 size);
+	void UpdateMatrixBillboard();
 	void SetMatrices();
 	void SetMatricesWithNewParent(float4x4 parent_global_matrix);
+	void ChangePivot();
 	void Inspector();
 
 
@@ -44,12 +48,17 @@ public:
 
 private:
 	float4x4 local_matrix;
+	float4x4 matrix_billboard;
 	float4x4 global_matrix;
-	float4x4 global_matrix2;
+	float4x4 matrix_pivot;
+	float4x4 matrix_parent;
 	float4x4 global_matrix_transposed;
 	float2 position;
 	float z_depth;
-	float2 pivot_position;
+	float2 pivot_position = { 0,0 };
 	float2 size;
 	float3 rotation;
+
+	float2 last_position;
+	float2 pivot_position_world;
 };

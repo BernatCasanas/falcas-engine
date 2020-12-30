@@ -74,15 +74,25 @@ bool ComponentTransform::SaveComponent(JsonObj& obj)
 	return true;
 }
 
-void ComponentTransform::SetTransformation(float3 pos, Quat rot, float3 size)
+void ComponentTransform::SetTransformation(float3 pos, Quat rot, float3 size, bool guizmo)
 {
+	if (guizmo) {
+		float3 new_pos, new_size;
+		Quat new_rot;
+		global_matrix.Decompose(new_pos, new_rot, new_size);
+ 		pos = new_pos - pos;
+		pos = position - pos;
+		new_rot.Inverse();
+		rot = (rot * new_rot) * rotation;
+		size = new_size - size;
+		size = this->size - size;
+	}
 	position = pos;
 	rotation = rot;
 	euler = QuaternionToEuler(rotation);
 	this->size = size;
 	SetMatrices();
 	needed_to_update = true;
-
 }
 
 void ComponentTransform::SetPosition(float3 pos)

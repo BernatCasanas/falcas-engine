@@ -8,6 +8,7 @@
 #include "ComponentCamera.h"
 
 #define M_PI 3.14159265358979323846f
+///START WITH CHANGING EVERYTHING
 
 ComponentTransform2D::ComponentTransform2D(GameObject* owner, float2 position, Quat rotation, float2 size) :Component(Component_Type::Transform2D, owner, "Transform2D"), position(position),
 size(size), z_depth(20)
@@ -23,7 +24,8 @@ ComponentTransform2D::~ComponentTransform2D()
 
 void ComponentTransform2D::Update()
 {
-	
+	last_position = position;
+	pivot_position_world = pivot_position + position;
 	SetMatrices();
 }
 
@@ -60,19 +62,10 @@ bool ComponentTransform2D::SaveComponent(JsonObj& obj)
 
 void ComponentTransform2D::SetTransformation(float3 pos, Quat rot, float2 size)
 {
-	float3 new_pos, dummy;
-	Quat new_rot;
-	global_matrix.Decompose(new_pos, new_rot, dummy);
-	new_pos -= pos;
-	position.x += new_pos.x;
-	position.y -= new_pos.y;
-	z_depth += new_pos.z;
-	new_rot.Inverse();
-	Quat quat_rotation = EulerToQuaternion(rotation);
-	quat_rotation = (rot * new_rot) * quat_rotation;
-	rotation = QuaternionToEuler(quat_rotation);
-	this->size = size;
-	SetMatrices();
+	position = { pos.x,pos.y };
+	z_depth = pos.z;
+	rotation = QuaternionToEuler(rot);
+	size = { size.x,size.y };
 	needed_to_update = true;
 
 }
@@ -101,33 +94,43 @@ void ComponentTransform2D::SetSize(float2 size)
 	this->size = size;
 	SetMatrices();
 }
+
+void ComponentTransform2D::UpdateMatrixBillboard()
+{
+	ComponentTransform* trans = (ComponentTransform*)App->renderer3D->camera->owner->GetComponent(Component_Type::Transform);
+	Quat rot = trans->GetRotation();
+	float3 pos = trans->GetPosition();
+	matrix_billboard = matrix_billboard.FromTRS(pos, rot, { 1,1,1 });
+}
+
 void ComponentTransform2D::SetMatrices()
 {
-	float3 movement= { position.x, position.y, z_depth };
-	Quat rot= ((ComponentTransform*)App->renderer3D->camera->owner->GetComponent(Component_Type::Transform))->GetRotation();
-	movement = rot * movement;
-	float3 pos, s;
-	pos = ((ComponentTransform*)App->renderer3D->camera->owner->GetComponent(Component_Type::Transform))->GetPosition();
-	pos += movement;
-	float3 rotation_in_gradians = rotation * DEGTORAD;
-	rot = rot * Quat::identity.RotateX(rotation_in_gradians.x) * Quat::identity.RotateY(rotation_in_gradians.y) * Quat::identity.RotateZ(rotation_in_gradians.z);
+	UpdateMatrixBillboard();
+
+
+	float3 pivot_world = { pivot_position.x + position.x, pivot_position.y + position.y, 0 };
+	float3 rotation_in_gradians = rotation;// *DEGTORAD;
+	Quat rotate = Quat::identity * Quat::identity.RotateX(rotation_in_gradians.x) * Quat::identity.RotateY(rotation_in_gradians.y) * Quat::identity.RotateZ(rotation_in_gradians.z);
 	
-	s = { size.x,size.y,1 };
-	
-	local_matrix = local_matrix.FromTRS(pos, rot, s);
+	matrix_pivot = matrix_pivot.FromTRS(pivot_world, rotate, { 1,1,1 });
+
+
+	local_matrix = local_matrix.FromTRS({ -pivot_position.x,-pivot_position.y,z_depth }, Quat::identity, { size.x,size.y,1 } );
+
 	if (owner->parent != nullptr) {
 		if (owner->parent->IsUI()) {
 			ComponentTransform2D* parent_trans = (ComponentTransform2D*)owner->parent->GetComponent(Component_Type::Transform2D);
-			global_matrix = parent_trans->GetGlobalMatrix() * local_matrix;
+			matrix_parent = parent_trans->GetGlobalMatrix();
 		}
 		else {
 			ComponentTransform* parent_trans = (ComponentTransform*)owner->parent->GetComponent(Component_Type::Transform);
-			global_matrix = parent_trans->GetGlobalMatrix() * local_matrix;
+			matrix_parent = parent_trans->GetGlobalMatrix();
 		}
 	}
-	else global_matrix = local_matrix;
+	else matrix_parent = float4x4::identity;
+	global_matrix = matrix_parent * matrix_billboard * matrix_pivot * local_matrix;
 	global_matrix_transposed = global_matrix.Transposed();
-	
+	needed_to_update = false;
 }
 
 void ComponentTransform2D::SetMatricesWithNewParent(float4x4 parent_global_matrix)
@@ -136,12 +139,27 @@ void ComponentTransform2D::SetMatricesWithNewParent(float4x4 parent_global_matri
 	float3 pos, s;
 	Quat rot;
 	local_matrix.Decompose(pos, rot, s);
+
+	
 	position = { pos.x,pos.y };
-	float3 rotate = QuaternionToEuler(rot);
-	rotation = rotate;
+	z_depth = pos.z;
+	rotation = QuaternionToEuler(rot);
 	size = { s.x,s.y };
 	needed_to_update = true;
 	needed_to_update_only_children = true;
+}
+
+void ComponentTransform2D::ChangePivot()
+{
+	/*matrix_pivot.SetCol3(3, pivot_position.x, pivot_position.y, z_depth);
+	local_matrix = matrix_pivot.Inverted() * matrix_billboard.Inverted() * matrix_parent.Inverted() * global_matrix;
+	float3 pos, s;
+	Quat rot;
+	local_matrix.Decompose(pos, rot, s);*/
+
+
+	//position = pivot_position_world-pivot_position;
+	
 }
 
 float3 ComponentTransform2D::QuaternionToEuler(Quat q)
@@ -167,6 +185,19 @@ Quat ComponentTransform2D::LookAt(const float3& point)
 	float3x3 matrix = float3x3::LookAt(float3::unitZ, vector.Normalized(), float3::unitY, float3::unitY);
 	return matrix.ToQuat();
 	
+}
+
+float2 ComponentTransform2D::CalculateMovement(float4x4 matrix, float2 goal)
+{
+	float2 movement;
+	movement.y = (matrix[0][0] * (goal.y - matrix[1][3]) - matrix[1][0] * (goal.x - matrix[0][3])) / (matrix[1][1] * matrix[0][0] - matrix[0][1] * matrix[1][0]);
+	movement.x = (goal.x - matrix[0][1] * movement.y - matrix[0][3]) / matrix[0][0];
+	float second_option= (goal.y - matrix[1][1] * movement.y - matrix[1][3]) / matrix[1][0];
+	if (movement.x != goal.x && ((second_option - goal.x<0 && second_option - goal.x> movement.x) || (second_option - goal.x > 0 && second_option - goal.x < movement.x))) {
+		movement.x = second_option;
+	}
+	
+	return movement;
 }
 
 void ComponentTransform2D::Inspector()
@@ -212,34 +243,12 @@ void ComponentTransform2D::Inspector()
 		needed_to_update = true;
 	ImGui::PopItemWidth();
 
+	ImGui::Columns(1, "", false);
 	
-	ImGui::NextColumn();
 	ImGui::AlignTextToFramePadding();
 	ImGui::Text("Rotation");
 
-	ImGui::NextColumn();
-	ImGui::AlignTextToFramePadding();
-	ImGui::Text("X");
-
-	ImGui::SameLine();
-	ImGui::PushItemWidth(50);
-	if (ImGui::DragFloat("##3", (active && owner->active) ? &rotation.x : &null, 0.01f) && (active && owner->active))
-		needed_to_update = true;
-	ImGui::PopItemWidth();
-
-	ImGui::NextColumn();
-	ImGui::AlignTextToFramePadding();
-	ImGui::Text("Y");
-
-	ImGui::SameLine();
-	ImGui::PushItemWidth(50);
-	if (ImGui::DragFloat("##4", (active && owner->active) ? &rotation.y : &null, 0.01f) && (active && owner->active))
-		needed_to_update = true;
-	ImGui::PopItemWidth();
-
-	ImGui::NextColumn();
-	ImGui::AlignTextToFramePadding();
-	ImGui::Text("Z");
+	
 
 	ImGui::SameLine();
 	ImGui::PushItemWidth(50);
@@ -270,6 +279,30 @@ void ComponentTransform2D::Inspector()
 	ImGui::PushItemWidth(50);
 	if (ImGui::DragFloat("##7", (active && owner->active) ? &size.y : &null, 0.01f) && (active && owner->active))
 		needed_to_update = true;
+	ImGui::PopItemWidth();
+
+	ImGui::NextColumn();
+	ImGui::AlignTextToFramePadding();
+	ImGui::Text("Pivot pos");
+
+	ImGui::NextColumn();
+	ImGui::AlignTextToFramePadding();
+	ImGui::Text("X");
+
+	ImGui::SameLine();
+	ImGui::PushItemWidth(50);
+	if (ImGui::DragFloat("##8", (active && owner->active) ? &pivot_position.x : &null, 0.01f) && (active && owner->active))
+		ChangePivot();
+	ImGui::PopItemWidth();
+
+	ImGui::NextColumn();
+	ImGui::AlignTextToFramePadding();
+	ImGui::Text("Y");
+
+	ImGui::SameLine();
+	ImGui::PushItemWidth(50);
+	if (ImGui::DragFloat("##9", (active && owner->active) ? &pivot_position.y : &null, 0.01f) && (active && owner->active)) 
+		ChangePivot();
 	ImGui::PopItemWidth();
 
 	ImGui::Columns(1, "", false);

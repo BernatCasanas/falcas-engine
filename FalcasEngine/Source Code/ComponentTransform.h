@@ -26,7 +26,7 @@ public:
 	bool SaveComponent(JsonObj& obj);
 
 
-	void SetTransformation(float3 pos, Quat rot, float3 size);
+	void SetTransformation(float3 pos, Quat rot, float3 size, bool guizmo = false);
 	void SetPosition(float3 pos);
 	void SetRotation(Quat rot);
 	void SetMatrices();

@@ -800,7 +800,7 @@ void ModuleCentralEditor::DrawImGuizmo()
             ((ComponentTransform2D*)App->scene_intro->game_object_selected->GetComponent(Component_Type::Transform2D))->SetTransformation(translation, rotation, s);
         }
         else {
-            ((ComponentTransform*)App->scene_intro->game_object_selected->GetComponent(Component_Type::Transform))->SetTransformation(translation, rotation, size);
+            ((ComponentTransform*)App->scene_intro->game_object_selected->GetComponent(Component_Type::Transform))->SetTransformation(translation, rotation, size, true);
         }
     }
 }
