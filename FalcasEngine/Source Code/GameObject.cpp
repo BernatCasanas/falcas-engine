@@ -216,7 +216,7 @@ Component* GameObject::CreateComponent(Component_Type type)
 		component->name = "Image";
 		break;
 	case Component_Type::Button:
-		component = new ComponentButton(this);
+		component = new ComponentButton(this, trans2D);
 		component->name = "Button";
 		break;
 	case Component_Type::Checkbox:

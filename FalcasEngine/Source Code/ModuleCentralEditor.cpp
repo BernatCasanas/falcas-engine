@@ -489,36 +489,38 @@ void ModuleCentralEditor::Draw()
                     game_object_component->Inspector();
                 }
             }
-            if (ImGui::Button("Create Component"))
-                ImGui::OpenPopup("create_component");
-            if (ImGui::BeginPopup("create_component"))
-            {
-                if (!App->scene_intro->game_object_selected->IsUI()) {
-                    if (ImGui::Selectable("Component Mesh")) {
-                        App->scene_intro->game_object_selected->CreateComponent(Component_Type::Mesh);
+            if (!App->scene_intro->game_object_selected->IsUI() || App->scene_intro->game_object_selected->GetComponentsSize() == 1) {
+                if (ImGui::Button("Create Component"))
+                    ImGui::OpenPopup("create_component");
+                if (ImGui::BeginPopup("create_component"))
+                {
+                    if (!App->scene_intro->game_object_selected->IsUI()) {
+                        if (ImGui::Selectable("Component Mesh")) {
+                            App->scene_intro->game_object_selected->CreateComponent(Component_Type::Mesh);
+                        }
+                        if (ImGui::Selectable("Component Material")) {
+                            App->scene_intro->game_object_selected->CreateComponent(Component_Type::Material);
+                        }
+                        if (ImGui::Selectable("Component Camera")) {
+                            App->scene_intro->game_object_selected->CreateComponent(Component_Type::Camera);
+                        }
                     }
-                    if (ImGui::Selectable("Component Material")) {
-                        App->scene_intro->game_object_selected->CreateComponent(Component_Type::Material);
+                    else {
+                        if (ImGui::Selectable("Component Image")) {
+                            App->scene_intro->game_object_selected->CreateComponent(Component_Type::Image);
+                        }
+                        if (ImGui::Selectable("Component Button")) {
+                            App->scene_intro->game_object_selected->CreateComponent(Component_Type::Button);
+                        }
+                        if (ImGui::Selectable("Component Check Box")) {
+                            App->scene_intro->game_object_selected->CreateComponent(Component_Type::Checkbox);
+                        }
+                        if (ImGui::Selectable("Component Input Box")) {
+                            App->scene_intro->game_object_selected->CreateComponent(Component_Type::Inputbox);
+                        }
                     }
-                    if (ImGui::Selectable("Component Camera")) {
-                        App->scene_intro->game_object_selected->CreateComponent(Component_Type::Camera);
-                    }
+                    ImGui::EndPopup();
                 }
-                else if(App->scene_intro->game_object_selected->GetComponentsSize()==1){
-                    if (ImGui::Selectable("Component Image")) {
-                        App->scene_intro->game_object_selected->CreateComponent(Component_Type::Image);
-                    }
-                    if (ImGui::Selectable("Component Button")) {
-                        App->scene_intro->game_object_selected->CreateComponent(Component_Type::Button);
-                    }
-                    if (ImGui::Selectable("Component Check Box")) {
-                        App->scene_intro->game_object_selected->CreateComponent(Component_Type::Checkbox);
-                    }
-                    if (ImGui::Selectable("Component Input Box")) {
-                        App->scene_intro->game_object_selected->CreateComponent(Component_Type::Inputbox);
-                    }
-                }
-                ImGui::EndPopup();
             }
         }
         ImGui::End();

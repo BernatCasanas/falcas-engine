@@ -19,10 +19,8 @@ public:
 
 	void Inspector();
 
-public:
+private:
 	ResourceMaterial* resource_material = nullptr;
 	ResourceMesh* resource_mesh = nullptr;
-private:
 	ComponentTransform2D* trans;
-	int id_texCoords;
 };
