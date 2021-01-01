@@ -204,7 +204,6 @@ void ComponentTransform2D::Inspector()
 {
 	float null = 0;
 	ImGui::PushID(name.c_str());
-	Component::Inspector();
 
 	ImGui::Separator();
 

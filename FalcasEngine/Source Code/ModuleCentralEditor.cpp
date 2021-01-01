@@ -504,7 +504,7 @@ void ModuleCentralEditor::Draw()
                         App->scene_intro->game_object_selected->CreateComponent(Component_Type::Camera);
                     }
                 }
-                else {
+                else if(App->scene_intro->game_object_selected->GetComponentsSize()==1){
                     if (ImGui::Selectable("Component Image")) {
                         App->scene_intro->game_object_selected->CreateComponent(Component_Type::Image);
                     }

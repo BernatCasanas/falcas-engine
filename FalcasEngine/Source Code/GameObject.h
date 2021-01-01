@@ -38,6 +38,7 @@ public:
 	bool IsInsideFrustumCulling();
 	bool IsCulled() const;
 	bool IsUI() const { return is_ui; } 
+	uint GetComponentsSize() const { return components.size(); }
 	AABB GetAABB()const;
 	void RemoveResourceModel();
 
