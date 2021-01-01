@@ -22,7 +22,6 @@ public:
 
 	void Update();
 
-	void RenderUI();
 
 	Component* CreateComponent(Component_Type type);
 	Component* CreateComponent(Component_Type type, char* file);

@@ -14,6 +14,7 @@
 #include "Shape.h"
 #include "GameObject.h"
 #include "ComponentMesh.h"
+#include "ModuleUI.h"
 
 
 #pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
@@ -339,10 +340,10 @@ void ModuleRenderer3D::RenderUI()
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	glOrtho(scene_width/2, -scene_width / 2, scene_height / 2, -scene_height / 2, -0.1f, 100.0f);
+	glOrtho(scene_width/2, -scene_width / 2, -scene_height / 2, scene_height / 2, -0.1f, 100.0f);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadMatrixf(camera->GetViewMatrix());
-	App->scene_intro->root->RenderUI();
+	App->UI->RenderUI(App->scene_intro->root);
 	glMatrixMode(GL_PROJECTION);
 	glLoadMatrixf(camera->GetProjectionMatrix());
 	glMatrixMode(GL_MODELVIEW);

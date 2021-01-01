@@ -1,6 +1,7 @@
 #pragma once
 #include "Module.h"
 
+class GameObject;
 
 class ModuleUI : public Module
 {
@@ -28,6 +29,9 @@ public:
 
 	// Called before quitting
 	bool CleanUp();
+
+	void RenderUI(GameObject* game_obj);
+	void CheckHover(GameObject* game_obj);
 	
 
 	void ChangeDebug();

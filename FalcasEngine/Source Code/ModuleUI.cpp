@@ -4,6 +4,10 @@
 #include "FileSystem.h"
 #include "ResourceModel.h"
 #include "ModuleRenderer3D.h"
+#include "ModuleInput.h"
+#include "ModuleSceneIntro.h"
+#include "GameObject.h"
+#include "ComponentUI.h"
 
 ModuleUI::ModuleUI(Application* app, bool start_enabled) : Module(app, start_enabled, "moduleUI")
 {
@@ -54,6 +58,7 @@ bool ModuleUI::Start()
 // Update all guis
 update_status ModuleUI::PreUpdate(float dt)
 {
+	CheckHover(App->scene_intro->root);
 	/*bool mouse = false;
 	lockClick = false;
 	int count = 0;
@@ -206,6 +211,30 @@ bool ModuleUI::CleanUp()
 	App->tex->UnLoad(cursor_tex);
 	App->tex->UnLoad(winlose_tex);*/
 	return true;
+}
+
+void ModuleUI::RenderUI(GameObject* game_obj)
+{
+	if (!game_obj->active)
+		return;
+	if (game_obj->IsUI() && game_obj->GetComponentsSize() > 1) {
+		((ComponentUI*)game_obj->components[1])->Render();
+	}
+	for (int i = 0; i < game_obj->children.size(); i++) {
+		RenderUI(game_obj->children[i]);
+	}
+}
+
+void ModuleUI::CheckHover(GameObject* game_obj)
+{
+	if (!game_obj->active)
+		return;
+	if (game_obj->IsUI() && game_obj->GetComponentsSize() > 1) {
+		((ComponentUI*)game_obj->components[1])->CheckMouseHovering();
+	}
+	for (int i = 0; i < game_obj->children.size(); i++) {
+		CheckHover(game_obj->children[i]);
+	}
 }
 
 

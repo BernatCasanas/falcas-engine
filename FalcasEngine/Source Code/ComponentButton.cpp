@@ -48,9 +48,6 @@ void ComponentButton::Update()
 			resource_material_sprite3 = nullptr;
 		}
 	}
-	if (App->input->GetKey(11) == KEY_DOWN) {
-		GetPlane();
-	}
 }
 
 void ComponentButton::Initialization()
@@ -61,7 +58,12 @@ void ComponentButton::Render()
 {
 	if (!active)
 		return;
-	resource_mesh->Render((float*)&trans->GetGlobalMatrixTransposed(), nullptr, false, false, false, resource_material_sprite1);
+	if (is_mouse_hover) {
+		resource_mesh->Render((float*)&trans->GetGlobalMatrixTransposed(), nullptr, false, false, false, resource_material_sprite2);
+	}
+	else {
+		resource_mesh->Render((float*)&trans->GetGlobalMatrixTransposed(), nullptr, false, false, false, resource_material_sprite1);
+	}
 }
 
 bool ComponentButton::SaveComponent(JsonObj& obj)

@@ -27,21 +27,42 @@ void ComponentUI::Render()
 {
 }
 
-void ComponentUI::GetPlane()
+void ComponentUI::CheckMouseHovering()
 {
-	/*for (int i = 0; i < resource_mesh->num_vertices; i++) {
-		LOG("%d, %f", i, resource_mesh->vertices[i]);
-	}*/
-	float3 min = resource_mesh->GetAABB().minPoint;
-	float3 max= resource_mesh->GetAABB().maxPoint;
-	float2 min_p = { min.x,min.y };
-	float2 max_p = { max.x,max.y };
-
-	((ComponentTransform2D*)owner->GetComponent(Component_Type::Transform2D))->GetMinandMaxPoints(min_p, max_p);
+	UpdateTriangles();
+	
 	float scene_x, scene_y, scene_width, scene_height;
 	App->scene_intro->GetSceneDimensions(scene_x, scene_y, scene_width, scene_height);
-	LOG("%f, %f", App->input->GetMouseX() - scene_x, App->input->GetMouseY() - scene_y);
-	LOG("%f, %f", min_p.x, min_p.y);
-	LOG("%f, %f", max_p.x, max_p.y);
+	float3 mouse = { 0,0,0 };
+	mouse.x = App->input->GetMouseX() - scene_x;
+	mouse.y = App->input->GetMouseY() - scene_y;
+	/*LOG("%f, %f", mouse_x, mouse_y);
+	LOG("%f, %f", triangle1.a.x, triangle1.a.y);
+	LOG("%f, %f", triangle1.b.x, triangle1.b.y);
+	LOG("%f, %f", triangle1.c.x, triangle1.c.y);
+	LOG("%f, %f", triangle2.c.x, triangle2.c.y);*/
+	if (triangle1.Contains(mouse) || triangle2.Contains(mouse)) {
+		is_mouse_hover = true;
+	}
+	else {
+		is_mouse_hover = false;
+	}
+}
+
+void ComponentUI::UpdateTriangles()
+{
+	float3 min = resource_mesh->GetAABB().minPoint;
+	float3 max = resource_mesh->GetAABB().maxPoint;
+	float2 min_p = { min.x,min.y };
+	float2 max_p = { max.x,max.y };
+	float2 third_p = { min.x, max.y };
+	float2 third_p_second_tri = { max.x,min.y };
+	((ComponentTransform2D*)owner->GetComponent(Component_Type::Transform2D))->GetTrianglePoints(min_p, max_p, third_p, third_p_second_tri);
+	min = { min_p.x,min_p.y,0 };
+	max = { max_p.x,max_p.y,0 };
+	float3 third = { third_p.x,third_p.y,0 };
+	triangle1 = { min,max,third };
+	third = { third_p_second_tri.x,third_p_second_tri.y,0 };
+	triangle2 = { min,max,third };
 
 }

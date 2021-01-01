@@ -310,23 +310,62 @@ void ComponentTransform2D::Inspector()
 	ImGui::PopID();
 }
 
-void ComponentTransform2D::GetMinandMaxPoints(float2& min_p, float2& max_p)
+void ComponentTransform2D::GetTrianglePoints(float2& min_p, float2& max_p, float2& third_p, float2& third_p_second_tri)
 {
+
 	float scene_x, scene_y, scene_width, scene_height;
 	App->scene_intro->GetSceneDimensions(scene_x, scene_y, scene_width, scene_height);
+	Quat q = q.RotateZ(-rotation.z*DEGTORAD);
 
-	min_p.x *= size.x;
-	max_p.x *= size.x;
-	min_p.y *= size.y;
-	max_p.y *= size.y;
+	for (int i = 0; i < 4; i++) {
+		float2 point;
+		if (i == 0) {
+			point = min_p;
+		}
+		else if (i == 1) {
+			point = max_p;
+		}
+		else if(i==2) {
+			point = third_p;
+		}
+		else {
+			point = third_p_second_tri;
+		}
 
-	min_p.x += position.x;
-	max_p.x += position.x;
-	min_p.y += position.y;
-	max_p.y += position.y;
+		point.x *= size.x;
+		point.y *= size.y;
 
-	min_p.x += scene_width / 2;
-	max_p.x += scene_width / 2;
-	min_p.y += scene_height / 2;
-	max_p.y += scene_height / 2;
+
+		point.x -= pivot_position.x;
+		point.y += pivot_position.y;
+
+		//ROTATE
+		float3 point3 = { point.x,point.y,0 };
+		point3 = q * point3;
+
+		point = { point3.x,point3.y };
+
+		point.x += pivot_position.x;
+		point.y -= pivot_position.y;
+
+		point.x += position.x;
+		point.y -= position.y;
+
+		point.x += scene_width / 2;
+		point.y += scene_height / 2;
+
+		if (i == 0) {
+			min_p = point;
+		}
+		else if (i == 1) {
+			max_p = point;
+		}
+		else if (i == 2) {
+			third_p = point;
+		}
+		else {
+			third_p_second_tri = point;
+		}
+	}
+	
 }

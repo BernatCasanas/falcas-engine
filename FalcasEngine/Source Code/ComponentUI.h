@@ -1,5 +1,6 @@
 #pragma once
 #include "Component.h"
+#include "External Libraries/MathGeoLib/include/Geometry/Triangle.h"
 
 class GameObject;
 class ResourceMesh;
@@ -13,8 +14,12 @@ public:
 
 	ResourceMesh* GetResourceMesh() const { return resource_mesh; }
 
-	void GetPlane();
+	void CheckMouseHovering();
+	void UpdateTriangles();
 
 protected:
 	ResourceMesh* resource_mesh = nullptr;
+	Triangle triangle1;
+	Triangle triangle2;
+	bool is_mouse_hover = false;
 };
