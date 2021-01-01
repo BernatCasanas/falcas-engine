@@ -13,7 +13,7 @@
 
 
 
-ComponentImage::ComponentImage(GameObject* owner, ComponentTransform2D* trans) : ComponentUI(Component_Type::Image, owner, "Image", false), trans(trans)
+ComponentImage::ComponentImage(GameObject* owner, ComponentTransform2D* trans) : ComponentUI(Component_Type::Image, owner, "Image"), trans(trans)
 {
 	
 }

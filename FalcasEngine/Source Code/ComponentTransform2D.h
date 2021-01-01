@@ -38,6 +38,8 @@ public:
 	void SetMatricesWithNewParent(float4x4 parent_global_matrix);
 	void Inspector();
 
+	void GetMinandMaxPoints(float2& min_p, float2& max_p);
+
 
 
 public:

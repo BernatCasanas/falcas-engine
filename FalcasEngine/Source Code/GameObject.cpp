@@ -175,6 +175,8 @@ void GameObject::Update()
 
 void GameObject::RenderUI()
 {
+	if (!active)
+		return;
 	if (is_ui && components.size() > 1) {
 		((ComponentUI*)components[1])->Render();
 	}

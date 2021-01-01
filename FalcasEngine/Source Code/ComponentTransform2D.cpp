@@ -3,6 +3,7 @@
 #include "External Libraries/ImGui/imgui.h"
 #include "External Libraries/MathGeoLib/include/Math/float3x3.h"
 #include "Application.h"
+#include "ModuleSceneIntro.h"
 #include "ModuleRenderer3D.h"
 #include "GameObject.h"
 #include "ComponentCamera.h"
@@ -137,7 +138,7 @@ void ComponentTransform2D::SetMatrices()
 		}
 	}
 	else matrix_parent = float4x4::identity;
-	global_matrix = matrix_parent * matrix_billboard * matrix_pivot * local_matrix;
+	global_matrix = matrix_parent * matrix_billboard *matrix_pivot* local_matrix;
 	global_matrix_transposed = global_matrix.Transposed();
 	needed_to_update = false;
 }
@@ -307,4 +308,25 @@ void ComponentTransform2D::Inspector()
 	ImGui::Columns(1, "", false);
 	ImGui::Separator();
 	ImGui::PopID();
+}
+
+void ComponentTransform2D::GetMinandMaxPoints(float2& min_p, float2& max_p)
+{
+	float scene_x, scene_y, scene_width, scene_height;
+	App->scene_intro->GetSceneDimensions(scene_x, scene_y, scene_width, scene_height);
+
+	min_p.x *= size.x;
+	max_p.x *= size.x;
+	min_p.y *= size.y;
+	max_p.y *= size.y;
+
+	min_p.x += position.x;
+	max_p.x += position.x;
+	min_p.y += position.y;
+	max_p.y += position.y;
+
+	min_p.x += scene_width / 2;
+	max_p.x += scene_width / 2;
+	min_p.y += scene_height / 2;
+	max_p.y += scene_height / 2;
 }

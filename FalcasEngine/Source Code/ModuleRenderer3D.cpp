@@ -332,12 +332,14 @@ void ModuleRenderer3D::OnResize(int width, int height)
 
 void ModuleRenderer3D::RenderUI()
 {
+	float scene_x, scene_y, scene_width, scene_height;
+	App->scene_intro->GetSceneDimensions(scene_x, scene_y, scene_width, scene_height);
 	glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
 	glClear(GL_DEPTH_BUFFER_BIT);
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	glOrtho(-10.0f, 10.0f, -10.0f, 10.0f, -0.1f, 100.0f);
+	glOrtho(scene_width/2, -scene_width / 2, scene_height / 2, -scene_height / 2, -0.1f, 100.0f);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadMatrixf(camera->GetViewMatrix());
 	App->scene_intro->root->RenderUI();

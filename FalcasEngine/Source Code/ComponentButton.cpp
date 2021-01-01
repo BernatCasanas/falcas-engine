@@ -11,7 +11,10 @@
 #include "External Libraries/ImGui/imgui.h"
 
 
-ComponentButton::ComponentButton(GameObject* owner, ComponentTransform2D* trans) : ComponentUI(Component_Type::Button, owner, "Button", true), trans(trans)
+
+#include "ModuleInput.h"
+
+ComponentButton::ComponentButton(GameObject* owner, ComponentTransform2D* trans) : ComponentUI(Component_Type::Button, owner, "Button"), trans(trans)
 {
 }
 
@@ -44,6 +47,9 @@ void ComponentButton::Update()
 		if (resource_material_sprite3 == App->scene_intro->resources_material_to_delete[i]) {
 			resource_material_sprite3 = nullptr;
 		}
+	}
+	if (App->input->GetKey(11) == KEY_DOWN) {
+		GetPlane();
 	}
 }
 
