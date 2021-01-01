@@ -173,6 +173,16 @@ void GameObject::Update()
 	
 }
 
+void GameObject::RenderUI()
+{
+	if (is_ui && components.size() > 1) {
+		components[1]->Render();
+	}
+	for (int i = 0; i < children.size(); i++) {
+		children[i]->RenderUI();
+	}
+}
+
 Component* GameObject::CreateComponent(Component_Type type)
 {
 	Component* component = nullptr;
@@ -186,7 +196,7 @@ Component* GameObject::CreateComponent(Component_Type type)
 		component->name = "Transform";
 		break;
 	case Component_Type::Transform2D:
-		component = new ComponentTransform2D(this, { 0,0 }, Quat::identity, { 10,10 });///TEMPORAL
+		component = new ComponentTransform2D(this, { 0,0 }, Quat::identity, { 1,1 });
 		component->name = "Transform2D";
 		break;
 	case Component_Type::Mesh:

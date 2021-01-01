@@ -24,7 +24,6 @@
 
 ///TEMPORAL
 #include "ComponentImage.h"
-#include "ModuleInput.h"
 
 ModuleRenderer3D::ModuleRenderer3D(Application* app, bool start_enabled) : Module(app, start_enabled, "moduleRenderer3D")
 {
@@ -341,8 +340,7 @@ void ModuleRenderer3D::RenderUI()
 	glOrtho(-10.0f, 10.0f, -10.0f, 10.0f, -0.1f, 100.0f);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadMatrixf(camera->GetViewMatrix());
-	App->scene_intro->image->Render();
-	///TEMPORAL
+	App->scene_intro->root->RenderUI();
 	glMatrixMode(GL_PROJECTION);
 	glLoadMatrixf(camera->GetProjectionMatrix());
 	glMatrixMode(GL_MODELVIEW);

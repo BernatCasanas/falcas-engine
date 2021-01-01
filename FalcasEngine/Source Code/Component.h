@@ -26,6 +26,7 @@ public:
 	virtual ~Component();
 	virtual void Enable();
 	virtual void Update();
+	virtual void Render();
 	virtual void Disable();
 	virtual void Inspector();
 	virtual bool LoadComponent(JsonObj& obj) { return true; };

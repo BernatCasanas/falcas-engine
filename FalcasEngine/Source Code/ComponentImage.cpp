@@ -9,9 +9,6 @@
 #include "GameObject.h"
 #include "ModuleUI.h"
 #include "External Libraries/ImGui/imgui.h"
-
-///TEMPORAL
-#include "External Libraries/Glew/include/glew.h"
 #include "ComponentTransform2D.h"
 
 
@@ -69,7 +66,6 @@ void ComponentImage::ChangeResourceMaterial(ResourceMaterial* resource_mat)
 
 void ComponentImage::Inspector()
 {
-	bool falsed = false;
 
 	ImGui::PushID(name.c_str());
 	Component::Inspector();
