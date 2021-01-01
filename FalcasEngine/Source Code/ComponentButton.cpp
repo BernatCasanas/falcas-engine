@@ -7,12 +7,12 @@
 #include "ComponentTransform2D.h"
 #include "ModuleUI.h"
 #include "FileSystem.h"
+#include "GameObject.h"
 #include "External Libraries/ImGui/imgui.h"
 
 
-ComponentButton::ComponentButton(GameObject* owner, ComponentTransform2D* trans) : Component(Component_Type::Button, owner, "Button"), trans(trans)
+ComponentButton::ComponentButton(GameObject* owner, ComponentTransform2D* trans) : ComponentUI(Component_Type::Button, owner, "Button", true), trans(trans)
 {
-	resource_mesh = (ResourceMesh*)App->resources->RequestResource(App->UI->mesh_plane_id);
 }
 
 
@@ -30,10 +30,6 @@ ComponentButton::~ComponentButton()
 		App->resources->FreeResource(resource_material_sprite3);
 	}
 	resource_material_sprite3 = nullptr;
-	if (resource_mesh != nullptr && !App->resources->isResourcesMapEmpty()) {
-		App->resources->FreeResource(resource_mesh);
-	}
-	resource_mesh = nullptr;
 }
 
 void ComponentButton::Update()
@@ -57,6 +53,8 @@ void ComponentButton::Initialization()
 
 void ComponentButton::Render()
 {
+	if (!active)
+		return;
 	resource_mesh->Render((float*)&trans->GetGlobalMatrixTransposed(), nullptr, false, false, false, resource_material_sprite1);
 }
 

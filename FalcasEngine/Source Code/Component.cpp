@@ -22,9 +22,6 @@ void Component::Update()
 {
 }
 
-void Component::Render()
-{
-}
 
 void Component::Disable()
 {

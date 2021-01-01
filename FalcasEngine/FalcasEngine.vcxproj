@@ -23,6 +23,7 @@
     <ClCompile Include="Source Code\ComponentMesh.cpp" />
     <ClCompile Include="Source Code\ComponentTransform.cpp" />
     <ClCompile Include="Source Code\ComponentTransform2D.cpp" />
+    <ClCompile Include="Source Code\ComponentUI.cpp" />
     <ClCompile Include="Source Code\External Libraries\ImGuizmo\ImCurveEdit.cpp" />
     <ClCompile Include="Source Code\External Libraries\ImGuizmo\ImGradient.cpp" />
     <ClCompile Include="Source Code\External Libraries\ImGuizmo\ImGuizmo.cpp" />
@@ -102,6 +103,7 @@
     <ClInclude Include="Source Code\ComponentMesh.h" />
     <ClInclude Include="Source Code\ComponentTransform.h" />
     <ClInclude Include="Source Code\ComponentTransform2D.h" />
+    <ClInclude Include="Source Code\ComponentUI.h" />
     <ClInclude Include="Source Code\External Libraries\ImGuizmo\ImCurveEdit.h" />
     <ClInclude Include="Source Code\External Libraries\ImGuizmo\ImGradient.h" />
     <ClInclude Include="Source Code\External Libraries\ImGuizmo\ImGuizmo.h" />

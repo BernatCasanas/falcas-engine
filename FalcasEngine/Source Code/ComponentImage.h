@@ -1,11 +1,10 @@
 #pragma once
-#include "Component.h"
+#include "ComponentUI.h"
 
 class ResourceMaterial;
-class ResourceMesh;
 class ComponentTransform2D;
 
-class ComponentImage : public Component {
+class ComponentImage : public ComponentUI {
 public:
 	ComponentImage(GameObject* owner, ComponentTransform2D* trans);
 	~ComponentImage();
@@ -21,6 +20,5 @@ public:
 
 private:
 	ResourceMaterial* resource_material = nullptr;
-	ResourceMesh* resource_mesh = nullptr;
 	ComponentTransform2D* trans;
 };

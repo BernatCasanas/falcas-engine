@@ -270,6 +270,9 @@
     <ClCompile Include="Source Code\ComponentInputbox.cpp">
       <Filter>Source Code</Filter>
     </ClCompile>
+    <ClCompile Include="Source Code\ComponentUI.cpp">
+      <Filter>Source Code</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source Code\Application.h">
@@ -693,6 +696,9 @@
       <Filter>Source Code</Filter>
     </ClInclude>
     <ClInclude Include="Source Code\ComponentInputbox.h">
+      <Filter>Source Code</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\ComponentUI.h">
       <Filter>Source Code</Filter>
     </ClInclude>
   </ItemGroup>

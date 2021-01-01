@@ -13,9 +13,9 @@
 
 
 
-ComponentImage::ComponentImage(GameObject* owner, ComponentTransform2D* trans) : Component(Component_Type::Image, owner, "Image"), trans(trans)
+ComponentImage::ComponentImage(GameObject* owner, ComponentTransform2D* trans) : ComponentUI(Component_Type::Image, owner, "Image", false), trans(trans)
 {
-	resource_mesh = (ResourceMesh*)App->resources->RequestResource(App->UI->mesh_plane_id);
+	
 }
 
 
@@ -25,10 +25,6 @@ ComponentImage::~ComponentImage()
 		App->resources->FreeResource(resource_material);
 	}
 	resource_material = nullptr;
-	if (resource_mesh != nullptr && !App->resources->isResourcesMapEmpty()) {
-		App->resources->FreeResource(resource_mesh);
-	}
-	resource_mesh = nullptr;
 }
 
 void ComponentImage::Update()
@@ -47,6 +43,8 @@ void ComponentImage::Initialization()
 
 void ComponentImage::Render()
 {
+	if (!active)
+		return;
 	resource_mesh->Render((float*)&trans->GetGlobalMatrixTransposed(), nullptr, false, false, false, resource_material);
 }
 

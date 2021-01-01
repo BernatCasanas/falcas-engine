@@ -1,11 +1,10 @@
 #pragma once
-#include "Component.h"
+#include "ComponentUI.h"
 
 class ResourceMaterial;
-class ResourceMesh;
 class ComponentTransform2D;
 
-class ComponentButton : public Component {
+class ComponentButton : public ComponentUI {
 public:
 	ComponentButton(GameObject* owner, ComponentTransform2D* trans);
 	~ComponentButton();
@@ -24,7 +23,6 @@ private:
 	ResourceMaterial* resource_material_sprite1 = nullptr;
 	ResourceMaterial* resource_material_sprite2 = nullptr;
 	ResourceMaterial* resource_material_sprite3 = nullptr;
-	ResourceMesh* resource_mesh = nullptr;
 	ComponentTransform2D* trans;
 	int id_texCoords;
 

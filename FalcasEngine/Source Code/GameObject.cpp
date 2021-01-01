@@ -176,7 +176,7 @@ void GameObject::Update()
 void GameObject::RenderUI()
 {
 	if (is_ui && components.size() > 1) {
-		components[1]->Render();
+		((ComponentUI*)components[1])->Render();
 	}
 	for (int i = 0; i < children.size(); i++) {
 		children[i]->RenderUI();
