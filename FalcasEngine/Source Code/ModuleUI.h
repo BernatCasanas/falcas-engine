@@ -31,7 +31,9 @@ public:
 	bool CleanUp();
 
 	void RenderUI(GameObject* game_obj);
-	void CheckHover(GameObject* game_obj);
+	bool CheckHover(GameObject* game_obj, bool is_hovering = false);
+	void MouseClicked(GameObject* game_obj);
+	void MouseStoppedClicking(GameObject* game_obj);
 	
 
 	void ChangeDebug();
@@ -51,9 +53,7 @@ public:
 	void ActivateButtons();
 
 
-
 private:
-
 	//std::list <UI*> UIs;
 	
 

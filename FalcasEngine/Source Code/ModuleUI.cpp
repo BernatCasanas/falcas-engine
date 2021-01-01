@@ -8,6 +8,7 @@
 #include "ModuleSceneIntro.h"
 #include "GameObject.h"
 #include "ComponentUI.h"
+#include "ModuleCamera3D.h"
 
 ModuleUI::ModuleUI(Application* app, bool start_enabled) : Module(app, start_enabled, "moduleUI")
 {
@@ -58,7 +59,16 @@ bool ModuleUI::Start()
 // Update all guis
 update_status ModuleUI::PreUpdate(float dt)
 {
-	CheckHover(App->scene_intro->root);
+	bool is_mouse_hovering_ui= CheckHover(App->scene_intro->root);
+	if (!App->camera->stop_selecting) {
+		App->camera->stop_selecting = is_mouse_hovering_ui;
+	}
+	if (App->input->GetMouseButton(1) == KEY_DOWN|| App->input->GetMouseButton(1) == KEY_REPEAT) {
+		MouseClicked(App->scene_intro->root);
+	}
+	else if (App->input->GetMouseButton(1) == KEY_UP) {
+		MouseStoppedClicking(App->scene_intro->root);
+	}
 	/*bool mouse = false;
 	lockClick = false;
 	int count = 0;
@@ -225,15 +235,41 @@ void ModuleUI::RenderUI(GameObject* game_obj)
 	}
 }
 
-void ModuleUI::CheckHover(GameObject* game_obj)
+bool ModuleUI::CheckHover(GameObject* game_obj, bool is_hovering)
+{
+	if (!game_obj->active)
+		return is_hovering;
+	if (game_obj->IsUI() && game_obj->GetComponentsSize() > 1) {
+		if(((ComponentUI*)game_obj->components[1])->CheckMouseHovering()){
+			is_hovering = true;
+		}
+	}
+	for (int i = 0; i < game_obj->children.size(); i++) {
+		CheckHover(game_obj->children[i], is_hovering);
+	}
+}
+
+void ModuleUI::MouseClicked(GameObject* game_obj)
 {
 	if (!game_obj->active)
 		return;
 	if (game_obj->IsUI() && game_obj->GetComponentsSize() > 1) {
-		((ComponentUI*)game_obj->components[1])->CheckMouseHovering();
+		((ComponentUI*)game_obj->components[1])->IsClicked();
 	}
 	for (int i = 0; i < game_obj->children.size(); i++) {
-		CheckHover(game_obj->children[i]);
+		MouseClicked(game_obj->children[i]);
+	}
+}
+
+void ModuleUI::MouseStoppedClicking(GameObject* game_obj)
+{
+	if (!game_obj->active)
+		return;
+	if (game_obj->IsUI() && game_obj->GetComponentsSize() > 1) {
+		((ComponentUI*)game_obj->components[1])->StoppedClicking();
+	}
+	for (int i = 0; i < game_obj->children.size(); i++) {
+		MouseStoppedClicking(game_obj->children[i]);
 	}
 }
 

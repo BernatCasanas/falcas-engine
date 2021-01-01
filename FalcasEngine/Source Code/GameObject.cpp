@@ -211,7 +211,7 @@ Component* GameObject::CreateComponent(Component_Type type)
 		component->name = "Button";
 		break;
 	case Component_Type::Checkbox:
-		component = new ComponentCheckbox(this);
+		component = new ComponentCheckbox(this, trans2D);
 		component->name = "Check Box";
 		break;
 	case Component_Type::Inputbox:

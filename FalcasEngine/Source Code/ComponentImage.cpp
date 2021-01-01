@@ -15,7 +15,7 @@
 
 ComponentImage::ComponentImage(GameObject* owner, ComponentTransform2D* trans) : ComponentUI(Component_Type::Image, owner, "Image"), trans(trans)
 {
-	
+	is_focusable = false;
 }
 
 

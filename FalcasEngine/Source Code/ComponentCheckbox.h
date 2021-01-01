@@ -1,9 +1,11 @@
 #pragma once
-#include "Component.h"
+#include "ComponentUI.h"
 
-class ComponentCheckbox : public Component {
+class ResourceMaterial;
+class ComponentTransform2D;
+class ComponentCheckbox : public ComponentUI {
 public:
-	ComponentCheckbox(GameObject* owner);
+	ComponentCheckbox(GameObject* owner, ComponentTransform2D* trans);
 	~ComponentCheckbox();
 	void Update();
 
@@ -11,8 +13,18 @@ public:
 	void Render();
 	bool SaveComponent(JsonObj& obj);
 
+	void ChangeResourceMaterial(ResourceMaterial* resource_mat, int num_sprite);
+
+	bool IsActive()const { return is_active; }
+
 
 	void Inspector();
 
-
+private:
+	ResourceMaterial* resource_material_sprite1 = nullptr;
+	ResourceMaterial* resource_material_sprite2 = nullptr;
+	ResourceMaterial* resource_material_sprite3 = nullptr;
+	ResourceMaterial* resource_material_sprite4 = nullptr;
+	ComponentTransform2D* trans;
+	bool is_active = false;
 };

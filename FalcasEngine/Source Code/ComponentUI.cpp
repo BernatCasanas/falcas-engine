@@ -27,8 +27,19 @@ void ComponentUI::Render()
 {
 }
 
-void ComponentUI::CheckMouseHovering()
+void ComponentUI::OnTriggered(ComponentUI* component_ui)
 {
+	if (listener == nullptr)
+		return;
+	listener->OnTriggered(component_ui);
+}
+
+
+bool ComponentUI::CheckMouseHovering()
+{
+	if (!is_focusable)
+		return false;
+
 	UpdateTriangles();
 	
 	float scene_x, scene_y, scene_width, scene_height;
@@ -36,17 +47,13 @@ void ComponentUI::CheckMouseHovering()
 	float3 mouse = { 0,0,0 };
 	mouse.x = App->input->GetMouseX() - scene_x;
 	mouse.y = App->input->GetMouseY() - scene_y;
-	/*LOG("%f, %f", mouse_x, mouse_y);
-	LOG("%f, %f", triangle1.a.x, triangle1.a.y);
-	LOG("%f, %f", triangle1.b.x, triangle1.b.y);
-	LOG("%f, %f", triangle1.c.x, triangle1.c.y);
-	LOG("%f, %f", triangle2.c.x, triangle2.c.y);*/
 	if (triangle1.Contains(mouse) || triangle2.Contains(mouse)) {
 		is_mouse_hover = true;
 	}
 	else {
 		is_mouse_hover = false;
 	}
+	return is_mouse_hover;
 }
 
 void ComponentUI::UpdateTriangles()
@@ -65,4 +72,22 @@ void ComponentUI::UpdateTriangles()
 	third = { third_p_second_tri.x,third_p_second_tri.y,0 };
 	triangle2 = { min,max,third };
 
+}
+
+void ComponentUI::IsClicked()
+{
+	if (!is_focusable || !is_mouse_hover)
+		return;
+	if (!is_clicked)
+		is_clicked_first_frame = true;
+	else {
+		is_clicked_first_frame = false;
+	}
+	is_clicked = true;
+}
+
+void ComponentUI::StoppedClicking()
+{
+	is_clicked = false;
+	is_clicked_first_frame = false;
 }

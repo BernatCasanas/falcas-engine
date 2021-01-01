@@ -1,6 +1,7 @@
 #pragma once
 #include "Globals.h"
 #include "Json.h"
+class ComponentUI;
 class Application;
 class Module
 {
@@ -58,4 +59,6 @@ public:
 	{ 
 		return true; 
 	}
+
+	virtual void OnTriggered(ComponentUI* component_ui) {}
 };

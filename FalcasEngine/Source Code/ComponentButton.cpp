@@ -37,6 +37,9 @@ ComponentButton::~ComponentButton()
 
 void ComponentButton::Update()
 {
+	if (is_clicked_first_frame) {
+		OnTriggered(this);
+	}
 	for (int i = 0; i < App->scene_intro->resources_material_to_delete.size(); i++) {
 		if (resource_material_sprite1 == App->scene_intro->resources_material_to_delete[i]) {
 			resource_material_sprite1 = nullptr;
@@ -58,7 +61,10 @@ void ComponentButton::Render()
 {
 	if (!active)
 		return;
-	if (is_mouse_hover) {
+	if (is_clicked) {
+		resource_mesh->Render((float*)&trans->GetGlobalMatrixTransposed(), nullptr, false, false, false, resource_material_sprite3);
+	}
+	else if (is_mouse_hover) {
 		resource_mesh->Render((float*)&trans->GetGlobalMatrixTransposed(), nullptr, false, false, false, resource_material_sprite2);
 	}
 	else {
@@ -71,6 +77,7 @@ bool ComponentButton::SaveComponent(JsonObj& obj)
 	//obj.AddInt("Resource_ID", resource_material != nullptr ? resource_material->GetID() : 0);
 	return true;
 }
+
 
 void ComponentButton::ChangeResourceMaterial(ResourceMaterial* resource_mat, int num_sprite)
 {
