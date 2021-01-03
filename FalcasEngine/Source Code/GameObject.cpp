@@ -216,7 +216,7 @@ Component* GameObject::CreateComponent(Component_Type type)
 		component->name = "Check Box";
 		break;
 	case Component_Type::Inputbox:
-		component = new ComponentInputbox(this);
+		component = new ComponentInputbox(this, trans2D);
 		component->name = "Input Box";
 		break;
 	case Component_Type::Font:

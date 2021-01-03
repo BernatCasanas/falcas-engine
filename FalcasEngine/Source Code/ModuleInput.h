@@ -12,6 +12,15 @@ enum KEY_STATE
 	KEY_UP
 };
 
+enum class specialkeys {
+	None,
+	Backspace,
+	Supr,
+	Left,
+	Right,
+	Home,
+	End
+};
 
 class ModuleInput : public Module
 {
@@ -68,5 +77,7 @@ private:
 	int mouse_y_motion;
 
 public:
-
+	specialkeys special_keys;
+	std::string text_input;
+	bool changed_text_input = false;
 };

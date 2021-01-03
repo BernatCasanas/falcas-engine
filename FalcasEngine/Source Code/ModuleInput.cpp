@@ -104,6 +104,7 @@ update_status ModuleInput::PreUpdate(float dt)
 	}
 
 	mouse_x_motion = mouse_y_motion = 0;
+	special_keys = specialkeys::None;
 
 	bool quit = false;
 	SDL_Event e;
@@ -134,6 +135,33 @@ update_status ModuleInput::PreUpdate(float dt)
 					App->renderer3D->OnResize(e.window.data1, e.window.data2);
 			}
 			break;
+
+			case SDL_KEYDOWN:
+				if (e.key.keysym.sym == SDLK_BACKSPACE) {
+					special_keys = specialkeys::Backspace;
+				}
+				else if (e.key.keysym.sym == SDLK_DELETE) {
+					special_keys = specialkeys::Supr;
+				}
+				else if (e.key.keysym.sym == SDLK_LEFT) {
+					special_keys = specialkeys::Left;
+				}
+				else if (e.key.keysym.sym == SDLK_RIGHT) {
+					special_keys = specialkeys::Right;
+				}
+				else if (e.key.keysym.sym == SDLK_HOME) {
+					special_keys = specialkeys::Home;
+				}
+				else if (e.key.keysym.sym == SDLK_END) {
+					special_keys = specialkeys::End;
+				}
+
+				break;
+
+			case SDL_TEXTINPUT:
+				text_input = e.text.text;
+				changed_text_input = true;
+				break;
 
 			case SDL_DROPFILE:
 			{

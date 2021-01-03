@@ -74,20 +74,31 @@ void ComponentUI::UpdateTriangles()
 
 }
 
-void ComponentUI::IsClicked()
+void ComponentUI::IsClicked(bool clicked_with_mouse)
 {
-	if (!is_focusable || !is_mouse_hover)
+	is_clicked_with_enter = false;
+	if (!is_focusable || (!is_mouse_hover && clicked_with_mouse) || (!clicked_with_mouse && !is_focused)) {
+		is_focused = false;
 		return;
-	if (!is_clicked)
+	}
+	if (!is_clicked) {
 		is_clicked_first_frame = true;
+		if (!clicked_with_mouse) {
+			is_clicked_with_enter = true;
+		}
+	}
 	else {
 		is_clicked_first_frame = false;
 	}
 	is_clicked = true;
+	is_focused = true;
 }
 
-void ComponentUI::StoppedClicking()
+void ComponentUI::StoppedClicking(bool clicked_with_mouse)
 {
 	is_clicked = false;
 	is_clicked_first_frame = false;
+	if (clicked_with_mouse && type != Component_Type::Inputbox) {
+		is_focused = false;
+	}
 }
