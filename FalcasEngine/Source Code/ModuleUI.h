@@ -32,8 +32,8 @@ public:
 
 	void RenderUI(GameObject* game_obj);
 	bool CheckHover(GameObject* game_obj, bool is_hovering = false);
-	void MouseClicked(GameObject* game_obj);
-	void MouseStoppedClicking(GameObject* game_obj);
+	void MouseClicked(GameObject* game_obj, bool clicked_with_mouse = true);
+	void MouseStoppedClicking(GameObject* game_obj, bool clicked_with_mouse = true);
 	
 
 	void ChangeDebug();

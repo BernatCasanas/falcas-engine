@@ -9,6 +9,7 @@
 #include "GameObject.h"
 #include "ComponentUI.h"
 #include "ModuleCamera3D.h"
+#include "External Libraries/SDL/include/SDL_scancode.h"
 
 ModuleUI::ModuleUI(Application* app, bool start_enabled) : Module(app, start_enabled, "moduleUI")
 {
@@ -67,6 +68,12 @@ update_status ModuleUI::PreUpdate(float dt)
 		MouseClicked(App->scene_intro->root);
 	}
 	else if (App->input->GetMouseButton(1) == KEY_UP) {
+		MouseStoppedClicking(App->scene_intro->root);
+	}
+	if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_REPEAT) {
+		MouseClicked(App->scene_intro->root, false);
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_UP) {
 		MouseStoppedClicking(App->scene_intro->root);
 	}
 	/*bool mouse = false;
@@ -249,27 +256,32 @@ bool ModuleUI::CheckHover(GameObject* game_obj, bool is_hovering)
 	}
 }
 
-void ModuleUI::MouseClicked(GameObject* game_obj)
+void ModuleUI::MouseClicked(GameObject* game_obj, bool clicked_with_mouse)
 {
 	if (!game_obj->active)
 		return;
 	if (game_obj->IsUI() && game_obj->GetComponentsSize() > 1) {
-		((ComponentUI*)game_obj->components[1])->IsClicked();
+		if (clicked_with_mouse) {
+			((ComponentUI*)game_obj->components[1])->IsClicked();
+		}
+		else {
+			((ComponentUI*)game_obj->components[1])->IsClicked(false);
+		}
 	}
 	for (int i = 0; i < game_obj->children.size(); i++) {
-		MouseClicked(game_obj->children[i]);
+		MouseClicked(game_obj->children[i], clicked_with_mouse);
 	}
 }
 
-void ModuleUI::MouseStoppedClicking(GameObject* game_obj)
+void ModuleUI::MouseStoppedClicking(GameObject* game_obj, bool clicked_with_mouse)
 {
 	if (!game_obj->active)
 		return;
 	if (game_obj->IsUI() && game_obj->GetComponentsSize() > 1) {
-		((ComponentUI*)game_obj->components[1])->StoppedClicking();
+		((ComponentUI*)game_obj->components[1])->StoppedClicking(false);
 	}
 	for (int i = 0; i < game_obj->children.size(); i++) {
-		MouseStoppedClicking(game_obj->children[i]);
+		MouseStoppedClicking(game_obj->children[i], clicked_with_mouse);
 	}
 }
 
