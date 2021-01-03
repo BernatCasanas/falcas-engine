@@ -5,6 +5,7 @@
 #include "ModuleUI.h"
 #include "ModuleSceneIntro.h"
 #include "ResourceMesh.h"
+#include "External Libraries/ImGui/imgui.h"
 #include "ComponentTransform2D.h"
 
 void ComponentFont::Load(uint id, std::string characters, uint rows, uint h, uint w, uint rc)
@@ -104,4 +105,7 @@ bool ComponentFont::SaveComponent(JsonObj& obj)
 
 void ComponentFont::Inspector()
 {
+	ImGui::PushID(name.c_str());
+	ImGui::Text("gola");
+	ImGui::PopID();
 }

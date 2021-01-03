@@ -518,6 +518,9 @@ void ModuleCentralEditor::Draw()
                         if (ImGui::Selectable("Component Input Box")) {
                             App->scene_intro->game_object_selected->CreateComponent(Component_Type::Inputbox);
                         }
+                        if (ImGui::Selectable("Component Text")) {
+                            App->scene_intro->game_object_selected->CreateComponent(Component_Type::Font);
+                        }
                     }
                     ImGui::EndPopup();
                 }
