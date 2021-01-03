@@ -106,6 +106,17 @@ bool ComponentFont::SaveComponent(JsonObj& obj)
 void ComponentFont::Inspector()
 {
 	ImGui::PushID(name.c_str());
-	ImGui::Text("gola");
+	Component::Inspector();
+	ImGui::Separator();
+
+	ImGui::AlignTextToFramePadding();
+	ImGui::Text("Text: ");
+	ImGui::SameLine();
+	ImGui::InputText("##text", &text, ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll);
+
+	ImGui::Separator();
+
+
+		
 	ImGui::PopID();
 }
