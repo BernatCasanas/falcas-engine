@@ -229,7 +229,6 @@ void FileSystem::CreateFolders()
 	CreateOneFolder("Library/Textures/");
 	CreateOneFolder("Library/Scenes");
 	CreateOneFolder("Library/Models");
-	CreateOneFolder("Library/Fonts");
 	CreateOneFolder("/Config");
 }
 
