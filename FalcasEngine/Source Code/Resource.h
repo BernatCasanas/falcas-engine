@@ -6,7 +6,8 @@ enum class Resource_Type {
 	None,
 	Material,
 	Model,
-	Mesh
+	Mesh,
+	Font
 };
 
 class Resource {

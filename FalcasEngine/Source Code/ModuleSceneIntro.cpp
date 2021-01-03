@@ -58,6 +58,9 @@ bool ModuleSceneIntro::Start()
 	delete[] buffer;
 	icon_obj.CleanUp();
 	LoadModel(model);
+
+
+
 	return ret;
 }
 

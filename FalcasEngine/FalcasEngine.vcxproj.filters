@@ -273,6 +273,9 @@
     <ClCompile Include="Source Code\ComponentUI.cpp">
       <Filter>Source Code</Filter>
     </ClCompile>
+    <ClCompile Include="Source Code\ResourceFont.cpp">
+      <Filter>Source Code</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source Code\Application.h">
@@ -699,6 +702,9 @@
       <Filter>Source Code</Filter>
     </ClInclude>
     <ClInclude Include="Source Code\ComponentUI.h">
+      <Filter>Source Code</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\ResourceFont.h">
       <Filter>Source Code</Filter>
     </ClInclude>
   </ItemGroup>

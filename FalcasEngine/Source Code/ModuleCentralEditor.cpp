@@ -791,6 +791,7 @@ void ModuleCentralEditor::DrawImGuizmo()
         App->camera->stop_selecting = false;
     }
     if (ImGuizmo::IsUsing()) {
+        //TODO
         float4x4 matrix_updated;
         matrix_updated.Set(mat);
         matrix = matrix_updated.Transposed();

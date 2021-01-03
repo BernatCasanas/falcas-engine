@@ -61,6 +61,7 @@ void ComponentButton::Render()
 {
 	if (!active)
 		return;
+	//render text
 	if (is_clicked) {
 		resource_mesh->Render((float*)&trans->GetGlobalMatrixTransposed(), nullptr, false, false, false, resource_material_sprite3);
 	}

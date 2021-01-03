@@ -18,7 +18,12 @@ Resource::Resource(uint ID, Resource_Type type, std::string assets_file) :ID(ID)
 		library_file = "Library/Meshes/";
 		extension = ".falcasmesh";
 		break;
+	case Resource_Type::Font:
+		library_file = "Library/Fonts/";
+		extension = ".png";
+		break;
 	}
+
 	
 	library_file += std::to_string(ID);
 	library_file += extension;

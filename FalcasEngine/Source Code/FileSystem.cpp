@@ -229,6 +229,7 @@ void FileSystem::CreateFolders()
 	CreateOneFolder("Library/Textures/");
 	CreateOneFolder("Library/Scenes");
 	CreateOneFolder("Library/Models");
+	CreateOneFolder("Library/Fonts");
 	CreateOneFolder("/Config");
 }
 
@@ -249,9 +250,9 @@ JsonObj FileSystem::GenerateConfigContent()
 	arr.AddObject(_obj);
 	_obj.AddString("appName", "Falcas Engine");
 	arr.AddObject(_obj);
-	_obj.AddInt("height", 900);
+	_obj.AddInt("height", 800);
 	arr.AddObject(_obj);
-	_obj.AddInt("width", 1600);
+	_obj.AddInt("width", 1500);
 	arr.AddObject(_obj);
 	_obj.AddBool("resizeable", true);
 	arr.AddObject(_obj);
