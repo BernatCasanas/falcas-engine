@@ -307,6 +307,35 @@ void ComponentTransform2D::Inspector()
 
 	ImGui::Columns(1, "", false);
 	ImGui::Separator();
+
+	ImGui::Text("Controls:");
+	ImGui::Dummy({0,10});
+	ImGui::Columns(5, "", false);
+	ImGui::AlignTextToFramePadding();
+	ImGui::NextColumn();
+	ImGui::Dummy({0,40});
+	if (ImGui::Button("Left", { 50,20 }));
+	if(ImGui::IsItemActive()) {
+		SetPosition({ position.x -= 5,position.y });
+	}
+	ImGui::NextColumn();
+	ImGui::Button("Up", { 50,20 });
+	if (ImGui::IsItemActive()) {
+		SetPosition({ position.x,position.y+=5 });
+	}
+	ImGui::Dummy({0,60});
+	ImGui::Button("Down", { 50,20 });
+	if (ImGui::IsItemActive()) {
+		SetPosition({ position.x,position.y -= 5 });
+	}
+	ImGui::NextColumn();
+	ImGui::Dummy({0,40});
+	ImGui::Button("Right", { 50,20 });
+	if (ImGui::IsItemActive()) {
+		SetPosition({ position.x += 5,position.y });
+	}
+	ImGui::Columns(1, "", false);
+	ImGui::Separator();
 	ImGui::PopID();
 }
 
@@ -368,4 +397,9 @@ void ComponentTransform2D::GetTrianglePoints(float2& min_p, float2& max_p, float
 		}
 	}
 	
+}
+
+float ComponentTransform2D::GetDepth()
+{
+	return z_depth;
 }

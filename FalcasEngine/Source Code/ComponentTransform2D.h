@@ -40,7 +40,7 @@ public:
 
 	void GetTrianglePoints(float2& min_p, float2& max_p, float2& third_p, float2& third_p_second_tri);
 
-
+	float GetDepth();
 
 public:
 	bool needed_to_update = false;
