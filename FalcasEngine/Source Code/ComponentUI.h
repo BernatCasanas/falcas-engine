@@ -23,6 +23,9 @@ public:
 	void IsClicked(bool clicked_with_mouse = true);
 	void StoppedClicking(bool clicked_with_mouse = true);
 
+public:
+	int id_vector_uis;
+
 protected:
 	ResourceMesh* resource_mesh = nullptr;
 	Triangle triangle1;

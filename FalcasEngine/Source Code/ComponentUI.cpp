@@ -13,6 +13,7 @@
 ComponentUI::ComponentUI(Component_Type type, GameObject* owner, std::string name) : Component(type, owner, name)
 {
 	resource_mesh = (ResourceMesh*)App->resources->RequestResource(App->UI->mesh_plane_id);
+	App->UI->UIs.push_back(owner);
 }
 
 ComponentUI::~ComponentUI()
@@ -21,6 +22,7 @@ ComponentUI::~ComponentUI()
 		App->resources->FreeResource(resource_mesh);
 	}
 	resource_mesh = nullptr;
+	App->UI->DeleteUI(id_vector_uis);
 }
 
 void ComponentUI::Render()
