@@ -9,6 +9,7 @@
 #include "FileSystem.h"
 #include "GameObject.h"
 #include "External Libraries/ImGui/imgui.h"
+#include "ModuleCentralEditor.h"
 
 
 
@@ -34,11 +35,24 @@ ComponentButton::~ComponentButton()
 	}
 	resource_material_sprite3 = nullptr;
 }
+std::string scene_file;
 
 void ComponentButton::Update()
 {
 	if (is_clicked_first_frame) {
 		OnTriggered(this);
+	}
+	if (is_clicked) { //que collons fico aqui?
+		switch (functionality)
+		{
+		case CLICK::ChangeScreen:
+			scene_file = "Library/Scenes/" + scene_name + ".scenefalcas";
+			if (!App->filesystem->FileExists(scene_file)) break;
+			App->central_editor->LoadScene(scene_file.c_str());
+			break;
+		default:
+			break;
+		}
 	}
 	for (int i = 0; i < App->scene_intro->resources_material_to_delete.size(); i++) {
 		if (resource_material_sprite1 == App->scene_intro->resources_material_to_delete[i]) {
@@ -111,6 +125,35 @@ void ComponentButton::Inspector()
 	ImGui::PushID(name.c_str());
 	Component::Inspector();
 	ImGui::Separator();
+
+	ImGui::AlignTextToFramePadding();
+	ImGui::Dummy({ 0,10 });
+	ImGui::Text("Functionality");
+	ImGui::SameLine();
+	const char* items[1] = { "Change Screen" };
+	if (ImGui::BeginCombo("##combo", combo.c_str()))
+	{
+		for (int n = 0; n < IM_ARRAYSIZE(items); n++)
+		{
+			bool is_selected = (combo == items[n]); 
+			if (ImGui::Selectable(items[n], is_selected)) {
+				combo = items[n];
+				functionality = (CLICK)n;
+				if (is_selected)
+					ImGui::SetItemDefaultFocus();   
+			}
+		}
+		ImGui::EndCombo();
+	}
+
+	if (functionality == CLICK::ChangeScreen) {
+		ImGui::AlignTextToFramePadding();
+		ImGui::Dummy({ 0,10 });
+		ImGui::Text("Change Screen: ");
+		ImGui::SameLine();
+		ImGui::InputText("Scene name", &scene_name);
+		ImGui::Separator();
+	}
 
 	ImGui::AlignTextToFramePadding();
 	ImGui::Text("Sprite 1:");

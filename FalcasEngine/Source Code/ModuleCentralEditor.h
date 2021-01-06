@@ -56,6 +56,8 @@ public:
 	void HierarchyRecursiveTree(GameObject* game_object, static ImGuiTreeNodeFlags base_flags, int &node_clicked);
 	void SearchParent(GameObject* game_object, uint uuid);
 
+	void CreateScene();
+
 	void SaveAllGameObjectsTree(GameObject* game_object, JsonArray arr);
 	void DeleteAllGameObjects(GameObject* game_object);
 
@@ -82,6 +84,7 @@ public:
 	bool show_assets_explorer = true;
 	bool show_references_window = true;
 	bool sure_want_close = false;
+	bool creating_scene = false;
 
 	bool show_cameras = false;
 	bool cullface = false;

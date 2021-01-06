@@ -188,12 +188,6 @@ void ModuleCentralEditor::Draw()
             if (ImGui::MenuItem("Quit", "Esc")) {
                 wantToExit = true;
             }
-            if (ImGui::MenuItem("Save Scene")) {
-                SaveScene("scene");
-            }
-            if (ImGui::MenuItem("Load Scene")) {
-                loading_file = !loading_file;
-            }
             ImGui::EndMenu();
         }
         if (ImGui::BeginMenu("View")) {
@@ -241,6 +235,18 @@ void ModuleCentralEditor::Draw()
             if (ImGui::MenuItem("Create Camera")) {
                 GameObject* game_object = App->scene_intro->CreateGameObject("Camera", App->scene_intro->root);
                 game_object->CreateComponent(Component_Type::Camera);
+            }
+            ImGui::EndMenu();
+        }
+        if (ImGui::BeginMenu("Scene")) {
+            if (ImGui::MenuItem("Create Scene")) {
+                creating_scene = !creating_scene;
+            }
+            if (ImGui::MenuItem("Save Scene")) {
+                SaveScene("scene");
+            }
+            if (ImGui::MenuItem("Load Scene")) {
+                loading_file = !loading_file;
             }
             ImGui::EndMenu();
         }
@@ -702,7 +708,9 @@ void ModuleCentralEditor::Draw()
         LoadFile();
     }
     
-
+    if (creating_scene) {
+        CreateScene();
+    }
 
     if (depth) glEnable(GL_DEPTH_TEST);
     else glDisable(GL_DEPTH_TEST);
@@ -1147,6 +1155,25 @@ void ModuleCentralEditor::SearchParent(GameObject* game_object, uint uuid)
             SearchParent((*it), uuid);
             if (bool_parentFound) continue;
         }
+    }
+}
+
+void ModuleCentralEditor::CreateScene()
+{
+    ImGui::OpenPopup("You will delete this scene");
+    if (ImGui::BeginPopupModal("You will delete this scene")) {
+        ImGui::Columns(4, "", false);
+        ImGui::NextColumn();
+        if (ImGui::Button("Ok")) {
+            DeleteAllGameObjects(App->scene_intro->root);
+            creating_scene = !creating_scene;
+        }
+        ImGui::NextColumn();
+        if (ImGui::Button("Cancel")) {
+            creating_scene = !creating_scene;
+        }
+        ImGui::NextColumn();
+        ImGui::EndPopup();
     }
 }
 

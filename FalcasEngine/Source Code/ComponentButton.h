@@ -4,6 +4,10 @@
 class ResourceMaterial;
 class ComponentTransform2D;
 
+enum class CLICK {
+	ChangeScreen
+};
+
 class ComponentButton : public ComponentUI {
 public:
 	ComponentButton(GameObject* owner, ComponentTransform2D* trans);
@@ -24,4 +28,7 @@ private:
 	ResourceMaterial* resource_material_sprite2 = nullptr;
 	ResourceMaterial* resource_material_sprite3 = nullptr;
 	ComponentTransform2D* trans;
+	std::string scene_name;
+	std::string combo = "";
+	CLICK functionality;
 };
