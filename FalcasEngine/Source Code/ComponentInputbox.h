@@ -17,6 +17,7 @@ public:
 	void Backspace(int position);
 	void Supr(int position);
 	void CheckOutputText();
+	void SetInitialText();
 
 	void Inspector();
 
@@ -25,6 +26,7 @@ private:
 	ComponentTransform2D* trans;
 	std::string input_text = "";
 	std::string output_text = "";
+	std::string initial_text="";
 	int position = 0;
 	bool text_input_activated = false;
 	Timer output_timer;
