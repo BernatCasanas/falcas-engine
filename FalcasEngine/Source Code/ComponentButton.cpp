@@ -135,10 +135,10 @@ void ComponentButton::Inspector()
 		ImGui::SetTooltip(resource_material_sprite1 != nullptr ? resource_material_sprite1->full_file_name.c_str() : "");
 	}
 
-	if (ImGui::Button("Load Material")) {
-		ImGui::OpenPopup("load material");
+	if (ImGui::Button("Load Material ##1")) {
+		ImGui::OpenPopup("load material_1");
 	}
-	if (ImGui::BeginPopupModal("load material")) {
+	if (ImGui::BeginPopupModal("load material_1")) {
 		std::vector<std::string> files;
 		std::vector<uint> ids;
 		App->filesystem->DiscoverFilesLibrary("Library/Textures/", files, ids);
@@ -208,10 +208,10 @@ void ComponentButton::Inspector()
 		ImGui::SetTooltip(resource_material_sprite2 != nullptr ? resource_material_sprite2->full_file_name.c_str() : "");
 	}
 
-	if (ImGui::Button("Load Material")) {
-		ImGui::OpenPopup("load material");
+	if (ImGui::Button("Load Material ##2")) {
+		ImGui::OpenPopup("load material_2");
 	}
-	if (ImGui::BeginPopupModal("load material")) {
+	if (ImGui::BeginPopupModal("load material_2")) {
 		std::vector<std::string> files;
 		std::vector<uint> ids;
 		App->filesystem->DiscoverFilesLibrary("Library/Textures/", files, ids);
@@ -281,10 +281,10 @@ void ComponentButton::Inspector()
 		ImGui::SetTooltip(resource_material_sprite3 != nullptr ? resource_material_sprite3->full_file_name.c_str() : "");
 	}
 
-	if (ImGui::Button("Load Material")) {
-		ImGui::OpenPopup("load material");
+	if (ImGui::Button("Load Material ##3")) {
+		ImGui::OpenPopup("load material_3");
 	}
-	if (ImGui::BeginPopupModal("load material")) {
+	if (ImGui::BeginPopupModal("load material_3")) {
 		std::vector<std::string> files;
 		std::vector<uint> ids;
 		App->filesystem->DiscoverFilesLibrary("Library/Textures/", files, ids);
