@@ -343,7 +343,7 @@ void ModuleRenderer3D::RenderUI()
 	glOrtho(scene_width/2, -scene_width / 2, -scene_height / 2, scene_height / 2, -0.1f, 100.0f);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadMatrixf(camera->GetViewMatrix());
-	App->UI->RenderUI(App->scene_intro->root);
+	App->UI->RenderUI();
 	glMatrixMode(GL_PROJECTION);
 	glLoadMatrixf(camera->GetProjectionMatrix());
 	glMatrixMode(GL_MODELVIEW);

@@ -60,21 +60,27 @@ bool ModuleUI::Start()
 // Update all guis
 update_status ModuleUI::PreUpdate(float dt)
 {
-	bool is_mouse_hovering_ui= CheckHover(App->scene_intro->root);
-	if (!App->camera->stop_selecting) {
+	bool is_mouse_hovering_ui= CheckHover();
+	if (layers_with_ui_blocking_selecting > 0) {
+		App->camera->stop_selecting = false;
+	}
+	else if (!App->camera->stop_selecting) {
 		App->camera->stop_selecting = is_mouse_hovering_ui;
 	}
 	if (App->input->GetMouseButton(1) == KEY_DOWN|| App->input->GetMouseButton(1) == KEY_REPEAT) {
-		MouseClicked(App->scene_intro->root);
+		MouseClicked();
 	}
 	else if (App->input->GetMouseButton(1) == KEY_UP) {
-		MouseStoppedClicking(App->scene_intro->root);
+		MouseStoppedClicking();
 	}
 	if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_REPEAT) {
-		MouseClicked(App->scene_intro->root, false);
+		MouseClicked(false);
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_UP) {
-		MouseStoppedClicking(App->scene_intro->root);
+		MouseStoppedClicking();
+	}
+	if (App->input->GetKey(SDL_SCANCODE_TAB) == KEY_DOWN) {
+		TabEntered();
 	}
 	/*bool mouse = false;
 	lockClick = false;
@@ -230,37 +236,38 @@ bool ModuleUI::CleanUp()
 	return true;
 }
 
-void ModuleUI::RenderUI(GameObject* game_obj)
+void ModuleUI::RenderUI()
 {
-	if (!game_obj->active)
-		return;
-	if (game_obj->IsUI() && game_obj->GetComponentsSize() > 1) {
+	GameObject* game_obj;
+	for (int i = 0; i < UIs.size(); i++) {
+		game_obj = UIs[i];
+		if (!game_obj->active || !game_obj->IsUI() || game_obj->GetComponentsSize() <= 1)
+			continue;
 		((ComponentUI*)game_obj->components[1])->Render();
 	}
-	for (int i = 0; i < game_obj->children.size(); i++) {
-		RenderUI(game_obj->children[i]);
-	}
+	
 }
 
-bool ModuleUI::CheckHover(GameObject* game_obj, bool is_hovering)
+bool ModuleUI::CheckHover()
 {
-	if (!game_obj->active)
-		return is_hovering;
-	if (game_obj->IsUI() && game_obj->GetComponentsSize() > 1) {
-		if(((ComponentUI*)game_obj->components[1])->CheckMouseHovering()){
-			is_hovering = true;
-		}
+	bool is_hovering = false;
+	GameObject* game_obj;
+	for (int i = 0; i < UIs.size(); i++) {
+		game_obj = UIs[i];
+		if (!game_obj->active || !game_obj->IsUI() || game_obj->GetComponentsSize() <= 1 || !((ComponentUI*)game_obj->components[1])->CheckMouseHovering())
+			continue;
+		is_hovering = true;
 	}
-	for (int i = 0; i < game_obj->children.size(); i++) {
-		CheckHover(game_obj->children[i], is_hovering);
-	}
+	return is_hovering;
 }
 
-void ModuleUI::MouseClicked(GameObject* game_obj, bool clicked_with_mouse)
+void ModuleUI::MouseClicked(bool clicked_with_mouse)
 {
-	if (!game_obj->active)
-		return;
-	if (game_obj->IsUI() && game_obj->GetComponentsSize() > 1) {
+	GameObject* game_obj;
+	for (int i = 0; i < UIs.size(); i++) {
+		game_obj = UIs[i];
+		if (!game_obj->active || !game_obj->IsUI() || game_obj->GetComponentsSize() <= 1)
+			continue;
 		if (clicked_with_mouse) {
 			((ComponentUI*)game_obj->components[1])->IsClicked();
 		}
@@ -268,21 +275,65 @@ void ModuleUI::MouseClicked(GameObject* game_obj, bool clicked_with_mouse)
 			((ComponentUI*)game_obj->components[1])->IsClicked(false);
 		}
 	}
-	for (int i = 0; i < game_obj->children.size(); i++) {
-		MouseClicked(game_obj->children[i], clicked_with_mouse);
+}
+
+void ModuleUI::MouseStoppedClicking(bool clicked_with_mouse)
+{
+	GameObject* game_obj;
+	for (int i = 0; i < UIs.size(); i++) {
+		game_obj = UIs[i];
+		if (!game_obj->active || !game_obj->IsUI() || game_obj->GetComponentsSize() <= 1)
+			continue;
+		((ComponentUI*)game_obj->components[1])->StoppedClicking(false);
 	}
 }
 
-void ModuleUI::MouseStoppedClicking(GameObject* game_obj, bool clicked_with_mouse)
+void ModuleUI::TabEntered()
 {
-	if (!game_obj->active)
+	GameObject* game_obj;
+	for (int i = focus_ui_id + 1; i < UIs.size(); i++) {
+		game_obj = UIs[i];
+		if (i < 0 || !game_obj->active || !game_obj->IsUI() || game_obj->GetComponentsSize() <= 1)
+			continue;
+		ComponentUI* ui = (ComponentUI*)game_obj->components[1];
+		if (ui->layer_of_ui != 0)
+			continue;
+		if(focus_ui_id>=0){
+			((ComponentUI*)UIs[focus_ui_id]->components[1])->SetIfIsFocused(false);
+		}
+		focus_ui_id = i;
+		ui->SetIfIsFocused(true);
 		return;
-	if (game_obj->IsUI() && game_obj->GetComponentsSize() > 1) {
-		((ComponentUI*)game_obj->components[1])->StoppedClicking(false);
 	}
-	for (int i = 0; i < game_obj->children.size(); i++) {
-		MouseStoppedClicking(game_obj->children[i], clicked_with_mouse);
+	if (focus_ui_id <= 0)
+		return;
+	for (int i = 0; i < focus_ui_id; i++) {
+		game_obj = UIs[i];
+		if (!game_obj->active || !game_obj->IsUI() || game_obj->GetComponentsSize() <= 1)
+			continue;
+		ComponentUI* ui = (ComponentUI*)game_obj->components[1];
+		if (ui->layer_of_ui != 0)
+			continue;
+		if (focus_ui_id >= 0) {
+			((ComponentUI*)UIs[focus_ui_id]->components[1])->SetIfIsFocused(false);
+		}		focus_ui_id = i;
+		ui->SetIfIsFocused(true);
+		return;
 	}
+}
+
+void ModuleUI::DeleteUI(int id_ui)
+{
+	std::vector<GameObject*>::iterator it = UIs.begin();
+	for (int i = 0; i < UIs.size(); i++) {
+		if (i < id_ui) {
+			it++;
+		}
+		else if (i > id_ui + 1) {
+			((ComponentUI*)UIs[i]->components[1])->id_vector_uis--;
+		}
+	}
+	UIs.erase(it);
 }
 
 

@@ -30,10 +30,13 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-	void RenderUI(GameObject* game_obj);
-	bool CheckHover(GameObject* game_obj, bool is_hovering = false);
-	void MouseClicked(GameObject* game_obj, bool clicked_with_mouse = true);
-	void MouseStoppedClicking(GameObject* game_obj, bool clicked_with_mouse = true);
+	void RenderUI();
+	bool CheckHover();
+	void MouseClicked(bool clicked_with_mouse = true);
+	void MouseStoppedClicking(bool clicked_with_mouse = true);
+	void TabEntered();
+
+	void DeleteUI(int id_ui);
 	
 
 	void ChangeDebug();
@@ -54,9 +57,7 @@ public:
 
 
 private:
-	//std::list <UI*> UIs;
-	
-
+	int layers_with_ui_blocking_selecting = 0;
 	
 	//j1Timer minimap_feedback_timer;
 
@@ -65,5 +66,7 @@ private:
 
 public:
 	uint mesh_plane_id;
+	std::vector <GameObject*> UIs;
+	int focus_ui_id = -1;
 
 };

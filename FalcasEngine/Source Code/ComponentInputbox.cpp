@@ -29,61 +29,67 @@ void ComponentInputbox::Update()
 		SDL_StopTextInput();
 		text_input_activated = false;
 	}
-	if (is_focused == true) {
-		if (App->input->changed_text_input) {
-			output_timer.Stop();
-			App->input->changed_text_input = false;
-			if (position == input_text.size()) {
-				input_text += App->input->text_input;
-			}
-			else {
-				std::string substring = input_text.substr(0, position);
-				input_text = substring + App->input->text_input + input_text.substr(position, input_text.size());
-			}
-			position++;
+	if (is_focused == false) {
+		if (input_text == "") {
+			output_text = initial_text;
 		}
-		else if (App->input->special_keys == specialkeys::Backspace) {
-			output_timer.Stop();
-			Backspace(position);
-			if (position > 0)
-				position--;
-		}
-		else if (App->input->special_keys == specialkeys::Left) {
-			output_timer.Stop();
-			if (position > 0)
-				position--;
-		}
-		else if (App->input->special_keys == specialkeys::Right) {
-			output_timer.Stop();
-			if (position < input_text.size())
-				position++;
-		}
-		else if (App->input->special_keys == specialkeys::Supr) {
-			output_timer.Stop();
-			Supr(position);
-		}
-		else if (App->input->special_keys == specialkeys::Home) {
-			output_timer.Stop();
-			position = 0;
-		}
-		else if (App->input->special_keys == specialkeys::End) {
-			output_timer.Stop();
-			position = input_text.size();
-		}
-		else if (output_timer.isStoped()) {
-			output_timer.Start();
-		}
-
-	if (is_clicked_with_enter) {
-		OnTriggered(this);
+		return;
 	}
 	
-	if (output_timer.ReadSec() >= 2) {
+	if (App->input->changed_text_input) {
+		output_timer.Stop();
+		App->input->changed_text_input = false;
+		if (position == input_text.size()) {
+			input_text += App->input->text_input;
+		}
+		else {
+			std::string substring = input_text.substr(0, position);
+			input_text = substring + App->input->text_input + input_text.substr(position, input_text.size());
+		}
+		position++;
+	}
+	else if (App->input->special_keys == specialkeys::Backspace) {
+		output_timer.Stop();
+		Backspace(position);
+		if (position > 0)
+			position--;
+	}
+	else if (App->input->special_keys == specialkeys::Left) {
+		output_timer.Stop();
+		if (position > 0)
+			position--;
+	}
+	else if (App->input->special_keys == specialkeys::Right) {
+		output_timer.Stop();
+		if (position < input_text.size())
+			position++;
+	}
+	else if (App->input->special_keys == specialkeys::Supr) {
+		output_timer.Stop();
+		Supr(position);
+	}
+	else if (App->input->special_keys == specialkeys::Home) {
+		output_timer.Stop();
+		position = 0;
+	}
+	else if (App->input->special_keys == specialkeys::End) {
+		output_timer.Stop();
+		position = input_text.size();
+	}
+	else if (output_timer.isStoped()) {
 		output_timer.Start();
 	}
 
-	CheckOutputText();
-	}
+if (is_clicked_with_enter) {
+	OnTriggered(this);
+}
+	
+if (output_timer.ReadSec() >= 2) {
+	output_timer.Start();
+}
+
+CheckOutputText();
+	
 
 }
 
@@ -147,6 +153,10 @@ void ComponentInputbox::Inspector()
 	ImGui::PushID(name.c_str());
 	Component::Inspector();
 
+	ImGui::AlignTextToFramePadding();
+	ImGui::Text("Initial text: ");
+	ImGui::SameLine();
+	ImGui::InputText("##1", &initial_text, ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll);
 
 	ImGui::Separator();
 

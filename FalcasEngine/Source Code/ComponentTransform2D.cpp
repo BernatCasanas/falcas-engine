@@ -11,7 +11,7 @@
 #define M_PI 3.14159265358979323846f
 
 ComponentTransform2D::ComponentTransform2D(GameObject* owner, float2 position, Quat rotation, float2 size) :Component(Component_Type::Transform2D, owner, "Transform2D"), position(position),
-size(size), z_depth(20)
+size(size), z_depth(10)
 {
 	this->rotation = QuaternionToEuler(rotation);
 	SetMatrices();
