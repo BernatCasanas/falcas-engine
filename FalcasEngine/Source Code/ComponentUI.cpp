@@ -14,6 +14,7 @@ ComponentUI::ComponentUI(Component_Type type, GameObject* owner, std::string nam
 {
 	resource_mesh = (ResourceMesh*)App->resources->RequestResource(App->UI->mesh_plane_id);
 	App->UI->UIs.push_back(owner);
+	id_vector_uis = App->UI->UIs.size() - 1;
 }
 
 ComponentUI::~ComponentUI()
@@ -81,6 +82,7 @@ void ComponentUI::IsClicked(bool clicked_with_mouse)
 	is_clicked_with_enter = false;
 	if (!is_focusable || (!is_mouse_hover && clicked_with_mouse) || (!clicked_with_mouse && !is_focused)) {
 		is_focused = false;
+		App->UI->focus_ui_id = -1;
 		return;
 	}
 	if (!is_clicked) {
@@ -94,6 +96,7 @@ void ComponentUI::IsClicked(bool clicked_with_mouse)
 	}
 	is_clicked = true;
 	is_focused = true;
+	App->UI->focus_ui_id = id_vector_uis;
 }
 
 void ComponentUI::StoppedClicking(bool clicked_with_mouse)

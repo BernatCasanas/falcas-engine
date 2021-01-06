@@ -65,7 +65,7 @@ void ComponentCheckbox::Render()
 	if (!active)
 		return;
 	if (is_active) {
-		if (is_mouse_hover){
+		if (is_mouse_hover || is_focused){
 			resource_mesh->Render((float*)&trans->GetGlobalMatrixTransposed(), nullptr, false, false, false, resource_material_sprite4);
 		}
 		else {
@@ -73,7 +73,7 @@ void ComponentCheckbox::Render()
 		}
 	}
 	else{
-		if (is_mouse_hover) {
+		if (is_mouse_hover || is_focused) {
 			resource_mesh->Render((float*)&trans->GetGlobalMatrixTransposed(), nullptr, false, false, false, resource_material_sprite2);
 		}
 		else {

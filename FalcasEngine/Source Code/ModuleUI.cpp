@@ -79,6 +79,9 @@ update_status ModuleUI::PreUpdate(float dt)
 	else if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_UP) {
 		MouseStoppedClicking();
 	}
+	if (App->input->GetKey(SDL_SCANCODE_TAB) == KEY_DOWN) {
+		TabEntered();
+	}
 	/*bool mouse = false;
 	lockClick = false;
 	int count = 0;
@@ -282,6 +285,40 @@ void ModuleUI::MouseStoppedClicking(bool clicked_with_mouse)
 		if (!game_obj->active || !game_obj->IsUI() || game_obj->GetComponentsSize() <= 1)
 			continue;
 		((ComponentUI*)game_obj->components[1])->StoppedClicking(false);
+	}
+}
+
+void ModuleUI::TabEntered()
+{
+	GameObject* game_obj;
+	for (int i = focus_ui_id + 1; i < UIs.size(); i++) {
+		game_obj = UIs[i];
+		if (i < 0 || !game_obj->active || !game_obj->IsUI() || game_obj->GetComponentsSize() <= 1)
+			continue;
+		ComponentUI* ui = (ComponentUI*)game_obj->components[1];
+		if (ui->layer_of_ui != 0)
+			continue;
+		if(focus_ui_id>=0){
+			((ComponentUI*)UIs[focus_ui_id]->components[1])->SetIfIsFocused(false);
+		}
+		focus_ui_id = i;
+		ui->SetIfIsFocused(true);
+		return;
+	}
+	if (focus_ui_id <= 0)
+		return;
+	for (int i = 0; i < focus_ui_id; i++) {
+		game_obj = UIs[i];
+		if (!game_obj->active || !game_obj->IsUI() || game_obj->GetComponentsSize() <= 1)
+			continue;
+		ComponentUI* ui = (ComponentUI*)game_obj->components[1];
+		if (ui->layer_of_ui != 0)
+			continue;
+		if (focus_ui_id >= 0) {
+			((ComponentUI*)UIs[focus_ui_id]->components[1])->SetIfIsFocused(false);
+		}		focus_ui_id = i;
+		ui->SetIfIsFocused(true);
+		return;
 	}
 }
 

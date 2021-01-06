@@ -17,6 +17,7 @@ public:
 
 	ResourceMesh* GetResourceMesh() const { return resource_mesh; }
 	bool GetIfIsFocused() const { return is_focused; }
+	void SetIfIsFocused(bool is_focused) { this->is_focused = is_focused; }
 
 	bool CheckMouseHovering();
 	void UpdateTriangles();
@@ -25,7 +26,7 @@ public:
 
 public:
 	int id_vector_uis;
-
+	int layer_of_ui = 0;
 protected:
 	ResourceMesh* resource_mesh = nullptr;
 	Triangle triangle1;

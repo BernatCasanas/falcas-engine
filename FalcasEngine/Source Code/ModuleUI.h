@@ -34,6 +34,7 @@ public:
 	bool CheckHover();
 	void MouseClicked(bool clicked_with_mouse = true);
 	void MouseStoppedClicking(bool clicked_with_mouse = true);
+	void TabEntered();
 
 	void DeleteUI(int id_ui);
 	
@@ -66,5 +67,6 @@ private:
 public:
 	uint mesh_plane_id;
 	std::vector <GameObject*> UIs;
+	int focus_ui_id = -1;
 
 };

@@ -65,7 +65,7 @@ void ComponentButton::Render()
 	if (is_clicked) {
 		resource_mesh->Render((float*)&trans->GetGlobalMatrixTransposed(), nullptr, false, false, false, resource_material_sprite3);
 	}
-	else if (is_mouse_hover) {
+	else if (is_mouse_hover || is_focused) {
 		resource_mesh->Render((float*)&trans->GetGlobalMatrixTransposed(), nullptr, false, false, false, resource_material_sprite2);
 	}
 	else {
