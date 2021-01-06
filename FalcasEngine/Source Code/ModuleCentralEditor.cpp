@@ -37,6 +37,7 @@
 #include "ResourceMesh.h"
 #include "aClock.h";
 #include "Timer.h";
+#include "ComponentUI.h"
 #include "ModuleCamera3D.h"
 
 ModuleCentralEditor::ModuleCentralEditor(Application* app, bool start_enabled) : Module(app, start_enabled, "moduleCentralEditor"),progress(50.f),progress2(50.f),progress3(50.f), progress4(50.f)
@@ -118,6 +119,13 @@ bool ModuleCentralEditor::CleanUp()
 	ImGui::DestroyContext();
 
 	return true;
+}
+
+void ModuleCentralEditor::OnTriggered(ComponentUI* component_ui)
+{
+//    if (component_ui->type == Component_Type::Button && () {
+//
+//    }
 }
 
 update_status ModuleCentralEditor::PreUpdate(float dt)
@@ -752,7 +760,7 @@ void ModuleCentralEditor::Draw()
 void ModuleCentralEditor::DrawImGuizmo()
 {
     App->camera->stop_selecting = false;
-    if (App->scene_intro->game_object_selected == nullptr)
+    if (App->scene_intro->game_object_selected == nullptr || App->scene_intro->game_object_selected->IsUI())
         return;
     
     float4x4 matrix;
@@ -802,7 +810,6 @@ void ModuleCentralEditor::DrawImGuizmo()
         App->camera->stop_selecting = false;
     }
     if (ImGuizmo::IsUsing()) {
-        //TODO
         float4x4 matrix_updated;
         matrix_updated.Set(mat);
         matrix = matrix_updated.Transposed();
@@ -810,12 +817,7 @@ void ModuleCentralEditor::DrawImGuizmo()
         Quat rotation;
         matrix.Decompose(translation, rotation, size);
         if (App->scene_intro->game_object_selected->IsUI()) {
-            /*float2 s = { size.x,size.y };
-            bool guizmo_size = false;
-            if (operation == ImGuizmo::SCALE)
-                guizmo_size = true;
-            ((ComponentTransform2D*)App->scene_intro->game_object_selected->GetComponent(Component_Type::Transform2D))->SetTransformation(translation, rotation, s, guizmo_size);*/
-        
+
         }
         else {
             ((ComponentTransform*)App->scene_intro->game_object_selected->GetComponent(Component_Type::Transform))->SetTransformation(translation, rotation, size, true);

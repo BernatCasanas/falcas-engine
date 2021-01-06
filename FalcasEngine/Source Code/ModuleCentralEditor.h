@@ -39,6 +39,8 @@ public:
 	bool Start();
 	bool CleanUp();
 
+	void OnTriggered(ComponentUI* component_ui);
+
 	update_status PreUpdate(float dt);
 	update_status PostUpdate(float dt);
 
