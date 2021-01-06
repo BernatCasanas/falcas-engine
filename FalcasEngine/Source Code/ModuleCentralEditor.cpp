@@ -39,6 +39,7 @@
 #include "Timer.h";
 #include "ComponentUI.h"
 #include "ModuleCamera3D.h"
+#include "ComponentButton.h"
 
 ModuleCentralEditor::ModuleCentralEditor(Application* app, bool start_enabled) : Module(app, start_enabled, "moduleCentralEditor"),progress(50.f),progress2(50.f),progress3(50.f), progress4(50.f)
 {
@@ -123,9 +124,22 @@ bool ModuleCentralEditor::CleanUp()
 
 void ModuleCentralEditor::OnTriggered(ComponentUI* component_ui)
 {
-//    if (component_ui->type == Component_Type::Button && () {
-//
-//    }
+    if (component_ui->type == Component_Type::Button) {
+        ComponentButton* button = (ComponentButton*)component_ui;
+        std::string scene_file;
+        switch (button->GetFunctionality())
+        {
+        case CLICK::ChangeScreen :
+            scene_file = "Library/Scenes/" + button->GetSceneName() + ".scenefalcas";
+            if (!App->filesystem->FileExists(scene_file)) break;
+            selected_button_file = scene_file;
+            loading_file = true;
+            want_to_load_fromButton = true;
+            break;
+        default:
+            break;
+        }
+    }
 }
 
 update_status ModuleCentralEditor::PreUpdate(float dt)
@@ -828,6 +842,11 @@ void ModuleCentralEditor::DrawImGuizmo()
 bool ModuleCentralEditor::LoadFile()
 {
 	bool ret = false;
+    if (want_to_load_fromButton) {
+        LoadScene(selected_button_file.c_str());
+        want_to_load_fromButton = false;
+        loading_file = false;
+    }
 	ImGui::OpenPopup("Load File");
     if (ImGui::BeginPopupModal("Load File")) {
         if (!sure_want_close)

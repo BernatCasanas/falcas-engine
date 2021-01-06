@@ -18,6 +18,9 @@ public:
 	void Render();
 	bool SaveComponent(JsonObj& obj);
 
+	CLICK GetFunctionality();
+	std::string GetSceneName();
+
 	void ChangeResourceMaterial(ResourceMaterial* resource_mat, int num_sprite);
 
 	void Inspector();

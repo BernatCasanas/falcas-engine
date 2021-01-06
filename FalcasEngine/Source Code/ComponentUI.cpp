@@ -5,6 +5,7 @@
 #include "ModuleUI.h"
 #include "GameObject.h"
 #include "ComponentTransform2D.h"
+#include "ModuleCentralEditor.h"
 
 
 #include "ModuleInput.h"
@@ -32,8 +33,10 @@ void ComponentUI::Render()
 
 void ComponentUI::OnTriggered(ComponentUI* component_ui)
 {
+	listener = App->central_editor;
 	if (listener == nullptr)
 		return;
+
 	listener->OnTriggered(component_ui);
 }
 

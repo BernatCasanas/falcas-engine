@@ -87,6 +87,7 @@ public:
 	bool show_references_window = true;
 	bool sure_want_close = false;
 	bool creating_scene = false;
+	bool want_to_load_fromButton = false;
 
 	bool show_cameras = false;
 	bool cullface = false;
@@ -127,6 +128,7 @@ private:
 	bool delete_game_object = false;
 	std::vector<int> ids_of_parents_selected;
 	char selected_file[100] = "";
+	std::string selected_button_file = "";
 
 	bool bool_parentFound;
 	GameObject* parentFound = nullptr;

@@ -42,18 +42,6 @@ void ComponentButton::Update()
 	if (is_clicked_first_frame) {
 		OnTriggered(this);
 	}
-	if (is_clicked) { //que collons fico aqui?
-		switch (functionality)
-		{
-		case CLICK::ChangeScreen:
-			scene_file = "Library/Scenes/" + scene_name + ".scenefalcas";
-			if (!App->filesystem->FileExists(scene_file)) break;
-			App->central_editor->LoadScene(scene_file.c_str());
-			break;
-		default:
-			break;
-		}
-	}
 	for (int i = 0; i < App->scene_intro->resources_material_to_delete.size(); i++) {
 		if (resource_material_sprite1 == App->scene_intro->resources_material_to_delete[i]) {
 			resource_material_sprite1 = nullptr;
@@ -91,6 +79,16 @@ bool ComponentButton::SaveComponent(JsonObj& obj)
 {
 	//obj.AddInt("Resource_ID", resource_material != nullptr ? resource_material->GetID() : 0);
 	return true;
+}
+
+CLICK ComponentButton::GetFunctionality()
+{
+	return functionality;
+}
+
+std::string ComponentButton::GetSceneName()
+{
+	return scene_name;
 }
 
 
