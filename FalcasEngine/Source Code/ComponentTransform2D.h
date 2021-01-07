@@ -33,7 +33,7 @@ public:
 	void SetRotation(Quat rot);
 	void SetRotation(float3 rot);
 	void SetSize(float2 size);
-	void UpdateMatrixBillboard();
+	bool UpdateMatrixBillboard();
 	void SetMatrices();
 	void SetMatricesWithNewParent(float4x4 parent_global_matrix);
 	void Inspector();

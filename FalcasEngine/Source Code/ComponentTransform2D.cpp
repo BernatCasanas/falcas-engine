@@ -24,6 +24,9 @@ ComponentTransform2D::~ComponentTransform2D()
 
 void ComponentTransform2D::Update()
 {
+	if (UpdateMatrixBillboard() && !needed_to_update)
+		return;
+
 	SetMatrices();
 }
 
@@ -84,39 +87,40 @@ void ComponentTransform2D::SetTransformation(float3 pos, Quat rot, float2 size, 
 void ComponentTransform2D::SetPosition(float2 pos)
 {
 	position = pos;
-	SetMatrices();
+	needed_to_update = true;
 }
 
 
 void ComponentTransform2D::SetRotation(Quat rot)
 {
 	rotation = QuaternionToEuler(rot);
-	SetMatrices();
+	needed_to_update = true;
 }
 
 void ComponentTransform2D::SetRotation(float3 rot)
 {
 	rotation = rot;
-	SetMatrices();
+	needed_to_update = true;
 }
 
 void ComponentTransform2D::SetSize(float2 size)
 {
 	this->size = size;
-	SetMatrices();
+	needed_to_update = true;
 }
 
-void ComponentTransform2D::UpdateMatrixBillboard()
+bool ComponentTransform2D::UpdateMatrixBillboard()
 {
 	ComponentTransform* trans = (ComponentTransform*)App->renderer3D->camera->owner->GetComponent(Component_Type::Transform);
 	Quat rot = trans->GetRotation();
 	float3 pos = trans->GetPosition();
+	float4x4 matrix_billboard_last_frame = matrix_billboard;
 	matrix_billboard = matrix_billboard.FromTRS(pos, rot, { 1,1,1 });
+	return matrix_billboard.Equals(matrix_billboard_last_frame);
 }
 
 void ComponentTransform2D::SetMatrices()
 {
-	UpdateMatrixBillboard();
 
 	float3 pivot_world = { pivot_position.x + position.x, pivot_position.y + position.y, 0 };
 	float3 rotation_in_gradians = rotation *DEGTORAD;

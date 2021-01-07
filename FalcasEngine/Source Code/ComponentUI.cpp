@@ -52,7 +52,7 @@ void ComponentUI::OnTriggered(ComponentUI* component_ui)
 
 bool ComponentUI::CheckMouseHovering()
 {
-	if (!is_focusable)
+	if (!is_focusable || App->input->GetMouseButton(1)==KEY_REPEAT)
 		return false;
 
 	UpdateTriangles();

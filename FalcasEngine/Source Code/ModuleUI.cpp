@@ -77,7 +77,7 @@ update_status ModuleUI::PreUpdate(float dt)
 		MouseClicked(false);
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_UP) {
-		MouseStoppedClicking();
+		MouseStoppedClicking(false);
 	}
 	if (App->input->GetKey(SDL_SCANCODE_TAB) == KEY_DOWN) {
 		TabEntered();
@@ -268,12 +268,7 @@ void ModuleUI::MouseClicked(bool clicked_with_mouse)
 		game_obj = UIs[i];
 		if (!game_obj->active || !game_obj->IsUI() || game_obj->GetComponentsSize() <= 1)
 			continue;
-		if (clicked_with_mouse) {
-			((ComponentUI*)game_obj->components[1])->IsClicked();
-		}
-		else {
-			((ComponentUI*)game_obj->components[1])->IsClicked(false);
-		}
+		((ComponentUI*)game_obj->components[1])->IsClicked(clicked_with_mouse);
 	}
 }
 
@@ -284,7 +279,7 @@ void ModuleUI::MouseStoppedClicking(bool clicked_with_mouse)
 		game_obj = UIs[i];
 		if (!game_obj->active || !game_obj->IsUI() || game_obj->GetComponentsSize() <= 1)
 			continue;
-		((ComponentUI*)game_obj->components[1])->StoppedClicking(false);
+		((ComponentUI*)game_obj->components[1])->StoppedClicking(clicked_with_mouse);
 	}
 }
 
