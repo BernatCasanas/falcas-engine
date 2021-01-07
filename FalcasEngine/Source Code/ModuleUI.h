@@ -37,6 +37,9 @@ public:
 	void TabEntered();
 
 	void DeleteUI(int id_ui);
+
+	void AddLayer();
+	void DeleteLayer();
 	
 
 	void ChangeDebug();
