@@ -39,6 +39,8 @@ std::string scene_file;
 
 void ComponentButton::Update()
 {
+	ComponentUI::Update();
+
 	if (is_clicked_first_frame) {
 		OnTriggered(this);
 	}
@@ -124,6 +126,7 @@ void ComponentButton::Inspector()
 {
 	ImGui::PushID(name.c_str());
 	Component::Inspector();
+	ComponentUI::Inspector();
 	ImGui::Separator();
 
 	ImGui::AlignTextToFramePadding();

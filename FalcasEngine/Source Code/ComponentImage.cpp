@@ -29,6 +29,8 @@ ComponentImage::~ComponentImage()
 
 void ComponentImage::Update()
 {
+	ComponentUI::Update();
+
 	for (int i = 0; i < App->scene_intro->resources_material_to_delete.size(); i++) {
 		if (resource_material == App->scene_intro->resources_material_to_delete[i]) {
 			resource_material = nullptr;
@@ -67,6 +69,7 @@ void ComponentImage::Inspector()
 
 	ImGui::PushID(name.c_str());
 	Component::Inspector();
+	ComponentUI::Inspector();
 	ImGui::Separator();
 
 	ImGui::AlignTextToFramePadding();

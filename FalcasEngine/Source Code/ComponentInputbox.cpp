@@ -20,6 +20,8 @@ ComponentInputbox::~ComponentInputbox()
 
 void ComponentInputbox::Update()
 {
+	ComponentUI::Update();
+
 	if (is_focused == true && text_input_activated == false) {
 		SDL_StartTextInput();
 		App->input->changed_text_input = false;
@@ -152,6 +154,7 @@ void ComponentInputbox::Inspector()
 {
 	ImGui::PushID(name.c_str());
 	Component::Inspector();
+	ComponentUI::Inspector();
 
 	ImGui::AlignTextToFramePadding();
 	ImGui::Text("Initial text: ");
