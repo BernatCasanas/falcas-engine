@@ -1,18 +1,11 @@
 #pragma once
 #include "ComponentUI.h"
-#include <map>
-#include "External Libraries/ImGui/imgui.h"
-#include "External Libraries/FreeType/include/freetype/freetype.h"
+#include "GLFont.h"
+#include "FTLabel.h"
+
 
 class ResourceMaterial;
 class ComponentTransform2D;
-
-struct Character {
-	unsigned int TextureID;  
-	ImVec2		 Size;       
-	ImVec2		 Bearing;
-	unsigned int Advance;    
-};
 
 
 class ComponentFont :public ComponentUI {
@@ -31,8 +24,7 @@ public:
 
 private:
 	std::string text;
-	std::map<char, Character> chars;
 	ComponentTransform2D* trans;
-	FT_Face face;
-
+	std::shared_ptr<GLFont> font;
+	std::unique_ptr<FTLabel> label;
 };

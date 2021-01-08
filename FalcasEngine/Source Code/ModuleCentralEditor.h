@@ -6,9 +6,6 @@
 #include <list>
 #include <vector>
 #include <string>
-#include "External Libraries/FreeType/include/freetype/freetype.h"
-
-#pragma comment(lib, "Source Code/External Libraries/FreeType/libx86/freetype.lib")
 
 enum class Shape {
     Cube,
@@ -141,9 +138,6 @@ private:
 	ResourceMaterial* icon_file = nullptr;
 	std::string assets_explorer_path = "Assets/";
 	int assets_explorer_selected = -1;
-
-public:
-	FT_Library ft;
 
 };
 

@@ -58,11 +58,6 @@ bool ModuleCentralEditor::Init()
 	LOG("Init ImGui stuff related");
 	bool ret = true;
 
-    if (FT_Init_FreeType(&ft))
-    {
-        return -1;
-    }
-
 
   
     // Setup Dear ImGui context
@@ -125,8 +120,6 @@ bool ModuleCentralEditor::CleanUp()
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplSDL2_Shutdown();
 	ImGui::DestroyContext();
-
-    FT_Done_FreeType(ft);
 
 	return true;
 }

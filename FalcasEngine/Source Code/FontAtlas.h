@@ -3,6 +3,8 @@
 #include "External Libraries/Glew/include/GL/glew.h"
 #include "External Libraries/FreeType/include/freetype/freetype.h"
 
+#pragma comment (lib, "Source Code/External Libraries/FreeType/libx86/freetype.lib")
+
 class FontAtlas {
 public:
     struct Character {
