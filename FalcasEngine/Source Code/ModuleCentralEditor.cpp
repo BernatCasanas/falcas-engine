@@ -41,6 +41,7 @@
 #include "ModuleCamera3D.h"
 #include "ComponentButton.h"
 
+
 ModuleCentralEditor::ModuleCentralEditor(Application* app, bool start_enabled) : Module(app, start_enabled, "moduleCentralEditor"),progress(50.f),progress2(50.f),progress3(50.f), progress4(50.f)
 {
 }
@@ -56,6 +57,12 @@ bool ModuleCentralEditor::Init()
 {
 	LOG("Init ImGui stuff related");
 	bool ret = true;
+
+    if (FT_Init_FreeType(&ft))
+    {
+        return -1;
+    }
+
 
   
     // Setup Dear ImGui context
@@ -118,6 +125,8 @@ bool ModuleCentralEditor::CleanUp()
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplSDL2_Shutdown();
 	ImGui::DestroyContext();
+
+    FT_Done_FreeType(ft);
 
 	return true;
 }

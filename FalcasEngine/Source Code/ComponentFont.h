@@ -1,15 +1,19 @@
 #pragma once
 #include "ComponentUI.h"
+#include <map>
+#include "External Libraries/ImGui/imgui.h"
+#include "External Libraries/FreeType/include/freetype/freetype.h"
 
 class ResourceMaterial;
 class ComponentTransform2D;
 
-struct Font
-{
-	char table[256];
-	ResourceMaterial* texture = nullptr;
-	uint rows, len, char_w, char_h, row_chars;
-};		
+struct Character {
+	unsigned int TextureID;  
+	ImVec2		 Size;       
+	ImVec2		 Bearing;
+	unsigned int Advance;    
+};
+
 
 class ComponentFont :public ComponentUI {
 public:
@@ -20,16 +24,14 @@ public:
 
 	void Initialization();
 	void Render();
-	void RenderChar(ResourceMaterial* c, uint pos);
 	bool SaveComponent(JsonObj& obj);
 
 	void Inspector();
 
-	void Load(uint id, std::string characters, uint rows, uint h, uint w, uint rc);
-
-
 private:
 	std::string text;
-	Font font;
+	std::map<char, Character> chars;
 	ComponentTransform2D* trans;
+	FT_Face face;
+
 };
