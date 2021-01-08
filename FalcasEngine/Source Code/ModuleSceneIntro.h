@@ -59,6 +59,8 @@ public:
 	std::vector<int> game_objects_to_delete;
 	bool mouse_on_scene = true;
 
+	void ChangingScreen();
+
 	std::vector<ResourceMesh*> resources_mesh_to_delete;
 	std::vector<ResourceMaterial*> resources_material_to_delete;
 	std::vector<ResourceModel*> resources_model_to_delete;
@@ -70,5 +72,8 @@ private:
 	float height;
 	float x;
 	float y;
+
+	ResourceMesh* resource_mesh = nullptr;
+	ComponentTransform2D* black_screen = nullptr;
 
 };

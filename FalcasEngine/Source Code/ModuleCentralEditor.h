@@ -6,6 +6,7 @@
 #include <list>
 #include <vector>
 #include <string>
+#include "ResourceMesh.h"
 
 enum class Shape {
     Cube,
@@ -69,6 +70,7 @@ public:
 	void GameControl();
 
 	void ViewCameras(bool active, GameObject* game_object);
+
 
 public:
 
@@ -138,6 +140,7 @@ private:
 	ResourceMaterial* icon_file = nullptr;
 	std::string assets_explorer_path = "Assets/";
 	int assets_explorer_selected = -1;
+
 
 };
 

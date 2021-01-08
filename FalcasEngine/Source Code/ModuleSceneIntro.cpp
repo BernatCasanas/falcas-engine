@@ -59,7 +59,7 @@ bool ModuleSceneIntro::Start()
 	icon_obj.CleanUp();
 	LoadModel(model);
 
-
+	resource_mesh = (ResourceMesh*)App->resources->RequestResource(App->UI->mesh_plane_id);
 
 	return ret;
 }
@@ -127,6 +127,11 @@ bool ModuleSceneIntro::GetDimensionsWindow(float& width, float& height)
 int ModuleSceneIntro::GetID()
 {
 	return id_gameobject;
+}
+
+void ModuleSceneIntro::ChangingScreen()
+{
+
 }
 
 

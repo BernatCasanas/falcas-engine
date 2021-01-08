@@ -30,7 +30,7 @@ void ComponentFont::Update()
 
 void ComponentFont::Initialization()
 {
-	font = std::shared_ptr<GLFont>(new GLFont("Assets/Fonts/Calibri Regular.ttf"));
+	font = std::shared_ptr<GLFont>(new GLFont("Assets/Fonts/EastSeaDokdo-Regular.ttf"));
 	label = std::unique_ptr<FTLabel>(new FTLabel(
 		font,
 		text.c_str(),

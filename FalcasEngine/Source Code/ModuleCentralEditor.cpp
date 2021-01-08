@@ -40,6 +40,7 @@
 #include "ComponentUI.h"
 #include "ModuleCamera3D.h"
 #include "ComponentButton.h"
+#include "ModuleUI.h"
 
 
 ModuleCentralEditor::ModuleCentralEditor(Application* app, bool start_enabled) : Module(app, start_enabled, "moduleCentralEditor"),progress(50.f),progress2(50.f),progress3(50.f), progress4(50.f)
@@ -85,7 +86,6 @@ bool ModuleCentralEditor::Init()
     ImGui_ImplOpenGL3_Init();
 
 
-
 	return ret;
 }
 
@@ -109,6 +109,8 @@ bool ModuleCentralEditor::Start()
     icon_mesh = (ResourceMaterial*)App->resources->RequestResource(icon_obj.GetInt("ID"));
     delete[] buffer;
     icon_obj.CleanUp();
+
+
     return true;
 }
 
@@ -1307,6 +1309,7 @@ void ModuleCentralEditor::ViewCameras(bool active, GameObject* game_object)
 		}
 	}
 }
+
 
 void ModuleCentralEditor::CreateDock()
 {
