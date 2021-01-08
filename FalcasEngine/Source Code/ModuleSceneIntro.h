@@ -12,6 +12,7 @@ class Grid;
 class ResourceModel;
 class ResourceMesh;
 class ResourceMaterial;
+class ComponentTransform2D;
 
 
 enum class Guizmos_Input_Letters {
