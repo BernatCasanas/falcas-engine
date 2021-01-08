@@ -30,15 +30,17 @@ void ComponentFont::Update()
 
 void ComponentFont::Initialization()
 {
-	FT_New_Face(App->central_editor->ft, "Assets/Fonts/arial.ttf", 0, &face);
-}
+	FT_Error error;
+	error = FT_New_Face(App->central_editor->ft, "Assets/Fonts/arial.ttf", 0, &face);
+	if (error == FT_Err_Unknown_File_Format)
+	{
+		LOG("Font format not compatible");
+	}
+	else if (error)
+	{
+		LOG("The font doesnt exists");
+	}
 
-void ComponentFont::Render()
-{
-	if (!active)
-		return;
-	
-	
 	FT_Set_Pixel_Sizes(face, 0, trans->GetSize().y);
 
 	FT_Load_Char(face, 'X', FT_LOAD_RENDER);
@@ -82,6 +84,15 @@ void ComponentFont::Render()
 		chars.insert(std::pair<char, Character>(c, character));
 	}
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+}
+
+void ComponentFont::Render()
+{
+	if (!active)
+		return;
+	
+	
+
 }
 
 bool ComponentFont::SaveComponent(JsonObj& obj)

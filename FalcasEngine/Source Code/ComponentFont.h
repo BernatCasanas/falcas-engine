@@ -26,6 +26,7 @@ public:
 	void Render();
 	bool SaveComponent(JsonObj& obj);
 
+
 	void Inspector();
 
 private:
