@@ -73,7 +73,4 @@ private:
 	float x;
 	float y;
 
-	ResourceMesh* resource_mesh = nullptr;
-	ComponentTransform2D* black_screen = nullptr;
-
 };

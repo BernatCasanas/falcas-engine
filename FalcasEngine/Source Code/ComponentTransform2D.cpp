@@ -369,23 +369,23 @@ void ComponentTransform2D::Inspector()
 	ImGui::Dummy({0,40});
 	if (ImGui::Button("Left", { 50,20 }));
 	if(ImGui::IsItemActive()) {
-		SetPosition({ position.x -= 5,position.y });
+		SetPosition({ position.x -= 10,position.y });
 	}
 	ImGui::NextColumn();
 	ImGui::Button("Up", { 50,20 });
 	if (ImGui::IsItemActive()) {
-		SetPosition({ position.x,position.y+=5 });
+		SetPosition({ position.x,position.y-=10 });
 	}
 	ImGui::Dummy({0,60});
 	ImGui::Button("Down", { 50,20 });
 	if (ImGui::IsItemActive()) {
-		SetPosition({ position.x,position.y -= 5 });
+		SetPosition({ position.x,position.y += 10 });
 	}
 	ImGui::NextColumn();
 	ImGui::Dummy({0,40});
 	ImGui::Button("Right", { 50,20 });
 	if (ImGui::IsItemActive()) {
-		SetPosition({ position.x += 5,position.y });
+		SetPosition({ position.x += 10,position.y });
 	}
 	ImGui::Columns(1, "", false);
 	ImGui::Separator();
