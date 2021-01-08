@@ -7,11 +7,12 @@
 #include "ModuleRenderer3D.h"
 #include "GameObject.h"
 #include "ComponentCamera.h"
+#include "ComponentUI.h"
 
 #define M_PI 3.14159265358979323846f
 
 ComponentTransform2D::ComponentTransform2D(GameObject* owner, float2 position, Quat rotation, float2 size) :Component(Component_Type::Transform2D, owner, "Transform2D"), position(position),
-size(size), z_depth(10)
+size(size), z_depth(10), z_depth_with_layers(0)
 {
 	this->rotation = QuaternionToEuler(rotation);
 	SetMatrices();
@@ -24,6 +25,9 @@ ComponentTransform2D::~ComponentTransform2D()
 
 void ComponentTransform2D::Update()
 {
+	if (UpdateMatrixBillboard() && !needed_to_update)
+		return;
+
 	SetMatrices();
 }
 
@@ -69,7 +73,12 @@ void ComponentTransform2D::SetTransformation(float3 pos, Quat rot, float2 size, 
 	position.x += new_pos.x;
 	position.y -= new_pos.y;
 	z_depth += new_pos.z;
-
+	if (owner->components.size() > 1) {
+		z_depth_with_layers = z_depth * ((ComponentUI*)owner->components[1])->layer_of_ui;
+	}
+	else {
+		z_depth_with_layers = z_depth;
+	}
 	if (!guizmo_size) {
 		float rot_z = QuaternionToEuler(rot).z;
 		float new_rot_z = QuaternionToEuler(new_rot).z;
@@ -84,39 +93,50 @@ void ComponentTransform2D::SetTransformation(float3 pos, Quat rot, float2 size, 
 void ComponentTransform2D::SetPosition(float2 pos)
 {
 	position = pos;
-	SetMatrices();
+	needed_to_update = true;
 }
 
 
 void ComponentTransform2D::SetRotation(Quat rot)
 {
 	rotation = QuaternionToEuler(rot);
-	SetMatrices();
+	needed_to_update = true;
 }
 
 void ComponentTransform2D::SetRotation(float3 rot)
 {
 	rotation = rot;
-	SetMatrices();
+	needed_to_update = true;
 }
 
 void ComponentTransform2D::SetSize(float2 size)
 {
 	this->size = size;
-	SetMatrices();
+	needed_to_update = true;
 }
 
-void ComponentTransform2D::UpdateMatrixBillboard()
+void ComponentTransform2D::UpdateZ()
+{
+	if (owner->components.size() > 1) {
+		z_depth_with_layers = z_depth * ((ComponentUI*)owner->components[1])->layer_of_ui;
+	}
+	else {
+		z_depth_with_layers = z_depth;
+	}
+}
+
+bool ComponentTransform2D::UpdateMatrixBillboard()
 {
 	ComponentTransform* trans = (ComponentTransform*)App->renderer3D->camera->owner->GetComponent(Component_Type::Transform);
 	Quat rot = trans->GetRotation();
 	float3 pos = trans->GetPosition();
+	float4x4 matrix_billboard_last_frame = matrix_billboard;
 	matrix_billboard = matrix_billboard.FromTRS(pos, rot, { 1,1,1 });
+	return matrix_billboard.Equals(matrix_billboard_last_frame);
 }
 
 void ComponentTransform2D::SetMatrices()
 {
-	UpdateMatrixBillboard();
 
 	float3 pivot_world = { pivot_position.x + position.x, pivot_position.y + position.y, 0 };
 	float3 rotation_in_gradians = rotation *DEGTORAD;
@@ -125,7 +145,7 @@ void ComponentTransform2D::SetMatrices()
 	matrix_pivot = matrix_pivot.FromTRS(pivot_world, rotate, { 1,1,1 });
 
 
-	local_matrix = local_matrix.FromTRS({ -pivot_position.x,-pivot_position.y,z_depth }, Quat::identity, { size.x,size.y,1 } );
+	local_matrix = local_matrix.FromTRS({ -pivot_position.x,-pivot_position.y,z_depth_with_layers }, Quat::identity, { size.x,size.y,1 } );
 
 	if (owner->parent != nullptr) {
 		if (owner->parent->IsUI()) {
@@ -157,6 +177,12 @@ void ComponentTransform2D::SetMatricesWithNewParent(float4x4 parent_global_matri
 
 	position = { pos.x,pos.y };
 	z_depth = pos.z;
+	if (owner->components.size() > 1) {
+		z_depth_with_layers = z_depth * ((ComponentUI*)owner->components[1])->layer_of_ui;
+	}
+	else {
+		z_depth_with_layers = z_depth;
+	}
 	size = { s.x,s.y };
 	needed_to_update = true;
 	needed_to_update_only_children = true;
@@ -204,6 +230,7 @@ float2 ComponentTransform2D::CalculateMovement(float4x4 matrix, float2 goal)
 void ComponentTransform2D::Inspector()
 {
 	float null = 0;
+	int null_int = 0;
 	ImGui::PushID(name.c_str());
 
 	ImGui::Separator();
@@ -239,11 +266,13 @@ void ComponentTransform2D::Inspector()
 
 	ImGui::SameLine();
 	ImGui::PushItemWidth(50);
-	if (ImGui::DragFloat("##2", (active && owner->active) ? &z_depth : &null, 0.01f) && (active && owner->active))
+	if (ImGui::DragFloat("##2", (active && owner->active) ? &z_depth : &null, 0.01f) && (active && owner->active)) {
+		UpdateZ();
 		needed_to_update = true;
+	}
 	ImGui::PopItemWidth();
 
-	ImGui::Columns(1, "", false);
+	ImGui::Columns(2, "", false);
 	
 	ImGui::AlignTextToFramePadding();
 	ImGui::Text("Rotation");
@@ -256,6 +285,30 @@ void ComponentTransform2D::Inspector()
 		needed_to_update = true;
 	ImGui::PopItemWidth();
 
+	ImGui::NextColumn();
+
+	ImGui::AlignTextToFramePadding();
+	ImGui::Text("Layer");
+	
+
+
+	ImGui::SameLine();
+	ImGui::PushItemWidth(50);
+	if (ImGui::DragInt("##6", (active && owner->active && owner->components.size() > 1) ? &((ComponentUI*)owner->components[1])->layer_of_ui : &null_int, 0.01,-1, 10) && (active && owner->active)) {
+		UpdateZ();
+		needed_to_update = true;
+	}
+	ImGui::PopItemWidth();
+
+	ImGui::NextColumn();
+
+	ImGui::AlignTextToFramePadding();
+	ImGui::Text("Final Z: %.2f",z_depth_with_layers);
+
+
+
+	
+
 	ImGui::Columns(3, "", false);
 
 	ImGui::AlignTextToFramePadding();
@@ -267,7 +320,7 @@ void ComponentTransform2D::Inspector()
 
 	ImGui::SameLine();
 	ImGui::PushItemWidth(50);
-	if (ImGui::DragFloat("##6", (active && owner->active) ? &size.x : &null, 0.01f) && (active && owner->active))
+	if (ImGui::DragFloat("##7", (active && owner->active) ? &size.x : &null, 0.01f) && (active && owner->active))
 		needed_to_update = true;
 	ImGui::PopItemWidth();
 
@@ -277,7 +330,7 @@ void ComponentTransform2D::Inspector()
 
 	ImGui::SameLine();
 	ImGui::PushItemWidth(50);
-	if (ImGui::DragFloat("##7", (active && owner->active) ? &size.y : &null, 0.01f) && (active && owner->active))
+	if (ImGui::DragFloat("##8", (active && owner->active) ? &size.y : &null, 0.01f) && (active && owner->active))
 		needed_to_update = true;
 	ImGui::PopItemWidth();
 
@@ -291,7 +344,7 @@ void ComponentTransform2D::Inspector()
 
 	ImGui::SameLine();
 	ImGui::PushItemWidth(50);
-	if (ImGui::DragFloat("##8", (active && owner->active) ? &pivot_position.x : &null, 0.01f) && (active && owner->active))
+	if (ImGui::DragFloat("##9", (active && owner->active) ? &pivot_position.x : &null, 0.01f) && (active && owner->active))
 		needed_to_update = true;
 	ImGui::PopItemWidth();
 
@@ -301,7 +354,7 @@ void ComponentTransform2D::Inspector()
 
 	ImGui::SameLine();
 	ImGui::PushItemWidth(50);
-	if (ImGui::DragFloat("##9", (active && owner->active) ? &pivot_position.y : &null, 0.01f) && (active && owner->active)) 
+	if (ImGui::DragFloat("##10", (active && owner->active) ? &pivot_position.y : &null, 0.01f) && (active && owner->active)) 
 		needed_to_update = true;
 	ImGui::PopItemWidth();
 

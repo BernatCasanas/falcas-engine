@@ -36,6 +36,8 @@ ComponentCheckbox::~ComponentCheckbox()
 
 void ComponentCheckbox::Update()
 {
+	ComponentUI::Update();
+
 	if (is_clicked_first_frame) {
 		OnTriggered(this);
 		is_active = !is_active;
@@ -124,6 +126,7 @@ void ComponentCheckbox::Inspector()
 {
 	ImGui::PushID(name.c_str());
 	Component::Inspector();
+	ComponentUI::Inspector();
 	ImGui::Separator();
 
 	ImGui::AlignTextToFramePadding();

@@ -163,7 +163,6 @@ void GameObject::Update()
 	}
 	if (is_ui) {
 		trans2D->needed_to_update_only_children = false;
-		trans2D->needed_to_update = false;
 	}
 	else {
 		trans->needed_to_update_only_children = false;

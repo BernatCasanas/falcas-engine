@@ -9,6 +9,7 @@
 #include "GameObject.h"
 #include "ComponentUI.h"
 #include "ModuleCamera3D.h"
+#include "ComponentTransform2D.h"
 #include "External Libraries/SDL/include/SDL_scancode.h"
 
 ModuleUI::ModuleUI(Application* app, bool start_enabled) : Module(app, start_enabled, "moduleUI")
@@ -77,7 +78,7 @@ update_status ModuleUI::PreUpdate(float dt)
 		MouseClicked(false);
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_UP) {
-		MouseStoppedClicking();
+		MouseStoppedClicking(false);
 	}
 	if (App->input->GetKey(SDL_SCANCODE_TAB) == KEY_DOWN) {
 		TabEntered();
@@ -254,7 +255,10 @@ bool ModuleUI::CheckHover()
 	GameObject* game_obj;
 	for (int i = 0; i < UIs.size(); i++) {
 		game_obj = UIs[i];
-		if (!game_obj->active || !game_obj->IsUI() || game_obj->GetComponentsSize() <= 1 || !((ComponentUI*)game_obj->components[1])->CheckMouseHovering())
+		if (!game_obj->active || !game_obj->IsUI() || game_obj->GetComponentsSize() <= 1)
+			continue;
+		ComponentUI* ui = (ComponentUI*)game_obj->components[1];
+		if (ui->layer_of_ui != 0 || !ui->CheckMouseHovering())
 			continue;
 		is_hovering = true;
 	}
@@ -268,12 +272,7 @@ void ModuleUI::MouseClicked(bool clicked_with_mouse)
 		game_obj = UIs[i];
 		if (!game_obj->active || !game_obj->IsUI() || game_obj->GetComponentsSize() <= 1)
 			continue;
-		if (clicked_with_mouse) {
-			((ComponentUI*)game_obj->components[1])->IsClicked();
-		}
-		else {
-			((ComponentUI*)game_obj->components[1])->IsClicked(false);
-		}
+		((ComponentUI*)game_obj->components[1])->IsClicked(clicked_with_mouse);
 	}
 }
 
@@ -284,7 +283,7 @@ void ModuleUI::MouseStoppedClicking(bool clicked_with_mouse)
 		game_obj = UIs[i];
 		if (!game_obj->active || !game_obj->IsUI() || game_obj->GetComponentsSize() <= 1)
 			continue;
-		((ComponentUI*)game_obj->components[1])->StoppedClicking(false);
+		((ComponentUI*)game_obj->components[1])->StoppedClicking(clicked_with_mouse);
 	}
 }
 
@@ -334,6 +333,27 @@ void ModuleUI::DeleteUI(int id_ui)
 		}
 	}
 	UIs.erase(it);
+}
+
+void ModuleUI::AddLayer()
+{
+	layers_with_ui_blocking_selecting++;
+	for (int i = 0; i < UIs.size(); i++) {
+		ComponentUI* ui = (ComponentUI*)UIs[i]->components[1];
+		ui->layer_of_ui++;
+		((ComponentTransform2D*)UIs[i]->components[0])->UpdateZ();
+	}
+}
+
+void ModuleUI::DeleteLayer()
+{
+	if (layers_with_ui_blocking_selecting > 0)
+		layers_with_ui_blocking_selecting--;
+	for (int i = 0; i < UIs.size(); i++) {
+		ComponentUI* ui = (ComponentUI*)UIs[i]->components[1];
+		ui->layer_of_ui--;
+		((ComponentTransform2D*)UIs[i]->components[0])->UpdateZ();
+	}
 }
 
 

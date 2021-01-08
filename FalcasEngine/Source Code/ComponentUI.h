@@ -12,6 +12,7 @@ public:
 	virtual ~ComponentUI();
 	
 	virtual void Render();
+	virtual void Update();
 
 	void OnTriggered(ComponentUI* component);
 
@@ -23,6 +24,8 @@ public:
 	void UpdateTriangles();
 	void IsClicked(bool clicked_with_mouse = true);
 	void StoppedClicking(bool clicked_with_mouse = true);
+
+	virtual void Inspector();
 
 public:
 	int id_vector_uis;
@@ -37,6 +40,7 @@ protected:
 	bool is_clicked_first_frame = false;
 	bool is_clicked_with_enter = false;
 	bool is_focused = false;
+	bool is_draggable = false;
 private:
 	Module* listener = nullptr;
 };

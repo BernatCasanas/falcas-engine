@@ -6,9 +6,10 @@
 #include "GameObject.h"
 #include "ComponentTransform2D.h"
 #include "ModuleCentralEditor.h"
-
-
+#include "External Libraries/ImGui/imgui.h"
 #include "ModuleInput.h"
+
+
 #include "ModuleSceneIntro.h"
 
 ComponentUI::ComponentUI(Component_Type type, GameObject* owner, std::string name) : Component(type, owner, name)
@@ -31,6 +32,17 @@ void ComponentUI::Render()
 {
 }
 
+void ComponentUI::Update()
+{
+	if (is_draggable && is_clicked) {
+		ComponentTransform2D* trans = (ComponentTransform2D*)owner->components[0];
+		float2 pos=trans->GetPosition();
+		pos.x += App->input->GetMouseXMotion();
+		pos.y -= App->input->GetMouseYMotion();
+		trans->SetPosition(pos);
+	}
+}
+
 void ComponentUI::OnTriggered(ComponentUI* component_ui)
 {
 	listener = App->central_editor;
@@ -43,7 +55,7 @@ void ComponentUI::OnTriggered(ComponentUI* component_ui)
 
 bool ComponentUI::CheckMouseHovering()
 {
-	if (!is_focusable)
+	if (!is_focusable || App->input->GetMouseButton(1)==KEY_REPEAT)
 		return false;
 
 	UpdateTriangles();
@@ -109,4 +121,9 @@ void ComponentUI::StoppedClicking(bool clicked_with_mouse)
 	if (clicked_with_mouse && type != Component_Type::Inputbox) {
 		is_focused = false;
 	}
+}
+
+void ComponentUI::Inspector()
+{
+	ImGui::Checkbox("Draggable", &is_draggable);
 }
