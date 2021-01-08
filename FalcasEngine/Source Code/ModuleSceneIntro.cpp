@@ -59,7 +59,6 @@ bool ModuleSceneIntro::Start()
 	icon_obj.CleanUp();
 	LoadModel(model);
 
-	resource_mesh = (ResourceMesh*)App->resources->RequestResource(App->UI->mesh_plane_id);
 
 	return ret;
 }

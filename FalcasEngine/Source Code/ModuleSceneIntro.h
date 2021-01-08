@@ -12,6 +12,7 @@ class Grid;
 class ResourceModel;
 class ResourceMesh;
 class ResourceMaterial;
+class ComponentTransform2D;
 
 
 enum class Guizmos_Input_Letters {
@@ -73,7 +74,6 @@ private:
 	float x;
 	float y;
 
-	ResourceMesh* resource_mesh = nullptr;
 	ComponentTransform2D* black_screen = nullptr;
 
 };

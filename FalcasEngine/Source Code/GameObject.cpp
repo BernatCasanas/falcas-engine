@@ -144,7 +144,7 @@ void GameObject::Update()
 		else {
 			if (trans2D->needed_to_update_only_children) {
 				if (children[i]->is_ui) {
-					children[i]->trans2D->SetMatricesWithNewParent(trans2D->GetGlobalMatrix());
+					//children[i]->trans2D->SetMatricesWithNewParent(trans2D->GetGlobalMatrix());
 				}
 				else {
 					children[i]->trans->SetMatricesWithNewParent(trans2D->GetGlobalMatrix());
@@ -163,6 +163,7 @@ void GameObject::Update()
 	}
 	if (is_ui) {
 		trans2D->needed_to_update_only_children = false;
+		trans2D->needed_to_update = false;
 	}
 	else {
 		trans->needed_to_update_only_children = false;
@@ -306,7 +307,7 @@ void GameObject::NewChild(GameObject* game_obj)
 	game_obj->parent = this;
 	if (is_ui) {
 		if (game_obj->IsUI()) {
-			game_obj->trans2D->SetMatricesWithNewParent(trans2D->GetGlobalMatrix());
+			game_obj->trans2D->needed_to_update = true;
 		}
 		else {
 			game_obj->trans->SetMatricesWithNewParent(trans2D->GetGlobalMatrix());

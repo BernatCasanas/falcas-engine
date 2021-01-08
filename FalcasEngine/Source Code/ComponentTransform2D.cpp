@@ -27,6 +27,7 @@ void ComponentTransform2D::Update()
 {
 	if (UpdateMatrixBillboard() && !needed_to_update)
 		return;
+	needed_to_update = true;
 
 	SetMatrices();
 }
@@ -132,14 +133,16 @@ bool ComponentTransform2D::UpdateMatrixBillboard()
 	float3 pos = trans->GetPosition();
 	float4x4 matrix_billboard_last_frame = matrix_billboard;
 	matrix_billboard = matrix_billboard.FromTRS(pos, rot, { 1,1,1 });
+	
 	return matrix_billboard.Equals(matrix_billboard_last_frame);
+
 }
 
 void ComponentTransform2D::SetMatrices()
 {
 
 	float3 pivot_world = { pivot_position.x + position.x, pivot_position.y + position.y, 0 };
-	float3 rotation_in_gradians = rotation *DEGTORAD;
+	float3 rotation_in_gradians = rotation * DEGTORAD;
 	Quat rotate = Quat::identity * Quat::identity.RotateZ(rotation_in_gradians.z);
 	
 	matrix_pivot = matrix_pivot.FromTRS(pivot_world, rotate, { 1,1,1 });
@@ -151,6 +154,7 @@ void ComponentTransform2D::SetMatrices()
 		if (owner->parent->IsUI()) {
 			ComponentTransform2D* parent_trans = (ComponentTransform2D*)owner->parent->GetComponent(Component_Type::Transform2D);
 			matrix_parent = parent_trans->GetGlobalMatrix();
+			matrix_parent = parent_trans->matrix_billboard.Inverted() * matrix_parent;
 		}
 		else {
 			ComponentTransform* parent_trans = (ComponentTransform*)owner->parent->GetComponent(Component_Type::Transform);
@@ -158,14 +162,15 @@ void ComponentTransform2D::SetMatrices()
 		}
 	}
 	else matrix_parent = float4x4::identity;
-	global_matrix = matrix_parent * matrix_billboard *matrix_pivot* local_matrix;
+	
+	global_matrix = matrix_billboard * matrix_parent * matrix_pivot * local_matrix;
 	global_matrix_transposed = global_matrix.Transposed();
-	needed_to_update = false;
 }
 
 void ComponentTransform2D::SetMatricesWithNewParent(float4x4 parent_global_matrix)
 {
-	float4x4 local_matrix_with_rotation = matrix_billboard.Inverted() * parent_global_matrix.Inverted() * global_matrix;
+	UpdateMatrixBillboard();
+	float4x4 local_matrix_with_rotation = parent_global_matrix.Inverted() * matrix_billboard.Inverted() * global_matrix;
 	float3 pos, s;
 	Quat rot;
 	local_matrix_with_rotation.Decompose(pos, rot, s);
