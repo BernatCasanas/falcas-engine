@@ -52,7 +52,8 @@ void ComponentImage::Render()
 
 bool ComponentImage::SaveComponent(JsonObj& obj)
 {
-	//obj.AddInt("Resource_ID", resource_material != nullptr ? resource_material->GetID() : 0);
+	obj.AddInt("Resource_ID", resource_material != nullptr ? resource_material->GetID() : 0);
+	obj.AddFloat4x4("Matrix", trans->GetGlobalMatrix());
 	return true;
 }
 
@@ -143,4 +144,14 @@ void ComponentImage::Inspector()
 	ImGui::Separator();
 
 	ImGui::PopID();
+}
+
+void ComponentImage::SetMaterialLoading(ResourceMaterial* _1)
+{
+	resource_material = _1;
+}
+
+void ComponentImage::SetTrans(ComponentTransform2D* trans)
+{
+	this->trans = trans;
 }

@@ -97,7 +97,12 @@ CheckOutputText();
 
 bool ComponentInputbox::SaveComponent(JsonObj& obj)
 {
-	//obj.AddInt("Resource_ID", resource_material != nullptr ? resource_material->GetID() : 0);
+	obj.AddString("Output", output_text.c_str());
+	obj.AddString("Input", input_text.c_str());
+	obj.AddFloat4x4("Matrix", trans->GetGlobalMatrix());
+	obj.AddInt("Pos", position);
+	obj.AddBool("Active", text_input_activated);
+	//ARNAU: Sha de fer amb amb el timer?
 	return true;
 }
 
@@ -168,4 +173,25 @@ void ComponentInputbox::Inspector()
 	TextInspector();
 
 	ImGui::PopID();
+}
+
+void ComponentInputbox::SetTrans(ComponentTransform2D* trans)
+{
+	this->trans = trans;
+}
+
+void ComponentInputbox::SetInOutput(std::string _in, std::string _out)
+{
+	input_text = _in;
+	output_text = _out;
+}
+
+void ComponentInputbox::SetPos(int pos)
+{
+	this->position = pos;
+}
+
+void ComponentInputbox::SetActivity(bool active)
+{
+	text_input_activated = active;
 }

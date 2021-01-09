@@ -20,8 +20,12 @@ public:
 	void Render();
 	bool SaveComponent(JsonObj& obj);
 
-
 	void Inspector();
+
+	void SetTrans(ComponentTransform2D* trans);
+	void SetText(std::string text);
+	void SetAligment(int alig);
+	void SetTypeSize(std::string type, std::string size);
 
 private:
 	std::string text;

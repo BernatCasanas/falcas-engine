@@ -17,10 +17,14 @@ public:
 	void Backspace(int position);
 	void Supr(int position);
 	void CheckOutputText();
-	void SetInitialText();
+	void SetInitialText(); //ARNAU: suposo que s'ha de configurar amb fonts, no?
 
 	void Inspector();
 
+	void SetTrans(ComponentTransform2D* trans);
+	void SetInOutput(std::string in, std::string out);
+	void SetPos(int pos);
+	void SetActivity(bool active);
 
 private:
 	ComponentTransform2D* trans;

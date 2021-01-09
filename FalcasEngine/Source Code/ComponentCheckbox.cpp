@@ -89,7 +89,13 @@ void ComponentCheckbox::Render()
 
 bool ComponentCheckbox::SaveComponent(JsonObj& obj)
 {
-	//obj.AddInt("Resource_ID", resource_material != nullptr ? resource_material->GetID() : 0);
+	obj.AddInt("Resource1_ID", resource_material_sprite1 != nullptr ? resource_material_sprite1->GetID() : 0);
+	obj.AddInt("Resource2_ID", resource_material_sprite2 != nullptr ? resource_material_sprite2->GetID() : 0);
+	obj.AddInt("Resource3_ID", resource_material_sprite3 != nullptr ? resource_material_sprite3->GetID() : 0);
+	obj.AddInt("Resource4_ID", resource_material_sprite4 != nullptr ? resource_material_sprite4->GetID() : 0);
+	obj.AddFloat4x4("Matrix", trans->GetGlobalMatrix());
+	obj.AddBool("Active", is_active);
+
 	return true;
 }
 
@@ -123,6 +129,24 @@ void ComponentCheckbox::ChangeResourceMaterial(ResourceMaterial* resource_mat, i
 		break;
 	}
 
+}
+
+void ComponentCheckbox::SetMaterialsLoading(ResourceMaterial* _1, ResourceMaterial* _2, ResourceMaterial* _3, ResourceMaterial* _4)
+{
+	resource_material_sprite1 = _1;
+	resource_material_sprite2 = _2;
+	resource_material_sprite3 = _3;
+	resource_material_sprite4 = _4;
+}
+
+void ComponentCheckbox::SetTrans(ComponentTransform2D* trans)
+{
+	this->trans = trans;
+}
+
+void ComponentCheckbox::SetActivity(bool active)
+{
+	is_active = active;
 }
 
 void ComponentCheckbox::Inspector()

@@ -82,7 +82,13 @@ void ComponentButton::Render()
 
 bool ComponentButton::SaveComponent(JsonObj& obj)
 {
-	//obj.AddInt("Resource_ID", resource_material != nullptr ? resource_material->GetID() : 0);
+	obj.AddInt("Resource1_ID", resource_material_sprite1 != nullptr ? resource_material_sprite1->GetID() : 0);
+	obj.AddInt("Resource2_ID", resource_material_sprite2 != nullptr ? resource_material_sprite2->GetID() : 0);
+	obj.AddInt("Resource3_ID", resource_material_sprite3 != nullptr ? resource_material_sprite3->GetID() : 0);
+	obj.AddFloat4x4("Matrix", trans->GetGlobalMatrix());
+	obj.AddString("Scene_Name", scene_name.c_str());
+	obj.AddString("Functionality", combo.c_str());
+
 	return true;
 }
 
@@ -381,4 +387,29 @@ void ComponentButton::Inspector()
 	TextInspector();
 
 	ImGui::PopID();
+}
+
+void ComponentButton::SetMaterialsLoading(ResourceMaterial* _1, ResourceMaterial* _2, ResourceMaterial* _3)
+{
+	resource_material_sprite1 = _1;
+	resource_material_sprite2 = _2;
+	resource_material_sprite3 = _3;
+}
+
+void ComponentButton::SetTrans(ComponentTransform2D* trans)
+{
+	this->trans = trans;
+}
+
+void ComponentButton::SetSceneName(std::string scene_name)
+{
+	this->scene_name = scene_name;
+}
+
+void ComponentButton::SetFunctionality(std::string functionality)
+{
+	if (functionality == "Change Screen") {
+		this->combo = functionality;
+		this->functionality = CLICK::ChangeScreen;
+	}
 }

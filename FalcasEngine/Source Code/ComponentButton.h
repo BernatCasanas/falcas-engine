@@ -25,6 +25,10 @@ public:
 
 	void Inspector();
 
+	void SetMaterialsLoading(ResourceMaterial* _1, ResourceMaterial* _2, ResourceMaterial* _3);
+	void SetTrans(ComponentTransform2D* trans);
+	void SetSceneName(std::string scene_name);
+	void SetFunctionality(std::string functionality);
 
 private:
 	ResourceMaterial* resource_material_sprite1 = nullptr;
@@ -34,7 +38,5 @@ private:
 	std::string scene_name;
 	std::string combo = "";
 	CLICK functionality;
-
-
 
 };

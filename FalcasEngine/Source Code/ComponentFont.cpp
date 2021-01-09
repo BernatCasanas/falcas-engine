@@ -15,7 +15,7 @@
 ComponentFont::ComponentFont(GameObject* owner, ComponentTransform2D* trans) : ComponentUI(Component_Type::Font, owner, "Text"), trans(trans)
 {
 	aligment = FTLabel::FontFlags::RightAligned;
-	Initialization();
+	Initialization(); //set transform before init
 }
 
 ComponentFont::~ComponentFont()
@@ -71,6 +71,11 @@ void ComponentFont::Render()
 
 bool ComponentFont::SaveComponent(JsonObj& obj)
 {
+	obj.AddString("Text", text.c_str());
+	obj.AddFloat4x4("Matrix", trans->GetGlobalMatrix());
+	obj.AddInt("Aligment", aligment);
+	obj.AddString("TypeFont", typeFont.c_str());
+	obj.AddString("FontSize", fontSize.c_str());
 	return true;
 }
 
@@ -133,4 +138,38 @@ void ComponentFont::Inspector()
 
 
 	ImGui::PopID();
+}
+
+void ComponentFont::SetTrans(ComponentTransform2D* trans)
+{
+	this->trans = trans;
+}
+
+void ComponentFont::SetText(std::string text)
+{
+	this->text = text;
+}
+
+void ComponentFont::SetAligment(int alig)
+{
+	switch (alig)
+	{
+	case 2:
+		aligment = FTLabel::FontFlags::LeftAligned;
+		break;
+	case 4:
+		aligment = FTLabel::FontFlags::CenterAligned;
+		break;
+	case 8:
+		aligment = FTLabel::FontFlags::RightAligned;
+		break;
+	default:
+		break;
+	}
+}
+
+void ComponentFont::SetTypeSize(std::string type, std::string size)
+{
+	typeFont = type;
+	fontSize = size;
 }

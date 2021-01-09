@@ -40,6 +40,10 @@
 #include "ComponentUI.h"
 #include "ModuleCamera3D.h"
 #include "ComponentButton.h"
+#include "ComponentCheckbox.h"
+#include "ComponentFont.h"
+#include "ComponentImage.h"
+#include "ComponentInputbox.h"
 #include "ModuleUI.h"
 
 
@@ -985,6 +989,76 @@ void ModuleCentralEditor::LoadScene(const char* file)
                 cam->SetNearPlaneDistance(comp.GetFloat("FrustumNear"));
                 cam->SetHorizFov(comp.GetFloat("FrustumHfov"));
                 cam->SetVerticalFov(comp.GetFloat("FrustumVfov"));
+            }
+            else if (component_name == "Button") {
+                ComponentButton* but = (ComponentButton*)gameObject->CreateComponent(Component_Type::Button);
+                uint id1 = comp.GetInt("Resource1_ID");
+                uint id2 = comp.GetInt("Resource2_ID");
+                uint id3 = comp.GetInt("Resource3_ID");
+                but->SetMaterialsLoading((ResourceMaterial*)App->resources->RequestResource(id1), (ResourceMaterial*)App->resources->RequestResource(id2), (ResourceMaterial*)App->resources->RequestResource(id3));
+                float4x4 matrix = comp.GetFloat4x4("Matrix");
+                float3 pos, size;
+                Quat rot;
+                matrix.Decompose(pos, rot, size);
+                ComponentTransform2D* trans;
+                trans->SetTransformation(pos, rot, { size.x,size.y });
+                but->SetTrans(trans);
+                but->SetSceneName(comp.GetString("Scene_Name"));
+                but->SetFunctionality(comp.GetString("Functionality"));
+            }
+            else if (component_name == "Check Box") {
+                ComponentCheckbox* check = (ComponentCheckbox*)gameObject->CreateComponent(Component_Type::Checkbox);
+                uint id1 = comp.GetInt("Resource1_ID");
+                uint id2 = comp.GetInt("Resource2_ID");
+                uint id3 = comp.GetInt("Resource3_ID");
+                uint id4 = comp.GetInt("Resource4_ID");
+                check->SetMaterialsLoading((ResourceMaterial*)App->resources->RequestResource(id1), (ResourceMaterial*)App->resources->RequestResource(id2), (ResourceMaterial*)App->resources->RequestResource(id3), (ResourceMaterial*)App->resources->RequestResource(id3));
+                float4x4 matrix = comp.GetFloat4x4("Matrix");
+                float3 pos, size;
+                Quat rot;
+                matrix.Decompose(pos, rot, size);
+                ComponentTransform2D* trans;
+                trans->SetTransformation(pos, rot, { size.x,size.y });
+                check->SetTrans(trans);
+                check->SetActivity(comp.GetString("Active"));
+            }
+            else if (component_name == "Image") {
+                ComponentImage* img = (ComponentImage*)gameObject->CreateComponent(Component_Type::Image);
+                uint id = comp.GetInt("Resource_ID");
+                img->SetMaterialLoading((ResourceMaterial*)App->resources->RequestResource(id));
+                float4x4 matrix = comp.GetFloat4x4("Matrix");
+                float3 pos, size;
+                Quat rot;
+                matrix.Decompose(pos, rot, size);
+                ComponentTransform2D* trans;
+                trans->SetTransformation(pos, rot, { size.x,size.y });
+                img->SetTrans(trans);
+            }
+            else if (component_name == "Font") {
+                ComponentFont* font = (ComponentFont*)gameObject->CreateComponent(Component_Type::Font);
+                float4x4 matrix = comp.GetFloat4x4("Matrix");
+                float3 pos, size;
+                Quat rot;
+                matrix.Decompose(pos, rot, size);
+                ComponentTransform2D* trans;
+                trans->SetTransformation(pos, rot, { size.x,size.y });
+                font->SetTrans(trans);
+                font->SetText(comp.GetString("Text"));
+                font->SetAligment(comp.GetInt("Aligment"));
+                font->SetTypeSize(comp.GetString("TypeFont"), comp.GetString("FontSize"));
+            }
+            else if (component_name == "Input Box") {
+                ComponentInputbox* inputbox = (ComponentInputbox*)gameObject->CreateComponent(Component_Type::Inputbox);
+                float4x4 matrix = comp.GetFloat4x4("Matrix");
+                float3 pos, size;
+                Quat rot;
+                matrix.Decompose(pos, rot, size);
+                ComponentTransform2D* trans;
+                trans->SetTransformation(pos, rot, { size.x,size.y });
+                inputbox->SetTrans(trans);
+                inputbox->SetInOutput(comp.GetString("Input"), comp.GetString("Output"));
+                inputbox->SetPos(comp.GetInt("Pos"));
+                inputbox->SetActivity(comp.GetBool("Activity"));
             }
         }
     }

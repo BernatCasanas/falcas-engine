@@ -17,6 +17,9 @@ public:
 
 	bool IsActive()const { return is_active; }
 
+	void SetMaterialsLoading(ResourceMaterial* _1, ResourceMaterial* _2, ResourceMaterial* _3, ResourceMaterial* _4);
+	void SetTrans(ComponentTransform2D* trans);
+	void SetActivity(bool active);
 
 	void Inspector();
 
