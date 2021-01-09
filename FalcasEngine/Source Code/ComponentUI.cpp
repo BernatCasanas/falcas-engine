@@ -152,6 +152,20 @@ void ComponentUI::Inspector()
 	ImGui::Checkbox("Draggable", &is_draggable);
 }
 
+void ComponentUI::SaveText(JsonObj& obj)
+{
+	obj.AddString("Text", _text.c_str());
+	obj.AddString("Size", _size.c_str());
+
+}
+
+void ComponentUI::LoadText(JsonObj& obj)
+{
+	_text = obj.GetString("Text");
+	_size = obj.GetString("Size");
+	_color = ImVec4(obj.GetInt("r"), obj.GetInt("g"), obj.GetInt("b"), obj.GetInt("a"));
+}
+
 void ComponentUI::TextInspector()
 {
 	ImGui::AlignTextToFramePadding();

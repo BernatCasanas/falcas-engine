@@ -15,7 +15,6 @@
 ComponentFont::ComponentFont(GameObject* owner, ComponentTransform2D* trans) : ComponentUI(Component_Type::Font, owner, "Text"), trans(trans)
 {
 	aligment = FTLabel::FontFlags::RightAligned;
-	Initialization(); //set transform before init
 }
 
 ComponentFont::~ComponentFont()
@@ -25,6 +24,10 @@ ComponentFont::~ComponentFont()
 void ComponentFont::Update()
 {
 	ComponentUI::Update();
+	if (init == false) {
+		Initialization();
+		init = true;
+	} 
 	if (is_clicked_first_frame) {
 		OnTriggered(this);
 	}
@@ -172,4 +175,9 @@ void ComponentFont::SetTypeSize(std::string type, std::string size)
 {
 	typeFont = type;
 	fontSize = size;
+}
+
+void ComponentFont::SetColor(JsonObj& obj)
+{
+	color = ImVec4(obj.GetInt("r"), obj.GetInt("g"), obj.GetInt("b"), obj.GetInt("a"));
 }
