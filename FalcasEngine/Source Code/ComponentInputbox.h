@@ -3,6 +3,7 @@
 #include "Timer.h"
 
 class ComponentTransform2D;
+class ResourceMaterial;
 
 class ComponentInputbox : public ComponentUI {
 public:
@@ -18,6 +19,8 @@ public:
 	void Supr(int position);
 	void CheckOutputText();
 
+	void ChangeResourceMaterial(ResourceMaterial* resource_mat);
+
 	void Inspector();
 
 	void SetTrans(ComponentTransform2D* trans);
@@ -27,6 +30,7 @@ public:
 
 private:
 	ComponentTransform2D* trans;
+	ResourceMaterial* resource_material_sprite = nullptr;
 	std::string input_text = "";
 	std::string output_text = "";
 	int position = 0;

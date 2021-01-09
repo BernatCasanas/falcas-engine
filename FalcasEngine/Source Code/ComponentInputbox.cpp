@@ -5,6 +5,8 @@
 #include "ModuleSceneIntro.h"
 #include "ResourceMesh.h"
 #include "ModuleInput.h"
+#include "FileSystem.h"
+#include "ResourceMaterial.h"
 #include "External Libraries/ImGui/imgui.h"
 #include "External Libraries/SDL/include/SDL_events.h"
 
@@ -16,6 +18,10 @@ ComponentInputbox::ComponentInputbox(GameObject* owner, ComponentTransform2D* tr
 
 ComponentInputbox::~ComponentInputbox()
 {
+	if(resource_material_sprite != nullptr && !App->resources->isResourcesMapEmpty()) {
+		App->resources->FreeResource(resource_material_sprite);
+	}
+	resource_material_sprite = nullptr;
 }
 
 void ComponentInputbox::Update()
@@ -78,17 +84,22 @@ void ComponentInputbox::Update()
 		output_timer.Start();
 	}
 
-if (is_clicked_with_enter) {
-	OnTriggered(this);
-}
+	if (is_clicked_with_enter) {
+		OnTriggered(this);
+	}
 	
-if (output_timer.ReadSec() >= 2) {
-	output_timer.Start();
-}
+	if (output_timer.ReadSec() >= 2) {
+		output_timer.Start();
+	}
 
-CheckOutputText();
+	CheckOutputText();
 	
-
+	for (int i = 0; i < App->scene_intro->resources_material_to_delete.size(); i++) {
+		if (resource_material_sprite == App->scene_intro->resources_material_to_delete[i]) {
+			resource_material_sprite = nullptr;
+			break;
+		}
+	}
 }
 
 bool ComponentInputbox::SaveComponent(JsonObj& obj)
@@ -122,6 +133,7 @@ void ComponentInputbox::Render()
 
 		resource_mesh->Render((float*)&trans->GetGlobalMatrixTransposed(), nullptr, false, false, false, nullptr);
 	}*/
+	resource_mesh->Render((float*)&trans->GetGlobalMatrixTransposed(), nullptr, false, false, false, resource_material_sprite);
 }
 
 
@@ -159,12 +171,70 @@ void ComponentInputbox::CheckOutputText()
 	}
 }
 
+void ComponentInputbox::ChangeResourceMaterial(ResourceMaterial* resource_mat)
+{
+	if (resource_material_sprite != nullptr) {
+		App->resources->FreeResource(resource_material_sprite);
+	}
+	resource_material_sprite = resource_mat;
+}
+
 void ComponentInputbox::Inspector()
 {
 	ImGui::PushID(name.c_str());
 	Component::Inspector();
 	ComponentUI::Inspector();
 
+	ImGui::AlignTextToFramePadding();
+	ImGui::Text("Sprite:");
+	ImGui::Separator();
+	ImGui::AlignTextToFramePadding();
+	ImGui::Text("File: ");
+
+	ImGui::SameLine();
+
+	ImGui::SameLine();
+	ImGui::TextColored(ImVec4(1.0f, 0.0f, 1.0f, 1.0f), resource_material_sprite != nullptr ? resource_material_sprite->file_name.c_str() : "None");
+	if (ImGui::BeginDragDropTarget())
+	{
+		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("texture"))
+		{
+			IM_ASSERT(payload->DataSize == sizeof(int));
+			int payload_id = *(const int*)payload->Data;
+			ChangeResourceMaterial((ResourceMaterial*)App->resources->RequestResource(payload_id));
+		}
+		ImGui::EndDragDropTarget();
+	}
+
+	if (ImGui::IsItemHovered()) {
+		ImGui::SetTooltip(resource_material_sprite != nullptr ? resource_material_sprite->full_file_name.c_str() : "");
+	}
+
+	if (ImGui::Button("Load Material")) {
+		ImGui::OpenPopup("load material");
+	}
+	if (ImGui::BeginPopupModal("load material")) {
+		std::vector<std::string> files;
+		std::vector<uint> ids;
+		App->filesystem->DiscoverFilesLibrary("Library/Textures/", files, ids);
+
+		ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, 5.0f);
+		ImGui::BeginChild("Textures", ImVec2(0, 300), true);
+		for (int i = 0; i < files.size(); i++) {
+			ImGui::Selectable(files[i].c_str());
+			if (ImGui::IsItemClicked()) {
+				ChangeResourceMaterial((ResourceMaterial*)App->resources->RequestResource(ids[i]));
+				ImGui::CloseCurrentPopup();
+			}
+		}
+		ImGui::EndChild();
+		ImGui::PopStyleVar();
+		if (ImGui::Button("Cancel", ImVec2(50, 20)))
+		{
+			ImGui::CloseCurrentPopup();
+		}
+		ImGui::EndPopup();
+	}
 
 	ImGui::Separator();
 
