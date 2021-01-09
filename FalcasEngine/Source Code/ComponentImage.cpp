@@ -72,7 +72,6 @@ void ComponentImage::Inspector()
 
 	ImGui::PushID(name.c_str());
 	Component::Inspector();
-	ComponentUI::Inspector();
 	ImGui::Separator();
 
 	ImGui::AlignTextToFramePadding();

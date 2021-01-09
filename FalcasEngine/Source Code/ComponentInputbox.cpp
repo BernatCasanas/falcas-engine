@@ -31,12 +31,8 @@ void ComponentInputbox::Update()
 		SDL_StopTextInput();
 		text_input_activated = false;
 	}
-	if (is_focused == false) {
-		if (input_text == "") {
-			output_text = initial_text;
-		}
+	if (is_focused == false)
 		return;
-	}
 	
 	if (App->input->changed_text_input) {
 		output_timer.Stop();
@@ -103,7 +99,6 @@ bool ComponentInputbox::SaveComponent(JsonObj& obj)
 	obj.AddInt("Pos", position);
 	obj.AddBool("Active", text_input_activated);
 	SaveText(obj);
-	//ARNAU: Sha de fer amb amb el timer?
 	return true;
 }
 
@@ -116,9 +111,15 @@ void ComponentInputbox::Render()
 	if (!active)
 		return;
 
-	PrintText(_text, _size, _color, trans);
+	if (!is_focused && input_text == "") {
+		PrintText(_text, _size, _color, trans);
+	}
+	else {
+		PrintText(output_text, _size, _color, trans);
+	}
 
 	if (!is_focused) {
+
 		resource_mesh->Render((float*)&trans->GetGlobalMatrixTransposed(), nullptr, false, false, false, nullptr);
 	}
 }
@@ -164,10 +165,6 @@ void ComponentInputbox::Inspector()
 	Component::Inspector();
 	ComponentUI::Inspector();
 
-	ImGui::AlignTextToFramePadding();
-	ImGui::Text("Initial text: ");
-	ImGui::SameLine();
-	ImGui::InputText("##1", &initial_text, ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll);
 
 	ImGui::Separator();
 

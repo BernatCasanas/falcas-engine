@@ -58,6 +58,7 @@ protected:
 	std::string _text="Text";
 	std::string _size="64";
 	ImVec4 _color;
+	uint curTex;
 private:
 	Module* listener = nullptr;
 

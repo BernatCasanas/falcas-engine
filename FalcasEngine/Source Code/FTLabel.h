@@ -45,11 +45,14 @@ public:
     };
 
     // Ctor takes a pointer to a font face
-    FTLabel(shared_ptr<GLFont> ftFace, int windowWidth, int windowHeight);
-    FTLabel(GLFont* ftFace, int windowWidth, int windowHeight);
-    FTLabel(shared_ptr<GLFont> ftFace, const char* text, float x, float y, int width, int height, int windowWidth, int windowHeight);
-    FTLabel(shared_ptr<GLFont> ftFace, const char* text, float x, float y, int windowWidth, int windowHeight);
+    FTLabel(shared_ptr<GLFont> ftFace, int windowWidth, int windowHeight, GLuint& curTex);
+    FTLabel(GLFont* ftFace, int windowWidth, int windowHeight, GLuint& curTex);
+    FTLabel(shared_ptr<GLFont> ftFace, const char* text, float x, float y, int width, int height, int windowWidth, int windowHeight, GLuint& curTex);
+    FTLabel(shared_ptr<GLFont> ftFace, const char* text, float x, float y, int windowWidth, int windowHeight, GLuint& curTex);
     ~FTLabel();
+
+    void Initialize(GLuint curTex);
+    void Finish();
 
     void setWindowSize(int width, int height);
 
