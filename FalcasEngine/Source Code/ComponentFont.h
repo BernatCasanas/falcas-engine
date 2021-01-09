@@ -26,6 +26,7 @@ public:
 	void SetText(std::string text);
 	void SetAligment(int alig);
 	void SetTypeSize(std::string type, std::string size);
+	void SetColor(JsonObj& obj);
 
 private:
 	std::string text;
@@ -36,4 +37,5 @@ private:
 	ImVec4 color;
 	std::string typeFont = "Arial";
 	std::string fontSize = "64";
+	bool init = false;
 };

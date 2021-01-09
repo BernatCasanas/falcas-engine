@@ -29,7 +29,7 @@ ComponentCheckbox::~ComponentCheckbox()
 	}
 	resource_material_sprite3 = nullptr;
 	if (resource_material_sprite4 != nullptr && !App->resources->isResourcesMapEmpty()) {
-		App->resources->FreeResource(resource_material_sprite3);
+		App->resources->FreeResource(resource_material_sprite4);
 	}
 	resource_material_sprite4 = nullptr;
 }
@@ -95,6 +95,7 @@ bool ComponentCheckbox::SaveComponent(JsonObj& obj)
 	obj.AddInt("Resource4_ID", resource_material_sprite4 != nullptr ? resource_material_sprite4->GetID() : 0);
 	obj.AddFloat4x4("Matrix", trans->GetGlobalMatrix());
 	obj.AddBool("Active", is_active);
+	SaveText(obj);
 
 	return true;
 }

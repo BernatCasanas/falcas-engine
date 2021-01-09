@@ -33,6 +33,9 @@ public:
 
 	virtual void Inspector();
 
+	void SaveText(JsonObj& obj);
+	void LoadText(JsonObj& obj);
+
 	void TextInspector();
 
 public:

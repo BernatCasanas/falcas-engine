@@ -98,6 +98,7 @@ bool ComponentInputbox::SaveComponent(JsonObj& obj)
 	obj.AddFloat4x4("Matrix", trans->GetGlobalMatrix());
 	obj.AddInt("Pos", position);
 	obj.AddBool("Active", text_input_activated);
+	SaveText(obj);
 	return true;
 }
 

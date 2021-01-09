@@ -59,6 +59,7 @@ Resource* ModuleResources::GetResource(uint ID)
 
 Resource* ModuleResources::RequestResource(uint ID)
 {
+	if (ID == 0) return nullptr;
 	Resource* resource= GetResource(ID);
 	if (resource->referenceCount != 0) {
 		resource->referenceCount++;
