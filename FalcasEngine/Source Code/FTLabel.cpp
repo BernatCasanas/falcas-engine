@@ -81,6 +81,11 @@ FTLabel::FTLabel(shared_ptr<GLFont> ftFace, int windowWidth, int windowHeight) :
     glUseProgram(0);
 
     _isInitialized = true;
+
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glActiveTexture(GL_TEXTURE0);
+
 }
 
 FTLabel::FTLabel(GLFont* ftFace, int windowWidth, int windowHeight) : 
