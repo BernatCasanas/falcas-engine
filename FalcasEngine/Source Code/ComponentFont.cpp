@@ -50,6 +50,7 @@ void ComponentFont::Initialization()
 	label->setPixelSize(64);
 	label->setAlignment(aligment);
 	label->appendFontFlags(FTLabel::FontFlags::Indented);
+
 }
 
 void ComponentFont::Render()

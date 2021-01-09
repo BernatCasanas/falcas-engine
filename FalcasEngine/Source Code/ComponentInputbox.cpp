@@ -109,7 +109,9 @@ void ComponentInputbox::Render()
 {
 	if (!active)
 		return;
-	///////BERNAT: HERE WE WILL PRINT THE OUTPUT TEXT AS A TEXTURE
+
+	PrintText(_text, _size, _color, trans);
+
 	if (!is_focused) {
 		resource_mesh->Render((float*)&trans->GetGlobalMatrixTransposed(), nullptr, false, false, false, nullptr);
 	}
@@ -162,6 +164,8 @@ void ComponentInputbox::Inspector()
 	ImGui::InputText("##1", &initial_text, ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll);
 
 	ImGui::Separator();
+
+	TextInspector();
 
 	ImGui::PopID();
 }

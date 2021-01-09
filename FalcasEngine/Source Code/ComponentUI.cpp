@@ -8,15 +8,25 @@
 #include "ModuleCentralEditor.h"
 #include "External Libraries/ImGui/imgui.h"
 #include "ModuleInput.h"
-
-
+#include "ModuleWindow.h"
+#include "Application.h"
 #include "ModuleSceneIntro.h"
+#include "ComponentButton.h"
 
 ComponentUI::ComponentUI(Component_Type type, GameObject* owner, std::string name) : Component(type, owner, name)
 {
 	resource_mesh = (ResourceMesh*)App->resources->RequestResource(App->UI->mesh_plane_id);
 	App->UI->UIs.push_back(owner);
 	id_vector_uis = App->UI->UIs.size() - 1;
+	_font = std::shared_ptr<GLFont>(new GLFont("Assets/Fonts/arial.ttf"));
+	_label = std::unique_ptr<FTLabel>(new FTLabel(
+		_font,
+		_text.c_str(),
+		0,
+		0,
+		App->window->width,
+		App->window->height
+	));
 }
 
 ComponentUI::~ComponentUI()
@@ -123,7 +133,34 @@ void ComponentUI::StoppedClicking(bool clicked_with_mouse)
 	}
 }
 
+void ComponentUI::PrintText(std::string text, std::string size, ImVec4 color, ComponentTransform2D* pos)
+{
+	_label.get()->setFont(_font);
+	if (size == "") size = "0";
+	_label.get()->setPixelSize(std::stoi(size));
+	_label.get()->setText((char*)text.c_str());
+	_label.get()->setAlignment(FTLabel::FontFlags::CenterAligned);
+	float2 _pos = { pos->GetPosition().x + (pos->GetSize().x / 2), pos->GetPosition().y + (pos->GetSize().y / 2) };//no fa el q vull
+	_label.get()->setColor(color.x, color.y, color.z, color.w);
+	_label.get()->setPosition(_pos.x, _pos.y);
+
+	_label.get()->render();
+}
+
 void ComponentUI::Inspector()
 {
 	ImGui::Checkbox("Draggable", &is_draggable);
+}
+
+void ComponentUI::TextInspector()
+{
+	ImGui::AlignTextToFramePadding();
+	ImGui::Text("Text: ");
+	ImGui::SameLine();
+	ImGui::InputText("##text", &_text, ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll);
+	ImGui::SameLine();
+	ImGui::InputText("##text1", &_size, ImGuiInputTextFlags_EnterReturnsTrue);
+	ImGui::Separator();
+
+	ImGui::ColorPicker4("Color Picker", (float*)&_color);
 }

@@ -59,13 +59,16 @@ void ComponentButton::Update()
 
 void ComponentButton::Initialization()
 {
+
 }
 
 void ComponentButton::Render()
 {
 	if (!active)
 		return;
-	//render text
+
+	PrintText(_text, _size, _color, trans);
+
 	if (is_clicked) {
 		resource_mesh->Render((float*)&trans->GetGlobalMatrixTransposed(), nullptr, false, false, false, resource_material_sprite3);
 	}
@@ -374,6 +377,8 @@ void ComponentButton::Inspector()
 
 
 	ImGui::Separator();
+
+	TextInspector();
 
 	ImGui::PopID();
 }

@@ -66,6 +66,9 @@ void ComponentCheckbox::Render()
 {
 	if (!active)
 		return;
+
+	PrintText(_text, _size, _color, trans); //ARNAU: quin text fico aqui? fica el que vulguis.
+
 	if (is_active) {
 		if (is_mouse_hover || is_focused){
 			resource_mesh->Render((float*)&trans->GetGlobalMatrixTransposed(), nullptr, false, false, false, resource_material_sprite4);
@@ -420,6 +423,8 @@ void ComponentCheckbox::Inspector()
 
 
 	ImGui::Separator();
+
+	TextInspector();
 
 	ImGui::PopID();
 }

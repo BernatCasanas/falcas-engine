@@ -34,4 +34,7 @@ private:
 	std::string scene_name;
 	std::string combo = "";
 	CLICK functionality;
+
+
+
 };
