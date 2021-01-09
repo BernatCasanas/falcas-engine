@@ -25,7 +25,8 @@ ComponentUI::ComponentUI(Component_Type type, GameObject* owner, std::string nam
 		0,
 		0,
 		App->window->width,
-		App->window->height
+		App->window->height,
+		curTex
 	));
 }
 
@@ -135,6 +136,7 @@ void ComponentUI::StoppedClicking(bool clicked_with_mouse)
 
 void ComponentUI::PrintText(std::string text, std::string size, ImVec4 color, ComponentTransform2D* pos)
 {
+	_label.get()->Initialize(curTex);
 	_label.get()->setFont(_font);
 	if (size == "") size = "0";
 	_label.get()->setPixelSize(std::stoi(size));
@@ -145,6 +147,7 @@ void ComponentUI::PrintText(std::string text, std::string size, ImVec4 color, Co
 	_label.get()->setPosition(_pos.x, _pos.y);
 
 	_label.get()->render();
+	_label.get()->Finish();
 }
 
 void ComponentUI::Inspector()

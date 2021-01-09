@@ -14,7 +14,7 @@
 
 using namespace std;
 
-FTLabel::FTLabel(shared_ptr<GLFont> ftFace, int windowWidth, int windowHeight) :
+FTLabel::FTLabel(shared_ptr<GLFont> ftFace, int windowWidth, int windowHeight, GLuint& curTex) :
   _isInitialized(false),
   _text(""),
   _alignment(FontFlags::LeftAligned),
@@ -64,7 +64,7 @@ FTLabel::FTLabel(shared_ptr<GLFont> ftFace, int windowWidth, int windowHeight) :
     _uniformTextColorHandle = glGetUniformLocation(_programId, "textColor");
     _uniformMVPHandle = glGetUniformLocation(_programId, "mvp");
 
-    GLuint curTex = _fontAtlas[_pixelSize]->getTexId(); // get texture ID for this pixel size
+    curTex = _fontAtlas[_pixelSize]->getTexId(); // get texture ID for this pixel size
 
     glActiveTexture(GL_TEXTURE0 + curTex);
     glBindTexture(GL_TEXTURE_2D, curTex);
@@ -88,12 +88,12 @@ FTLabel::FTLabel(shared_ptr<GLFont> ftFace, int windowWidth, int windowHeight) :
 
 }
 
-FTLabel::FTLabel(GLFont* ftFace, int windowWidth, int windowHeight) : 
-  FTLabel(std::shared_ptr<GLFont>(new GLFont(*ftFace)), windowWidth, windowHeight) 
+FTLabel::FTLabel(GLFont* ftFace, int windowWidth, int windowHeight, GLuint& curTex) :
+  FTLabel(std::shared_ptr<GLFont>(new GLFont(*ftFace)), windowWidth, windowHeight, curTex) 
 {}
 
-FTLabel::FTLabel(shared_ptr<GLFont> ftFace, const char* text, float x, float y, int width, int height, int windowWidth, int windowHeight) :
-  FTLabel(ftFace, text, x, y, windowWidth, windowHeight)
+FTLabel::FTLabel(shared_ptr<GLFont> ftFace, const char* text, float x, float y, int width, int height, int windowWidth, int windowHeight, GLuint& curTex) :
+  FTLabel(ftFace, text, x, y, windowWidth, windowHeight, curTex)
 {
     _width = width;
     _height = height;
@@ -101,8 +101,8 @@ FTLabel::FTLabel(shared_ptr<GLFont> ftFace, const char* text, float x, float y, 
     recalculateVertices(text, x, y, width, height);
 }
 
-FTLabel::FTLabel(shared_ptr<GLFont> ftFace, const char* text, float x, float y, int windowWidth, int windowHeight) :
-FTLabel(ftFace, windowWidth, windowHeight)
+FTLabel::FTLabel(shared_ptr<GLFont> ftFace, const char* text, float x, float y, int windowWidth, int windowHeight, GLuint& curTex) :
+FTLabel(ftFace, windowWidth, windowHeight, curTex)
 {
     _text = (char*)text;
     _x = x;
@@ -112,6 +112,16 @@ FTLabel(ftFace, windowWidth, windowHeight)
 FTLabel::~FTLabel() {
     glDeleteBuffers(1, &_vbo);
     glDeleteVertexArrays(1, &_vao);
+}
+
+void FTLabel::Initialize(GLuint curTex)
+{
+    glActiveTexture(GL_TEXTURE0 + curTex);
+}
+
+void FTLabel::Finish()
+{
+    glActiveTexture(GL_TEXTURE0);
 }
 
 void FTLabel::recalculateVertices(const char* text, float x, float y, int width, int height) {
