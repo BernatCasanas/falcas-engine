@@ -379,12 +379,12 @@ void ComponentTransform2D::Inspector()
 	ImGui::NextColumn();
 	ImGui::Button("Up", { 50,20 });
 	if (ImGui::IsItemActive()) {
-		SetPosition({ position.x,position.y-=10 });
+		SetPosition({ position.x,position.y+=10 });
 	}
 	ImGui::Dummy({0,60});
 	ImGui::Button("Down", { 50,20 });
 	if (ImGui::IsItemActive()) {
-		SetPosition({ position.x,position.y += 10 });
+		SetPosition({ position.x,position.y -= 10 });
 	}
 	ImGui::NextColumn();
 	ImGui::Dummy({0,40});

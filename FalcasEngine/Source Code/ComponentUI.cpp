@@ -136,14 +136,19 @@ void ComponentUI::StoppedClicking(bool clicked_with_mouse)
 
 void ComponentUI::PrintText(std::string text, std::string size, ImVec4 color, ComponentTransform2D* pos)
 {
+	float scene_x, scene_y, scene_width, scene_height;
+	App->scene_intro->GetSceneDimensions(scene_x, scene_y, scene_width, scene_height);
 	_label.get()->Initialize(curTex);
 	_label.get()->setFont(_font);
 	if (size == "") size = "0";
 	_label.get()->setPixelSize(std::stoi(size));
 	_label.get()->setText((char*)text.c_str());
-	_label.get()->setAlignment(FTLabel::FontFlags::CenterAligned);
-	float2 _pos = { pos->GetPosition().x + (pos->GetSize().x / 2), pos->GetPosition().y + (pos->GetSize().y / 2) };//no fa el q vull
+	_label.get()->setAlignment(FTLabel::FontFlags::Indented);
+	float2 _pos = { pos->GetPosition().x , -pos->GetPosition().y };
 	_label.get()->setColor(color.x, color.y, color.z, color.w);
+	_label.get()->setWindowSize(scene_width, scene_height);
+	_pos.x += scene_x;
+	_pos.y += (scene_height/2)-scene_y;
 	_label.get()->setPosition(_pos.x, _pos.y);
 
 	_label.get()->render();

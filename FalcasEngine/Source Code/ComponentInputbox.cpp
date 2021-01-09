@@ -117,10 +117,10 @@ void ComponentInputbox::Render()
 		PrintText(output_text, _size, _color, trans);
 	}
 
-	if (!is_focused) {
+	/*if (!is_focused) {
 
 		resource_mesh->Render((float*)&trans->GetGlobalMatrixTransposed(), nullptr, false, false, false, nullptr);
-	}
+	}*/
 }
 
 
