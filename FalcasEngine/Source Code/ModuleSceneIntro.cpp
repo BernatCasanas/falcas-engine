@@ -80,10 +80,10 @@ void ModuleSceneIntro::Draw(GLuint tex)
 	ImGui::Begin("Scene");
 	ImVec2 windowSize = ImGui::GetWindowSize();
 	ImVec2 windowPos = ImGui::GetWindowPos();
-	ImVec2 min = { 0,0 };//ImGui::GetWindowContentRegionMin();
+	ImVec2 min = ImGui::GetWindowContentRegionMin();
 	min.x += windowPos.x;
 	min.y += windowPos.y;
-	windowSize.y -= min.y-windowPos.y;
+	windowSize.y -= min.y - windowPos.y;
 	width = windowSize.x;
 	height = windowSize.y;
 	x = min.x;
