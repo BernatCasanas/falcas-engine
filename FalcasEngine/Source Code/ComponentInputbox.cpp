@@ -122,6 +122,8 @@ void ComponentInputbox::Render()
 	if (!active)
 		return;
 
+	resource_mesh->Render((float*)&trans->GetGlobalMatrixTransposed(), nullptr, false, false, false, resource_material_sprite);
+
 	if (!is_focused && input_text == "") {
 		PrintText(_text, _size, _color, trans);
 	}
@@ -129,11 +131,6 @@ void ComponentInputbox::Render()
 		PrintText(output_text, _size, _color, trans);
 	}
 
-	/*if (!is_focused) {
-
-		resource_mesh->Render((float*)&trans->GetGlobalMatrixTransposed(), nullptr, false, false, false, nullptr);
-	}*/
-	resource_mesh->Render((float*)&trans->GetGlobalMatrixTransposed(), nullptr, false, false, false, resource_material_sprite);
 }
 
 
