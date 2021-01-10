@@ -21,6 +21,8 @@ public:
 	bool Init();
 	bool LoadConfig(JsonObj& obj);
 	bool CleanUp();
+	void OnTriggered(ComponentUI* component_ui);
+
 
 	void SetTitle(const char* title);
 
