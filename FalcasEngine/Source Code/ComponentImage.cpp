@@ -48,7 +48,7 @@ void ComponentImage::Render()
 {
 	if (!active)
 		return;
-	resource_mesh->Render((float*)&trans->GetGlobalMatrixTransposed(), nullptr, false, false, false, resource_material);
+	//resource_mesh->Render((float*)&trans->GetGlobalMatrixTransposed(), nullptr, false, false, false, resource_material);
 	RenderImage();
 }
 
@@ -172,12 +172,14 @@ void ComponentImage::RenderImage()
 	glColor4f(255,255,255,100);
 
 	glBindTexture(GL_TEXTURE_2D, resource_material->texture_id);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
 
 	glBegin(GL_QUADS);
-	glTexCoord2f(0, 0); glVertex2f(0,0);
-	glTexCoord2f(App->window->width, 0); glVertex2f(App->window->width, 0);
-	glTexCoord2f(App->window->width, App->window->height); glVertex2f(App->window->width, App->window->height);
-	glTexCoord2f(0, App->window->height); glVertex2f(0, App->window->height);
+	glTexCoord2f(0, 0); glVertex2f(-trans->GetSize().x/2,-trans->GetSize().y/2);
+	glTexCoord2f(1, 0); glVertex2f(trans->GetSize().x / 2, -trans->GetSize().y / 2);
+	glTexCoord2f(1, 1); glVertex2f(trans->GetSize().x / 2, trans->GetSize().y / 2);
+	glTexCoord2f(0, 1); glVertex2f(-trans->GetSize().x / 2, trans->GetSize().y / 2);
 	glEnd();
 
 	glBindTexture(GL_TEXTURE_2D, 0);
