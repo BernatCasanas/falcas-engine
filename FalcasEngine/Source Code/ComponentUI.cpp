@@ -51,6 +51,7 @@ void ComponentUI::Update()
 		pos.x += App->input->GetMouseXMotion();
 		pos.y -= App->input->GetMouseYMotion();
 		trans->SetPosition(pos);
+		trans->SetMatrices();
 	}
 }
 

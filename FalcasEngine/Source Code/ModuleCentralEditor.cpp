@@ -1165,10 +1165,10 @@ void ModuleCentralEditor::FilesRecursiveTree(const char* path, bool is_in_dock, 
     for (int i = 0; i < dirs.size(); ++i) {
         if (resources_window && dirs[i] == "Scenes")
             continue;
-        FilesRecursiveTree((dir + dirs[i]).c_str(), resources_window, is_in_dock, true, base_flags, assets_file_clicked);
+        FilesRecursiveTree((dir + dirs[i]).c_str(), is_in_dock, resources_window, true, base_flags, assets_file_clicked);
     }
     for (int i = 0; i < files.size(); ++i) {
-        FilesRecursiveTree((dir + files[i]).c_str(), resources_window, is_in_dock, false, base_flags, assets_file_clicked);
+        FilesRecursiveTree((dir + files[i]).c_str(), is_in_dock, resources_window, false, base_flags, assets_file_clicked);
     }
     ImGui::Unindent(ImGui::GetTreeNodeToLabelSpacing());
 

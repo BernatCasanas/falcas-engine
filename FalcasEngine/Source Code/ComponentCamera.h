@@ -21,6 +21,7 @@ public:
 	bool GetIfIsFrustumCulling() const;
 	float* GetProjectionMatrix() const;
 	float* GetViewMatrix() const;
+	void GetCameraDimensions(float& width, float& height)const;
 
 	float GetFarPlaneDistance();
 	float GetNearPlaneDistance();
@@ -47,8 +48,8 @@ private:
 	float far_plane_distance = 1000;
 	float field_of_view_vertical = 1;
 	float field_of_view_horizontal = 1;
-	float width = 1280;
-	float height = 720;
+	float camera_width = 1280;
+	float camera_height = 720;
 	float4x4 ViewMatrix;
 	ComponentTransform* trans;
 };
