@@ -1,35 +1,40 @@
-## Falcas Engine
+# Falcas Engine
+this engine is made by [https://github.com/BernatCasanas](Bernat Casañas) and [https://github.com/Arnau77](Arnau Falgueras), students of CITM, UPC of Terrassa in the subject of video game engines taught by [https://github.com/markitus18](Marc Garrigó). The aim of this game engine was to create a good base to later advance in UI. Only for educational propouses.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+## Bernat Casañas
+<img src="https://github.com/Falcas-Games/Falcas-Engine/blob/gh-pages/WhatsApp%20Image%202021-01-10%20at%2017.58.12.jpeg" width="200">
 
-### Markdown
+### Things Done
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+* Import, save and load files
+* Models
+* General Editor
+* Save/Load
+* Serialized files
+* Game Manager
+* Font and Image
 
-```markdown
-Syntax highlighted code block
+## Arnau Falgueras
+<img src="https://github.com/Falcas-Games/Falcas-Engine/blob/gh-pages/WhatsApp%20Image%202021-01-10%20at%2017.58.15.jpeg" width="200">
 
-# Header 1
-## Header 2
-### Header 3
+### Things Done
 
-- Bulleted
-- List
+* Controls
+* Hierarchy and Inspector
+* Resource Manager
+* Explorer
+* AABB
+* Camera
+* UI Module and system
+* CheckBox, Input Box and Button
 
-1. Numbered
-2. List
+## Core Sub-Systems
 
-**Bold** and _Italic_ and `Code` text
+* Models & Textures: You can drop models and textures creating all the meshes, materials and components.
+* Scenes: You can create, save and load scenes in order to navegate thought them.
+* Resource Manager: All files are conected with a meta and its "falcasfile" in Library folder
 
-[Link](url) and ![Image](src)
-```
+<br>
+* [https://github.com/Falcas-Games/Falcas-Engine/tree/master](Github Engine)
+* [release](Last Release)
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/Falcas-Games/Falcas-Engine/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
