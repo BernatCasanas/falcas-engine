@@ -32,7 +32,7 @@ ComponentCamera::~ComponentCamera()
 void ComponentCamera::UpdateFrustum()
 {
 	frustum.SetViewPlaneDistances(near_plane_distance, far_plane_distance);
-	field_of_view_horizontal = 2 * Atan(Tan(field_of_view_vertical / 2)*(width/height));
+	field_of_view_horizontal = 2 * Atan(Tan(field_of_view_vertical / 2)*(camera_width/camera_height));
 	frustum.SetPerspective(field_of_view_vertical, field_of_view_horizontal);
 	update_projection_matrix = true;
 }
@@ -43,9 +43,9 @@ void ComponentCamera::Update()
 	frustum.SetUp(float3x3::FromQuat(trans->GetRotation()) * float3::unitY);
 	if (App->central_editor->frustums||show_frustum)
 		App->renderer3D->camera_frustums.push_back(frustum);
-	if (!App->scene_intro->GetDimensionsWindow(width, height) &&!needed_to_update)
+	if (!App->scene_intro->GetDimensionsWindow(camera_width, camera_height) &&!needed_to_update)
 		return;
-	UpdateFrustum();
+	//UpdateFrustum();
 	needed_to_update = false;
 }
 
@@ -80,6 +80,12 @@ float* ComponentCamera::GetViewMatrix() const
 	ViewMatrix.Transpose();
 	return (float*)ViewMatrix.v;
 	
+}
+
+void ComponentCamera::GetCameraDimensions(float& width, float& height) const
+{
+	width = camera_width;
+	height = camera_height;
 }
 
 
