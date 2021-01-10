@@ -120,7 +120,7 @@ void ModuleWindow::OnTriggered(ComponentUI* component_ui)
 {
 	if (component_ui->type == Component_Type::Checkbox) {
 		ComponentCheckbox* check = (ComponentCheckbox*)component_ui;
-		SDL_GL_SetSwapInterval(check->IsActive());
+		SDL_GL_SetSwapInterval(!check->IsActive());
 	}
 }
 
