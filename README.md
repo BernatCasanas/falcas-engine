@@ -25,6 +25,8 @@
 * Library Folder with Models, Textures, Meshes and Scenes
 * Resource System
 * Explorer Windows
+* Create UI Game Object in the upside menu
+* Create Component when it's a 2d game object
 
 ## License
 
