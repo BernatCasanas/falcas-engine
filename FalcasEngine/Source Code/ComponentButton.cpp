@@ -67,7 +67,6 @@ void ComponentButton::Render()
 	if (!active)
 		return;
 
-	PrintText(_text, _size, _color, trans);
 
 	if (is_clicked) {
 		resource_mesh->Render((float*)&trans->GetGlobalMatrixTransposed(), nullptr, false, false, false, resource_material_sprite3);
@@ -78,6 +77,7 @@ void ComponentButton::Render()
 	else {
 		resource_mesh->Render((float*)&trans->GetGlobalMatrixTransposed(), nullptr, false, false, false, resource_material_sprite1);
 	}
+	PrintText(_text, _size, _color, trans);
 }
 
 bool ComponentButton::SaveComponent(JsonObj& obj)

@@ -67,7 +67,6 @@ void ComponentCheckbox::Render()
 	if (!active)
 		return;
 
-	PrintText(_text, _size, _color, trans);
 
 	if (is_active) {
 		if (is_mouse_hover || is_focused){
@@ -85,6 +84,8 @@ void ComponentCheckbox::Render()
 			resource_mesh->Render((float*)&trans->GetGlobalMatrixTransposed(), nullptr, false, false, false, resource_material_sprite1);
 		}
 	}
+	
+	PrintText(_text, _size, _color, trans);
 }
 
 bool ComponentCheckbox::SaveComponent(JsonObj& obj)
