@@ -1405,15 +1405,12 @@ void ModuleCentralEditor::ChangingScreen()
         if (!fadein && !fadeout) time_curtain.Stop();
     }
     
-<<<<<<< HEAD
+
 }
 
 void ModuleCentralEditor::CreateCurtain()
 {
     JsonObj i_Curtain;
-=======
-    changingscreen = false;
->>>>>>> 9372d7efc58176b332d094bf72bc8ddf5a0de402
 
     curtain = App->scene_intro->CreateGameObject("Curtain", App->scene_intro->root, true);
     ComponentImage* _curtain = (ComponentImage*)curtain->CreateComponent(Component_Type::Image);

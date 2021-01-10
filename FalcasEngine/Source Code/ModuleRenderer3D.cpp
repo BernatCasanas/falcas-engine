@@ -235,8 +235,7 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 	App->central_editor->CreateDock();
 	App->scene_intro->Draw(texColorBuffer);
 
-	if(App->inGame)
-		RenderUI();
+	RenderUI();
 
 	App->central_editor->Draw();
 

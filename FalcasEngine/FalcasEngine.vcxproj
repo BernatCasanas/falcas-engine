@@ -89,7 +89,6 @@
     <ClCompile Include="Source Code\ModuleUI.cpp" />
     <ClCompile Include="Source Code\ModuleWindow.cpp" />
     <ClCompile Include="Source Code\Resource.cpp" />
-    <ClCompile Include="Source Code\ComponentFont.cpp" />
     <ClCompile Include="Source Code\ResourceMesh.cpp" />
     <ClCompile Include="Source Code\ResourceModel.cpp" />
     <ClCompile Include="Source Code\ResourceMaterial.cpp" />
@@ -569,7 +568,6 @@
     <ClInclude Include="Source Code\ModuleUI.h" />
     <ClInclude Include="Source Code\ModuleWindow.h" />
     <ClInclude Include="Source Code\Resource.h" />
-    <ClInclude Include="Source Code\ComponentFont.h" />
     <ClInclude Include="Source Code\ResourceMesh.h" />
     <ClInclude Include="Source Code\ResourceModel.h" />
     <ClInclude Include="Source Code\ResourceMaterial.h" />
