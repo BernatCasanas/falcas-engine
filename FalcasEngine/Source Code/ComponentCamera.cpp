@@ -45,7 +45,8 @@ void ComponentCamera::Update()
 		App->renderer3D->camera_frustums.push_back(frustum);
 	if (!App->scene_intro->GetDimensionsWindow(camera_width, camera_height) &&!needed_to_update)
 		return;
-	//UpdateFrustum();
+	if(camera_width==1024)
+		UpdateFrustum();
 	needed_to_update = false;
 }
 
@@ -82,11 +83,6 @@ float* ComponentCamera::GetViewMatrix() const
 	
 }
 
-void ComponentCamera::GetCameraDimensions(float& width, float& height) const
-{
-	width = camera_width;
-	height = camera_height;
-}
 
 
 float ComponentCamera::GetFarPlaneDistance()

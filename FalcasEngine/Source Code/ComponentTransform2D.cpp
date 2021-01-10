@@ -6,6 +6,7 @@
 #include "ModuleSceneIntro.h"
 #include "ModuleRenderer3D.h"
 #include "GameObject.h"
+#include "ModuleWindow.h"
 #include "ComponentCamera.h"
 #include "ComponentUI.h"
 
@@ -14,6 +15,10 @@
 ComponentTransform2D::ComponentTransform2D(GameObject* owner, float2 position, Quat rotation, float2 size) :Component(Component_Type::Transform2D, owner, "Transform2D"), position(position),
 size(size), z_depth(10), z_depth_with_layers(10)
 {
+	relative_size.x = App->window->width / size.x;
+	relative_size.y = App->window->height / size.y;
+	relative_position.x = App->window->width / position.x;
+	relative_position.y = App->window->height / position.y;
 	this->rotation = QuaternionToEuler(rotation);
 	SetMatrices();
 	float* camera_view_matrix = App->renderer3D->camera->GetViewMatrix();
@@ -25,6 +30,13 @@ ComponentTransform2D::~ComponentTransform2D()
 
 void ComponentTransform2D::Update()
 {
+	if (App->renderer3D->resized) {
+		size.x = App->window->width / relative_size.x;
+		size.y = App->window->height / relative_size.y;
+		position.x = App->window->width / relative_position.x;
+		position.y = App->window->height / relative_position.y;
+		needed_to_update = true;
+	}
 	if (UpdateMatrixBillboard() && !needed_to_update)
 		return;
 	needed_to_update = true;
@@ -87,6 +99,10 @@ void ComponentTransform2D::SetTransformation(float3 pos, Quat rot, float2 size, 
 	}
 	
 	this->size = size;
+	relative_size.x = App->window->width / size.x;
+	relative_size.y = App->window->height / size.y;
+	relative_position.x = App->window->width / position.x;
+	relative_position.y = App->window->height / position.y;
 	needed_to_update = true;
 
 }
@@ -94,6 +110,8 @@ void ComponentTransform2D::SetTransformation(float3 pos, Quat rot, float2 size, 
 void ComponentTransform2D::SetPosition(float2 pos)
 {
 	position = pos;
+	relative_position.x = App->window->width / position.x;
+	relative_position.y = App->window->height / position.y;
 	needed_to_update = true;
 }
 
@@ -113,6 +131,8 @@ void ComponentTransform2D::SetRotation(float3 rot)
 void ComponentTransform2D::SetSize(float2 size)
 {
 	this->size = size;
+	relative_size.x = App->window->width / size.x;
+	relative_size.y = App->window->height / size.y;
 	needed_to_update = true;
 }
 
@@ -189,6 +209,10 @@ void ComponentTransform2D::SetMatricesWithNewParent(float4x4 parent_global_matri
 		z_depth_with_layers = z_depth;
 	}
 	size = { s.x,s.y };
+	relative_size.x = App->window->width / size.x;
+	relative_size.y = App->window->height / size.y;
+	relative_position.x = App->window->width / position.x;
+	relative_position.y = App->window->height / position.y;
 	needed_to_update = true;
 	needed_to_update_only_children = true;
 }
@@ -251,8 +275,11 @@ void ComponentTransform2D::Inspector()
 
 	ImGui::SameLine();
 	ImGui::PushItemWidth(50);
-	if (ImGui::DragFloat("##0", (active && owner->active) ? &position.x : &null, 0.01f) && (active && owner->active))
+	if (ImGui::DragFloat("##0", (active && owner->active) ? &position.x : &null, 0.01f) && (active && owner->active)) {
+		relative_position.x = App->window->width / position.x;
+		relative_position.y = App->window->height / position.y;
 		needed_to_update = true;
+	}
 	ImGui::PopItemWidth();
 
 	ImGui::NextColumn();
@@ -261,8 +288,11 @@ void ComponentTransform2D::Inspector()
 
 	ImGui::SameLine();
 	ImGui::PushItemWidth(50);
-	if (ImGui::DragFloat("##1", (active && owner->active) ? &position.y : &null, 0.01f) && (active && owner->active))
+	if (ImGui::DragFloat("##1", (active && owner->active) ? &position.y : &null, 0.01f) && (active && owner->active)) {
+		relative_position.x = App->window->width / position.x;
+		relative_position.y = App->window->height / position.y;
 		needed_to_update = true;
+	}
 	ImGui::PopItemWidth();
 
 	ImGui::NextColumn();
@@ -325,8 +355,11 @@ void ComponentTransform2D::Inspector()
 
 	ImGui::SameLine();
 	ImGui::PushItemWidth(50);
-	if (ImGui::DragFloat("##7", (active && owner->active) ? &size.x : &null, 0.01f) && (active && owner->active))
+	if (ImGui::DragFloat("##7", (active && owner->active) ? &size.x : &null, 0.01f) && (active && owner->active)) {
+		relative_size.x = App->window->width / size.x;
+		relative_size.y = App->window->height / size.y;
 		needed_to_update = true;
+	}
 	ImGui::PopItemWidth();
 
 	ImGui::NextColumn();
@@ -335,8 +368,11 @@ void ComponentTransform2D::Inspector()
 
 	ImGui::SameLine();
 	ImGui::PushItemWidth(50);
-	if (ImGui::DragFloat("##8", (active && owner->active) ? &size.y : &null, 0.01f) && (active && owner->active))
+	if (ImGui::DragFloat("##8", (active && owner->active) ? &size.y : &null, 0.01f) && (active && owner->active)) {
+		relative_size.x = App->window->width / size.x;
+		relative_size.y = App->window->height / size.y;
 		needed_to_update = true;
+	}
 	ImGui::PopItemWidth();
 
 	ImGui::NextColumn();

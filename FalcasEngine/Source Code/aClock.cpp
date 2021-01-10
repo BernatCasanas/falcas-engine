@@ -12,6 +12,7 @@ aClock::aClock() :timeScale(1.0f), paused(false)
 
 void aClock::Start()
 {
+	active = true;
 	paused = false;
 	started = true;
 	stopped = false;
@@ -24,6 +25,7 @@ void aClock::Stop()
 	paused = false;
 	started = false;
 	stopped = true;
+	active = false;
 }
 
 void aClock::Pause()
@@ -31,6 +33,7 @@ void aClock::Pause()
 	paused = true;
 	timeScale = 0.0f;
 	timer.Stop();
+	active = false;
 }
 
 void aClock::Resume()
@@ -38,6 +41,7 @@ void aClock::Resume()
 	paused = false;
 	timeScale = 1.0f;
 	timer.Resume();
+	active = true;
 }
 
 void aClock::Reset()
@@ -45,6 +49,7 @@ void aClock::Reset()
 	timeScale = 1.0f;
 	paused = false;
 	stopped = false;
+	active = true;
 }
 
 void aClock::Step()
@@ -72,6 +77,7 @@ void Time::Init()
 	gameTimer.started = false;
 	gameTimer.paused = true;
 	gameTimer.stopped = true;
+	gameTimer.active = false;
 
 	realTimer.timer.Start();
 	realTimer.started = true;

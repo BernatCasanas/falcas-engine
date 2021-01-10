@@ -10,6 +10,7 @@
 #include "ComponentUI.h"
 #include "ModuleCamera3D.h"
 #include "ComponentTransform2D.h"
+#include "aClock.h"
 #include "External Libraries/SDL/include/SDL_scancode.h"
 
 ModuleUI::ModuleUI(Application* app, bool start_enabled) : Module(app, start_enabled, "moduleUI")
@@ -61,6 +62,9 @@ bool ModuleUI::Start()
 // Update all guis
 update_status ModuleUI::PreUpdate(float dt)
 {
+	if (!Time::gameTimer.active) {
+		return update_status::UPDATE_CONTINUE;
+	}
 	bool is_mouse_hovering_ui= CheckHover();
 	if (layers_with_ui_blocking_selecting > 0) {
 		App->camera->stop_selecting = false;

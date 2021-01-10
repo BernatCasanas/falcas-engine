@@ -58,7 +58,7 @@ protected:
 	std::shared_ptr<GLFont> _font;
 	std::unique_ptr<FTLabel> _label;
 	std::string _text="Text";
-	std::string _size="64";
+	std::string _size="32";
 	ImVec4 _color;
 	uint curTex;
 	FTLabel::FontFlags aligment;

@@ -46,7 +46,7 @@ public:
 	ComponentCamera* camera_culling = nullptr;
 	ComponentCamera* camera = nullptr;
 	LineSegment raycast;
-
+	bool resized = false;
 private:
 	bool CheckIfRaycastIsNull(float3 a, float3 b);
 	bool changed_camera = false;

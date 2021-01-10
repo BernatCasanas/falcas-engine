@@ -21,6 +21,7 @@ struct aClock {
 	bool paused;
 	bool started;
 	bool stopped;
+	bool active = false;
 	float dt;
 
 	Timer timer;

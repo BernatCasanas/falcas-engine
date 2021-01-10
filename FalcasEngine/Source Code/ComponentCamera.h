@@ -21,7 +21,6 @@ public:
 	bool GetIfIsFrustumCulling() const;
 	float* GetProjectionMatrix() const;
 	float* GetViewMatrix() const;
-	void GetCameraDimensions(float& width, float& height)const;
 
 	float GetFarPlaneDistance();
 	float GetNearPlaneDistance();

@@ -17,7 +17,6 @@ enum class Component_Type {
 	Checkbox,
 	Inputbox,
 	Max,
-	Font
 };
 
 

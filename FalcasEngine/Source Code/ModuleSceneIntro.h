@@ -69,8 +69,8 @@ public:
 	Guizmos_Input_Letters input_letter = Guizmos_Input_Letters::W;
 
 private:
-	float width;
-	float height;
+	float scene_width;
+	float scene_height;
 	float x;
 	float y;
 

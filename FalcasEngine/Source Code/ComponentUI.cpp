@@ -66,6 +66,7 @@ void ComponentUI::OnTriggered(ComponentUI* component_ui)
 
 bool ComponentUI::CheckMouseHovering()
 {
+
 	if (!is_focusable || App->input->GetMouseButton(1)==KEY_REPEAT)
 		return false;
 
@@ -148,7 +149,10 @@ void ComponentUI::PrintText(std::string text, std::string size, ImVec4 color, Co
 	_label.get()->setColor(color.x, color.y, color.z, color.w);
 	_label.get()->setWindowSize(scene_width, scene_height);
 	_pos.x += scene_x + text_pos.x;
-	_pos.y += (scene_height / 2) - scene_y - text_pos.y;
+	if (type != Component_Type::Checkbox) {
+		_pos.x += scene_x / 2;
+	}
+	_pos.y += (scene_height / 2) - (scene_y/2) - text_pos.y;
 	_label.get()->setPosition(_pos.x, _pos.y);
 	_label.get()->setAlignment(aligment);
 

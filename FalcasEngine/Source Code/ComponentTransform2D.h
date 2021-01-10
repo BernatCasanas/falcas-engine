@@ -60,5 +60,7 @@ private:
 	float z_depth_with_layers;
 	float2 pivot_position = { 0,0 };
 	float2 size;
+	float2 relative_size;
+	float2 relative_position;
 	float3 rotation;
 };
