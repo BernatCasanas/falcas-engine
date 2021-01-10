@@ -2,7 +2,7 @@
     "name": "scene",
     "GameObjects": [
         {
-            "UUID": 2104919321,
+            "UUID": 1457001979,
             "name": "Grid",
             "isUI": false,
             "Components": [
@@ -30,81 +30,16 @@
             ]
         },
         {
-            "UUID": 2130909771,
-            "Parent UUID": 2104919321,
-            "name": "Camera",
-            "isUI": false,
-            "Components": [
-                {
-                    "name": "Transform",
-                    "GlobalMatrix": [
-                        1,
-                        0,
-                        0,
-                        0,
-                        0,
-                        1,
-                        0,
-                        0,
-                        0,
-                        0,
-                        1,
-                        0,
-                        0,
-                        0,
-                        0,
-                        1
-                    ]
-                },
-                {
-                    "name": "Camera",
-                    "FrustumFar": 1000,
-                    "FrustumNear": 0.10000000149011612,
-                    "FrustumHfov": 1.5415822267532349,
-                    "FrustumVfov": 1
-                }
-            ]
-        },
-        {
-            "UUID": 1671178406,
-            "Parent UUID": 2104919321,
-            "name": "street_view",
-            "isUI": false,
-            "Components": [
-                {
-                    "name": "Transform",
-                    "GlobalMatrix": [
-                        1,
-                        0,
-                        0,
-                        0,
-                        0,
-                        1,
-                        0,
-                        0,
-                        0,
-                        0,
-                        1,
-                        0,
-                        0,
-                        0,
-                        0,
-                        1
-                    ]
-                }
-            ]
-        },
-        {
-            "UUID": 463645348,
-            "Parent UUID": 2104919321,
-            "name": "GameObject 2D",
+            "UUID": 1967371937,
+            "Parent UUID": 1457001979,
+            "name": "BG",
             "isUI": true,
             "Components": [
                 {
                     "name": "Transform2D",
                     "Position": [
                         0,
-                        0,
+                        -122.77665710449219,
                         10
                     ],
                     "Rotation": [
@@ -114,8 +49,8 @@
                         1
                     ],
                     "Size": [
-                        1,
-                        1,
+                        57.692310333251953,
+                        40.925552368164063,
                         0
                     ],
                     "Pivot": [
@@ -123,6 +58,111 @@
                         0,
                         0
                     ]
+                },
+                {
+                    "name": "Image",
+                    "Resource_ID": 974936738,
+                    "Opacity": 1,
+                    "Text": "Text",
+                    "Size": "32",
+                    "r": 0,
+                    "g": 0,
+                    "b": 0,
+                    "a": 0,
+                    "Layer": 0
+                }
+            ]
+        },
+        {
+            "UUID": 355228285,
+            "Parent UUID": 1457001979,
+            "name": "Name",
+            "isUI": true,
+            "Components": [
+                {
+                    "name": "Transform2D",
+                    "Position": [
+                        -310,
+                        290,
+                        10
+                    ],
+                    "Rotation": [
+                        0,
+                        0,
+                        0,
+                        1
+                    ],
+                    "Size": [
+                        200,
+                        50,
+                        0
+                    ],
+                    "Pivot": [
+                        0,
+                        0,
+                        0
+                    ]
+                },
+                {
+                    "name": "Input Box",
+                    "Output": "",
+                    "Input": "",
+                    "Pos": 0,
+                    "Active": false,
+                    "Text": "Name",
+                    "Size": "32",
+                    "r": 0,
+                    "g": 0,
+                    "b": 0,
+                    "a": 0,
+                    "Layer": 0
+                }
+            ]
+        },
+        {
+            "UUID": 309085697,
+            "Parent UUID": 1457001979,
+            "name": "Play",
+            "isUI": true,
+            "Components": [
+                {
+                    "name": "Transform2D",
+                    "Position": [
+                        0,
+                        -260,
+                        10
+                    ],
+                    "Rotation": [
+                        0,
+                        0,
+                        0,
+                        1
+                    ],
+                    "Size": [
+                        400,
+                        100,
+                        0
+                    ],
+                    "Pivot": [
+                        0,
+                        0,
+                        0
+                    ]
+                },
+                {
+                    "name": "Button",
+                    "Resource1_ID": 1381943491,
+                    "Resource2_ID": 380381073,
+                    "Resource3_ID": 1896705452,
+                    "Scene_Name": "Game",
+                    "Functionality": "Change Screen",
+                    "Text": "Play",
+                    "Size": "32",
+                    "r": 0,
+                    "g": 0,
+                    "b": 0,
+                    "a": 0,
+                    "Layer": 0
                 }
             ]
         }

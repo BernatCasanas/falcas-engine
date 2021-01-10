@@ -854,8 +854,10 @@ bool ModuleCentralEditor::LoadFile()
 	bool ret = false;
     if (want_to_load_fromButton) {
         LoadScene(selected_button_file.c_str());
+        CreateCurtain();
         want_to_load_fromButton = false;
         loading_file = false;
+        return true;
     }
 	ImGui::OpenPopup("Load File");
     if (ImGui::BeginPopupModal("Load File")) {
@@ -890,7 +892,6 @@ bool ModuleCentralEditor::LoadFile()
             if (ImGui::Button("Yes", ImVec2(50, 20))) {
                 loading_file = !loading_file;
 				sure_want_close = false;
-                CreateCurtain();
                 LoadScene((const char*)selected_file);
             }
             ImGui::PushItemWidth(250.f);
@@ -1056,7 +1057,10 @@ void ModuleCentralEditor::LoadScene(const char* file)
             }
         }
     }
-    if(curtain != nullptr) curtain->to_delete = true;
+    if (curtain != nullptr) {
+        curtain->to_delete = true; 
+        curtain = nullptr;
+    }
     //scene.CleanUp();
 }
 
@@ -1388,6 +1392,7 @@ void ModuleCentralEditor::ChangingScreen()
             if (_curtain->GetOpacity() +0.02 >= 1.f) {
                 fadein = false;
                 loading_file = true;
+                want_to_load_fromButton = true;
             }
             else
                 _curtain->SetOpacity(_curtain->GetOpacity() + 0.02);
@@ -1395,12 +1400,12 @@ void ModuleCentralEditor::ChangingScreen()
         if (fadeout) {
             if (_curtain->GetOpacity()-0.02 <= 0.f) {
                 fadeout = false;
+                changingscreen = false;
             }
             else
                 _curtain->SetOpacity(_curtain->GetOpacity() - 0.02);
         }
         time_curtain.Start();
-        if (!fadein && !fadeout) time_curtain.Stop();
     }
     
 }
@@ -1408,7 +1413,6 @@ void ModuleCentralEditor::ChangingScreen()
 void ModuleCentralEditor::CreateCurtain()
 {
     JsonObj i_Curtain;
-    changingscreen = false;
 
     curtain = App->scene_intro->CreateGameObject("Curtain", App->scene_intro->root, true);
     ComponentImage* _curtain = (ComponentImage*)curtain->CreateComponent(Component_Type::Image);

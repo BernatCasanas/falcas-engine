@@ -1,0 +1,227 @@
+{
+    "name": "scene",
+    "GameObjects": [
+        {
+            "UUID": 221641922,
+            "name": "Grid",
+            "isUI": false,
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1
+                    ]
+                }
+            ]
+        },
+        {
+            "UUID": 1805891184,
+            "Parent UUID": 221641922,
+            "name": "Crosshair",
+            "isUI": true,
+            "Components": [
+                {
+                    "name": "Transform2D",
+                    "Position": [
+                        0,
+                        0,
+                        10
+                    ],
+                    "Rotation": [
+                        0,
+                        0,
+                        0,
+                        1
+                    ],
+                    "Size": [
+                        20,
+                        20,
+                        0
+                    ],
+                    "Pivot": [
+                        0,
+                        0,
+                        0
+                    ]
+                },
+                {
+                    "name": "Image",
+                    "Resource_ID": 1141347484,
+                    "Opacity": 1,
+                    "Text": "Text",
+                    "Size": "32",
+                    "r": 0,
+                    "g": 0,
+                    "b": 0,
+                    "a": 0,
+                    "Layer": 0
+                }
+            ]
+        },
+        {
+            "UUID": 127734907,
+            "Parent UUID": 221641922,
+            "name": "Vsync",
+            "isUI": true,
+            "Components": [
+                {
+                    "name": "Transform2D",
+                    "Position": [
+                        -440,
+                        -250,
+                        10
+                    ],
+                    "Rotation": [
+                        0,
+                        0,
+                        0,
+                        1
+                    ],
+                    "Size": [
+                        50,
+                        50,
+                        0
+                    ],
+                    "Pivot": [
+                        0,
+                        0,
+                        0
+                    ]
+                },
+                {
+                    "name": "Check Box",
+                    "Resource1_ID": 1896705452,
+                    "Resource2_ID": 380381073,
+                    "Resource3_ID": 1381943491,
+                    "Resource4_ID": 1381943491,
+                    "Active": false,
+                    "Text": "Vsync",
+                    "Size": "32",
+                    "r": 1,
+                    "g": 0,
+                    "b": 0,
+                    "a": 0,
+                    "Layer": 0
+                }
+            ]
+        },
+        {
+            "UUID": 844660394,
+            "Parent UUID": 221641922,
+            "name": "BakerHouse",
+            "isUI": false,
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        0.0099999997764825821,
+                        0,
+                        0,
+                        0,
+                        0,
+                        -1.1920928688624599e-09,
+                        -0.010000000707805157,
+                        0,
+                        0,
+                        0.010000000707805157,
+                        -1.1920928688624599e-09,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1
+                    ]
+                }
+            ]
+        },
+        {
+            "UUID": 872439173,
+            "Parent UUID": 844660394,
+            "name": "BakerHouse (1)",
+            "isUI": false,
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0.99999994039535522,
+                        2.1316282072803006e-14,
+                        0,
+                        0,
+                        -2.1316282072803006e-14,
+                        0.99999994039535522,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1
+                    ]
+                },
+                {
+                    "name": "Mesh",
+                    "Resource_ID": 863080750
+                },
+                {
+                    "name": "Material",
+                    "Resource_ID": 1574511913
+                }
+            ]
+        },
+        {
+            "UUID": 966053431,
+            "Parent UUID": 844660394,
+            "name": "BakerHouse (2)",
+            "isUI": false,
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0.99999994039535522,
+                        2.1316282072803006e-14,
+                        0,
+                        0,
+                        -2.1316282072803006e-14,
+                        0.99999994039535522,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1
+                    ]
+                },
+                {
+                    "name": "Mesh",
+                    "Resource_ID": 1259964235
+                },
+                {
+                    "name": "Material",
+                    "Resource_ID": 1574511913
+                }
+            ]
+        }
+    ]
+}
