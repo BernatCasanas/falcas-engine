@@ -56,7 +56,6 @@ void ComponentUI::Update()
 
 void ComponentUI::OnTriggered(ComponentUI* component_ui)
 {
-	listener = App->central_editor;
 	if (listener == nullptr)
 		return;
 

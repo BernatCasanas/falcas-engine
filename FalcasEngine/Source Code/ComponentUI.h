@@ -62,8 +62,8 @@ protected:
 	ImVec4 _color;
 	uint curTex;
 	FTLabel::FontFlags aligment;
+	Module* listener = nullptr;
 
 private:
-	Module* listener = nullptr;
 	float2 text_pos = { 0,0 };
 };

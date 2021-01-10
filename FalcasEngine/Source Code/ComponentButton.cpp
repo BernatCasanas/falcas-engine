@@ -158,6 +158,7 @@ void ComponentButton::Inspector()
 	}
 
 	if (functionality == CLICK::ChangeScreen) {
+		listener = App->central_editor;
 		ImGui::AlignTextToFramePadding();
 		ImGui::Dummy({ 0,10 });
 		ImGui::Text("Change Screen: ");
