@@ -71,6 +71,7 @@ public:
 
 	void ViewCameras(bool active, GameObject* game_object);
 
+	void ChangingScreen();
 
 public:
 
@@ -89,7 +90,7 @@ public:
 	bool sure_want_close = false;
 	bool creating_scene = false;
 	bool want_to_load_fromButton = false;
-
+	bool changingscreen = false;
 	bool show_cameras = false;
 	bool cullface = false;
 	bool colorMaterial = false;
@@ -141,6 +142,7 @@ private:
 	std::string assets_explorer_path = "Assets/";
 	int assets_explorer_selected = -1;
 
+	float alpha = 0.f;
 
 };
 

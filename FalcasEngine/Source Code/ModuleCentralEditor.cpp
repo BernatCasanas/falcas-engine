@@ -143,6 +143,7 @@ void ModuleCentralEditor::OnTriggered(ComponentUI* component_ui)
             selected_button_file = scene_file;
             loading_file = true;
             want_to_load_fromButton = true;
+            changingscreen = true;
             break;
         default:
             break;
@@ -734,7 +735,11 @@ void ModuleCentralEditor::Draw()
         ImGui::End();
     }
 
-    if (loading_file) {
+    if (changingscreen) {
+        ChangingScreen();
+    }
+
+    if (loading_file && !changingscreen) {
         LoadFile();
     }
     
@@ -1386,6 +1391,14 @@ void ModuleCentralEditor::ViewCameras(bool active, GameObject* game_object)
 			ViewCameras(active, (*it));
 		}
 	}
+}
+
+void ModuleCentralEditor::ChangingScreen()
+{
+    
+
+
+    
 }
 
 
