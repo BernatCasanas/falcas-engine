@@ -82,9 +82,9 @@ void ComponentButton::Render()
 
 bool ComponentButton::SaveComponent(JsonObj& obj)
 {
-	obj.AddInt("Resource1_ID", resource_material_sprite1 != nullptr ? resource_material_sprite1->GetID() : 0);
-	obj.AddInt("Resource2_ID", resource_material_sprite2 != nullptr ? resource_material_sprite2->GetID() : 0);
-	obj.AddInt("Resource3_ID", resource_material_sprite3 != nullptr ? resource_material_sprite3->GetID() : 0);
+	obj.AddString("Resource1_String", resource_material_sprite1 != nullptr ? resource_material_sprite1->GetAssetsFile() : "");
+	obj.AddString("Resource2_String", resource_material_sprite2 != nullptr ? resource_material_sprite2->GetAssetsFile() : "");
+	obj.AddString("Resource3_String", resource_material_sprite3 != nullptr ? resource_material_sprite3->GetAssetsFile() : "");
 	obj.AddString("Scene_Name", scene_name.c_str());
 	obj.AddString("Functionality", combo.c_str());
 	SaveGeneralStuff(obj);

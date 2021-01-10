@@ -54,7 +54,7 @@ void ComponentImage::Render()
 
 bool ComponentImage::SaveComponent(JsonObj& obj)
 {
-	obj.AddInt("Resource_ID", resource_material != nullptr ? resource_material->GetID() : 0);
+	obj.AddString("Resource_String", resource_material != nullptr ? resource_material->GetAssetsFile() : "");
 	obj.AddFloat("Opacity", alpha);
 	SaveGeneralStuff(obj);
 	return true;

@@ -90,10 +90,10 @@ void ComponentCheckbox::Render()
 
 bool ComponentCheckbox::SaveComponent(JsonObj& obj)
 {
-	obj.AddInt("Resource1_ID", resource_material_sprite1 != nullptr ? resource_material_sprite1->GetID() : 0);
-	obj.AddInt("Resource2_ID", resource_material_sprite2 != nullptr ? resource_material_sprite2->GetID() : 0);
-	obj.AddInt("Resource3_ID", resource_material_sprite3 != nullptr ? resource_material_sprite3->GetID() : 0);
-	obj.AddInt("Resource4_ID", resource_material_sprite4 != nullptr ? resource_material_sprite4->GetID() : 0);
+	obj.AddString("Resource1_String", resource_material_sprite1 != nullptr ? resource_material_sprite1->GetAssetsFile() : "");
+	obj.AddString("Resource2_String", resource_material_sprite2 != nullptr ? resource_material_sprite2->GetAssetsFile() : "");
+	obj.AddString("Resource3_String", resource_material_sprite3 != nullptr ? resource_material_sprite3->GetAssetsFile() : "");
+	obj.AddString("Resource4_String", resource_material_sprite4 != nullptr ? resource_material_sprite4->GetAssetsFile() : "");
 	obj.AddBool("Active", is_active);
 	SaveGeneralStuff(obj);
 

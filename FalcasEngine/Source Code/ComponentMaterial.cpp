@@ -50,7 +50,7 @@ void ComponentMaterial::ChangeResourceMaterial(ResourceMaterial* resource_mat)
 
 bool ComponentMaterial::SaveComponent(JsonObj& obj)
 {
-	obj.AddInt("Resource_ID", resource_material != nullptr ? resource_material->GetID() : 0);
+	obj.AddString("Resource_String", resource_material != nullptr ? resource_material->GetAssetsFile() : "");
 	return true;
 }
 

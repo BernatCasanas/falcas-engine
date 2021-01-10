@@ -984,15 +984,34 @@ void ModuleCentralEditor::LoadScene(const char* file)
             }
             else if (component_name == "Mesh") {
 				ComponentMesh* mesh = (ComponentMesh*)gameObject->CreateComponent(Component_Type::Mesh);
-                uint id=comp.GetInt("Resource_ID");
-                if (id != 0)
+                std::string name_asset = comp.GetString("Resource_String");
+                if (name_asset != "") {
+                    name_asset += ".meta";
+                    char* buffer;
+                    JsonObj icon_obj = JsonObj(buffer);
+                    App->filesystem->LoadPath((char*)name_asset.c_str(), &buffer);
+                    icon_obj = JsonObj(buffer);
+                    uint id = icon_obj.GetInt("ID");
                     mesh->ChangeResourceMesh((ResourceMesh*)App->resources->RequestResource(id));
+                    delete[] buffer;
+                    icon_obj.CleanUp();
+                }
             }
             else if (component_name == "Material") {
                 ComponentMaterial* mat = (ComponentMaterial*)gameObject->CreateComponent(Component_Type::Material);
-                uint id = comp.GetInt("Resource_ID");
-                if (id != 0)
+                std::string name_asset = comp.GetString("Resource_String");
+                if (name_asset != "") {
+                    name_asset += ".meta";
+                    char* buffer;
+                    JsonObj icon_obj = JsonObj(buffer);
+                    App->filesystem->LoadPath((char*)name_asset.c_str(), &buffer);
+                    icon_obj = JsonObj(buffer);
+                    uint id = icon_obj.GetInt("ID");
                     mat->ChangeResourceMaterial((ResourceMaterial*)App->resources->RequestResource(id));
+                    delete[] buffer;
+                    icon_obj.CleanUp();
+                }
+           
             }
             else if (component_name == "Camera") {
                 ComponentCamera* cam = (ComponentCamera*)gameObject->CreateComponent(Component_Type::Camera);
@@ -1013,9 +1032,42 @@ void ModuleCentralEditor::LoadScene(const char* file)
             else if (component_name == "Button") {
                 ComponentTransform2D* _trans = (ComponentTransform2D*)gameObject->GetComponent(Component_Type::Transform2D);
                 ComponentButton* but = (ComponentButton*)gameObject->CreateComponent(Component_Type::Button);
-                uint id1 = comp.GetInt("Resource1_ID");
-                uint id2 = comp.GetInt("Resource2_ID");
-                uint id3 = comp.GetInt("Resource3_ID");
+                uint id1 = 0;
+                uint id2 = 0;
+                uint id3 = 0;
+                std::string name_asset = comp.GetString("Resource1_String");
+                if (name_asset != "") {
+                    name_asset += ".meta";
+                    char* buffer;
+                    JsonObj icon_obj = JsonObj(buffer);
+                    App->filesystem->LoadPath((char*)name_asset.c_str(), &buffer);
+                    icon_obj = JsonObj(buffer);
+                    id1 = icon_obj.GetInt("ID");
+                    delete[] buffer;
+                    icon_obj.CleanUp();
+                }
+                name_asset = comp.GetString("Resource2_String");
+                if (name_asset != "") {
+                    name_asset += ".meta";
+                    char* buffer;
+                    JsonObj icon_obj = JsonObj(buffer);
+                    App->filesystem->LoadPath((char*)name_asset.c_str(), &buffer);
+                    icon_obj = JsonObj(buffer);
+                    id2 = icon_obj.GetInt("ID");
+                    delete[] buffer;
+                    icon_obj.CleanUp();
+                }
+                name_asset = comp.GetString("Resource3_String");
+                if (name_asset != "") {
+                    name_asset += ".meta";
+                    char* buffer;
+                    JsonObj icon_obj = JsonObj(buffer);
+                    App->filesystem->LoadPath((char*)name_asset.c_str(), &buffer);
+                    icon_obj = JsonObj(buffer);
+                    id3 = icon_obj.GetInt("ID");
+                    delete[] buffer;
+                    icon_obj.CleanUp();
+                }
                 but->SetMaterialsLoading((ResourceMaterial*)App->resources->RequestResource(id1), (ResourceMaterial*)App->resources->RequestResource(id2), (ResourceMaterial*)App->resources->RequestResource(id3));
                 but->SetTrans(_trans);
                 but->SetSceneName(comp.GetString("Scene_Name"));
@@ -1025,10 +1077,54 @@ void ModuleCentralEditor::LoadScene(const char* file)
             else if (component_name == "Check Box") {
                 ComponentTransform2D* _trans = (ComponentTransform2D*)gameObject->GetComponent(Component_Type::Transform2D);
                 ComponentCheckbox* check = (ComponentCheckbox*)gameObject->CreateComponent(Component_Type::Checkbox);
-                uint id1 = comp.GetInt("Resource1_ID");
-                uint id2 = comp.GetInt("Resource2_ID");
-                uint id3 = comp.GetInt("Resource3_ID");
-                uint id4 = comp.GetInt("Resource4_ID");
+                uint id1 = 0;
+                uint id2 = 0;
+                uint id3 = 0;
+                uint id4 = 0;
+                std::string name_asset = comp.GetString("Resource1_String");
+                if (name_asset != "") {
+                    name_asset += ".meta";
+                    char* buffer;
+                    JsonObj icon_obj = JsonObj(buffer);
+                    App->filesystem->LoadPath((char*)name_asset.c_str(), &buffer);
+                    icon_obj = JsonObj(buffer);
+                    id1 = icon_obj.GetInt("ID");
+                    delete[] buffer;
+                    icon_obj.CleanUp();
+                }
+                name_asset = comp.GetString("Resource2_String");
+                if (name_asset != "") {
+                    name_asset += ".meta";
+                    char* buffer;
+                    JsonObj icon_obj = JsonObj(buffer);
+                    App->filesystem->LoadPath((char*)name_asset.c_str(), &buffer);
+                    icon_obj = JsonObj(buffer);
+                    id2 = icon_obj.GetInt("ID");
+                    delete[] buffer;
+                    icon_obj.CleanUp();
+                }
+                name_asset = comp.GetString("Resource3_String");
+                if (name_asset != "") {
+                    name_asset += ".meta";
+                    char* buffer;
+                    JsonObj icon_obj = JsonObj(buffer);
+                    App->filesystem->LoadPath((char*)name_asset.c_str(), &buffer);
+                    icon_obj = JsonObj(buffer);
+                    id3 = icon_obj.GetInt("ID");
+                    delete[] buffer;
+                    icon_obj.CleanUp();
+                }
+                name_asset = comp.GetString("Resource4_String");
+                if (name_asset != "") {
+                    name_asset += ".meta";
+                    char* buffer;
+                    JsonObj icon_obj = JsonObj(buffer);
+                    App->filesystem->LoadPath((char*)name_asset.c_str(), &buffer);
+                    icon_obj = JsonObj(buffer);
+                    id4 = icon_obj.GetInt("ID");
+                    delete[] buffer;
+                    icon_obj.CleanUp();
+                }
                 check->SetTrans(_trans);
                 check->SetMaterialsLoading((ResourceMaterial*)App->resources->RequestResource(id1), (ResourceMaterial*)App->resources->RequestResource(id2), (ResourceMaterial*)App->resources->RequestResource(id3), (ResourceMaterial*)App->resources->RequestResource(id3));
                 check->SetActivity(comp.GetString("Active"));
@@ -1039,7 +1135,18 @@ void ModuleCentralEditor::LoadScene(const char* file)
             else if (component_name == "Image") {
                 ComponentTransform2D* _trans = (ComponentTransform2D*)gameObject->GetComponent(Component_Type::Transform2D);
                 ComponentImage* img = (ComponentImage*)gameObject->CreateComponent(Component_Type::Image);
-                uint id = comp.GetInt("Resource_ID");
+                uint id = 0;
+                std::string name_asset = comp.GetString("Resource_String");
+                if (name_asset != "") {
+                    name_asset += ".meta";
+                    char* buffer;
+                    JsonObj icon_obj = JsonObj(buffer);
+                    App->filesystem->LoadPath((char*)name_asset.c_str(), &buffer);
+                    icon_obj = JsonObj(buffer);
+                    id = icon_obj.GetInt("ID");
+                    delete[] buffer;
+                    icon_obj.CleanUp();
+                }
                 img->SetMaterialLoading((ResourceMaterial*)App->resources->RequestResource(id));
                 img->SetTrans(_trans);
                 img->SetOpacity(comp.GetFloat("Opacity"));
@@ -1048,6 +1155,19 @@ void ModuleCentralEditor::LoadScene(const char* file)
             else if (component_name == "Input Box") {
                 ComponentTransform2D* _trans = (ComponentTransform2D*)gameObject->GetComponent(Component_Type::Transform2D);
                 ComponentInputbox* inputbox = (ComponentInputbox*)gameObject->CreateComponent(Component_Type::Inputbox);
+                uint id = 0;
+                std::string name_asset = comp.GetString("Resource_String");
+                if (name_asset != "") {
+                    name_asset += ".meta";
+                    char* buffer;
+                    JsonObj icon_obj = JsonObj(buffer);
+                    App->filesystem->LoadPath((char*)name_asset.c_str(), &buffer);
+                    icon_obj = JsonObj(buffer);
+                    id = icon_obj.GetInt("ID");
+                    delete[] buffer;
+                    icon_obj.CleanUp();
+                }
+                inputbox->ChangeResourceMaterial((ResourceMaterial*)App->resources->RequestResource(id));
                 inputbox->SetTrans(_trans);
                 inputbox->SetInOutput(comp.GetString("Input"), comp.GetString("Output"));
                 inputbox->SetPos(comp.GetInt("Pos"));

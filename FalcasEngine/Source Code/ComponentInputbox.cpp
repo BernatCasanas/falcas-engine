@@ -108,6 +108,7 @@ bool ComponentInputbox::SaveComponent(JsonObj& obj)
 	obj.AddString("Input", input_text.c_str());
 	obj.AddInt("Pos", position);
 	obj.AddBool("Active", text_input_activated);
+	obj.AddString("Resource_String", resource_material_sprite != nullptr ? resource_material_sprite->GetAssetsFile() : "");
 	SaveGeneralStuff(obj);
 	return true;
 }
