@@ -65,5 +65,5 @@ protected:
 
 private:
 	Module* listener = nullptr;
-
+	float2 text_pos = { 0,0 };
 };

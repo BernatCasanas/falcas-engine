@@ -147,8 +147,8 @@ void ComponentUI::PrintText(std::string text, std::string size, ImVec4 color, Co
 	float2 _pos = { pos->GetPosition().x , -pos->GetPosition().y };
 	_label.get()->setColor(color.x, color.y, color.z, color.w);
 	_label.get()->setWindowSize(scene_width, scene_height);
-	_pos.x += scene_x;
-	_pos.y += (scene_height/2)-scene_y;
+	_pos.x += scene_x + text_pos.x;
+	_pos.y += (scene_height / 2) - scene_y - text_pos.y;
 	_label.get()->setPosition(_pos.x, _pos.y);
 	_label.get()->setAlignment(aligment);
 
@@ -184,12 +184,39 @@ void ComponentUI::LoadGeneralStuff(JsonObj& obj)
 
 void ComponentUI::TextInspector()
 {
+	float null = 0;
 	ImGui::AlignTextToFramePadding();
 	ImGui::Text("Text: ");
 	ImGui::SameLine();
 	ImGui::InputText("##text", &_text, ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll);
 	ImGui::SameLine();
 	ImGui::InputText("##text1", &_size, ImGuiInputTextFlags_EnterReturnsTrue);
+
+	ImGui::Separator();
+	ImGui::Columns(3, "", false);
+
+	ImGui::AlignTextToFramePadding();
+	ImGui::Text("Position");
+
+	ImGui::NextColumn();
+	ImGui::AlignTextToFramePadding();
+	ImGui::Text("X");
+
+	ImGui::SameLine();
+	ImGui::PushItemWidth(50);
+	ImGui::DragFloat("##0", (active && owner->active) ? &text_pos.x : &null, 0.01f) && (active && owner->active);
+	ImGui::PopItemWidth();
+
+	ImGui::NextColumn();
+	ImGui::AlignTextToFramePadding();
+	ImGui::Text("Y");
+
+	ImGui::SameLine();
+	ImGui::PushItemWidth(50);
+	ImGui::DragFloat("##1", (active && owner->active) ? &text_pos.y : &null, 0.01f) && (active && owner->active);
+	ImGui::PopItemWidth();
+
+	ImGui::Columns(1, "", false);
 	ImGui::Separator();
 	if (ImGui::Button("Left")) {
 		aligment = FTLabel::FontFlags::LeftAligned;
