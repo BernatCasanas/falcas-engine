@@ -6,7 +6,7 @@ this engine is made by [https://github.com/BernatCasanas](Bernat Casañas) and [
 
 ### Things Done
 
-* Import, save and load files
+* Importer
 * Models
 * General Editor
 * Save/Load
