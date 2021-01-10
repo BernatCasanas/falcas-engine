@@ -2,7 +2,7 @@
 this engine is made by [Bernat Casañas](https://github.com/BernatCasanas) and [Arnau Falgueras](https://github.com/Arnau77), students of CITM, UPC of Terrassa in the subject of video game engines taught by [Marc Garrigó](https://github.com/markitus18). The aim of this game engine was to create a good base to later advance in UI. Only for educational propouses.
 
 ## Bernat Casañas
-<img src="WebPage Images/bernat.jpeg" width="200">
+<img src="/bernat.jpeg" width="200">
 
 ### Things Done
 
@@ -15,7 +15,7 @@ this engine is made by [Bernat Casañas](https://github.com/BernatCasanas) and [
 * Font and Image
 
 ## Arnau Falgueras
-<img src="WebPage Images/arnau.jpeg" width="200">
+<img src="arnau.jpeg" width="200">
 
 ### Things Done
 
