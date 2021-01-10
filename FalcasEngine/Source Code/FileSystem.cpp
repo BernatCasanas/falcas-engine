@@ -249,9 +249,9 @@ JsonObj FileSystem::GenerateConfigContent()
 	arr.AddObject(_obj);
 	_obj.AddString("appName", "Falcas Engine");
 	arr.AddObject(_obj);
-	_obj.AddInt("height", 800);
+	_obj.AddInt("height", 768);
 	arr.AddObject(_obj);
-	_obj.AddInt("width", 1500);
+	_obj.AddInt("width", 1024);
 	arr.AddObject(_obj);
 	_obj.AddBool("resizeable", true);
 	arr.AddObject(_obj);

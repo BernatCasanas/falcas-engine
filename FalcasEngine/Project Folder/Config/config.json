@@ -4,8 +4,8 @@
         {
             "name": "moduleWindow",
             "appName": "Falcas Engine",
-            "height": 800,
-            "width": 1500,
+            "height": 768,
+            "width": 1024,
             "resizeable": true,
             "fullscreen": false,
             "border": true
