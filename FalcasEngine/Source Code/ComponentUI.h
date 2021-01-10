@@ -36,7 +36,6 @@ public:
 	void SaveGeneralStuff(JsonObj& obj);
 	void LoadGeneralStuff(JsonObj& obj);
 
-	void SetAligment(int alig);
 
 	void TextInspector();
 
