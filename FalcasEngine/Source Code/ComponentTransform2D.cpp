@@ -12,7 +12,7 @@
 #define M_PI 3.14159265358979323846f
 
 ComponentTransform2D::ComponentTransform2D(GameObject* owner, float2 position, Quat rotation, float2 size) :Component(Component_Type::Transform2D, owner, "Transform2D"), position(position),
-size(size), z_depth(10), z_depth_with_layers(0)
+size(size), z_depth(10), z_depth_with_layers(10)
 {
 	this->rotation = QuaternionToEuler(rotation);
 	SetMatrices();
@@ -75,7 +75,7 @@ void ComponentTransform2D::SetTransformation(float3 pos, Quat rot, float2 size, 
 	position.y -= new_pos.y;
 	z_depth += new_pos.z;
 	if (owner->components.size() > 1) {
-		z_depth_with_layers = z_depth * ((ComponentUI*)owner->components[1])->layer_of_ui;
+		z_depth_with_layers = z_depth * ((ComponentUI*)owner->components[1])->layer_of_ui + z_depth;
 	}
 	else {
 		z_depth_with_layers = z_depth;
@@ -119,7 +119,7 @@ void ComponentTransform2D::SetSize(float2 size)
 void ComponentTransform2D::UpdateZ()
 {
 	if (owner->components.size() > 1) {
-		z_depth_with_layers = z_depth * ((ComponentUI*)owner->components[1])->layer_of_ui;
+		z_depth_with_layers = z_depth * ((ComponentUI*)owner->components[1])->layer_of_ui + z_depth;
 	}
 	else {
 		z_depth_with_layers = z_depth;
@@ -183,7 +183,7 @@ void ComponentTransform2D::SetMatricesWithNewParent(float4x4 parent_global_matri
 	position = { pos.x,pos.y };
 	z_depth = pos.z;
 	if (owner->components.size() > 1) {
-		z_depth_with_layers = z_depth * ((ComponentUI*)owner->components[1])->layer_of_ui;
+		z_depth_with_layers = z_depth * ((ComponentUI*)owner->components[1])->layer_of_ui + z_depth;
 	}
 	else {
 		z_depth_with_layers = z_depth;
