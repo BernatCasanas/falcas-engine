@@ -1400,7 +1400,6 @@ void ModuleCentralEditor::ChangingScreen()
         if (fadeout) {
             if (_curtain->GetOpacity()-0.02 <= 0.f) {
                 fadeout = false;
-                changingscreen = false;
             }
             else
                 _curtain->SetOpacity(_curtain->GetOpacity() - 0.02);

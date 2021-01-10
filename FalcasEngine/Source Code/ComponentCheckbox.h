@@ -13,6 +13,8 @@ public:
 	void Render();
 	bool SaveComponent(JsonObj& obj);
 
+	bool GetIsActive();
+
 	void ChangeResourceMaterial(ResourceMaterial* resource_mat, int num_sprite);
 
 	bool IsActive()const { return is_active; }

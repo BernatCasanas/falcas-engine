@@ -100,6 +100,11 @@ bool ComponentCheckbox::SaveComponent(JsonObj& obj)
 	return true;
 }
 
+bool ComponentCheckbox::GetIsActive()
+{
+	return is_active;
+}
+
 void ComponentCheckbox::ChangeResourceMaterial(ResourceMaterial* resource_mat, int num_sprite)
 {
 	switch (num_sprite)

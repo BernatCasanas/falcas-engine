@@ -2,6 +2,8 @@
 #include "Application.h"
 #include "ModuleWindow.h"
 #include "External Libraries/SDL/include/SDL.h"
+#include "ComponentUI.h"
+#include "ComponentCheckbox.h"
 
 ModuleWindow::ModuleWindow(Application* app, bool start_enabled) : Module(app, start_enabled, "moduleWindow")
 {
@@ -112,6 +114,14 @@ bool ModuleWindow::CleanUp()
 	//Quit SDL subsystems
 	SDL_Quit();
 	return true;
+}
+
+void ModuleWindow::OnTriggered(ComponentUI* component_ui)
+{
+	if (component_ui->type == Component_Type::Checkbox) {
+		ComponentCheckbox* check = (ComponentCheckbox*)component_ui;
+		SDL_GL_SetSwapInterval(check->IsActive());
+	}
 }
 
 void ModuleWindow::SetTitle(const char* title)
