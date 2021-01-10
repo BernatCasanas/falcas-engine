@@ -150,6 +150,7 @@ void ComponentUI::PrintText(std::string text, std::string size, ImVec4 color, Co
 	_pos.x += scene_x;
 	_pos.y += (scene_height/2)-scene_y;
 	_label.get()->setPosition(_pos.x, _pos.y);
+	_label.get()->setAlignment(aligment);
 
 	_label.get()->render();
 	_label.get()->Finish();
@@ -160,18 +161,25 @@ void ComponentUI::Inspector()
 	ImGui::Checkbox("Draggable", &is_draggable);
 }
 
-void ComponentUI::SaveText(JsonObj& obj)
+void ComponentUI::SaveGeneralStuff(JsonObj& obj)
 {
 	obj.AddString("Text", _text.c_str());
 	obj.AddString("Size", _size.c_str());
-
+	obj.AddInt("Aligment", aligment);
+	obj.AddInt("r", _color.x);
+	obj.AddInt("g", _color.y);
+	obj.AddInt("b", _color.z);
+	obj.AddInt("a", _color.w);
+	obj.AddInt("Layer", layer_of_ui);
 }
 
-void ComponentUI::LoadText(JsonObj& obj)
+void ComponentUI::LoadGeneralStuff(JsonObj& obj)
 {
 	_text = obj.GetString("Text");
 	_size = obj.GetString("Size");
 	_color = ImVec4(obj.GetInt("r"), obj.GetInt("g"), obj.GetInt("b"), obj.GetInt("a"));
+	SetAligment(obj.GetInt("Aligment"));
+	layer_of_ui = obj.GetInt("Layer");
 }
 
 void ComponentUI::TextInspector()
@@ -183,6 +191,34 @@ void ComponentUI::TextInspector()
 	ImGui::SameLine();
 	ImGui::InputText("##text1", &_size, ImGuiInputTextFlags_EnterReturnsTrue);
 	ImGui::Separator();
-
+	if (ImGui::Button("Left")) {
+		aligment = FTLabel::FontFlags::LeftAligned;
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Center")) {
+		aligment = FTLabel::FontFlags::CenterAligned;
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Right")) {
+		aligment = FTLabel::FontFlags::RightAligned;
+	}
 	ImGui::ColorPicker4("Color Picker", (float*)&_color);
+}
+
+void ComponentUI::SetAligment(int alig)
+{
+	switch (alig)
+	{
+	case 2:
+		aligment = FTLabel::FontFlags::LeftAligned;
+		break;
+	case 4:
+		aligment = FTLabel::FontFlags::CenterAligned;
+		break;
+	case 8:
+		aligment = FTLabel::FontFlags::RightAligned;
+		break;
+	default:
+		break;
+	}
 }

@@ -33,8 +33,10 @@ public:
 
 	virtual void Inspector();
 
-	void SaveText(JsonObj& obj);
-	void LoadText(JsonObj& obj);
+	void SaveGeneralStuff(JsonObj& obj);
+	void LoadGeneralStuff(JsonObj& obj);
+
+	void SetAligment(int alig);
 
 	void TextInspector();
 
@@ -59,6 +61,8 @@ protected:
 	std::string _size="64";
 	ImVec4 _color;
 	uint curTex;
+	FTLabel::FontFlags aligment;
+
 private:
 	Module* listener = nullptr;
 

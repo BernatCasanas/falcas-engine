@@ -1005,7 +1005,7 @@ void ModuleCentralEditor::LoadScene(const char* file)
                 but->SetTrans(_trans);
                 but->SetSceneName(comp.GetString("Scene_Name"));
                 but->SetFunctionality(comp.GetString("Functionality"));
-                but->LoadText(comp);
+                but->LoadGeneralStuff(comp);
             }
             else if (component_name == "Check Box") {
                 float4x4 matrix = comp.GetFloat4x4("Matrix");
@@ -1022,7 +1022,7 @@ void ModuleCentralEditor::LoadScene(const char* file)
                 check->SetTrans(_trans);
                 check->SetMaterialsLoading((ResourceMaterial*)App->resources->RequestResource(id1), (ResourceMaterial*)App->resources->RequestResource(id2), (ResourceMaterial*)App->resources->RequestResource(id3), (ResourceMaterial*)App->resources->RequestResource(id3));
                 check->SetActivity(comp.GetString("Active"));
-                check->LoadText(comp);
+                check->LoadGeneralStuff(comp);
 
             }
             else if (component_name == "Image") {
@@ -1046,9 +1046,7 @@ void ModuleCentralEditor::LoadScene(const char* file)
                 ComponentFont* font = (ComponentFont*)gameObject->CreateComponent(Component_Type::Font);
                 _trans->SetTransformation(pos, rot, { size.x,size.y });
                 font->SetTrans(_trans);
-                font->SetText(comp.GetString("Text"));
-                font->SetAligment(comp.GetInt("Aligment"));
-                font->SetTypeSize(comp.GetString("TypeFont"), comp.GetString("FontSize"));
+                font->LoadGeneralStuff(comp);
 
             }
             else if (component_name == "Input Box") {
@@ -1063,7 +1061,7 @@ void ModuleCentralEditor::LoadScene(const char* file)
                 inputbox->SetInOutput(comp.GetString("Input"), comp.GetString("Output"));
                 inputbox->SetPos(comp.GetInt("Pos"));
                 inputbox->SetActivity(comp.GetBool("Activity"));
-                inputbox->LoadText(comp);
+                inputbox->LoadGeneralStuff(comp);
 
             }
         }

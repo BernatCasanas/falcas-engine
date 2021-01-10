@@ -88,7 +88,7 @@ bool ComponentButton::SaveComponent(JsonObj& obj)
 	obj.AddFloat4x4("Matrix", trans->GetGlobalMatrix());
 	obj.AddString("Scene_Name", scene_name.c_str());
 	obj.AddString("Functionality", combo.c_str());
-	SaveText(obj);
+	SaveGeneralStuff(obj);
 
 	return true;
 }

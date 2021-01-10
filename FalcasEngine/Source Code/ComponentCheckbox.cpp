@@ -67,7 +67,7 @@ void ComponentCheckbox::Render()
 	if (!active)
 		return;
 
-	PrintText(_text, _size, _color, trans); //ARNAU: quin text fico aqui? fica el que vulguis.
+	PrintText(_text, _size, _color, trans);
 
 	if (is_active) {
 		if (is_mouse_hover || is_focused){
@@ -95,7 +95,7 @@ bool ComponentCheckbox::SaveComponent(JsonObj& obj)
 	obj.AddInt("Resource4_ID", resource_material_sprite4 != nullptr ? resource_material_sprite4->GetID() : 0);
 	obj.AddFloat4x4("Matrix", trans->GetGlobalMatrix());
 	obj.AddBool("Active", is_active);
-	SaveText(obj);
+	SaveGeneralStuff(obj);
 
 	return true;
 }
