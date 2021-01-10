@@ -28,7 +28,8 @@ public:
 	
 	float2 CalculateMovement(float4x4 matrix, float2 goal);
 
-	void SetTransformation(float3 pos, Quat rot, float2 size, bool guizmo_size = false);
+	void SetTransformation(float3 pos, Quat rot, float2 size, float3 pivot);
+	void SetPivot(float3 pivot);
 	void SetPosition(float2 pos);
 	void SetRotation(Quat rot);
 	void SetRotation(float3 rot);

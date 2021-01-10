@@ -1001,30 +1001,29 @@ void ModuleCentralEditor::LoadScene(const char* file)
                 cam->SetHorizFov(comp.GetFloat("FrustumHfov"));
                 cam->SetVerticalFov(comp.GetFloat("FrustumVfov"));
             }
+            else if (component_name == "Transform2D") {
+                ComponentTransform2D* trans = (ComponentTransform2D*)gameObject->GetComponent(Component_Type::Transform2D);
+                float3 pos = comp.GetFloat3("Position");
+                float3 size = comp.GetFloat3("Size");
+                Quat rot = comp.GetQuaternion("Rotation");
+                float3 pivot = comp.GetFloat3("Pivot");
+                trans->SetTransformation(pos, rot, { size.x,size.y }, pivot);
+                trans->SetPivot(pivot);
+            }
             else if (component_name == "Button") {
-                float3 pos, size;
-                Quat rot;
-                float4x4 matrix = comp.GetFloat4x4("Matrix");
-                matrix.Decompose(pos, rot, size);
                 ComponentTransform2D* _trans = (ComponentTransform2D*)gameObject->GetComponent(Component_Type::Transform2D);
                 ComponentButton* but = (ComponentButton*)gameObject->CreateComponent(Component_Type::Button);
                 uint id1 = comp.GetInt("Resource1_ID");
                 uint id2 = comp.GetInt("Resource2_ID");
                 uint id3 = comp.GetInt("Resource3_ID");
                 but->SetMaterialsLoading((ResourceMaterial*)App->resources->RequestResource(id1), (ResourceMaterial*)App->resources->RequestResource(id2), (ResourceMaterial*)App->resources->RequestResource(id3));
-                _trans->SetTransformation(pos, rot, { size.x,size.y });
                 but->SetTrans(_trans);
                 but->SetSceneName(comp.GetString("Scene_Name"));
                 but->SetFunctionality(comp.GetString("Functionality"));
                 but->LoadGeneralStuff(comp);
             }
             else if (component_name == "Check Box") {
-                float4x4 matrix = comp.GetFloat4x4("Matrix");
-                float3 pos, size;
-                Quat rot;
-                matrix.Decompose(pos, rot, size);
                 ComponentTransform2D* _trans = (ComponentTransform2D*)gameObject->GetComponent(Component_Type::Transform2D);
-                _trans->SetTransformation(pos, rot, { size.x,size.y });
                 ComponentCheckbox* check = (ComponentCheckbox*)gameObject->CreateComponent(Component_Type::Checkbox);
                 uint id1 = comp.GetInt("Resource1_ID");
                 uint id2 = comp.GetInt("Resource2_ID");
@@ -1038,27 +1037,17 @@ void ModuleCentralEditor::LoadScene(const char* file)
 
             }
             else if (component_name == "Image") {
-                float4x4 matrix = comp.GetFloat4x4("Matrix");
-                float3 pos, size;
-                Quat rot;
-                matrix.Decompose(pos, rot, size);
                 ComponentTransform2D* _trans = (ComponentTransform2D*)gameObject->GetComponent(Component_Type::Transform2D);
                 ComponentImage* img = (ComponentImage*)gameObject->CreateComponent(Component_Type::Image);
                 uint id = comp.GetInt("Resource_ID");
                 img->SetMaterialLoading((ResourceMaterial*)App->resources->RequestResource(id));
-                _trans->SetTransformation(pos, rot, { size.x,size.y });
                 img->SetTrans(_trans);
                 img->SetOpacity(comp.GetFloat("Opacity"));
                 img->LoadGeneralStuff(comp);
             }
             else if (component_name == "Input Box") {
-                float4x4 matrix = comp.GetFloat4x4("Matrix");
-                float3 pos, size;
-                Quat rot;
-                matrix.Decompose(pos, rot, size);
                 ComponentTransform2D* _trans = (ComponentTransform2D*)gameObject->GetComponent(Component_Type::Transform2D);
                 ComponentInputbox* inputbox = (ComponentInputbox*)gameObject->CreateComponent(Component_Type::Inputbox);
-                _trans->SetTransformation(pos, rot, { size.x,size.y });
                 inputbox->SetTrans(_trans);
                 inputbox->SetInOutput(comp.GetString("Input"), comp.GetString("Output"));
                 inputbox->SetPos(comp.GetInt("Pos"));

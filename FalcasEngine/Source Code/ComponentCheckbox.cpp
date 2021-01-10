@@ -94,7 +94,6 @@ bool ComponentCheckbox::SaveComponent(JsonObj& obj)
 	obj.AddInt("Resource2_ID", resource_material_sprite2 != nullptr ? resource_material_sprite2->GetID() : 0);
 	obj.AddInt("Resource3_ID", resource_material_sprite3 != nullptr ? resource_material_sprite3->GetID() : 0);
 	obj.AddInt("Resource4_ID", resource_material_sprite4 != nullptr ? resource_material_sprite4->GetID() : 0);
-	obj.AddFloat4x4("Matrix", trans->GetGlobalMatrix());
 	obj.AddBool("Active", is_active);
 	SaveGeneralStuff(obj);
 

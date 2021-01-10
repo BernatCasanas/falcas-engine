@@ -71,40 +71,35 @@ float4x4 ComponentTransform2D::GetGlobalMatrixTransposed() const
 
 bool ComponentTransform2D::SaveComponent(JsonObj& obj)
 {
-	obj.AddFloat4x4("GlobalMatrix", GetGlobalMatrix());
+	float3 pos = { position.x,position.y,z_depth };
+	obj.AddFloat3("Position", pos);
+	obj.AddQuat("Rotation", EulerToQuaternion(rotation));
+	float3 siz = { size.x,size.y,0 };
+	obj.AddFloat3("Size", siz);
+	float3 pivot = { pivot_position.x,pivot_position.y,0 };
+	obj.AddFloat3("Pivot", pivot);
 	return true;
 }
 
-void ComponentTransform2D::SetTransformation(float3 pos, Quat rot, float2 size, bool guizmo_size)
+void ComponentTransform2D::SetTransformation(float3 pos, Quat rot, float2 size, float3 pivot)
 {
-
-	float3 new_pos, dummy;
-	Quat new_rot;
-	global_matrix.Decompose(new_pos, new_rot, dummy);
-	
-	new_pos -= pos;
-	position.x += new_pos.x;
-	position.y -= new_pos.y;
-	z_depth += new_pos.z;
-	if (owner->components.size() > 1) {
-		z_depth_with_layers = z_depth * ((ComponentUI*)owner->components[1])->layer_of_ui + z_depth;
-	}
-	else {
-		z_depth_with_layers = z_depth;
-	}
-	if (!guizmo_size) {
-		float rot_z = QuaternionToEuler(rot).z;
-		float new_rot_z = QuaternionToEuler(new_rot).z;
-		rotation.z += rot_z - new_rot_z;
-	}
-	
+	position = { pos.x,pos.y };
+	z_depth = pos.z;
+	rotation = QuaternionToEuler(rot);
 	this->size = size;
+	pivot_position={ pivot.x,pivot.y };
+	
 	relative_size.x = App->window->width / size.x;
 	relative_size.y = App->window->height / size.y;
 	relative_position.x = App->window->width / position.x;
 	relative_position.y = App->window->height / position.y;
 	needed_to_update = true;
 
+}
+
+void ComponentTransform2D::SetPivot(float3 pivot)
+{
+	pivot_position = { pivot.x,pivot.y };
 }
 
 void ComponentTransform2D::SetPosition(float2 pos)
