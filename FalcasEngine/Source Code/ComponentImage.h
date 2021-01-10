@@ -26,4 +26,6 @@ public:
 private:
 	ResourceMaterial* resource_material = nullptr;
 	ComponentTransform2D* trans;
+	float null = 1.f;
+	float alpha = 1.0f;
 };

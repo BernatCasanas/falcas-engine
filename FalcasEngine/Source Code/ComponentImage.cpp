@@ -146,6 +146,11 @@ void ComponentImage::Inspector()
 
 	ImGui::Separator();
 
+	ImGui::Text("Opacity: ");
+	ImGui::SameLine();
+	ImGui::DragFloat("##0", (active && owner->active) ? &alpha : &null, 0.001f,0.f,1.f) && (active && owner->active);
+
+
 	ImGui::PopID();
 }
 
@@ -163,13 +168,17 @@ void ComponentImage::RenderImage()
 {
 	if (resource_material == nullptr) return;
 	glEnable(GL_BLEND);
+
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_LIGHTING);
 
 	glPushMatrix();
 	glMultMatrixf((float*)&trans->GetGlobalMatrix().Transposed());
 
-	glColor4f(1.0f,1.0f,1.0f,0.f);
+	glColor4f(1.0f,1.0f,1.0f, alpha);
 
 	glBindTexture(GL_TEXTURE_2D, resource_material->texture_id);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
