@@ -41,7 +41,6 @@
 #include "ModuleCamera3D.h"
 #include "ComponentButton.h"
 #include "ComponentCheckbox.h"
-#include "ComponentFont.h"
 #include "ComponentImage.h"
 #include "ComponentInputbox.h"
 #include "ModuleUI.h"
@@ -555,9 +554,6 @@ void ModuleCentralEditor::Draw()
                         if (ImGui::Selectable("Component Input Box")) {
                             App->scene_intro->game_object_selected->CreateComponent(Component_Type::Inputbox);
                         }
-                        if (ImGui::Selectable("Component Text")) {
-                            App->scene_intro->game_object_selected->CreateComponent(Component_Type::Font);
-                        }
                     }
                     ImGui::EndPopup();
                 }
@@ -1042,18 +1038,6 @@ void ModuleCentralEditor::LoadScene(const char* file)
                 _trans->SetTransformation(pos, rot, { size.x,size.y });
                 img->SetTrans(_trans);
             }
-            else if (component_name == "Font") {
-                float4x4 matrix = comp.GetFloat4x4("Matrix");
-                float3 pos, size;
-                Quat rot;
-                matrix.Decompose(pos, rot, size);
-                ComponentTransform2D* _trans = (ComponentTransform2D*)gameObject->CreateComponent(Component_Type::Transform2D);
-                ComponentFont* font = (ComponentFont*)gameObject->CreateComponent(Component_Type::Font);
-                _trans->SetTransformation(pos, rot, { size.x,size.y });
-                font->SetTrans(_trans);
-                font->LoadGeneralStuff(comp);
-
-            }
             else if (component_name == "Input Box") {
                 float4x4 matrix = comp.GetFloat4x4("Matrix");
                 float3 pos, size;
@@ -1396,7 +1380,7 @@ void ModuleCentralEditor::ViewCameras(bool active, GameObject* game_object)
 void ModuleCentralEditor::ChangingScreen()
 {
     
-
+    changingscreen = false;
 
     
 }

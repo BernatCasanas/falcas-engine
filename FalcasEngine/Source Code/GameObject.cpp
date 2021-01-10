@@ -20,7 +20,6 @@
 #include "ResourceModel.h"
 #include "External Libraries/MathGeoLib/include/MathGeoLib.h"
 #include "ModuleCamera3D.h"
-#include "ComponentFont.h"
 
 GameObject::GameObject(int id, bool is_ui) : name(""), parent(nullptr), id(id), is_ui(is_ui)
 {
@@ -218,10 +217,6 @@ Component* GameObject::CreateComponent(Component_Type type)
 	case Component_Type::Inputbox:
 		component = new ComponentInputbox(this, trans2D);
 		component->name = "Input Box";
-		break;
-	case Component_Type::Font:
-		component = new ComponentFont(this, trans2D);
-		component->name = "Font";
 		break;
 	}
 	components.push_back(component);

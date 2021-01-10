@@ -282,9 +282,6 @@
     <ClCompile Include="Source Code\ComponentUI.cpp">
       <Filter>Source Code</Filter>
     </ClCompile>
-    <ClCompile Include="Source Code\ComponentFont.cpp">
-      <Filter>Source Code</Filter>
-    </ClCompile>
     <ClCompile Include="Source Code\FontAtlas.cpp">
       <Filter>Source Code\GLFont</Filter>
     </ClCompile>
@@ -726,9 +723,6 @@
       <Filter>Source Code</Filter>
     </ClInclude>
     <ClInclude Include="Source Code\ComponentUI.h">
-      <Filter>Source Code</Filter>
-    </ClInclude>
-    <ClInclude Include="Source Code\ComponentFont.h">
       <Filter>Source Code</Filter>
     </ClInclude>
     <ClInclude Include="Source Code\External Libraries\FreeType\include\freetype\config\ftconfig.h">
