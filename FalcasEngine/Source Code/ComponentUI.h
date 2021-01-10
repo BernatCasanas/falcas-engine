@@ -53,6 +53,7 @@ protected:
 	bool is_clicked_first_frame = false;
 	bool is_clicked_with_enter = false;
 	bool is_focused = false;
+	bool is_fixed = false;
 	bool is_draggable = false;
 
 	std::shared_ptr<GLFont> _font;

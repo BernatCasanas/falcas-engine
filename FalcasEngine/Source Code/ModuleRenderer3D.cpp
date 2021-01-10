@@ -206,7 +206,7 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 // PostUpdate present buffer to screen
 update_status ModuleRenderer3D::PostUpdate(float dt)
 {
-
+	resized = false;
 	if (App->central_editor->grid)
 		App->scene_intro->grid->DrawGrid();
 
@@ -325,14 +325,7 @@ void ModuleRenderer3D::OnResize(int width, int height)
 {
 	App->window->width = width;
 	App->window->height = height;
-	/*glViewport(0, 0, width, height);
-
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glLoadMatrixf(camera->GetProjectionMatrix());
-
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();*/
+	resized = true;
 }
 
 void ModuleRenderer3D::RenderUI()

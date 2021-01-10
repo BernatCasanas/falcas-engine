@@ -66,6 +66,7 @@ void ComponentUI::OnTriggered(ComponentUI* component_ui)
 
 bool ComponentUI::CheckMouseHovering()
 {
+
 	if (!is_focusable || App->input->GetMouseButton(1)==KEY_REPEAT)
 		return false;
 
@@ -159,6 +160,7 @@ void ComponentUI::PrintText(std::string text, std::string size, ImVec4 color, Co
 void ComponentUI::Inspector()
 {
 	ImGui::Checkbox("Draggable", &is_draggable);
+	ImGui::Checkbox("Fixed (with changing size)", &is_fixed);
 }
 
 void ComponentUI::SaveGeneralStuff(JsonObj& obj)
