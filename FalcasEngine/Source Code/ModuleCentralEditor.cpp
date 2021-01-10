@@ -141,11 +141,11 @@ void ModuleCentralEditor::OnTriggered(ComponentUI* component_ui)
             scene_file = "Library/Scenes/" + button->GetSceneName() + ".scenefalcas";
             if (!App->filesystem->FileExists(scene_file)) break;
             selected_button_file = scene_file;
-            loading_file = true;
             want_to_load_fromButton = true;
             changingscreen = true;
-            break;
-        default:
+            fadein = true;
+            CreateCurtain();
+            time_curtain.Start();
             break;
         }
     }
@@ -739,7 +739,8 @@ void ModuleCentralEditor::Draw()
         ChangingScreen();
     }
 
-    if (loading_file && !changingscreen) {
+    if (loading_file) {
+        fadeout = true;
         LoadFile();
     }
     
@@ -893,6 +894,7 @@ bool ModuleCentralEditor::LoadFile()
             if (ImGui::Button("Yes", ImVec2(50, 20))) {
                 loading_file = !loading_file;
 				sure_want_close = false;
+                CreateCurtain();
                 LoadScene((const char*)selected_file);
             }
             ImGui::PushItemWidth(250.f);
@@ -1041,6 +1043,7 @@ void ModuleCentralEditor::LoadScene(const char* file)
                 img->SetMaterialLoading((ResourceMaterial*)App->resources->RequestResource(id));
                 _trans->SetTransformation(pos, rot, { size.x,size.y });
                 img->SetTrans(_trans);
+                img->SetOpacity(comp.GetFloat("Opacity"));
             }
             else if (component_name == "Font") {
                 float4x4 matrix = comp.GetFloat4x4("Matrix");
@@ -1071,6 +1074,7 @@ void ModuleCentralEditor::LoadScene(const char* file)
             }
         }
     }
+    if(curtain != nullptr) curtain->to_delete = true;
     //scene.CleanUp();
 }
 
@@ -1363,7 +1367,8 @@ void ModuleCentralEditor::GameControl()
         color = ImColor::ImColor(192, 192, 192);
         ImGui::PushStyleColor(ImGuiCol_Button, color);
         if (ImGui::Button("Stop", { 70,30 })) {
-            App->StopGame();
+            if(App->inGame)
+                App->StopGame();
         }
         ImGui::SameLine();
         Time::gameTimer.timeScale == 2.0 ? color = ImColor::ImColor(0, 128, 0) : color = ImColor::ImColor(192, 192, 192);
@@ -1395,10 +1400,42 @@ void ModuleCentralEditor::ViewCameras(bool active, GameObject* game_object)
 
 void ModuleCentralEditor::ChangingScreen()
 {
+    ComponentImage* _curtain = (ComponentImage*)curtain->GetComponent(Component_Type::Image);
+    if (time_curtain.Read() >= 20) {
+        if (fadein) {
+            if (_curtain->GetOpacity() +0.02 >= 1.f) {
+                fadein = false;
+                loading_file = true;
+            }
+            else
+                _curtain->SetOpacity(_curtain->GetOpacity() + 0.02);
+        }
+        if (fadeout) {
+            if (_curtain->GetOpacity()-0.02 <= 0.f) {
+                fadeout = false;
+            }
+            else
+                _curtain->SetOpacity(_curtain->GetOpacity() - 0.02);
+        }
+        time_curtain.Start();
+        if (!fadein && !fadeout) time_curtain.Stop();
+    }
     
+}
 
+void ModuleCentralEditor::CreateCurtain()
+{
+    JsonObj i_Curtain;
 
-    
+    curtain = App->scene_intro->CreateGameObject("Curtain", App->scene_intro->root, true);
+    ComponentImage* _curtain = (ComponentImage*)curtain->CreateComponent(Component_Type::Image);
+    char* buffer;
+    App->filesystem->LoadPath("Assets/Icons (read_only)/curtain.png.meta", &buffer);
+    i_Curtain = JsonObj(buffer);
+    _curtain->ChangeResourceMaterial((ResourceMaterial*)App->resources->RequestResource(i_Curtain.GetInt("ID")));
+    fadein ? _curtain->SetOpacity(0.f) : _curtain->SetOpacity(1.f);
+    ComponentTransform2D* _trans = (ComponentTransform2D*)curtain->GetComponent(Component_Type::Transform2D);
+    _trans->SetSize({ 2000,2000 });
 }
 
 

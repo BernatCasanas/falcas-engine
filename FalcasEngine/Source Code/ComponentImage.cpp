@@ -56,6 +56,7 @@ bool ComponentImage::SaveComponent(JsonObj& obj)
 {
 	obj.AddInt("Resource_ID", resource_material != nullptr ? resource_material->GetID() : 0);
 	obj.AddFloat4x4("Matrix", trans->GetGlobalMatrix());
+	obj.AddFloat("Opacity", alpha);
 	SaveGeneralStuff(obj);
 
 	return true;
@@ -198,4 +199,14 @@ void ComponentImage::RenderImage()
 	glEnable(GL_LIGHTING);
 	glEnable(GL_DEPTH_TEST);
 	glDisable(GL_BLEND);
+}
+
+void ComponentImage::SetOpacity(float opacity)
+{
+	alpha = opacity;
+}
+
+float ComponentImage::GetOpacity()
+{
+	return alpha;
 }

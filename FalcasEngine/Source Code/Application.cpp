@@ -195,6 +195,7 @@ void Application::StopGame()
 		inGame = false;
 		Time::gameTimer.Stop();
 		App->central_editor->LoadScene("Library/Scenes/temp.scenefalcas");
+
 	}
 }
 

@@ -73,6 +73,8 @@ public:
 
 	void ChangingScreen();
 
+	void CreateCurtain();
+
 public:
 
 	bool show_demo_window = true;
@@ -142,8 +144,10 @@ private:
 	std::string assets_explorer_path = "Assets/";
 	int assets_explorer_selected = -1;
 
-	float alpha = 0.f;
-
+	GameObject* curtain = nullptr;
+	Timer time_curtain;
+	bool fadein = false;
+	bool fadeout = false;
 };
 
 #endif // __ModuleCentralEditor_H__

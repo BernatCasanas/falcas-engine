@@ -23,6 +23,9 @@ public:
 
 	void RenderImage();
 
+	void SetOpacity(float opacity);
+	float GetOpacity();
+
 private:
 	ResourceMaterial* resource_material = nullptr;
 	ComponentTransform2D* trans;
