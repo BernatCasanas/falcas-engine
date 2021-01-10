@@ -917,6 +917,9 @@ bool ModuleCentralEditor::SaveScene(const char* name)
 	char file[150];
 	sprintf_s(file, 150, "Library/Scenes/%s.scenefalcas", name);
     std::string fileName = file;
+    if (App->filesystem->FileExists(file)) {
+        App->filesystem->DeleteAFile(file);
+    }
 	for (int i = 0; App->filesystem->FileExists(file); i++) {
         fileName = App->filesystem->GetFileName(file, true);
         if (i != 0) fileName =  name + std::to_string(i);
@@ -935,11 +938,7 @@ void ModuleCentralEditor::LoadScene(const char* file)
     App->scene_intro->root->SetUUID();
     App->scene_intro->id_gameobject++;
     char* buffer;
-    if (App->filesystem->GetFileName(file, true) == "temp") {
-        if (App->filesystem->FileExists(file)) {
-            App->filesystem->DeleteAFile(file);
-        }
-    }
+
 
     App->filesystem->LoadPath((char*)file, &buffer);
     JsonObj scene(buffer);
