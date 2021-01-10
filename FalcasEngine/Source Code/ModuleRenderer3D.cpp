@@ -178,6 +178,8 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 
 	glLoadIdentity();
 	if (camera->update_projection_matrix || changed_camera) {
+		glViewport(0, 0, App->window->width, App->window->height);
+
 		glMatrixMode(GL_PROJECTION);
 		glLoadMatrixf(camera->GetProjectionMatrix());
 		camera->update_projection_matrix = false;
@@ -321,14 +323,16 @@ void ModuleRenderer3D::DrawFrustum(Frustum frustum)
 
 void ModuleRenderer3D::OnResize(int width, int height)
 {
-	glViewport(0, 0, width, height);
+	App->window->width = width;
+	App->window->height = height;
+	/*glViewport(0, 0, width, height);
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	glLoadMatrixf(camera->GetProjectionMatrix());
 
 	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
+	glLoadIdentity();*/
 }
 
 void ModuleRenderer3D::RenderUI()
