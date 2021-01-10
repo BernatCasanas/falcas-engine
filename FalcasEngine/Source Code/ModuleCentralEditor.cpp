@@ -114,6 +114,7 @@ bool ModuleCentralEditor::Start()
     icon_obj.CleanUp();
 
 
+
     return true;
 }
 
@@ -988,8 +989,8 @@ void ModuleCentralEditor::LoadScene(const char* file)
                 if (name_asset != "") {
                     name_asset += ".meta";
                     char* buffer;
-                    JsonObj icon_obj = JsonObj(buffer);
                     App->filesystem->LoadPath((char*)name_asset.c_str(), &buffer);
+                    JsonObj icon_obj = JsonObj(buffer);
                     icon_obj = JsonObj(buffer);
                     uint id = icon_obj.GetInt("ID");
                     mesh->ChangeResourceMesh((ResourceMesh*)App->resources->RequestResource(id));
@@ -1003,8 +1004,8 @@ void ModuleCentralEditor::LoadScene(const char* file)
                 if (name_asset != "") {
                     name_asset += ".meta";
                     char* buffer;
-                    JsonObj icon_obj = JsonObj(buffer);
                     App->filesystem->LoadPath((char*)name_asset.c_str(), &buffer);
+                    JsonObj icon_obj = JsonObj(buffer);
                     icon_obj = JsonObj(buffer);
                     uint id = icon_obj.GetInt("ID");
                     mat->ChangeResourceMaterial((ResourceMaterial*)App->resources->RequestResource(id));
@@ -1039,8 +1040,8 @@ void ModuleCentralEditor::LoadScene(const char* file)
                 if (name_asset != "") {
                     name_asset += ".meta";
                     char* buffer;
-                    JsonObj icon_obj = JsonObj(buffer);
                     App->filesystem->LoadPath((char*)name_asset.c_str(), &buffer);
+                    JsonObj icon_obj = JsonObj(buffer);
                     icon_obj = JsonObj(buffer);
                     id1 = icon_obj.GetInt("ID");
                     delete[] buffer;
@@ -1050,8 +1051,8 @@ void ModuleCentralEditor::LoadScene(const char* file)
                 if (name_asset != "") {
                     name_asset += ".meta";
                     char* buffer;
-                    JsonObj icon_obj = JsonObj(buffer);
                     App->filesystem->LoadPath((char*)name_asset.c_str(), &buffer);
+                    JsonObj icon_obj = JsonObj(buffer);
                     icon_obj = JsonObj(buffer);
                     id2 = icon_obj.GetInt("ID");
                     delete[] buffer;
@@ -1061,8 +1062,8 @@ void ModuleCentralEditor::LoadScene(const char* file)
                 if (name_asset != "") {
                     name_asset += ".meta";
                     char* buffer;
-                    JsonObj icon_obj = JsonObj(buffer);
                     App->filesystem->LoadPath((char*)name_asset.c_str(), &buffer);
+                    JsonObj icon_obj = JsonObj(buffer);
                     icon_obj = JsonObj(buffer);
                     id3 = icon_obj.GetInt("ID");
                     delete[] buffer;
@@ -1085,8 +1086,8 @@ void ModuleCentralEditor::LoadScene(const char* file)
                 if (name_asset != "") {
                     name_asset += ".meta";
                     char* buffer;
-                    JsonObj icon_obj = JsonObj(buffer);
                     App->filesystem->LoadPath((char*)name_asset.c_str(), &buffer);
+                    JsonObj icon_obj = JsonObj(buffer);
                     icon_obj = JsonObj(buffer);
                     id1 = icon_obj.GetInt("ID");
                     delete[] buffer;
@@ -1096,8 +1097,8 @@ void ModuleCentralEditor::LoadScene(const char* file)
                 if (name_asset != "") {
                     name_asset += ".meta";
                     char* buffer;
-                    JsonObj icon_obj = JsonObj(buffer);
                     App->filesystem->LoadPath((char*)name_asset.c_str(), &buffer);
+                    JsonObj icon_obj = JsonObj(buffer);
                     icon_obj = JsonObj(buffer);
                     id2 = icon_obj.GetInt("ID");
                     delete[] buffer;
@@ -1107,8 +1108,8 @@ void ModuleCentralEditor::LoadScene(const char* file)
                 if (name_asset != "") {
                     name_asset += ".meta";
                     char* buffer;
-                    JsonObj icon_obj = JsonObj(buffer);
                     App->filesystem->LoadPath((char*)name_asset.c_str(), &buffer);
+                    JsonObj icon_obj = JsonObj(buffer);
                     icon_obj = JsonObj(buffer);
                     id3 = icon_obj.GetInt("ID");
                     delete[] buffer;
@@ -1118,8 +1119,8 @@ void ModuleCentralEditor::LoadScene(const char* file)
                 if (name_asset != "") {
                     name_asset += ".meta";
                     char* buffer;
-                    JsonObj icon_obj = JsonObj(buffer);
                     App->filesystem->LoadPath((char*)name_asset.c_str(), &buffer);
+                    JsonObj icon_obj = JsonObj(buffer);
                     icon_obj = JsonObj(buffer);
                     id4 = icon_obj.GetInt("ID");
                     delete[] buffer;
@@ -1140,8 +1141,8 @@ void ModuleCentralEditor::LoadScene(const char* file)
                 if (name_asset != "") {
                     name_asset += ".meta";
                     char* buffer;
-                    JsonObj icon_obj = JsonObj(buffer);
                     App->filesystem->LoadPath((char*)name_asset.c_str(), &buffer);
+                    JsonObj icon_obj = JsonObj(buffer);
                     icon_obj = JsonObj(buffer);
                     id = icon_obj.GetInt("ID");
                     delete[] buffer;
@@ -1160,8 +1161,8 @@ void ModuleCentralEditor::LoadScene(const char* file)
                 if (name_asset != "") {
                     name_asset += ".meta";
                     char* buffer;
-                    JsonObj icon_obj = JsonObj(buffer);
                     App->filesystem->LoadPath((char*)name_asset.c_str(), &buffer);
+                    JsonObj icon_obj = JsonObj(buffer);
                     icon_obj = JsonObj(buffer);
                     id = icon_obj.GetInt("ID");
                     delete[] buffer;

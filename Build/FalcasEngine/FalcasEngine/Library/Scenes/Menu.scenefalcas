@@ -1,0 +1,171 @@
+{
+    "name": "scene",
+    "GameObjects": [
+        {
+            "UUID": 776208836,
+            "name": "Grid",
+            "isUI": false,
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1
+                    ]
+                }
+            ]
+        },
+        {
+            "UUID": 1961137392,
+            "Parent UUID": 776208836,
+            "name": "BG",
+            "isUI": true,
+            "Components": [
+                {
+                    "name": "Transform2D",
+                    "Position": [
+                        0,
+                        0,
+                        10
+                    ],
+                    "Rotation": [
+                        0,
+                        0,
+                        0,
+                        1
+                    ],
+                    "Size": [
+                        35,
+                        30,
+                        0
+                    ],
+                    "Pivot": [
+                        0,
+                        0,
+                        0
+                    ]
+                },
+                {
+                    "name": "Image",
+                    "Resource_String": "Assets\/fortnite_battle_royale.png",
+                    "Opacity": 1,
+                    "Text": "Text",
+                    "Size": "32",
+                    "r": 0,
+                    "g": 0,
+                    "b": 0,
+                    "a": 0,
+                    "Layer": 0
+                }
+            ]
+        },
+        {
+            "UUID": 74633745,
+            "Parent UUID": 776208836,
+            "name": "Name",
+            "isUI": true,
+            "Components": [
+                {
+                    "name": "Transform2D",
+                    "Position": [
+                        20,
+                        320,
+                        10
+                    ],
+                    "Rotation": [
+                        0,
+                        0,
+                        0,
+                        1
+                    ],
+                    "Size": [
+                        700,
+                        30,
+                        0
+                    ],
+                    "Pivot": [
+                        0,
+                        0,
+                        0
+                    ]
+                },
+                {
+                    "name": "Input Box",
+                    "Output": "",
+                    "Input": "",
+                    "Pos": 0,
+                    "Active": false,
+                    "Resource_String": "Assets\/White.png",
+                    "Text": "Name",
+                    "Size": "32",
+                    "r": 0,
+                    "g": 0,
+                    "b": 0,
+                    "a": 0,
+                    "Layer": 0
+                }
+            ]
+        },
+        {
+            "UUID": 1505842977,
+            "Parent UUID": 776208836,
+            "name": "Play",
+            "isUI": true,
+            "Components": [
+                {
+                    "name": "Transform2D",
+                    "Position": [
+                        0,
+                        -170,
+                        10
+                    ],
+                    "Rotation": [
+                        0,
+                        0,
+                        0,
+                        1
+                    ],
+                    "Size": [
+                        100,
+                        70,
+                        0
+                    ],
+                    "Pivot": [
+                        0,
+                        0,
+                        0
+                    ]
+                },
+                {
+                    "name": "Button",
+                    "Resource1_String": "Assets\/White.png",
+                    "Resource2_String": "Assets\/Solid_green.svg.png",
+                    "Resource3_String": "Assets\/Solid_blue.svg.png",
+                    "Scene_Name": "Game",
+                    "Functionality": "Change Screen",
+                    "Text": "Play",
+                    "Size": "32",
+                    "r": 0,
+                    "g": 0,
+                    "b": 0,
+                    "a": 0,
+                    "Layer": 0
+                }
+            ]
+        }
+    ]
+}

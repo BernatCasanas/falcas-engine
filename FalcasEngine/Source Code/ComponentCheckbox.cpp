@@ -7,6 +7,7 @@
 #include "ComponentTransform2D.h"
 #include "FileSystem.h"
 #include "External Libraries/ImGui/imgui.h"
+#include "ModuleInput.h"
 #include "ModuleWindow.h"
 
 ComponentCheckbox::ComponentCheckbox(GameObject* owner, ComponentTransform2D* trans) : ComponentUI(Component_Type::Checkbox, owner, "Checkbox"), trans(trans)
@@ -36,11 +37,17 @@ ComponentCheckbox::~ComponentCheckbox()
 
 void ComponentCheckbox::Update()
 {
+	if (App->input->GetKey(58) == KEY_DOWN) {
+		f1 = !f1;
+	}
+	
+	if (!f1)
+		return;
 	ComponentUI::Update();
 
 	if (is_clicked_first_frame) {
+		listener = App->window;
 		OnTriggered(this);
-		App->window->OnTriggered(this);
 		is_active = !is_active;
 	}
 	for (int i = 0; i < App->scene_intro->resources_material_to_delete.size(); i++) {
@@ -65,7 +72,7 @@ void ComponentCheckbox::Initialization()
 
 void ComponentCheckbox::Render()
 {
-	if (!active)
+	if (!active || !f1)
 		return;
 
 

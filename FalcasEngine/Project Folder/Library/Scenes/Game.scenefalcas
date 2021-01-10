@@ -2,7 +2,7 @@
     "name": "scene",
     "GameObjects": [
         {
-            "UUID": 221641922,
+            "UUID": 1326049365,
             "name": "Grid",
             "isUI": false,
             "Components": [
@@ -30,8 +30,1218 @@
             ]
         },
         {
-            "UUID": 1805891184,
-            "Parent UUID": 221641922,
+            "UUID": 93988345,
+            "Parent UUID": 1326049365,
+            "name": "Camera",
+            "isUI": false,
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1
+                    ]
+                },
+                {
+                    "name": "Camera",
+                    "FrustumFar": 1000,
+                    "FrustumNear": 0.10000000149011612,
+                    "FrustumHfov": 1.5415822267532349,
+                    "FrustumVfov": 1
+                }
+            ]
+        },
+        {
+            "UUID": 352049490,
+            "Parent UUID": 1326049365,
+            "name": "street_view",
+            "isUI": false,
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1
+                    ]
+                }
+            ]
+        },
+        {
+            "UUID": 391454976,
+            "Parent UUID": 352049490,
+            "name": "street_view (1)",
+            "isUI": false,
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        1,
+                        0,
+                        0,
+                        42.130641937255859,
+                        0,
+                        1.7881392011531716e-07,
+                        0.99999988079071045,
+                        7.240862487378763e-07,
+                        0,
+                        -0.99999988079071045,
+                        1.7881392011531716e-07,
+                        -37.493282318115234,
+                        0,
+                        0,
+                        0,
+                        1
+                    ]
+                },
+                {
+                    "name": "Mesh",
+                    "Resource_String": "Assets\/street\/street_view.FBX"
+                },
+                {
+                    "name": "Material",
+                    "Resource_String": "Assets\/street\/building_016_c.tga"
+                }
+            ]
+        },
+        {
+            "UUID": 1286850657,
+            "Parent UUID": 352049490,
+            "name": "street_view (2)",
+            "isUI": false,
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        0,
+                        0.99999994039535522,
+                        0,
+                        -31.216331481933594,
+                        0,
+                        0,
+                        0.99999994039535522,
+                        2.4804287477309117e-06,
+                        0.99999988079071045,
+                        0,
+                        0,
+                        -33.201572418212891,
+                        0,
+                        0,
+                        0,
+                        1
+                    ]
+                },
+                {
+                    "name": "Mesh",
+                    "Resource_String": "Assets\/street\/street_view.FBX"
+                },
+                {
+                    "name": "Material",
+                    "Resource_String": "Assets\/street\/building 06_ c.tga"
+                }
+            ]
+        },
+        {
+            "UUID": 2081781150,
+            "Parent UUID": 352049490,
+            "name": "street_view (3)",
+            "isUI": false,
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        -4.7683710135970614e-07,
+                        0.99999994039535522,
+                        0,
+                        16.049516677856445,
+                        2.3841855067985307e-07,
+                        0,
+                        0.99999994039535522,
+                        -9.9521184893092141e-07,
+                        0.99999988079071045,
+                        4.4703480739372026e-07,
+                        -2.3841856489070778e-07,
+                        16.696882247924805,
+                        0,
+                        0,
+                        0,
+                        1
+                    ]
+                },
+                {
+                    "name": "Mesh",
+                    "Resource_String": "Assets\/street\/street_view.FBX"
+                },
+                {
+                    "name": "Material",
+                    "Resource_String": "Assets\/street\/building05 _c.tga"
+                }
+            ]
+        },
+        {
+            "UUID": 1069883549,
+            "Parent UUID": 352049490,
+            "name": "street_view (4)",
+            "isUI": false,
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        -1,
+                        -3.89414338997085e-07,
+                        4.2632560757474222e-14,
+                        -20.317693710327148,
+                        -4.2632564145606011e-14,
+                        1.7881392011531716e-07,
+                        0.99999988079071045,
+                        -9.6342614597233478e-07,
+                        -3.8941436741879443e-07,
+                        0.99999988079071045,
+                        -1.1920928244535389e-07,
+                        16.163606643676758,
+                        0,
+                        0,
+                        0,
+                        1
+                    ]
+                },
+                {
+                    "name": "Mesh",
+                    "Resource_String": "Assets\/street\/street_view.FBX"
+                },
+                {
+                    "name": "Material",
+                    "Resource_String": "Assets\/street\/building05 _c.tga"
+                }
+            ]
+        },
+        {
+            "UUID": 1959570308,
+            "Parent UUID": 352049490,
+            "name": "street_view (5)",
+            "isUI": false,
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        0,
+                        -0.99999994039535522,
+                        0,
+                        40.979995727539063,
+                        0,
+                        0,
+                        0.99999994039535522,
+                        -9.6322037279605865e-07,
+                        -0.99999988079071045,
+                        0,
+                        0,
+                        -18.270822525024414,
+                        0,
+                        0,
+                        0,
+                        1
+                    ]
+                },
+                {
+                    "name": "Mesh",
+                    "Resource_String": "Assets\/street\/street_view.FBX"
+                },
+                {
+                    "name": "Material",
+                    "Resource_String": "Assets\/street\/building_025_c.tga"
+                }
+            ]
+        },
+        {
+            "UUID": 753571444,
+            "Parent UUID": 352049490,
+            "name": "street_view (6)",
+            "isUI": false,
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        1,
+                        0,
+                        0,
+                        -32.361495971679688,
+                        0,
+                        1.7881392011531716e-07,
+                        0.99999988079071045,
+                        3.0269345643318957e-06,
+                        0,
+                        -0.99999988079071045,
+                        1.7881392011531716e-07,
+                        -42.370418548583984,
+                        0,
+                        0,
+                        0,
+                        1
+                    ]
+                },
+                {
+                    "name": "Mesh",
+                    "Resource_String": "Assets\/street\/street_view.FBX"
+                },
+                {
+                    "name": "Material",
+                    "Resource_String": "Assets\/street\/building 06_ c.tga"
+                }
+            ]
+        },
+        {
+            "UUID": 2035851022,
+            "Parent UUID": 352049490,
+            "name": "street_view (7)",
+            "isUI": false,
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        -4.7683710135970614e-07,
+                        0.99999994039535522,
+                        0,
+                        -41.649002075195313,
+                        2.3841855067985307e-07,
+                        0,
+                        0.99999994039535522,
+                        -9.8320208508084761e-07,
+                        0.99999988079071045,
+                        4.4703480739372026e-07,
+                        -2.3841856489070778e-07,
+                        16.495391845703125,
+                        0,
+                        0,
+                        0,
+                        1
+                    ]
+                },
+                {
+                    "name": "Mesh",
+                    "Resource_String": "Assets\/street\/street_view.FBX"
+                },
+                {
+                    "name": "Material",
+                    "Resource_String": "Assets\/street\/building05 _c.tga"
+                }
+            ]
+        },
+        {
+            "UUID": 1008986991,
+            "Parent UUID": 352049490,
+            "name": "street_view (8)",
+            "isUI": false,
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        -1,
+                        -8.7422762362621143e-08,
+                        -7.1054269340845282e-15,
+                        -19.439706802368164,
+                        -2.1316282072803006e-14,
+                        1.7881392011531716e-07,
+                        0.99999988079071045,
+                        1.9110279936285224e-06,
+                        -8.74227694680485e-08,
+                        0.99999988079071045,
+                        -1.1920928244535389e-07,
+                        -32.061725616455078,
+                        0,
+                        0,
+                        0,
+                        1
+                    ]
+                },
+                {
+                    "name": "Mesh",
+                    "Resource_String": "Assets\/street\/street_view.FBX"
+                },
+                {
+                    "name": "Material",
+                    "Resource_String": "Assets\/street\/building03_c.tga"
+                }
+            ]
+        },
+        {
+            "UUID": 2014242525,
+            "Parent UUID": 352049490,
+            "name": "street_view (9)",
+            "isUI": false,
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        1,
+                        0,
+                        0,
+                        -2.5033531188964844,
+                        0,
+                        1.7881392011531716e-07,
+                        0.99999988079071045,
+                        9.4180381893238518e-07,
+                        0,
+                        -0.99999988079071045,
+                        1.7881392011531716e-07,
+                        -15.800845146179199,
+                        0,
+                        0,
+                        0,
+                        1
+                    ]
+                },
+                {
+                    "name": "Mesh",
+                    "Resource_String": "Assets\/street\/street_view.FBX"
+                }
+            ]
+        },
+        {
+            "UUID": 571741124,
+            "Parent UUID": 352049490,
+            "name": "street_view (10)",
+            "isUI": false,
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        -1,
+                        8.7422762362621143e-08,
+                        7.1054269340845282e-15,
+                        -20.572771072387695,
+                        2.1316282072803006e-14,
+                        1.7881392011531716e-07,
+                        0.99999988079071045,
+                        -0.069191887974739075,
+                        8.74227694680485e-08,
+                        0.99999988079071045,
+                        -1.1920928244535389e-07,
+                        -43.060825347900391,
+                        0,
+                        0,
+                        0,
+                        1
+                    ]
+                },
+                {
+                    "name": "Mesh",
+                    "Resource_String": "Assets\/street\/street_view.FBX"
+                },
+                {
+                    "name": "Material",
+                    "Resource_String": "Assets\/street\/building_025_c.tga"
+                }
+            ]
+        },
+        {
+            "UUID": 1035973952,
+            "Parent UUID": 352049490,
+            "name": "street_view (11)",
+            "isUI": false,
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        1,
+                        0,
+                        0,
+                        17.707164764404297,
+                        0,
+                        1.7881392011531716e-07,
+                        0.99999988079071045,
+                        1.4073756346988375e-06,
+                        0,
+                        -0.99999988079071045,
+                        1.7881392011531716e-07,
+                        -20.053274154663086,
+                        0,
+                        0,
+                        0,
+                        1
+                    ]
+                },
+                {
+                    "name": "Mesh",
+                    "Resource_String": "Assets\/street\/street_view.FBX"
+                },
+                {
+                    "name": "Material",
+                    "Resource_String": "Assets\/street\/Building_V02_C.png"
+                }
+            ]
+        },
+        {
+            "UUID": 1411207240,
+            "Parent UUID": 352049490,
+            "name": "street_view (12)",
+            "isUI": false,
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        1,
+                        0,
+                        0,
+                        30.134540557861328,
+                        0,
+                        1.7881392011531716e-07,
+                        0.99999988079071045,
+                        7.240862487378763e-07,
+                        0,
+                        -0.99999988079071045,
+                        1.7881392011531716e-07,
+                        -37.493282318115234,
+                        0,
+                        0,
+                        0,
+                        1
+                    ]
+                },
+                {
+                    "name": "Mesh",
+                    "Resource_String": "Assets\/street\/street_view.FBX"
+                },
+                {
+                    "name": "Material",
+                    "Resource_String": "Assets\/street\/building_016_c.tga"
+                }
+            ]
+        },
+        {
+            "UUID": 1919301298,
+            "Parent UUID": 352049490,
+            "name": "street_view (13)",
+            "isUI": false,
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        -1,
+                        8.7422762362621143e-08,
+                        7.1054269340845282e-15,
+                        31.51188850402832,
+                        2.1316282072803006e-14,
+                        1.7881392011531716e-07,
+                        0.99999988079071045,
+                        -9.8025896022591041e-07,
+                        8.74227694680485e-08,
+                        0.99999988079071045,
+                        -1.1920928244535389e-07,
+                        16.446014404296875,
+                        0,
+                        0,
+                        0,
+                        1
+                    ]
+                },
+                {
+                    "name": "Mesh",
+                    "Resource_String": "Assets\/street\/street_view.FBX"
+                },
+                {
+                    "name": "Material",
+                    "Resource_String": "Assets\/street\/building05 _c.tga"
+                }
+            ]
+        },
+        {
+            "UUID": 1134787968,
+            "Parent UUID": 352049490,
+            "name": "street_view (14)",
+            "isUI": false,
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        0,
+                        -0.99999994039535522,
+                        0,
+                        30.695278167724609,
+                        0,
+                        0,
+                        0.99999994039535522,
+                        1.5003213320596842e-06,
+                        -0.99999988079071045,
+                        0,
+                        0,
+                        -21.612644195556641,
+                        0,
+                        0,
+                        0,
+                        1
+                    ]
+                },
+                {
+                    "name": "Mesh",
+                    "Resource_String": "Assets\/street\/street_view.FBX"
+                },
+                {
+                    "name": "Material",
+                    "Resource_String": "Assets\/street\/Building_V02_C.png"
+                }
+            ]
+        },
+        {
+            "UUID": 2055804177,
+            "Parent UUID": 352049490,
+            "name": "street_view (15)",
+            "isUI": false,
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        1,
+                        0,
+                        0,
+                        13.38798999786377,
+                        0,
+                        1.7881392011531716e-07,
+                        0.99999988079071045,
+                        -2.9503021323762368e-06,
+                        0,
+                        -0.99999988079071045,
+                        1.7881392011531716e-07,
+                        33.755035400390625,
+                        0,
+                        0,
+                        0,
+                        1
+                    ]
+                },
+                {
+                    "name": "Mesh",
+                    "Resource_String": "Assets\/street\/street_view.FBX"
+                },
+                {
+                    "name": "Material",
+                    "Resource_String": "Assets\/street\/Building_V01_C.png"
+                }
+            ]
+        },
+        {
+            "UUID": 1319583919,
+            "Parent UUID": 352049490,
+            "name": "street_view (16)",
+            "isUI": false,
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        1,
+                        0,
+                        0,
+                        -41.47589111328125,
+                        0,
+                        1.7881392011531716e-07,
+                        0.99999988079071045,
+                        1.2525379133876413e-06,
+                        0,
+                        -0.99999988079071045,
+                        1.7881392011531716e-07,
+                        -21.014097213745117,
+                        0,
+                        0,
+                        0,
+                        1
+                    ]
+                },
+                {
+                    "name": "Mesh",
+                    "Resource_String": "Assets\/street\/street_view.FBX"
+                },
+                {
+                    "name": "Material",
+                    "Resource_String": "Assets\/street\/building03_c.tga"
+                }
+            ]
+        },
+        {
+            "UUID": 531728781,
+            "Parent UUID": 352049490,
+            "name": "street_view (17)",
+            "isUI": false,
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        0,
+                        0.99999994039535522,
+                        0,
+                        -34.679481506347656,
+                        0,
+                        0,
+                        0.99999994039535522,
+                        -2.7648632112686755e-06,
+                        0.99999988079071045,
+                        0,
+                        0,
+                        30.643886566162109,
+                        0,
+                        0,
+                        0,
+                        1
+                    ]
+                },
+                {
+                    "name": "Mesh",
+                    "Resource_String": "Assets\/street\/street_view.FBX"
+                },
+                {
+                    "name": "Material",
+                    "Resource_String": "Assets\/street\/Building_V01_C.png"
+                }
+            ]
+        },
+        {
+            "UUID": 265891901,
+            "Parent UUID": 352049490,
+            "name": "street_view (18)",
+            "isUI": false,
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        -1,
+                        -8.7422762362621143e-08,
+                        -7.1054269340845282e-15,
+                        34.270423889160156,
+                        -2.1316282072803006e-14,
+                        1.7881392011531716e-07,
+                        0.99999988079071045,
+                        -1.6463843621750129e-06,
+                        -8.74227694680485e-08,
+                        0.99999988079071045,
+                        -1.1920928244535389e-07,
+                        41.972743988037109,
+                        0,
+                        0,
+                        0,
+                        1
+                    ]
+                },
+                {
+                    "name": "Mesh",
+                    "Resource_String": "Assets\/street\/street_view.FBX"
+                },
+                {
+                    "name": "Material",
+                    "Resource_String": "Assets\/street\/building 01_c.tga"
+                }
+            ]
+        },
+        {
+            "UUID": 682989227,
+            "Parent UUID": 352049490,
+            "name": "street_view (19)",
+            "isUI": false,
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        0,
+                        0.99999994039535522,
+                        0,
+                        -42.807239532470703,
+                        0,
+                        0,
+                        0.99999994039535522,
+                        -2.7648632112686755e-06,
+                        0.99999988079071045,
+                        0,
+                        0,
+                        30.643886566162109,
+                        0,
+                        0,
+                        0,
+                        1
+                    ]
+                },
+                {
+                    "name": "Mesh",
+                    "Resource_String": "Assets\/street\/street_view.FBX"
+                },
+                {
+                    "name": "Material",
+                    "Resource_String": "Assets\/street\/Building_V01_C.png"
+                }
+            ]
+        },
+        {
+            "UUID": 724668304,
+            "Parent UUID": 352049490,
+            "name": "street_view (20)",
+            "isUI": false,
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        0.99663525819778442,
+                        0,
+                        0,
+                        -0.02860260009765625,
+                        0,
+                        -1.157064914991679e-07,
+                        0.9966353178024292,
+                        1.5516334883614036e-09,
+                        0,
+                        -0.97061651945114136,
+                        -1.1880817396558996e-07,
+                        -0.026032088324427605,
+                        0,
+                        0,
+                        0,
+                        1
+                    ]
+                },
+                {
+                    "name": "Mesh",
+                    "Resource_String": "Assets\/street\/street_view.FBX"
+                }
+            ]
+        },
+        {
+            "UUID": 1476087757,
+            "Parent UUID": 352049490,
+            "name": "street_view (21)",
+            "isUI": false,
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        0,
+                        -0.99999994039535522,
+                        0,
+                        25.154010772705078,
+                        0,
+                        0,
+                        0.99999994039535522,
+                        -1.4783572623855434e-06,
+                        -0.99999988079071045,
+                        0,
+                        0,
+                        39.153717041015625,
+                        0,
+                        0,
+                        0,
+                        1
+                    ]
+                },
+                {
+                    "name": "Mesh",
+                    "Resource_String": "Assets\/street\/street_view.FBX"
+                },
+                {
+                    "name": "Material",
+                    "Resource_String": "Assets\/street\/building 01_c.tga"
+                }
+            ]
+        },
+        {
+            "UUID": 92137617,
+            "Parent UUID": 352049490,
+            "name": "street_view (22)",
+            "isUI": false,
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        0,
+                        0.99999994039535522,
+                        0,
+                        -2.1597719192504883,
+                        0,
+                        0,
+                        0.99999994039535522,
+                        1.1049736770019081e-07,
+                        0.99999988079071045,
+                        0,
+                        0,
+                        -1.8538380861282349,
+                        0,
+                        0,
+                        0,
+                        1
+                    ]
+                },
+                {
+                    "name": "Mesh",
+                    "Resource_String": "Assets\/street\/street_view.FBX"
+                }
+            ]
+        },
+        {
+            "UUID": 881639757,
+            "Parent UUID": 352049490,
+            "name": "street_view (23)",
+            "isUI": false,
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        0,
+                        -0.99999994039535522,
+                        0,
+                        44.260082244873047,
+                        0,
+                        0,
+                        0.99999994039535522,
+                        -1.4783572623855434e-06,
+                        -0.99999988079071045,
+                        0,
+                        0,
+                        39.153717041015625,
+                        0,
+                        0,
+                        0,
+                        1
+                    ]
+                },
+                {
+                    "name": "Mesh",
+                    "Resource_String": "Assets\/street\/street_view.FBX"
+                },
+                {
+                    "name": "Material",
+                    "Resource_String": "Assets\/street\/building 01_c.tga"
+                }
+            ]
+        },
+        {
+            "UUID": 1735332459,
+            "Parent UUID": 352049490,
+            "name": "street_view (24)",
+            "isUI": false,
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        0,
+                        -0.99999994039535522,
+                        0,
+                        -42.288055419921875,
+                        0,
+                        0,
+                        0.99999994039535522,
+                        2.4804287477309117e-06,
+                        -0.99999988079071045,
+                        0,
+                        0,
+                        -33.201572418212891,
+                        0,
+                        0,
+                        0,
+                        1
+                    ]
+                },
+                {
+                    "name": "Mesh",
+                    "Resource_String": "Assets\/street\/street_view.FBX"
+                },
+                {
+                    "name": "Material",
+                    "Resource_String": "Assets\/street\/building 06_ c.tga"
+                }
+            ]
+        },
+        {
+            "UUID": 1032554183,
+            "Parent UUID": 352049490,
+            "name": "street_view (25)",
+            "isUI": false,
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        0,
+                        0.99999994039535522,
+                        0,
+                        -42.807239532470703,
+                        0,
+                        0,
+                        0.99999994039535522,
+                        -3.4319391488679685e-06,
+                        0.99999988079071045,
+                        0,
+                        0,
+                        41.835559844970703,
+                        0,
+                        0,
+                        0,
+                        1
+                    ]
+                },
+                {
+                    "name": "Mesh",
+                    "Resource_String": "Assets\/street\/street_view.FBX"
+                },
+                {
+                    "name": "Material",
+                    "Resource_String": "Assets\/street\/Building_V01_C.png"
+                }
+            ]
+        },
+        {
+            "UUID": 1240000861,
+            "Parent UUID": 352049490,
+            "name": "street_view (26)",
+            "isUI": false,
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        1,
+                        0,
+                        0,
+                        16.010492324829102,
+                        0,
+                        1.7881392011531716e-07,
+                        0.99999988079071045,
+                        7.240862487378763e-07,
+                        0,
+                        -0.99999988079071045,
+                        1.7881392011531716e-07,
+                        -37.493282318115234,
+                        0,
+                        0,
+                        0,
+                        1
+                    ]
+                },
+                {
+                    "name": "Mesh",
+                    "Resource_String": "Assets\/street\/street_view.FBX"
+                },
+                {
+                    "name": "Material",
+                    "Resource_String": "Assets\/street\/building_016_c.tga"
+                }
+            ]
+        },
+        {
+            "UUID": 273080511,
+            "Parent UUID": 352049490,
+            "name": "street_view (27)",
+            "isUI": false,
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        -1,
+                        -3.89414338997085e-07,
+                        4.2632560757474222e-14,
+                        -20.831323623657227,
+                        -4.2632564145606011e-14,
+                        1.7881392011531716e-07,
+                        0.99999988079071045,
+                        -1.6347461269106134e-06,
+                        -3.8941436741879443e-07,
+                        0.99999988079071045,
+                        -1.1920928244535389e-07,
+                        27.426486968994141,
+                        0,
+                        0,
+                        0,
+                        1
+                    ]
+                },
+                {
+                    "name": "Mesh",
+                    "Resource_String": "Assets\/street\/street_view.FBX"
+                },
+                {
+                    "name": "Material",
+                    "Resource_String": "Assets\/street\/building05 _c.tga"
+                }
+            ]
+        },
+        {
+            "UUID": 213391412,
+            "Parent UUID": 352049490,
+            "name": "street_view (28)",
+            "isUI": false,
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        1,
+                        0,
+                        0,
+                        -29.478403091430664,
+                        0,
+                        1.7881392011531716e-07,
+                        0.99999988079071045,
+                        1.2525379133876413e-06,
+                        0,
+                        -0.99999988079071045,
+                        1.7881392011531716e-07,
+                        -21.014097213745117,
+                        0,
+                        0,
+                        0,
+                        1
+                    ]
+                },
+                {
+                    "name": "Mesh",
+                    "Resource_String": "Assets\/street\/street_view.FBX"
+                },
+                {
+                    "name": "Material",
+                    "Resource_String": "Assets\/street\/building03_c.tga"
+                }
+            ]
+        },
+        {
+            "UUID": 46555594,
+            "Parent UUID": 352049490,
+            "name": "street_view (29)",
+            "isUI": false,
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        1,
+                        0,
+                        0,
+                        13.38798999786377,
+                        0,
+                        1.7881392011531716e-07,
+                        0.99999988079071045,
+                        -3.3703645385685377e-06,
+                        0,
+                        -0.99999988079071045,
+                        1.7881392011531716e-07,
+                        40.802513122558594,
+                        0,
+                        0,
+                        0,
+                        1
+                    ]
+                },
+                {
+                    "name": "Mesh",
+                    "Resource_String": "Assets\/street\/street_view.FBX"
+                },
+                {
+                    "name": "Material",
+                    "Resource_String": "Assets\/street\/Building_V01_C.png"
+                }
+            ]
+        },
+        {
+            "UUID": 552606741,
+            "Parent UUID": 352049490,
+            "name": "street_view (30)",
+            "isUI": false,
+            "Components": [
+                {
+                    "name": "Transform",
+                    "GlobalMatrix": [
+                        0,
+                        0.99999994039535522,
+                        0,
+                        -34.679481506347656,
+                        0,
+                        0,
+                        0.99999994039535522,
+                        -3.4319391488679685e-06,
+                        0.99999988079071045,
+                        0,
+                        0,
+                        41.835559844970703,
+                        0,
+                        0,
+                        0,
+                        1
+                    ]
+                },
+                {
+                    "name": "Mesh",
+                    "Resource_String": "Assets\/street\/street_view.FBX"
+                },
+                {
+                    "name": "Material",
+                    "Resource_String": "Assets\/street\/Building_V01_C.png"
+                }
+            ]
+        },
+        {
+            "UUID": 1999281540,
+            "Parent UUID": 1326049365,
+            "name": "Vsync",
+            "isUI": true,
+            "Components": [
+                {
+                    "name": "Transform2D",
+                    "Position": [
+                        0,
+                        -310,
+                        10
+                    ],
+                    "Rotation": [
+                        0,
+                        0,
+                        0,
+                        1
+                    ],
+                    "Size": [
+                        100,
+                        100,
+                        0
+                    ],
+                    "Pivot": [
+                        0,
+                        0,
+                        0
+                    ]
+                },
+                {
+                    "name": "Check Box",
+                    "Resource1_String": "Assets\/Solid_blue.svg.png",
+                    "Resource2_String": "Assets\/Solid_green.svg.png",
+                    "Resource3_String": "Assets\/White.png",
+                    "Resource4_String": "",
+                    "Active": false,
+                    "Text": "Vsync",
+                    "Size": "32",
+                    "r": 0,
+                    "g": 0,
+                    "b": 0,
+                    "a": 0,
+                    "Layer": 0
+                }
+            ]
+        },
+        {
+            "UUID": 175382737,
+            "Parent UUID": 1326049365,
             "name": "Crosshair",
             "isUI": true,
             "Components": [
@@ -49,8 +1259,8 @@
                         1
                     ],
                     "Size": [
-                        20,
-                        20,
+                        10,
+                        10,
                         0
                     ],
                     "Pivot": [
@@ -61,7 +1271,7 @@
                 },
                 {
                     "name": "Image",
-                    "Resource_ID": 1141347484,
+                    "Resource_String": "Assets\/crosshair.png",
                     "Opacity": 1,
                     "Text": "Text",
                     "Size": "32",
@@ -70,156 +1280,6 @@
                     "b": 0,
                     "a": 0,
                     "Layer": 0
-                }
-            ]
-        },
-        {
-            "UUID": 127734907,
-            "Parent UUID": 221641922,
-            "name": "Vsync",
-            "isUI": true,
-            "Components": [
-                {
-                    "name": "Transform2D",
-                    "Position": [
-                        -440,
-                        -250,
-                        10
-                    ],
-                    "Rotation": [
-                        0,
-                        0,
-                        0,
-                        1
-                    ],
-                    "Size": [
-                        50,
-                        50,
-                        0
-                    ],
-                    "Pivot": [
-                        0,
-                        0,
-                        0
-                    ]
-                },
-                {
-                    "name": "Check Box",
-                    "Resource1_ID": 1896705452,
-                    "Resource2_ID": 380381073,
-                    "Resource3_ID": 1381943491,
-                    "Resource4_ID": 1381943491,
-                    "Active": false,
-                    "Text": "Vsync",
-                    "Size": "32",
-                    "r": 1,
-                    "g": 0,
-                    "b": 0,
-                    "a": 0,
-                    "Layer": 0
-                }
-            ]
-        },
-        {
-            "UUID": 844660394,
-            "Parent UUID": 221641922,
-            "name": "BakerHouse",
-            "isUI": false,
-            "Components": [
-                {
-                    "name": "Transform",
-                    "GlobalMatrix": [
-                        0.0099999997764825821,
-                        0,
-                        0,
-                        0,
-                        0,
-                        -1.1920928688624599e-09,
-                        -0.010000000707805157,
-                        0,
-                        0,
-                        0.010000000707805157,
-                        -1.1920928688624599e-09,
-                        0,
-                        0,
-                        0,
-                        0,
-                        1
-                    ]
-                }
-            ]
-        },
-        {
-            "UUID": 872439173,
-            "Parent UUID": 844660394,
-            "name": "BakerHouse (1)",
-            "isUI": false,
-            "Components": [
-                {
-                    "name": "Transform",
-                    "GlobalMatrix": [
-                        1,
-                        0,
-                        0,
-                        0,
-                        0,
-                        0.99999994039535522,
-                        2.1316282072803006e-14,
-                        0,
-                        0,
-                        -2.1316282072803006e-14,
-                        0.99999994039535522,
-                        0,
-                        0,
-                        0,
-                        0,
-                        1
-                    ]
-                },
-                {
-                    "name": "Mesh",
-                    "Resource_ID": 863080750
-                },
-                {
-                    "name": "Material",
-                    "Resource_ID": 1574511913
-                }
-            ]
-        },
-        {
-            "UUID": 966053431,
-            "Parent UUID": 844660394,
-            "name": "BakerHouse (2)",
-            "isUI": false,
-            "Components": [
-                {
-                    "name": "Transform",
-                    "GlobalMatrix": [
-                        1,
-                        0,
-                        0,
-                        0,
-                        0,
-                        0.99999994039535522,
-                        2.1316282072803006e-14,
-                        0,
-                        0,
-                        -2.1316282072803006e-14,
-                        0.99999994039535522,
-                        0,
-                        0,
-                        0,
-                        0,
-                        1
-                    ]
-                },
-                {
-                    "name": "Mesh",
-                    "Resource_ID": 1259964235
-                },
-                {
-                    "name": "Material",
-                    "Resource_ID": 1574511913
                 }
             ]
         }

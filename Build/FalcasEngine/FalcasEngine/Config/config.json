@@ -1,0 +1,14 @@
+{
+    "icon": "",
+    "configModules": [
+        {
+            "name": "moduleWindow",
+            "appName": "Falcas Engine",
+            "height": 994,
+            "width": 1664,
+            "resizeable": true,
+            "fullscreen": false,
+            "border": true
+        }
+    ]
+}

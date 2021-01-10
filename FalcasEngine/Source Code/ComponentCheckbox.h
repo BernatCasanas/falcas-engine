@@ -26,6 +26,7 @@ public:
 	void Inspector();
 
 private:
+	bool f1 = false;
 	ResourceMaterial* resource_material_sprite1 = nullptr;
 	ResourceMaterial* resource_material_sprite2 = nullptr;
 	ResourceMaterial* resource_material_sprite3 = nullptr;
