@@ -10,6 +10,7 @@
 #include "ModuleUI.h"
 #include "External Libraries/ImGui/imgui.h"
 #include "ComponentTransform2D.h"
+#include "ModuleWindow.h"
 
 
 
@@ -48,6 +49,7 @@ void ComponentImage::Render()
 	if (!active)
 		return;
 	resource_mesh->Render((float*)&trans->GetGlobalMatrixTransposed(), nullptr, false, false, false, resource_material);
+	RenderImage();
 }
 
 bool ComponentImage::SaveComponent(JsonObj& obj)
@@ -155,4 +157,34 @@ void ComponentImage::SetMaterialLoading(ResourceMaterial* _1)
 void ComponentImage::SetTrans(ComponentTransform2D* trans)
 {
 	this->trans = trans;
+}
+
+void ComponentImage::RenderImage()
+{
+	if (resource_material == nullptr) return;
+	glEnable(GL_BLEND);
+	glDisable(GL_DEPTH_TEST);
+	glDisable(GL_LIGHTING);
+
+	glPushMatrix();
+	glMultMatrixf((float*)&trans->GetGlobalMatrix().Transposed());
+
+	glColor4f(255,255,255,100);
+
+	glBindTexture(GL_TEXTURE_2D, resource_material->texture_id);
+
+	glBegin(GL_QUADS);
+	glTexCoord2f(0, 0); glVertex2f(0,0);
+	glTexCoord2f(App->window->width, 0); glVertex2f(App->window->width, 0);
+	glTexCoord2f(App->window->width, App->window->height); glVertex2f(App->window->width, App->window->height);
+	glTexCoord2f(0, App->window->height); glVertex2f(0, App->window->height);
+	glEnd();
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	glPopMatrix();
+
+	glEnable(GL_LIGHTING);
+	glEnable(GL_DEPTH_TEST);
+	glDisable(GL_BLEND);
 }

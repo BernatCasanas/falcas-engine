@@ -21,6 +21,8 @@ public:
 	void SetMaterialLoading(ResourceMaterial* _1);
 	void SetTrans(ComponentTransform2D* trans);
 
+	void RenderImage();
+
 private:
 	ResourceMaterial* resource_material = nullptr;
 	ComponentTransform2D* trans;
