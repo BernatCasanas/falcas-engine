@@ -21,14 +21,6 @@ public:
 	// Called before all Updates
 	update_status PreUpdate(float dt);
 
-	// Called before all Updates
-	update_status Update(float dt);
-
-	// Called after all Updates
-	update_status PostUpdate(float dt);
-
-	// Called before quitting
-	bool CleanUp();
 
 	void RenderUI();
 	bool CheckHover();
@@ -42,30 +34,10 @@ public:
 	void DeleteLayer();
 	
 
-	void ChangeDebug();
-
-	void ChangeFocus();
-
-	void DeleteFocus();
-
-
-	void ClearUI();
-
-
-	void WorkWithTextInput(std::string text);
-
-	void DeactivateButtons();
-
-	void ActivateButtons();
-
-
 private:
 	int layers_with_ui_blocking_selecting = 0;
 	
-	//j1Timer minimap_feedback_timer;
-
-	//j1Timer animation_win_lose_timer;
-	//fPoint global_pos;
+	
 
 public:
 	uint mesh_plane_id;
