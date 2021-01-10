@@ -935,6 +935,12 @@ void ModuleCentralEditor::LoadScene(const char* file)
     App->scene_intro->root->SetUUID();
     App->scene_intro->id_gameobject++;
     char* buffer;
+    if (App->filesystem->GetFileName(file, true) == "temp") {
+        if (App->filesystem->FileExists(file)) {
+            App->filesystem->DeleteAFile(file);
+        }
+    }
+
     App->filesystem->LoadPath((char*)file, &buffer);
     JsonObj scene(buffer);
     JsonArray arr_gameObjects(scene.GetArray("GameObjects"));
@@ -957,7 +963,9 @@ void ModuleCentralEditor::LoadScene(const char* file)
             App->scene_intro->root->SetUUID(obj.GetInt("UUID"));
             continue;
         }
-		GameObject* gameObject = App->scene_intro->CreateGameObject(obj.GetString("name"), parent);
+        bool is_ui = obj.GetBool("isUI");
+        
+        GameObject* gameObject = App->scene_intro->CreateGameObject(obj.GetString("name"), parent, is_ui ? true : false);
         gameObject->parent = parent;
         gameObject->SetUUID(obj.GetInt("UUID"));
         
@@ -998,7 +1006,7 @@ void ModuleCentralEditor::LoadScene(const char* file)
                 Quat rot;
                 float4x4 matrix = comp.GetFloat4x4("Matrix");
                 matrix.Decompose(pos, rot, size);
-                ComponentTransform2D* _trans = (ComponentTransform2D*)gameObject->CreateComponent(Component_Type::Transform2D);
+                ComponentTransform2D* _trans = (ComponentTransform2D*)gameObject->GetComponent(Component_Type::Transform2D);
                 ComponentButton* but = (ComponentButton*)gameObject->CreateComponent(Component_Type::Button);
                 uint id1 = comp.GetInt("Resource1_ID");
                 uint id2 = comp.GetInt("Resource2_ID");
@@ -1015,7 +1023,7 @@ void ModuleCentralEditor::LoadScene(const char* file)
                 float3 pos, size;
                 Quat rot;
                 matrix.Decompose(pos, rot, size);
-                ComponentTransform2D* _trans = (ComponentTransform2D*)gameObject->CreateComponent(Component_Type::Transform2D);
+                ComponentTransform2D* _trans = (ComponentTransform2D*)gameObject->GetComponent(Component_Type::Transform2D);
                 _trans->SetTransformation(pos, rot, { size.x,size.y });
                 ComponentCheckbox* check = (ComponentCheckbox*)gameObject->CreateComponent(Component_Type::Checkbox);
                 uint id1 = comp.GetInt("Resource1_ID");
@@ -1027,26 +1035,28 @@ void ModuleCentralEditor::LoadScene(const char* file)
                 check->SetActivity(comp.GetString("Active"));
                 check->LoadGeneralStuff(comp);
 
+
             }
             else if (component_name == "Image") {
                 float4x4 matrix = comp.GetFloat4x4("Matrix");
                 float3 pos, size;
                 Quat rot;
                 matrix.Decompose(pos, rot, size);
-                ComponentTransform2D* _trans = (ComponentTransform2D*)gameObject->CreateComponent(Component_Type::Transform2D);
+                ComponentTransform2D* _trans = (ComponentTransform2D*)gameObject->GetComponent(Component_Type::Transform2D);
                 ComponentImage* img = (ComponentImage*)gameObject->CreateComponent(Component_Type::Image);
                 uint id = comp.GetInt("Resource_ID");
                 img->SetMaterialLoading((ResourceMaterial*)App->resources->RequestResource(id));
                 _trans->SetTransformation(pos, rot, { size.x,size.y });
                 img->SetTrans(_trans);
                 img->SetOpacity(comp.GetFloat("Opacity"));
+                img->LoadGeneralStuff(comp);
             }
             else if (component_name == "Input Box") {
                 float4x4 matrix = comp.GetFloat4x4("Matrix");
                 float3 pos, size;
                 Quat rot;
                 matrix.Decompose(pos, rot, size);
-                ComponentTransform2D* _trans = (ComponentTransform2D*)gameObject->CreateComponent(Component_Type::Transform2D);
+                ComponentTransform2D* _trans = (ComponentTransform2D*)gameObject->GetComponent(Component_Type::Transform2D);
                 ComponentInputbox* inputbox = (ComponentInputbox*)gameObject->CreateComponent(Component_Type::Inputbox);
                 _trans->SetTransformation(pos, rot, { size.x,size.y });
                 inputbox->SetTrans(_trans);
@@ -1405,15 +1415,12 @@ void ModuleCentralEditor::ChangingScreen()
         if (!fadein && !fadeout) time_curtain.Stop();
     }
     
-<<<<<<< HEAD
 }
 
 void ModuleCentralEditor::CreateCurtain()
 {
     JsonObj i_Curtain;
-=======
     changingscreen = false;
->>>>>>> 9372d7efc58176b332d094bf72bc8ddf5a0de402
 
     curtain = App->scene_intro->CreateGameObject("Curtain", App->scene_intro->root, true);
     ComponentImage* _curtain = (ComponentImage*)curtain->CreateComponent(Component_Type::Image);

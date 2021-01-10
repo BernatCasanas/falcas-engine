@@ -58,7 +58,6 @@ bool ComponentImage::SaveComponent(JsonObj& obj)
 	obj.AddFloat4x4("Matrix", trans->GetGlobalMatrix());
 	obj.AddFloat("Opacity", alpha);
 	SaveGeneralStuff(obj);
-
 	return true;
 }
 

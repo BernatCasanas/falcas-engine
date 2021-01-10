@@ -408,7 +408,8 @@ bool GameObject::SaveGameObject(JsonObj& obj)
 		obj.AddInt("Parent UUID", parent->GetUUID());
 	}
 	obj.AddString("name", this->name.c_str());
-	
+	obj.AddBool("isUI", is_ui);
+
 	 JsonArray transArr = obj.AddArray("Components");
 	for (std::vector<Component*>::iterator it = components.begin(); it!=components.end(); it++) {
 		JsonObj componentObject;
