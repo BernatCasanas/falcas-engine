@@ -1,5 +1,5 @@
 # Falcas Engine
-this engine is made by [https://github.com/BernatCasanas](Bernat Casañas) and [https://github.com/Arnau77](Arnau Falgueras), students of CITM, UPC of Terrassa in the subject of video game engines taught by [https://github.com/markitus18](Marc Garrigó). The aim of this game engine was to create a good base to later advance in UI. Only for educational propouses.
+this engine is made by [Bernat Casañas](https://github.com/BernatCasanas) and [Arnau Falgueras](https://github.com/Arnau77), students of CITM, UPC of Terrassa in the subject of video game engines taught by [Marc Garrigó](https://github.com/markitus18). The aim of this game engine was to create a good base to later advance in UI. Only for educational propouses.
 
 ## Bernat Casañas
 <img src="https://github.com/Falcas-Games/Falcas-Engine/blob/gh-pages/WhatsApp%20Image%202021-01-10%20at%2017.58.12.jpeg" width="200">
