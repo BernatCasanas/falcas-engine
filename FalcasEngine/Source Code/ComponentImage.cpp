@@ -169,7 +169,7 @@ void ComponentImage::RenderImage()
 	glPushMatrix();
 	glMultMatrixf((float*)&trans->GetGlobalMatrix().Transposed());
 
-	glColor4f(255,255,255,100);
+	glColor4f(1.0f,1.0f,1.0f,0.f);
 
 	glBindTexture(GL_TEXTURE_2D, resource_material->texture_id);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
