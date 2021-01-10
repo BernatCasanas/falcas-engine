@@ -49,14 +49,17 @@ update_status ModuleCamera3D::Update(float dt)
 	if (!camera->camera_active)
 		return UPDATE_CONTINUE;
 
-	if(!App->scene_intro->mouse_on_scene)
+	if (!App->scene_intro->mouse_on_scene) {
+		camera->owner->Update();
 		return UPDATE_CONTINUE;
+	}
 	
 	if (App->input->GetMouseButton(SDL_BUTTON_LEFT)==KEY_DOWN && App->input->GetKey(SDL_SCANCODE_LALT) == KEY_IDLE&&!stop_selecting) {
 		float x = App->input->GetMouseX();
 		float y = App->input->GetMouseY();
 		float scene_x, scene_y, scene_width, scene_height;
 		App->scene_intro->GetSceneDimensions(scene_x, scene_y, scene_width, scene_height);
+		LOG("%f, %f, %f, %f", scene_x, scene_y, scene_width, scene_height);
 		if (x >= scene_x && x <= scene_width + scene_x && y >= scene_y && y <= scene_height + scene_y) {
 			float x_final = ((float)x - scene_x) / (scene_width*0.5);
 			float y_final = ((float)y - scene_y) / (scene_height*0.5);

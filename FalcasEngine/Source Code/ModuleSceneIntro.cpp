@@ -84,8 +84,8 @@ void ModuleSceneIntro::Draw(GLuint tex)
 	min.x += windowPos.x;
 	min.y += windowPos.y;
 	windowSize.y -= min.y - windowPos.y;
-	width = windowSize.x;
-	height = windowSize.y;
+	scene_width = windowSize.x;
+	scene_height = windowSize.y;
 	x = min.x;
 	y = min.y;
 	ImGui::Image((ImTextureID)tex, windowSize, ImVec2(0, 1), ImVec2(1, 0));
@@ -115,10 +115,10 @@ void ModuleSceneIntro::Draw(GLuint tex)
 
 bool ModuleSceneIntro::GetDimensionsWindow(float& width, float& height)
 {
-	if (width == this->width && height == this->height)
+	if (width == scene_width && height == scene_height)
 		return false;
-	width = this->width;
-	height = this->height;
+	width = scene_width;
+	height = scene_height;
 	return true;
 }
 
@@ -302,8 +302,8 @@ void ModuleSceneIntro::GetSceneDimensions(float& x, float& y, float& width, floa
 {
 	x = this->x;
 	y = this->y;
-	width = this->width;
-	height = this->height;
+	width = scene_width;
+	height = scene_height;
 }
 
 void ModuleSceneIntro::SelectGameObjectWithRay(LineSegment ray)
